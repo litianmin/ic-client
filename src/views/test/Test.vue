@@ -1,43 +1,110 @@
 <template>
-  <mu-container>
-    <mu-flex justify-content="center" align-items="center">
-      <mu-switch style="margin-left: 16px" v-model="docked" label="docked"></mu-switch>
-      <mu-radio style="margin-left: 16px" v-model="position" value="left" label="left"></mu-radio>
-      <mu-radio style="margin-left: 16px" v-model="position" value="right" label="right"></mu-radio>
-      <mu-button color="primary" style="margin-left: 16px" @click="open = !open">
-        toggle
-      </mu-button>
-    </mu-flex>
-    <mu-drawer :open.sync="open" :docked="docked" :right="position === 'right'">
-      <mu-list>
-        <mu-list-item button>
-          <mu-list-item-title>Menu Item 1</mu-list-item-title>
-        </mu-list-item>
-        <mu-list-item button>
-          <mu-list-item-title>Menu Item 2</mu-list-item-title>
-        </mu-list-item>
-        <mu-list-item  @click="open = false" button>
-          <mu-list-item-title>Close</mu-list-item-title>
-        </mu-list-item>
-      </mu-list>
-    </mu-drawer>
-  </mu-container>
+    <div class="image-view">
+        <div class="addbox">
+            <input type="file" @change="getImgBase()">
+            <div class="addbtn">+</div>
+        </div>
+
+        <div class="view">
+            <div class="item">
+                <span class="cancel-btn" @click="delImg">x</span>
+                <img :src="imgBase64">
+            </div>
+        </div>
+
+    </div>
 </template>
-
 <script>
-export default {
-  data () {
-    return {
-      docked: false,
-      open: false,
-      position: 'left'
+    export default {
+        name: 'imageView',
+        data (){
+            return {
+                imgBase64: ''    //存储img base64的值将值传给后端处理
+            }
+        },
+        methods: {
+            //获取图片base64实现预览
+            getImgBase(){
+                var _this = this;
+                var event = event || window.event
+                var file = event.target.files[0]
+                var reader = new FileReader()
+                //转base64
+                reader.onload = function(e) {
+                    _this.imgBase64 = e.target.result
+                }
+                reader.readAsDataURL(file);
+            },
+            //删除图片
+            delImg () {
+                this.imgBase64 = ''
+            }
+        }
     }
-  }
-}
 </script>
-
-<style lang="stylus" scoped>
-
+<style scoped>
+    *{margin:0 auto;padding:0;font-family:"微软雅黑";}
+    .clearboth::after{
+        content:"";
+        display:block;
+        clear:both;
+    }
+    .image-view{
+        width:400px;
+        height:300px;
+        margin:50px auto;
+    }
+    .image-view .addbox{
+        float:left;
+        position:relative;
+        height:100px;
+        width:100px;
+        margin-bottom:20px;
+        text-align:center;
+    }
+    .image-view .addbox input{
+        position:absolute;
+        left:0;
+        height:100px;
+        width:100px;
+        opacity:0;
+    }
+    .image-view .addbox .addbtn{
+        float:left;
+        height:100px;
+        width:100px;
+        line-height:100px;
+        color:#fff;
+        font-size:40px;
+        background:#ccc;
+        border-radius:10px;
+    }
+    .image-view .item {
+        position:relative;
+        float:left;
+        height:100px;
+        width:100px;
+        margin:10px 10px 0 0;
+    }
+    .image-view .item .cancel-btn{
+        position:absolute;
+        right:0;
+        top:0;
+        display:block;
+        width:20px;
+        height:20px;
+        color:#fff;
+        line-height:20px;
+        text-align:center;
+        background:red;
+        border-radius:10px;
+        cursor:pointer;
+    }
+    .image-view .item img{
+        width:100%;
+        height:100%;
+    }
+    .image-view .view{
+        clear:both;
+    }
 </style>
-
-
