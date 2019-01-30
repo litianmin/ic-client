@@ -33,7 +33,7 @@
 
 
     <div class="get-auth-numb">
-      <mu-button flat color="success">点击获取</mu-button>
+      <mu-button @click="getAuthNumb()" flat color="success">{{ btnCont }}</mu-button>
     </div>
 
     <div class="submit-div">
@@ -48,6 +48,7 @@
 
 <script>
 import avatarDefaultImg from '@/static/avatar/imgupload3.png'
+import utils from 'common/utils.js'
 
 export default {
   data () {
@@ -58,7 +59,9 @@ export default {
       mobile: '',
       pwd: '',
       pwdConfirm: '',
-      authNumb: ''
+      authNumb: '',
+      duration: 30,
+      btnCont: '点击获取'
     }
   },
   methods: {
@@ -73,7 +76,97 @@ export default {
       }
       reader.readAsDataURL(file)
     },
+    getAuthNumb () {
+      // 防止多次点击
+      if(this.duration != 30) {
+        return false
+      }
+
+      if(utils.isPhoneNumb(this.mobile)) {
+        // 手机号码通过验证，发送请求
+        this.$axios.post(
+          '/usr/register/auth',
+          {
+            mobile_phone: this.mobile
+          }
+        ).then((resp) => {
+          let dataBack = resp.data
+          
+          if(dataBack.stmt == 'error' && dataBack.msg.code == '40201') {
+            this.$toast.message('该电话号码已经存在,请直接登陆！')
+            this.duration = 30
+            return
+          }
+
+          if(dataBack.stmt == 'success') {
+            this.$toast.success('发送成功！')
+          }
+          
+        })
+
+        // 隐藏按钮的点击事件，实现倒计时
+        let clock = window.setInterval(()=>{
+          if(this.duration > 0 && this.duration < 30) {
+            this.duration --
+            this.btnCont = this.duration + ' s'
+          }else{
+            window.clearInterval(clock)
+            this.duration = 30
+            this.btnCont = '重新发送'
+          }
+        },1000)
+
+      }else{
+        this.$toast.error('手机号码格式不正确')
+      }
+    },
     submitInfo () {
+      // 判断昵称是否为空
+      let nickName = this.nickname.trim()
+      if(!!nickName == false) {
+        this.$toast.error('昵称不能为空')
+        return 
+      }
+
+      let mobileNumb = this.mobile.trim()
+      if(!utils.isPhoneNumb(mobileNumb)) {
+        this.$toast.error('手机号码格式不正确')
+        return
+      }
+
+      let passWord = this.pwd.trim()
+      let passWordComfirm = this.pwdConfirm.trim()
+      if(!!passWord == false || passWord.length < 6 || passWord.length > 12){
+        this.$toast.error('密码格式不正确')
+        return 
+      }
+      if(passWord != passWordComfirm) {
+        this.$toast.error('两次输入的密码不相同')
+        return
+      }
+
+      let newAuthNumb = this.authNumb.trim()
+      if(!!newAuthNumb == false || newAuthNumb.length != 6) {
+        this.$toast.error('请输入6位验证码')
+        return
+      }
+
+      this.$axios.post(
+        '/usr/register',
+        {
+          identity_type: "MBPhone",
+          identifier: mobileNumb,
+          creadential: passWord,
+          nickname: nickName,
+          sex: this.sex,
+          authcode: newAuthNumb
+        }
+      ).then((resp)=>{
+        console.log(resp)
+      })
+
+      this.$toast.success('发送成功')
+
       console.log(this.avatarImg)
       console.log(this.nickname)
       console.log(this.sex)
