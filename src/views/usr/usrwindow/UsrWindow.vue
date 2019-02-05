@@ -89,7 +89,7 @@ export default {
   },
   computed: {
     usrWindowToggle () {
-      return this.$store.state.usrWindowIsShow
+      return this.$store.state.mdeGlobal.usrWindowIsShow
     }
   },
   watch: {

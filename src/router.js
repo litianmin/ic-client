@@ -65,18 +65,18 @@ const router =  new Router({
 })
 
 
-// 实现思路，token还是要保存到cookie里面去，设置过期时间， 如果
+// # 如果不知道to 是什么，可以console一下
+// 每次用户进来的时候判断用户是否已经登录
 router.beforeEach((to, from, next) => {
-  // 这里判断用户退返到授页，但是已经是登陆的状态
-  // 那么默认返回首页
-  if(to.path == '/auth' && store.state.usrInfo.isLogin){
+  // 判断用户是否退返到授权页，并且已经是登陆的状态， 那么返回首页
+  if(to.path == '/auth' && store.state.mdeLogin.usrInfo.isLogin){
     next('/')
     return false
   }
 
   // 第一次进入项目， 即登陆状态为空， 并且进入的不是登陆界面
-  // 记录用户进来的路径
-  if(!store.state.usrInfo.isLogin && to.path != '/auth'){
+  // 记录用户进来的路径， 当授权成功的时候跳转到这个地址
+  if(!store.state.mdeLogin.usrInfo.isLogin && to.path != '/auth'){
     store.commit('logBeforeLoginURL', to.fullPath)
     next('/auth')
     return false
