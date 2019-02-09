@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/home/Home.vue'
+import WxAuth from './views/usr/auth/wxAuth.vue'
 import store from './store'
 
 Vue.use(Router)
@@ -32,7 +33,7 @@ const router =  new Router({
       // 登陆验证，判断用户是否已经登陆了
       path: '/auth',
       name: 'auth',
-      component: () => import('./views/usr/auth/wxAuth.vue')
+      component: WxAuth
     },
 
     {

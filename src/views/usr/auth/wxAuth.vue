@@ -22,6 +22,8 @@ export default {
       let reqTp = this.$store.state.mdeLogin.wxAuthTp
       this.$axios.get(`/usr/wxAuth/${reqTp}`,{}).then( (resp)=> {
         let locateURL = resp.data
+        this.$store.commit('mdeLogin/changeWxAuthTp')
+        alert(this.$store.state.mdeLogin.wxAuthTp)
         document.location.href = locateURL
       })
     },
@@ -47,6 +49,7 @@ export default {
       this.getAuthURL()
     }else{
       // 存在code
+      alert('现在这里有code，或者说这里有了其他什么鬼？')
       this.getUsrInfo(wxAuthCode)
     }
   }
