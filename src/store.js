@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
@@ -61,7 +62,7 @@ const MdeLogin = {
       authToken: ''
     },
     beforeLoginURL: '',
-    wxAuthTp: 'base',
+    wxAuthTp: 'base'
   },
   mutations: {
     usrWxLogin (state, payload) {
@@ -75,15 +76,13 @@ const MdeLogin = {
     logBeforeLoginURL (state, bURL) {
       // 记录登陆之前进来的URL
       state.beforeLoginURL = bURL
-    },
-    changeWxAuthTp (state) {
-      state.wxAuthTp = 'userInfo'
     }
   }
 }
 
 
 export default new Vuex.Store({
+  plugins: [createPersistedState()],
   modules: {
     mdeGlobal: MdeGlobal,
     mdeLogin: MdeLogin

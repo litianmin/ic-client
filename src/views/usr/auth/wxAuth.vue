@@ -19,11 +19,9 @@ export default {
     getAuthURL () {
       // 先获取跳转过来的地址
       // 一开始只是获得code, 使用base获取code
-      let reqTp = this.$store.state.mdeLogin.wxAuthTp
+      let reqTp = 'base'
       this.$axios.get(`/usr/wxAuth/${reqTp}`,{}).then( (resp)=> {
         let locateURL = resp.data
-        this.$store.commit('mdeLogin/changeWxAuthTp')
-        alert(this.$store.state.mdeLogin.wxAuthTp)
         document.location.href = locateURL
       })
     },
@@ -31,8 +29,8 @@ export default {
       this.$axios.get(`/usr/wxGetUsrInfo/${wxCode}`, {}).then( (resp) => {
         // 然后这里开始处理数据
         // 保存用户的信息，然后跳转回之前的路径
+        alert(this.$store.state.mdeLogin.beforeLoginURL)
         console.log(resp)
-        alert(resp.data)
       } )
     }
   },
@@ -49,7 +47,6 @@ export default {
       this.getAuthURL()
     }else{
       // 存在code
-      alert('现在这里有code，或者说这里有了其他什么鬼？')
       this.getUsrInfo(wxAuthCode)
     }
   }

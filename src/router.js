@@ -78,7 +78,7 @@ router.beforeEach((to, from, next) => {
   // 第一次进入项目， 即登陆状态为空， 并且进入的不是登陆界面
   // 记录用户进来的路径， 当授权成功的时候跳转到这个地址
   if(!store.state.mdeLogin.usrInfo.isLogin && to.path != '/auth'){
-    store.commit('logBeforeLoginURL', to.fullPath)
+    store.commit('MdeLogin/logBeforeLoginURL', to.fullPath)
     next('/auth')
     return false
   }
