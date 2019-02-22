@@ -1,50 +1,75 @@
 <template>
   <div class="home">
-    <!-- BEGIN 好友的动态信息 -->
-    <mu-container style="width:100%; padding: 0.5rem 0.5rem 0.2rem 1rem; border-bottom:1px solid #CCCCCC; overflow:auto;">
-      <mu-row justify-content="start" style=" width:200%;">
-        <mu-avatar :size="32" class="avatar-distance">
-          <img src="http://img4.imgtn.bdimg.com/it/u=3868410791,3959511573&fm=26&gp=0.jpg">
-        </mu-avatar>
-        <mu-avatar :size="32" class="avatar-distance">
-          <img src="http://img4.imgtn.bdimg.com/it/u=3868410791,3959511573&fm=26&gp=0.jpg">
-        </mu-avatar>
-        <mu-avatar :size="32" class="avatar-distance">
-          <img src="http://img4.imgtn.bdimg.com/it/u=3868410791,3959511573&fm=26&gp=0.jpg">
-        </mu-avatar>
-        <mu-avatar :size="32" class="avatar-distance">
-          <img src="http://img4.imgtn.bdimg.com/it/u=3868410791,3959511573&fm=26&gp=0.jpg">
-        </mu-avatar>
-        <mu-avatar :size="32" class="avatar-distance">
-          <img src="http://img4.imgtn.bdimg.com/it/u=3868410791,3959511573&fm=26&gp=0.jpg">
-        </mu-avatar>
-        <mu-avatar :size="32" class="avatar-distance">
-          <img src="http://img4.imgtn.bdimg.com/it/u=3868410791,3959511573&fm=26&gp=0.jpg">
-        </mu-avatar>
+
+    <!-- BEGIN 头部导航按钮 -->
+    <mu-row style="margin-bottom:1rem;">
+      <mu-ripple class="main-nav" style="margin-left:3%; background: #009688;">
+        😜走起
+      </mu-ripple>
+      <mu-ripple class="main-nav" color="yellow" :opacity="0.7" style="background: #00bcd4;">
+        😇我有空
+      </mu-ripple>
+      <mu-ripple class="main-nav" color="red" :opacity="0.5" style="background: #03a9f4;">
+        <mu-icon size="20" value="directions_run" color="#ffeb3b"></mu-icon>赴约
+      </mu-ripple>
+    </mu-row>
+    <!-- END 头部导航按钮 -->
+
+      <div style="position:fixed; right:-2rem; top:2rem; width:8rem; height:8rem; z-index:-1000;"><img style="max-width:100%; max-height:100%;" src="./333.png" alt=""></div>
+
+    <mu-row style="padding:1rem 0.5rem; margin-top:1rem; margin-bottom:1.5rem;">
+      <mu-flex style="width:2.5rem; height:2.5rem; ">
+        <img style="width:2.5rem; height:2.5rem; border-radius:50%;" src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3148472799,1130994798&fm=27&gp=0.jpg">
+      </mu-flex>
+      <mu-flex class="myclass" style="margin-left:0.3rem;">
+        <mu-button style="margin-top:.2rem; background:#66bb6a; color:white;">
+          Ae， 最近还好吗， 早上好呀！
+        </mu-button>
+      </mu-flex>
+    </mu-row>
+
+    <!-- BEGIN 头部话题、美文轮播图 -->
+    <swiper :options="swiperOption">
+        <swiper-slide v-for="(item, index) in friendsMsgsList" :key="index">
+          <img class="swiper-img" :src="item.avatar" alt="">
+        </swiper-slide>
+    </swiper>
+    <!-- END 头部话题、 美文轮播图 -->
+
+
+
+
+
+
+    
+
+
+    <!-- <mu-container style="margin-top:1rem;">
+      <mu-row gutter>
+
+        <mu-col span="3"><div class="grid-cell">走起</div></mu-col>
+
+        <mu-col span="3"><div class="grid-cell">我有空</div></mu-col>
+
+        <mu-col span="3"><div class="grid-cell">随心</div></mu-col>
+
+        <mu-col span="3"><div class="grid-cell">邀请，有人约哦</div></mu-col>
       </mu-row>
-    </mu-container>
-    <!-- END 好友的动态信息 -->
-
+    </mu-container> -->
     <!-- BEGIN 用户发起组队或者分享心情 -->
-    <mu-container style="margin-top:1rem;">
-      <!-- <mu-row justify-content="center" style="padding:1rem 0 0 0; color:#9e9e9e;">
-        <mu-flex>
-          2018-01-02 11:29:20  下午
-        </mu-flex>
-      </mu-row> -->
-
+    <!-- <mu-container style="margin-top:1rem;">
       <mu-row style="padding:1rem 0.5rem;">
         <mu-flex style="width:2.5rem; height:2.5rem; ">
           <img style="width:2.5rem; height:2.5rem; border-radius:0.5rem;" src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3148472799,1130994798&fm=27&gp=0.jpg">
         </mu-flex>
         <mu-flex class="myclass" style="margin-left:0.3rem;">
           <mu-button style="margin-top:.2rem; background:#66bb6a; color:white;">
-            😇 嗯~~，找些好友出去浪吧！
+            嘿， 社~交~菜鸟👇🏻
           </mu-button>
         </mu-flex>
       </mu-row>
 
-      <mu-row style="padding:1rem 0.5rem; " justify-content="end">
+      <mu-row style="padding:0.5rem 0.5rem; " justify-content="end">
         <mu-flex class="myclass-2" style="margin-right:0.3rem;">
           <mu-button style="margin-top:.2rem; background:#2196f3; color:white;">
             😏还是发个小心情呢 
@@ -77,14 +102,14 @@
         </mu-flex>
       </mu-row>
 
-    </mu-container>
+    </mu-container> -->
     <!-- END 用户可以发起组队或者分享心情 -->
 
     <!-- BEGIN 附近组队信息，好友动态和悄悄话 -->
     <mu-container style="margin-top:2rem; margin-bottom:2rem;">
       <mu-row justify-content="center">
         <mu-col span="12">
-          <div style="width:100%; background:#eeeeee; border-radius:1rem; padding:0.5rem 0.5rem;">
+          <div style="width:100%; background:#f5f5f5; border-radius:1rem; padding:0.1rem 0.1rem;">
 
             <mu-row style="background:white; padding:0.5rem; border-top-left-radius:0.5rem; border-top-right-radius:0.5rem; padding:1rem .5rem .5rem 1rem;">
               <mu-col span="2">
@@ -258,6 +283,34 @@ import Footer from '@/components/Footer.vue'
 import UsrWindow from '@/views/usr/usrwindow/UsrWindow.vue'
 export default {
   name: 'home',
+  data () {
+    return {
+      friendsMsgsList: [
+        {id: 1, avatar: "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1550752522&di=4f947c4df1c30a34d0102f86b088036d&src=http://img15.3lian.com/2015/f2/57/d/93.jpg"},
+        {id: 2, avatar: "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1550752522&di=4f947c4df1c30a34d0102f86b088036d&src=http://img15.3lian.com/2015/f2/57/d/93.jpg"},
+        {id: 3, avatar: "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1550752522&di=4f947c4df1c30a34d0102f86b088036d&src=http://img15.3lian.com/2015/f2/57/d/93.jpg"},
+        {id: 4, avatar: "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1550752522&di=4f947c4df1c30a34d0102f86b088036d&src=http://img15.3lian.com/2015/f2/57/d/93.jpg"},
+        {id: 5, avatar: "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1550752522&di=4f947c4df1c30a34d0102f86b088036d&src=http://img15.3lian.com/2015/f2/57/d/93.jpg"}
+      ],
+      swiperOption: {
+        effect: 'coverflow',  // 切换效果
+        grabCursor: true,   // 手形
+        centeredSlides: true,   // 活动块居中
+        slidesPerView: 'auto',  
+        loop: true,   // 是否循环播放
+        autoplay: true, // 是否自动播放
+        delay: 5000,  // 5s切换一次
+        speed: 2000,  // 切换所用的时间
+        coverflowEffect: {  // 这个看手册吧
+          rotate: 50,
+          stretch: 15,
+          depth: 100,
+          modifier: 1,
+          slideShadows : false, 
+        }
+      }
+    }
+  },
   components: {
     Footer,
     UsrWindow
@@ -266,15 +319,22 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.home
-  width 100%
+.home { width:100%;}
+.swiper-inner { width: 100%; height: auto; padding-top: 50px; padding-bottom: 50px; }
+.swiper-slide { background-position: center; background-size: cover; width: 85%; height: auto; }
+.swiper-img { max-width:100%; height:auto; border-bottom-left-radius:3px; border-bottom-right-radius:5px; }
+.main-nav { position: relative; width: 30%; height: 3rem; display: flex; justify-content: center; align-items: center; 
+            border-radius: 4px; margin-left: 2%; margin-top: .5rem; color: white; }
+
+
   .footer
-    width 100%
-    position fixed
-    bottom 0
+    width:100%; position:fixed; bottom:0;
+
   .usrfortest
-    width 100%
-    height 90%
+    width:100%; height:90%;
+
+  .container-one
+    width:100%; padding:0.5rem 0.5rem 0.2rem 1rem; border-bottom:1px solid #CCCCCC; overflow:auto;
 
   .avatar-distance
     margin-right .8rem
@@ -317,6 +377,15 @@ export default {
     font-size 20px
     color hsla(0,0%,100%,.87)
     line-height 28px
+
+.grid-cell 
+  border-radius 4px
+  height 36px
+  background red
+
+
+
+
 
 
 </style>

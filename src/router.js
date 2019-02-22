@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/home/Home.vue'
 import WxAuth from './views/usr/auth/wxAuth.vue'
 import store from './store'
+import utils from './common/utils.js'
 
 Vue.use(Router)
 
@@ -68,22 +69,22 @@ const router =  new Router({
 
 // # 如果不知道to 是什么，可以console一下
 // 每次用户进来的时候判断用户是否已经登录
-router.beforeEach((to, from, next) => {
-  // 判断用户是否退返到授权页，并且已经是登陆的状态， 那么返回首页
-  if(to.path == '/auth' && store.state.mdeLogin.usrInfo.isLogin){
-    next('/')
-    return false
-  }
+// router.beforeEach((to, from, next) => {
+//   // 判断用户是否退返到授权页，并且已经是登陆的状态， 那么返回首页
+//   if(to.path == '/auth' && store.state.mdeLogin.usrInfo.isLogin){
+//     next('/')
+//     return
+//   }
 
-  // 第一次进入项目， 即登陆状态为空， 并且进入的不是登陆界面
-  // 记录用户进来的路径， 当授权成功的时候跳转到这个地址
-  if(!store.state.mdeLogin.usrInfo.isLogin && to.path != '/auth'){
-    store.commit('MdeLogin/logBeforeLoginURL', to.fullPath)
-    next('/auth')
-    return false
-  }
+//   // 第一次进入项目， 即登陆状态为空， 并且进入的不是登陆界面
+//   // 记录用户进来的路径， 当授权成功的时候跳转到这个地址
+//   if(!store.state.mdeLogin.usrInfo.isLogin && to.path != '/auth'){
+//     utils.cookieObj.setCookie("beforeLoginURL", to.fullPath, 's100')
+//     next('/auth')
+//     return
+//   }
 
-  next()
-})
+//   next()
+// })
 
 export default router

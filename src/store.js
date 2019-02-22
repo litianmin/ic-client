@@ -59,6 +59,8 @@ const MdeLogin = {
       isLogin: false,
       usrAvatar: '',
       usrNickName: '',
+      sex: '',
+      usrID: '',
       authToken: ''
     },
     beforeLoginURL: '',
@@ -70,7 +72,9 @@ const MdeLogin = {
       state.usrInfo.isLogin = true
       state.usrInfo.usrAvatar = payload.usrAvatar
       state.usrInfo.usrNickName = payload.usrNickName
-      state.usrInfo.authToken = payload.wxAuthToken
+      state.usrInfo.authToken = payload.authToken
+      state.usrInfo.sex = payload.sex
+      state.usrInfo.usrID = payload.usrID
       return
     },
     logBeforeLoginURL (state, bURL) {

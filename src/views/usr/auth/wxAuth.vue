@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import utils from 'common/utils.js'
 export default {
   methods: {
     getAuthURL () {
@@ -26,11 +27,35 @@ export default {
       })
     },
     getUsrInfo (wxCode) {
-      this.$axios.get(`/usr/wxGetUsrInfo/${wxCode}`, {}).then( (resp) => {
+      let wxAuthState = this.$router.currentRoute.query.state
+      this.$axios.get(`/usr/wxGetUsrInfo/${wxCode}/${wxAuthState}`, {}).then( (resp) => {
         // 然后这里开始处理数据
         // 保存用户的信息，然后跳转回之前的路径
-        alert(this.$store.state.mdeLogin.beforeLoginURL)
-        console.log(resp)
+        let respData = resp.data
+        if(respData.code == '40001') {
+          window.location.href = respData.msg
+        }
+
+        // 如果返回成功的消息，那么就存入数据库
+        if(respData.code == '20000') {
+          // 先保存用户的基本信息
+          let usrInfo = respData.msg
+          let usrAuthToken = resp.headers.usrinfo_jwt
+
+          let usrInfoBody = {
+            usrAvatar: usrInfo.profile_pic,
+            usrNickName: usrInfo.nickname,
+            sex: usrInfo.sex,
+            usrID: usrInfo.user_id,
+            authToken: usrAuthToken
+          }
+          this.$store.commit('mdeLogin/usrWxLogin', usrInfoBody)
+
+          // 跳转到原地址
+          let beforeLoginURL = utils.cookieObj.getCookie('beforeLoginURL')
+          this.$router.push(beforeLoginURL)
+        }
+
       } )
     }
   },
