@@ -1,8 +1,23 @@
 <template>
   <div class="home">
 
+
+
+      <div style="position:absolute; left:0; top:0; width:100%; height:auto; z-index: -1;">
+        <img style="max-width:100%; max-height:100%;" src="./bg.jpg" alt="">
+      </div>
+
+      <mu-row style="margin-top:5%; padding:1rem 0.5rem;  margin-bottom:16%;">
+        <mu-flex style="width:2.5rem; height:2.5rem; margin-left:.5rem;">
+          <img style="width:2.5rem; height:2.5rem; border-radius:50%;" src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3148472799,1130994798&fm=27&gp=0.jpg">
+        </mu-flex>
+        <mu-flex style="margin-left:0.3rem; margin-top:.5rem; margin-left:1rem; font-size:16px; color:white;">
+            Ae， 早上好呀！
+        </mu-flex>
+      </mu-row>
+
     <!-- BEGIN 头部导航按钮 -->
-    <mu-row style="margin-bottom:1rem;">
+    <mu-row style="margin-bottom:2rem;">
       <mu-ripple class="main-nav" style="margin-left:3%; background: #009688;">
         😜走起
       </mu-ripple>
@@ -14,19 +29,6 @@
       </mu-ripple>
     </mu-row>
     <!-- END 头部导航按钮 -->
-
-      <div style="position:fixed; right:-2rem; top:2rem; width:8rem; height:8rem; z-index:-1000;"><img style="max-width:100%; max-height:100%;" src="./333.png" alt=""></div>
-
-    <mu-row style="padding:1rem 0.5rem; margin-top:1rem; margin-bottom:1.5rem;">
-      <mu-flex style="width:2.5rem; height:2.5rem; ">
-        <img style="width:2.5rem; height:2.5rem; border-radius:50%;" src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3148472799,1130994798&fm=27&gp=0.jpg">
-      </mu-flex>
-      <mu-flex class="myclass" style="margin-left:0.3rem;">
-        <mu-button style="margin-top:.2rem; background:#66bb6a; color:white;">
-          Ae， 最近还好吗， 早上好呀！
-        </mu-button>
-      </mu-flex>
-    </mu-row>
 
     <!-- BEGIN 头部话题、美文轮播图 -->
     <swiper :options="swiperOption">
@@ -319,7 +321,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.home { width:100%;}
+.home { width:100%; position: relative; float:left;}
 .swiper-inner { width: 100%; height: auto; padding-top: 50px; padding-bottom: 50px; }
 .swiper-slide { background-position: center; background-size: cover; width: 85%; height: auto; }
 .swiper-img { max-width:100%; height:auto; border-bottom-left-radius:3px; border-bottom-right-radius:5px; }
