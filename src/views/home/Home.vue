@@ -17,7 +17,7 @@
       </mu-row>
 
     <!-- BEGIN 头部导航按钮 -->
-    <mu-row style="margin-bottom:2rem;">
+    <mu-row style="margin-bottom:1rem;">
       <mu-ripple class="main-nav" style="margin-left:3%; background: #009688;">
         😜走起
       </mu-ripple>
@@ -30,17 +30,22 @@
     </mu-row>
     <!-- END 头部导航按钮 -->
 
+    <mu-divider></mu-divider>
+    <mu-sub-header><span style="font-size:14px; font-weight:600; color:#795548;">- 话题 . 美文 -</span></mu-sub-header>
+
     <!-- BEGIN 头部话题、美文轮播图 -->
+    <div style="margin-top:.5rem;">
     <swiper :options="swiperOption">
         <swiper-slide v-for="(item, index) in friendsMsgsList" :key="index">
           <img class="swiper-img" :src="item.avatar" alt="">
         </swiper-slide>
     </swiper>
+    </div>
     <!-- END 头部话题、 美文轮播图 -->
 
-
-
-
+    <mu-row style="margin-top:2rem;"></mu-row>
+    <mu-divider></mu-divider>
+    <mu-sub-header><span style="font-size:14px; font-weight:600; color:#795548;">- 动态 . 足迹 -</span></mu-sub-header>
 
 
     
@@ -108,7 +113,7 @@
     <!-- END 用户可以发起组队或者分享心情 -->
 
     <!-- BEGIN 附近组队信息，好友动态和悄悄话 -->
-    <mu-container style="margin-top:2rem; margin-bottom:2rem;">
+    <mu-container style="margin-top:1rem; margin-bottom:2rem;">
       <mu-row justify-content="center">
         <mu-col span="12">
           <div style="width:100%; background:#f5f5f5; border-radius:1rem; padding:0.1rem 0.1rem;">
