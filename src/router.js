@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/home/Home.vue'
 import WxAuth from './views/usr/auth/wxAuth.vue'
-import store from './store'
-import utils from './common/utils.js'
+// import store from './store'
+// import utils from './common/utils.js'
 
 Vue.use(Router)
 
