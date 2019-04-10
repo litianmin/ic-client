@@ -1,54 +1,25 @@
 <template>
   <div class="home">
 
-
-
-      <div style="position:absolute; left:0; top:0; width:100%; height:auto; z-index: -1;">
-        <img style="max-width:100%; max-height:100%;" src="./bg.jpg" alt="">
-      </div>
-
-      <mu-row style="margin-top:5%; padding:1rem 0.5rem;  margin-bottom:16%;">
-        <mu-flex style="width:2.5rem; height:2.5rem; margin-left:.5rem;">
-          <img style="width:2.5rem; height:2.5rem; border-radius:50%;" src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3148472799,1130994798&fm=27&gp=0.jpg">
-        </mu-flex>
-        <mu-flex style="margin-left:0.3rem; margin-top:.5rem; margin-left:1rem; font-size:16px; color:white;">
-            Ae， 早上好呀！
-        </mu-flex>
-      </mu-row>
-
-    <!-- BEGIN 头部导航按钮 -->
-    <mu-row style="margin-bottom:1rem;">
-      <mu-ripple class="main-nav" style="margin-left:3%; background: #009688;">
-        😜走起
-      </mu-ripple>
-      <mu-ripple class="main-nav" color="yellow" :opacity="0.7" style="background: #00bcd4;">
-        😇我有空
-      </mu-ripple>
-      <mu-ripple class="main-nav" color="red" :opacity="0.5" style="background: #03a9f4;">
-        <mu-icon size="20" value="directions_run" color="#ffeb3b"></mu-icon>赴约
-      </mu-ripple>
-    </mu-row>
-    <!-- END 头部导航按钮 -->
-
-    <mu-divider></mu-divider>
-    <mu-sub-header><span style="font-size:14px; font-weight:600; color:#795548;">- 话题 . 美文 -</span></mu-sub-header>
+    <mu-appbar style="width: 100%;" title="Title">
+      <mu-avatar>
+        <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1226025056,3214855575&fm=27&gp=0.jpg">
+      </mu-avatar>
+    </mu-appbar>
 
     <!-- BEGIN 头部话题、美文轮播图 -->
-    <div style="margin-top:.5rem;">
-    <swiper :options="swiperOption">
-        <swiper-slide v-for="(item, index) in friendsMsgsList" :key="index">
-          <img class="swiper-img" :src="item.avatar" alt="">
-        </swiper-slide>
-    </swiper>
-    </div>
+    <div style="padding:0 0 1rem 0; background:#e0e0e0;">
+        <swiper :options="swiperOption">
+            <swiper-slide v-for="(item, index) in friendsMsgsList" :key="index">
+              <img class="swiper-img" :src="item.avatar" alt="">
+            </swiper-slide>
+        </swiper>
+    </div> 
     <!-- END 头部话题、 美文轮播图 -->
 
     <mu-row style="margin-top:2rem;"></mu-row>
     <mu-divider></mu-divider>
     <mu-sub-header><span style="font-size:14px; font-weight:600; color:#795548;">- 动态 . 足迹 -</span></mu-sub-header>
-
-
-    
 
 
     <!-- <mu-container style="margin-top:1rem;">
