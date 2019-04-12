@@ -1,11 +1,9 @@
 <template>
   <div class="home">
 
-    <mu-appbar style="width: 100%;" title="Title">
-      <mu-avatar>
-        <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1226025056,3214855575&fm=27&gp=0.jpg">
-      </mu-avatar>
-    </mu-appbar>
+    <div style="width:100%; height:2rem; background:red;">
+      我的头部应该放点什么好呢，哎，一个好点的界面真的好难做啊
+    </div>
 
     <!-- BEGIN 头部话题、美文轮播图 -->
     <div style="padding:0 0 1rem 0; background:#e0e0e0;">
@@ -20,7 +18,6 @@
     <mu-row style="margin-top:2rem;"></mu-row>
     <mu-divider></mu-divider>
     <mu-sub-header><span style="font-size:14px; font-weight:600; color:#795548;">- 动态 . 足迹 -</span></mu-sub-header>
-
 
     <!-- <mu-container style="margin-top:1rem;">
       <mu-row gutter>
