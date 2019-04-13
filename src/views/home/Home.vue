@@ -1,9 +1,19 @@
 <template>
   <div class="home">
 
-    <div style="width:100%; height:2rem; background:red;">
-      我的头部应该放点什么好呢，哎，一个好点的界面真的好难做啊
+    <div style="width:100%; height:5rem; background:#2196f3; padding:1rem;">
+      <mu-row justify-content="left">
+        <mu-avatar>
+          <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3523617831,1288544462&fm=27&gp=0.jpg">
+        </mu-avatar>
+        <span>来个自然定位？</span>
+      </mu-row>
     </div>
+
+    <div style="width:100%; height:5rem; background:#00bcd4; border-top-left-radius:1rem; border-top-right-radius:1rem; margin-top:-1rem;">
+
+    </div>
+
 
     <!-- BEGIN 头部话题、美文轮播图 -->
     <div style="padding:0 0 1rem 0; background:#e0e0e0;">
@@ -17,7 +27,7 @@
 
     <mu-row style="margin-top:2rem;"></mu-row>
     <mu-divider></mu-divider>
-    <mu-sub-header><span style="font-size:14px; font-weight:600; color:#795548;">- 动态 . 足迹 -</span></mu-sub-header>
+    <mu-sub-header><span style="font-size:14px; font-weight:600; color:#795548;">- 动态 . 足迹 -</span></mu-sub-header> 
 
     <!-- <mu-container style="margin-top:1rem;">
       <mu-row gutter>
