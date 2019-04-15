@@ -1,18 +1,39 @@
 <template>
   <div class="home">
+    <div style="width:100%; height:3.5rem; background:#00bcd4; padding:.5rem 1rem;">
+      <mu-row>
+        <mu-col span="2">
+          <div>
+            <mu-avatar size="35">
+              <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3523617831,1288544462&fm=27&gp=0.jpg">
+            </mu-avatar>
+          </div>
+        </mu-col>
 
-    <div style="width:100%; height:5rem; background:#2196f3; padding:.5rem 1rem;">
-      <mu-row justify-content="start">
-        <mu-avatar>
-          <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3523617831,1288544462&fm=27&gp=0.jpg">
-        </mu-avatar>
-        <div style="padding:.5rem;">
-        <span>来个自然定位？</span>
-        </div>
+        <mu-col span="5">
+          <div style="margin-left:-.5rem; padding:.5rem 0 0 0; font-weight:700; ">
+            <span>你的名字</span>
+          </div>
+        </mu-col>
+
+        <mu-col span="2">
+        </mu-col>
+
+        <mu-col span="3">
+          <div style="padding:.5rem 0; float:right;">
+            吴川市
+          </div>   
+          <div style="float:right; padding:.4rem 0; color:#00bcd4;">
+            <mu-icon color="white" size="20" value="person_pin_circle"></mu-icon>
+          </div>       
+        </mu-col>
+
+
       </mu-row>
     </div>
 
-    <div style="width:100%; height:5rem; background:#00bcd4; border-top-left-radius:1rem; border-top-right-radius:1rem; margin-top:-1rem;">
+
+    <div style="width:100%; height:5rem; background:#009688;">
 
     </div>
 
