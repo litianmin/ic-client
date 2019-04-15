@@ -1,12 +1,14 @@
 <template>
   <div class="home">
 
-    <div style="width:100%; height:5rem; background:#2196f3; padding:1rem;">
-      <mu-row justify-content="left">
+    <div style="width:100%; height:5rem; background:#2196f3; padding:.5rem 1rem;">
+      <mu-row justify-content="start">
         <mu-avatar>
           <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3523617831,1288544462&fm=27&gp=0.jpg">
         </mu-avatar>
+        <div style="padding:.5rem;">
         <span>来个自然定位？</span>
+        </div>
       </mu-row>
     </div>
 
