@@ -12,12 +12,11 @@
 
         <mu-col span="5">
           <div style="margin-left:-.5rem; padding:.5rem 0 0 0; font-weight:700; ">
-            <span>你的名字</span>
+            <span>你的名字Ae</span>
           </div>
         </mu-col>
 
-        <mu-col span="2">
-        </mu-col>
+        <mu-col span="2"></mu-col>
 
         <mu-col span="3">
           <div style="padding:.5rem 0; float:right;">
@@ -33,8 +32,17 @@
     </div>
 
 
-    <div style="width:100%; height:5rem; background:#009688;">
+    <!-- // 游戏\话题\周边游        -->
 
+
+    <div style="width:100%; height:5rem; background:#009688;">
+      <mu-row justify-content="center">
+        <div style="float:left; width:20%; height:3rem; background:yellow;">
+          <svg-icon icon-class="game" class_name="card-panel-icon"></svg-icon>
+        </div>
+        <div style="float:left; width:20%; height:3rem; background:green; margin-left:10%;"></div>
+        <div style="float:left; width:20%; height:3rem; background:orange; margin-left:10%;"></div>
+      </mu-row>
     </div>
 
 

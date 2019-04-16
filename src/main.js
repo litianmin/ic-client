@@ -22,6 +22,7 @@ import 'swiper/dist/css/swiper.css'
 Vue.use(MuseUI)
 Vue.use(VueAwesomeSwiper, /* { default global options } */)
 
+import './icons/index'
 
 // Vue.use(Toast, {
 //   position: 'top'
