@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div style="width:100%; height:3.5rem; background:#00bcd4; padding:.5rem 1rem;">
+    <div style="width:100%; height:3.3rem; background:#00bcd4; padding:.5rem 1rem;">
       <mu-row>
         <mu-col span="2">
           <div>
@@ -11,7 +11,7 @@
         </mu-col>
 
         <mu-col span="5">
-          <div style="margin-left:-.5rem; padding:.5rem 0 0 0; font-weight:700; ">
+          <div style="margin-left:-.5rem; padding:.5rem 0 0 0; font-weight:700; color:#ffffff;">
             <span>你的名字Ae</span>
           </div>
         </mu-col>
@@ -35,19 +35,28 @@
     <!-- // 游戏\话题\周边游        -->
 
 
-    <div style="width:100%; height:5rem; background:#009688;">
+    <div style="width:100%; height:5rem; margin-top:1.2rem;">
       <mu-row justify-content="center">
-        <div style="float:left; width:20%; height:3rem; background:yellow;">
-          <svg-icon icon-class="game" class_name="card-panel-icon"></svg-icon>
+        <div @click="linkToGameList" style="float:left; width:20%; height:3rem; text-align:center;">
+          <svg-icon icon-class="game" class="icon-class"></svg-icon>
+          <div style="margin-top:.2rem;">游 戏</div>
         </div>
-        <div style="float:left; width:20%; height:3rem; background:green; margin-left:10%;"></div>
-        <div style="float:left; width:20%; height:3rem; background:orange; margin-left:10%;"></div>
+
+        <div style="float:left; width:20%; height:3rem; margin-left:10%; text-align:center;">
+          <svg-icon icon-class="tour" class="icon-class"></svg-icon>
+          <div style="margin-top:.2rem;">周边游</div>
+        </div>
+
+        <div style="float:left; width:20%; height:3rem; margin-left:10%; text-align:center;">
+          <svg-icon icon-class="topic2" class="icon-class"></svg-icon>
+          <div style="margin-top:.2rem;">话 题</div>
+        </div>
       </mu-row>
     </div>
 
 
     <!-- BEGIN 头部话题、美文轮播图 -->
-    <div style="padding:0 0 1rem 0; background:#e0e0e0;">
+    <div>
         <swiper :options="swiperOption">
             <swiper-slide v-for="(item, index) in friendsMsgsList" :key="index">
               <img class="swiper-img" :src="item.avatar" alt="">
@@ -327,6 +336,11 @@ export default {
       }
     }
   },
+  methods:{
+    linkToGameList () {
+      this.$router.push('/game/list')
+    }
+  },
   components: {
     Footer,
     UsrWindow
@@ -342,6 +356,9 @@ export default {
 .main-nav { position: relative; width: 30%; height: 3rem; display: flex; justify-content: center; align-items: center; 
             border-radius: 4px; margin-left: 2%; margin-top: .5rem; color: white; }
 
+.icon-class {font-size:32px;}
+
+.card-panel-icon{ width:2rem; height:2rem;  }
 
   .footer
     width:100%; position:fixed; bottom:0;

@@ -58,11 +58,14 @@ const router =  new Router({
       name: 'checkin',
       component: () => import('./views/usr/login/Checkin.vue')
     },
+ 
+    // 下面是游戏界面了
     {
-      path: '/mytest',
-      name: 'mytest',
-      component: () => import('./views/test/Test.vue')
-    }
+      path: '/game/list',
+      name: 'game-list',
+      component: () => import('./views/game/list.vue')
+    },
+
   ],
 })
 
