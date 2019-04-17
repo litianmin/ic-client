@@ -11,7 +11,7 @@
         </mu-col>
 
         <mu-col span="5">
-          <div style="margin-left:-.5rem; padding:.5rem 0 0 0; font-weight:700; color:#ffffff;">
+          <div style="margin-left:-.5rem; padding:.6rem 0 0 0; font-weight:700; color:#ffffff;">
             <span>你的名字Ae</span>
           </div>
         </mu-col>
@@ -19,11 +19,11 @@
         <mu-col span="2"></mu-col>
 
         <mu-col span="3">
-          <div style="padding:.5rem 0; float:right;">
+          <div style="padding:.5rem 0; float:right; color:#ffffff;">
             吴川市
           </div>   
-          <div style="float:right; padding:.4rem 0; color:#00bcd4;">
-            <mu-icon color="white" size="20" value="person_pin_circle"></mu-icon>
+          <div style="float:right; padding:.5rem 0; color:#00bcd4;">
+            <mu-icon color="white" size="18" value="person_pin_circle"></mu-icon>
           </div>       
         </mu-col>
 
