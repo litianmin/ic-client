@@ -21,26 +21,28 @@
     <mu-paper :z-depth="1" class="demo-list-wrap">
       
       <mu-list textline="three-line">
-        <mu-sub-header>--热门游戏--</mu-sub-header>
+        <mu-sub-header style="color:#00bcd4;">--热门游戏--</mu-sub-header>
+
         <mu-list-item avatar :ripple="false" button>
           <mu-list-item-action>
-            <mu-avatar>
-              <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2653777330,1123369643&fm=27&gp=0.jpg">
-            </mu-avatar>
+            <div style="width:3.5rem; height:3.5rem;">
+              <img style="max-width:100%; max-height:100%; border-radius:.5rem;" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2031496025,569053297&fm=27&gp=0.jpg">
+            </div>
           </mu-list-item-action>
           <mu-list-item-content>
-            <mu-list-item-title>这个周末一起吃饭么?</mu-list-item-title>
+            <mu-list-item-title>洛奇英雄传</mu-list-item-title>
             <mu-list-item-sub-title>
-              <span style="color: rgba(0, 0, 0, .87)">Myron Liu -</span> 周末要来你这里出差，要不要一起吃个饭呀，实在编不下去了,哈哈哈哈哈哈
+              洛奇英雄传挺好玩的是吧！端游哦，点击进来啊！
             </mu-list-item-sub-title>
           </mu-list-item-content>
         </mu-list-item>
         <mu-divider></mu-divider>
+
         <mu-list-item avatar :ripple="false" button>
           <mu-list-item-action>
-            <mu-avatar>
-              <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2599779665,4254172285&fm=27&gp=0.jpg">
-            </mu-avatar>
+            <div style="width:3.5rem; height:3.5rem;">
+              <img style="max-width:100%; max-height:100%; border-radius:.5rem;" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2031496025,569053297&fm=27&gp=0.jpg">
+            </div>
           </mu-list-item-action>
           <mu-list-item-content>
             <mu-list-item-title>Alex Qin</mu-list-item-title>
@@ -51,41 +53,42 @@
           </mu-list-item-content>
         </mu-list-item>
         <mu-divider></mu-divider>
+
         <mu-list-item avatar :ripple="false" button>
           <mu-list-item-action>
-            <mu-avatar>
-              <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2031496025,569053297&fm=27&gp=0.jpg">
-            </mu-avatar>
+            <div style="width:3.5rem; height:3.5rem;">
+              <img style="max-width:100%; max-height:100%; border-radius:.5rem;" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2031496025,569053297&fm=27&gp=0.jpg">
+            </div>
           </mu-list-item-action>
           <mu-list-item-content>
-            <mu-list-item-title>LOL</mu-list-item-title>
+            <mu-list-item-title>洛奇英雄传</mu-list-item-title>
             <mu-list-item-sub-title>
-              <span style="color: rgba(0, 0, 0, .87)">去打游戏啊</span><br/>
-              周末一起 LOL
+              洛奇英雄传挺好玩的是吧！端游哦，点击进来啊！
             </mu-list-item-sub-title>
           </mu-list-item-content>
         </mu-list-item>
         <mu-divider></mu-divider>
+
         <mu-list-item avatar :ripple="false" button>
           <mu-list-item-action>
-            <mu-avatar>
-              <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2653982291,1045780277&fm=27&gp=0.jpg">
-            </mu-avatar>
+            <div style="width:3.5rem; height:3.5rem;">
+              <img style="max-width:100%; max-height:100%; border-radius:.5rem;" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2031496025,569053297&fm=27&gp=0.jpg">
+            </div>
           </mu-list-item-action>
           <mu-list-item-content>
-            <mu-list-item-title>LOL</mu-list-item-title>
+            <mu-list-item-title>洛奇英雄传</mu-list-item-title>
             <mu-list-item-sub-title>
-              <span style="color: rgba(0, 0, 0, .87)">哇去</span><br/>
-              实在编不下去，这就是个demo
+              洛奇英雄传挺好玩的是吧！端游哦，点击进来啊！
             </mu-list-item-sub-title>
           </mu-list-item-content>
         </mu-list-item>
+        <mu-divider></mu-divider>
       </mu-list>
 
-      <mu-divider></mu-divider>
+      <!-- <mu-divider></mu-divider> -->
 
       <mu-list textline="three-line">
-        <mu-sub-header>--全部游戏--</mu-sub-header>
+        <mu-sub-header style="color:#4caf50;">--全部游戏--</mu-sub-header>
         <mu-list-item avatar :ripple="false" button>
           <mu-list-item-action>
             <mu-avatar>
@@ -161,6 +164,18 @@ export default {
 .demo-list-wrap {
   width: 100%;
   overflow: hidden;
+}
+
+.mu-item-action {
+    min-width: 70px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 100%;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    color: rgba(0,0,0,.54);
 }
 </style>
 
