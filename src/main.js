@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
-// import Toast from 'muse-ui-toast';
+import Toast from 'muse-ui-toast';
 import './registerServiceWorker'
 
 
@@ -24,9 +24,9 @@ Vue.use(VueAwesomeSwiper, /* { default global options } */)
 
 import './icons/index'
 
-// Vue.use(Toast, {
-//   position: 'top'
-// })
+Vue.use(Toast, {
+  position: 'top'
+})
 
 // END 使用muse-ui
 

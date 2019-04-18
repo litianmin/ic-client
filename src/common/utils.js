@@ -55,6 +55,11 @@ export default{
       return true
     }
     return false
+  },
+
+  strTrim (s) {
+    return s.replace(/(^\s*)|(\s*$)/g, "")
   }
+
 
 }

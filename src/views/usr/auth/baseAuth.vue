@@ -1,17 +1,74 @@
 <template>
-  <div>
-    这是基本验证界面噢，啊啊，你真的好无聊啊，受不了
+  <div style="width:100%;">
+
+    <div style="width:100%; text-align:center;">
+
+      <div style="font-size:30px; text-align:left; color:#009688; font-weight:700; margin-top:25%; margin-left:3rem; margin-bottom:1.5rem; font-style:italic; text-shadow: 10px 5px 5px #b2dfdb;">
+        I COMING！
+      </div>
+
+      <mu-container style="margin-top:20%;">
+        <mu-text-field v-model="username" label="UserName" label-float help-text="用户名为6-12长度的字符" ></mu-text-field><br/>
+        <mu-text-field v-model="pwd" label="Password" label-float help-text="请输入密码" ></mu-text-field><br/>
+      </mu-container>
+
+      <div style="width:100%; text-align:right; padding: 2rem 3rem; margin-top:10%;">
+        <div style="float:left; text-align:left; margin-left:0.3rem; margin-top:0.5rem; color:green">忘记密码？</div>
+        <mu-button @click="Login" color="primary" style="width:40%; background:#00bcd4;">
+          登陆
+          <mu-icon right value="send"></mu-icon>
+        </mu-button>
+      </div>
+
+
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  
+  data () {
+    return {
+      username: '',
+      pwd: ''
+    }
+  },
+  methods: {
+    Login () {
+      let userName = this.username.trim()
+      let pwd = this.pwd.trim()
+      if(!!userName === false) {
+        this.$toast.error('用户名不能为空')
+        return
+      }
+
+      if(!!pwd === false) {
+        this.$toast.error('昵称不能为空')
+        return
+      }
+
+      this.$axios.post(
+        '/usr/register',
+        {
+          user_name: userName,
+          pwd: pwd
+        }
+      ).then((resp)=>{
+        console.log(resp)
+      })
+
+    }
+  }
 }
 </script>
 
-<style scoped>
-
+<style lang="stylus" scoped>
+.img-style
+  width auto
+  height auto 
+  max-width 100%
+  max-height 100%
 </style>
+
 
 
