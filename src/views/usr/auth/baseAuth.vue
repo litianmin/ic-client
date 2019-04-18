@@ -50,7 +50,7 @@ export default {
       this.$axios.post(
         '/usr/register',
         {
-          user_name: userName,
+          u_name: userName,
           pwd: pwd
         }
       ).then((resp)=>{
