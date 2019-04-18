@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/home/Home.vue'
 import WxAuth from './views/usr/auth/wxAuth.vue'
-// import store from './store'
-// import utils from './common/utils.js'
+import store from './store'
+import utils from './common/utils.js'
 
 Vue.use(Router)
 
@@ -35,6 +35,13 @@ const router =  new Router({
       path: '/auth',
       name: 'auth',
       component: WxAuth
+    },
+
+    {
+      // 基本验证界面
+      path: '/auth/base',
+      name: 'auth_base',
+      component: () => import('./views/usr/auth/baseAuth.vue')
     },
 
     {
@@ -89,5 +96,38 @@ const router =  new Router({
 
 //   next()
 // })
+
+  // 判断浏览器是微信内置浏览器 还是 普通浏览器
+  // 1，如果是微信浏览器，跳转到微信授权页面
+  // 2，如果是普通浏览器，跳转到注册登陆页面
+  router.beforeEach((to, from, next) => {
+    // 判断用户是否退返到授权页，并且已经是登陆的状态， 那么返回首页
+    if((to.path == '/auth' || to.path == '/auth/base') && store.state.mdeLogin.usrInfo.isLogin){
+      next('/')
+      return
+    }
+
+    // 第一次进入项目， 即登陆状态为空， 并且进入的不是登陆界面
+    // 记录用户进来的路径， 当授权成功的时候跳转到这个地址
+    if(!store.state.mdeLogin.usrInfo.isLogin && to.path != '/auth' && to.path != '/auth/base'){
+
+      let isWxBrowser = utils.isWxBrowser()
+      if(isWxBrowser === true) {
+        utils.cookieObj.setCookie("beforeLoginURL", to.fullPath, 's100')
+        next('/auth')
+        return
+      }else{
+        utils.cookieObj.setCookie("beforeLoginURL", to.fullPath, 's100')
+        next('/auth/base')
+        return
+      }
+
+      // utils.cookieObj.setCookie("beforeLoginURL", to.fullPath, 's100')
+      // next('/auth')
+      // return
+    }
+
+    next()
+  })
 
 export default router

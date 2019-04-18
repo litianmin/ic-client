@@ -45,5 +45,16 @@ export default{
         return str1*24*60*60*1000; 
       } 
     } 
+  },
+
+  // 判断是否为微信浏览器 还是 普通浏览器
+  isWxBrowser () {
+    let ua = window.navigator.userAgent.toLowerCase()
+    // 通过正则表达式匹配ua中是否含有MicroMessenger字符串
+    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+      return true
+    }
+    return false
   }
+
 }
