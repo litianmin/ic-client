@@ -52,7 +52,7 @@ const MdeGlobal = {
 
 // 登录模块
 const MdeLogin = {
-  namespaced: true,   // 命名空间
+  // namespaced: true,   // 命名空间
 
   state: {
     usrInfo: {

@@ -5,14 +5,14 @@
         <mu-col span="2">
           <div>
             <mu-avatar size="35">
-              <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3523617831,1288544462&fm=27&gp=0.jpg">
+              <img :src="selfAvatar">
             </mu-avatar>
           </div>
         </mu-col>
 
         <mu-col span="5">
           <div style="margin-left:-.5rem; padding:.6rem 0 0 0; font-weight:700; color:#ffffff;">
-            <span>你的名字Ae</span>
+            <span>{{ selfNickname }}</span>
           </div>
         </mu-col>
 
@@ -310,6 +310,8 @@ export default {
   name: 'home',
   data () {
     return {
+      selfAvatar: '',
+      selfNickname: '',
       friendsMsgsList: [
         {id: 1, avatar: "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1550752522&di=4f947c4df1c30a34d0102f86b088036d&src=http://img15.3lian.com/2015/f2/57/d/93.jpg"},
         {id: 2, avatar: "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1550752522&di=4f947c4df1c30a34d0102f86b088036d&src=http://img15.3lian.com/2015/f2/57/d/93.jpg"},
@@ -335,6 +337,10 @@ export default {
         }
       }
     }
+  },
+  mounted () {
+    this.selfAvatar = this.$store.state.mdeLogin.usrInfo.avatar
+    this.selfNickname = this.$store.state.mdeLogin.usrInfo.nickname
   },
   methods:{
     linkToGameList () {
