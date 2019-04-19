@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import utils from 'common/utils.js'
 export default {
   data () {
     return {
@@ -67,7 +68,14 @@ export default {
         }
 
         if(dataBack.code == 20000) {
-          this.$toast.message('登陆成功，即将跳转！')
+          this.$toast.message('登陆成功！')
+
+          // 保存用户基本信息
+          this.$store.commit('mdeLogin/usrLogin', dataBack.msg)
+
+          // 跳转到原地址
+          let beforeLoginURL = utils.cookieObj.getCookie('beforeLoginURL')
+          this.$router.push(beforeLoginURL)
         }
       })
 

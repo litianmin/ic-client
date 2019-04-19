@@ -57,8 +57,8 @@ const MdeLogin = {
   state: {
     usrInfo: {
       isLogin: false,
-      usrAvatar: '',
-      usrNickName: '',
+      avatar: '',
+      nickname: '',
       sex: '',
       usrID: '',
       authToken: ''
@@ -70,13 +70,22 @@ const MdeLogin = {
     usrWxLogin (state, payload) {
       // 微信登陆，改变全局状态
       state.usrInfo.isLogin = true
-      state.usrInfo.usrAvatar = payload.usrAvatar
-      state.usrInfo.usrNickName = payload.usrNickName
+      state.usrInfo.avatar = payload.usrAvatar
+      state.usrInfo.nickname = payload.usrNickName
       state.usrInfo.authToken = payload.authToken
       state.usrInfo.sex = payload.sex
       state.usrInfo.usrID = payload.usrID
       return
     },
+
+    usrLogin (state, payload) {
+      state.usrInfo.isLogin = true
+      state.usrInfo.avatar = payload.profile_pic
+      state.usrInfo.sex = payload.sex 
+      state.usrInfo.nickname = payload.nickname 
+      state.usrInfo.authToken = payload.token
+    },
+
     logBeforeLoginURL (state, bURL) {
       // 记录登陆之前进来的URL
       state.beforeLoginURL = bURL

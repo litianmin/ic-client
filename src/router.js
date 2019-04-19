@@ -113,11 +113,11 @@ const router =  new Router({
 
       let isWxBrowser = utils.isWxBrowser()
       if(isWxBrowser === true) {
-        utils.cookieObj.setCookie("beforeLoginURL", to.fullPath, 's100')
+        utils.cookieObj.setCookie("beforeLoginURL", to.fullPath, 's1000')
         next('/auth')
         return
       }else{
-        utils.cookieObj.setCookie("beforeLoginURL", to.fullPath, 's100')
+        utils.cookieObj.setCookie("beforeLoginURL", to.fullPath, 's1000')
         next('/auth/base')
         return
       }
