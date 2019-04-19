@@ -38,7 +38,7 @@ const router =  new Router({
     },
 
     {
-      // 基本验证界面
+      // 基本验证界面，手机验证
       path: '/auth/base',
       name: 'auth_base',
       component: () => import('./views/usr/auth/baseAuth.vue')

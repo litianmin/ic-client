@@ -48,13 +48,27 @@ export default {
       }
 
       this.$axios.post(
-        '/usr/register',
+        '/login/mobile',
         {
           u_name: userName,
           pwd: pwd
         }
       ).then((resp)=>{
+        let dataBack = resp.data
         console.log(resp)
+        if(dataBack.code == 40000) {
+          this.$toast.error('账号密码错误')
+          return
+        }
+
+        if(dataBack.code == 40001) {
+          this.$toast.error('发生未知错误(参数错误)!')
+          return
+        }
+
+        if(dataBack.code == 20000) {
+          this.$toast.message('登陆成功，即将跳转！')
+        }
       })
 
     }
