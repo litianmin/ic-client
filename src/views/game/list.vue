@@ -1,44 +1,47 @@
 <template>
   <div>
 
-    <mu-appbar style="width: 100%; height:2.5rem;" color="#009688">
+    <!-- BEGIN 头部搜索框 -->
+    <mu-appbar class="mine-appbar" color="#009688">
       <mu-button icon slot="left">
         <mu-icon value="navigate_before"></mu-icon>
       </mu-button>
       
-      <!-- <mu-text-field v-model="value1" color="white" help-text="搜索热门游戏"></mu-text-field> -->
       <div style="padding: 0 0 .4rem 0;">
-        <input type="text" placeholder=" 搜 索 热 门 游 戏" style=" font-size:14px; width:100%; height:1.7rem; border-radius:.2rem; border:0; text-align:center;">
+        <input type="text" placeholder=" 搜 索 热 门 游 戏" class="search-input">
       </div>
 
       <mu-button flat slot="right">
         <mu-icon value="search"></mu-icon>
       </mu-button>
     </mu-appbar>
+    <!-- END 头部搜索框 -->
 
 
-
+    <!-- BEGIN 列表显示内容 -->
     <mu-paper :z-depth="1" class="demo-list-wrap">
       
-      <mu-list textline="three-line">
+      <mu-list textline="three-line" v-if="hotGameListIsShow">
         <mu-sub-header style="color:#00bcd4;">--热门游戏--</mu-sub-header>
 
-        <mu-list-item avatar :ripple="false" button>
-          <mu-list-item-action>
-            <div style="width:3.5rem; height:3.5rem;">
-              <img style="max-width:100%; max-height:100%; border-radius:.5rem;" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2031496025,569053297&fm=27&gp=0.jpg">
-            </div>
-          </mu-list-item-action>
-          <mu-list-item-content>
-            <mu-list-item-title>洛奇英雄传</mu-list-item-title>
-            <mu-list-item-sub-title>
-              洛奇英雄传挺好玩的是吧！端游哦，点击进来啊！
-            </mu-list-item-sub-title>
-          </mu-list-item-content>
-        </mu-list-item>
-        <mu-divider></mu-divider>
+          <div v-for="item in hotGameList" :key="item.g_id">
+            <mu-list-item avatar :ripple="false" button>
+              <mu-list-item-action>
+                <div class="list-item-div">
+                  <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2031496025,569053297&fm=27&gp=0.jpg">
+                </div>
+              </mu-list-item-action>
+              <mu-list-item-content>
+                <mu-list-item-title>{{ item.g_name }}</mu-list-item-title>
+                <mu-list-item-sub-title>
+                  {{ item.brief_desc }}
+                </mu-list-item-sub-title>
+              </mu-list-item-content>
+            </mu-list-item>
+            <mu-divider></mu-divider>
+          </div>
 
-        <mu-list-item avatar :ripple="false" button>
+        <!-- <mu-list-item avatar :ripple="false" button>
           <mu-list-item-action>
             <div style="width:3.5rem; height:3.5rem;">
               <img style="max-width:100%; max-height:100%; border-radius:.5rem;" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2031496025,569053297&fm=27&gp=0.jpg">
@@ -82,14 +85,33 @@
             </mu-list-item-sub-title>
           </mu-list-item-content>
         </mu-list-item>
-        <mu-divider></mu-divider>
+        <mu-divider></mu-divider> -->
       </mu-list>
 
       <!-- <mu-divider></mu-divider> -->
 
       <mu-list textline="three-line">
         <mu-sub-header style="color:#4caf50;">--全部游戏--</mu-sub-header>
-        <mu-list-item avatar :ripple="false" button>
+
+          <div v-for="item in gameList" :key="item.g_id">
+            <mu-list-item avatar :ripple="false" button>
+              <mu-list-item-action>
+                <div class="list-item-div">
+                  <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2031496025,569053297&fm=27&gp=0.jpg">
+                </div>
+              </mu-list-item-action>
+              <mu-list-item-content>
+                <mu-list-item-title>{{ item.g_name }}</mu-list-item-title>
+                <mu-list-item-sub-title>
+                  {{ item.brief_desc }}
+                </mu-list-item-sub-title>
+              </mu-list-item-content>
+            </mu-list-item>
+            <mu-divider></mu-divider>
+          </div>
+
+
+        <!-- <mu-list-item avatar :ripple="false" button>
           <mu-list-item-action>
             <mu-avatar>
               <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2653777330,1123369643&fm=27&gp=0.jpg">
@@ -146,21 +168,54 @@
               实在编不下去，这就是个demo
             </mu-list-item-sub-title>
           </mu-list-item-content>
-        </mu-list-item>
+        </mu-list-item> -->
       </mu-list>
 
     </mu-paper>
+    <!-- END 列表显示内容 -->
 
   </div>  
 </template>
 
 <script>
 export default {
-  
+  data () {
+    return {
+      hotGameListIsShow: true,
+      hotGameList: [],
+      gameList: [],
+      page: 1
+    }
+  },
+  created () {
+    this.$axios.post(
+      `/gamelist/${this.page}`,{}
+    ).then((resp)=>{
+      let dataBack = resp.data
+      if(dataBack.code == 20000) {
+        if(!!dataBack.hotGameList === false) { 
+          // 没有热门游戏，那么隐藏热门游戏列表
+          this.hotGameListIsShow = false
+        }else{
+          this.hotGameList = dataBack.hotGameList
+        }
+
+        this.gameList = dataBack.gameList
+
+      }
+    })
+  }
 }
 </script>
 
 <style scoped>
+
+.mine-appbar {width: 100%; height:2.5rem;}
+.search-input {font-size:14px; width:100%; height:1.7rem; border-radius:.2rem; border:0; text-align:center;}
+
+.list-item-div {width:3.5rem; height:3.5rem;}
+.list-item-div img {max-width:100%; max-height:100%; border-radius:.5rem;}
+
 .demo-list-wrap {
   width: 100%;
   overflow: hidden;
