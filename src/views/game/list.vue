@@ -90,9 +90,11 @@
 
       <!-- <mu-divider></mu-divider> -->
 
+      <mu-load-more :loading="loading" @load="load">
       <mu-list textline="three-line">
         <mu-sub-header style="color:#4caf50;">--全部游戏--</mu-sub-header>
 
+        
           <div v-for="item in gameList" :key="item.g_id">
             <mu-list-item avatar :ripple="false" button>
               <mu-list-item-action>
@@ -109,7 +111,6 @@
             </mu-list-item>
             <mu-divider></mu-divider>
           </div>
-
 
         <!-- <mu-list-item avatar :ripple="false" button>
           <mu-list-item-action>
@@ -170,6 +171,9 @@
           </mu-list-item-content>
         </mu-list-item> -->
       </mu-list>
+      </mu-load-more>
+
+
 
     </mu-paper>
     <!-- END 列表显示内容 -->
@@ -184,7 +188,8 @@ export default {
       hotGameListIsShow: true,
       hotGameList: [],
       gameList: [],
-      page: 1
+      page: 1,
+      loading: false,
     }
   },
   created () {
@@ -204,6 +209,16 @@ export default {
 
       }
     })
+  },
+  methods: {
+    load () {
+      this.loading = true
+      setTimeout(() => {
+        // this.gameList = this.gameList.concat(this.gameList)
+        this.loading = false
+      }, 2000)
+    }
+
   }
 }
 </script>
