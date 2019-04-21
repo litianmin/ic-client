@@ -20,15 +20,15 @@
 
     <!-- BEGIN 列表显示内容 -->
     <mu-paper :z-depth="1" class="demo-list-wrap">
-      
+      <!-- BEGIN 热门游戏列表 -->
       <mu-list textline="three-line" v-if="hotGameListIsShow">
         <mu-sub-header style="color:#00bcd4;">--热门游戏--</mu-sub-header>
 
           <div v-for="item in hotGameList" :key="item.g_id">
-            <mu-list-item avatar :ripple="false" button>
+            <mu-list-item avatar :ripple="false" button @click="linkToDetail(item.g_id)">
               <mu-list-item-action>
                 <div class="list-item-div">
-                  <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2031496025,569053297&fm=27&gp=0.jpg">
+                  <img :src="item.g_logo">
                 </div>
               </mu-list-item-action>
               <mu-list-item-content>
@@ -41,65 +41,22 @@
             <mu-divider></mu-divider>
           </div>
 
-        <!-- <mu-list-item avatar :ripple="false" button>
-          <mu-list-item-action>
-            <div style="width:3.5rem; height:3.5rem;">
-              <img style="max-width:100%; max-height:100%; border-radius:.5rem;" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2031496025,569053297&fm=27&gp=0.jpg">
-            </div>
-          </mu-list-item-action>
-          <mu-list-item-content>
-            <mu-list-item-title>Alex Qin</mu-list-item-title>
-            <mu-list-item-sub-title>
-              <span style="color: rgba(0, 0, 0, .87)">看电影啊</span><br/>
-              我们去看电影，最近有部烂片上映，又有吐槽的了
-            </mu-list-item-sub-title>
-          </mu-list-item-content>
-        </mu-list-item>
-        <mu-divider></mu-divider>
-
-        <mu-list-item avatar :ripple="false" button>
-          <mu-list-item-action>
-            <div style="width:3.5rem; height:3.5rem;">
-              <img style="max-width:100%; max-height:100%; border-radius:.5rem;" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2031496025,569053297&fm=27&gp=0.jpg">
-            </div>
-          </mu-list-item-action>
-          <mu-list-item-content>
-            <mu-list-item-title>洛奇英雄传</mu-list-item-title>
-            <mu-list-item-sub-title>
-              洛奇英雄传挺好玩的是吧！端游哦，点击进来啊！
-            </mu-list-item-sub-title>
-          </mu-list-item-content>
-        </mu-list-item>
-        <mu-divider></mu-divider>
-
-        <mu-list-item avatar :ripple="false" button>
-          <mu-list-item-action>
-            <div style="width:3.5rem; height:3.5rem;">
-              <img style="max-width:100%; max-height:100%; border-radius:.5rem;" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2031496025,569053297&fm=27&gp=0.jpg">
-            </div>
-          </mu-list-item-action>
-          <mu-list-item-content>
-            <mu-list-item-title>洛奇英雄传</mu-list-item-title>
-            <mu-list-item-sub-title>
-              洛奇英雄传挺好玩的是吧！端游哦，点击进来啊！
-            </mu-list-item-sub-title>
-          </mu-list-item-content>
-        </mu-list-item>
-        <mu-divider></mu-divider> -->
       </mu-list>
+      <!-- END 热门游戏列表 -->
 
       <!-- <mu-divider></mu-divider> -->
 
       <mu-load-more :loading="loading" @load="load" :loaded-all="isTheLast">
+
+        <!-- BEGIN 游戏列表 -->
         <mu-list textline="three-line">
           <mu-sub-header style="color:#4caf50;">--全部游戏--</mu-sub-header>
-
           
             <div v-for="item in gameList" :key="item.g_id">
-              <mu-list-item avatar :ripple="false" button>
+              <mu-list-item avatar :ripple="false" button @click="linkToDetail(item.g_id)">
                 <mu-list-item-action>
                   <div class="list-item-div">
-                    <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2031496025,569053297&fm=27&gp=0.jpg">
+                    <img :src="item.g_logo">
                   </div>
                 </mu-list-item-action>
                 <mu-list-item-content>
@@ -111,72 +68,13 @@
               </mu-list-item>
               <mu-divider></mu-divider>
             </div>
-
-          <!-- <mu-list-item avatar :ripple="false" button>
-            <mu-list-item-action>
-              <mu-avatar>
-                <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2653777330,1123369643&fm=27&gp=0.jpg">
-              </mu-avatar>
-            </mu-list-item-action>
-            <mu-list-item-content>
-              <mu-list-item-title>这个周末一起吃饭么?</mu-list-item-title>
-              <mu-list-item-sub-title>
-                <span style="color: rgba(0, 0, 0, .87)">Myron Liu -</span> 周末要来你这里出差，要不要一起吃个饭呀，实在编不下去了,哈哈哈哈哈哈
-              </mu-list-item-sub-title>
-            </mu-list-item-content>
-          </mu-list-item>
-          <mu-divider></mu-divider>
-          <mu-list-item avatar :ripple="false" button>
-            <mu-list-item-action>
-              <mu-avatar>
-                <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2599779665,4254172285&fm=27&gp=0.jpg">
-              </mu-avatar>
-            </mu-list-item-action>
-            <mu-list-item-content>
-              <mu-list-item-title>Alex Qin</mu-list-item-title>
-              <mu-list-item-sub-title>
-                <span style="color: rgba(0, 0, 0, .87)">看电影啊</span><br/>
-                我们去看电影，最近有部烂片上映，又有吐槽的了
-              </mu-list-item-sub-title>
-            </mu-list-item-content>
-          </mu-list-item>
-          <mu-divider></mu-divider>
-          <mu-list-item avatar :ripple="false" button>
-            <mu-list-item-action>
-              <mu-avatar>
-                <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2031496025,569053297&fm=27&gp=0.jpg">
-              </mu-avatar>
-            </mu-list-item-action>
-            <mu-list-item-content>
-              <mu-list-item-title>LOL</mu-list-item-title>
-              <mu-list-item-sub-title>
-                <span style="color: rgba(0, 0, 0, .87)">去打游戏啊</span><br/>
-                周末一起 LOL
-              </mu-list-item-sub-title>
-            </mu-list-item-content>
-          </mu-list-item>
-          <mu-divider></mu-divider>
-          <mu-list-item avatar :ripple="false" button>
-            <mu-list-item-action>
-              <mu-avatar>
-                <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2653982291,1045780277&fm=27&gp=0.jpg">
-              </mu-avatar>
-            </mu-list-item-action>
-            <mu-list-item-content>
-              <mu-list-item-title>LOL</mu-list-item-title>
-              <mu-list-item-sub-title>
-                <span style="color: rgba(0, 0, 0, .87)">哇去</span><br/>
-                实在编不下去，这就是个demo
-              </mu-list-item-sub-title>
-            </mu-list-item-content>
-          </mu-list-item> -->
           
           <mu-row v-show="isTheLast" justify-content="center" style="padding:.5rem;">
             <span style="">没有更多的内容</span>
           </mu-row>
           
-
         </mu-list>
+        <!-- END 游戏列表 -->
         
       </mu-load-more>
 
@@ -198,11 +96,14 @@ export default {
       loading: false,
     }
   },
-  created () {
+  mounted () {
+    // 初始化，获取热门游戏列表和普通游戏列表
     this.$axios.post(
       `/gamelist/${this.page}`,{}
     ).then((resp)=>{
       let dataBack = resp.data
+
+      console.log(dataBack)
 
       if(dataBack.code == 20000) {
         if(!!dataBack.hotGameList === false) { 
@@ -241,6 +142,10 @@ export default {
         this.loading = false
         return
       })
+    },
+
+    linkToDetail (gameid) {
+      this.$router.push(`/game/detail/${gameid}`)
     }
 
   }

@@ -5,6 +5,10 @@ import WxAuth from './views/usr/auth/wxAuth.vue'
 import store from './store'
 import utils from './common/utils.js'
 
+
+import GameList from './views/game/list.vue'
+
+
 Vue.use(Router)
 
 const router =  new Router({
@@ -70,8 +74,13 @@ const router =  new Router({
     {
       path: '/game/list',
       name: 'game-list',
-      component: () => import('./views/game/list.vue')
+      component: GameList
     },
+    {
+      path: '/game/detail/:gameid',
+      name: 'game-detail',
+      component: () => import('./views/game/detail.vue')
+    }
 
   ],
 })
