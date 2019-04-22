@@ -51,20 +51,56 @@
   </mu-tabs>
   <!-- BEGIN 评论 -->
   <mu-container v-show="active === 0" style="margin-top:.5rem; padding:.5rem 1rem;">
-    <mu-flex align-items="center">
-      <mu-avatar size="28">
-        <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg">
-      </mu-avatar>
-      <span style="margin-left:.5rem; font-size:14px;">
-        小鸟依人哦 
-      </span>
-      <span style="margin-left: auto; font-size:12px; color:#9e9e9e;">2018-01-02 01:02:03</span>
-    </mu-flex>
+    <div style="margin-bottom:2rem;">
+      <mu-flex align-items="center">
+        <mu-avatar size="28">
+          <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg">
+        </mu-avatar>
+        <span style="margin-left:.5rem; font-size:14px; color:#03a9f4;">
+          小鸟依人哦 
+        </span>
+        <span style="margin-left: auto; font-size:12px; color:#9e9e9e;">2018-01-02 01:02:03</span>
+      </mu-flex>
+      <mu-row style="padding:.5rem 0 0 2rem; font-size:12px; color:#616161;">
+        其实啊，我真的不想那样做，但是我不那样做的话，我又会出现这样那样的问题，为什么呢，因为我也不想的啊
+      </mu-row>
+    </div>
 
-    <mu-row>
-      其实啊，我真的不想那样做，但是我不那样做的话，我又会出现这样那样的问题，为什么呢，因为我也不想的啊
-    </mu-row>
+    <div style="margin-bottom:2rem;">
+      <mu-flex align-items="center">
+        <mu-avatar size="28">
+          <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg">
+        </mu-avatar>
+        <span style="margin-left:.5rem; font-size:14px; color:#e91e63;">
+          瓦卡萨拉 
+        </span>
+        <span style="margin-left: auto; font-size:12px; color:#9e9e9e;">2018-01-02 01:02:03</span>
+      </mu-flex>
 
+      <mu-row style="padding:.5rem 0 0 2rem; font-size:12px; color:#616161;">
+        其实啊，我真的不想那样做，但是我不那样做的话，我又会出现这样那样的问题，为什么呢，因为我也不想的啊
+      </mu-row>
+    </div>
+
+    <div style="margin-bottom:2rem;">
+      <mu-flex align-items="center">
+        <mu-avatar size="28">
+          <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg">
+        </mu-avatar>
+        <span style="margin-left:.5rem; font-size:14px; color:#e91e63;">
+          瓦卡萨拉 
+        </span>
+        <span style="margin-left: auto; font-size:12px; color:#9e9e9e;">2018-01-02 01:02:03</span>
+      </mu-flex>
+
+      <mu-row style="padding:.5rem 0 0 2rem; font-size:12px; color:#616161;">
+        我先来一个评论，然后出现这样那样的问题！
+      </mu-row>
+
+      <mu-row style="padding:.5rem .5rem 0 2rem; font-size:12px; color:#616161;">
+        <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3758273131,3198344184&fm=27&gp=0.jpg" style="max-width:100%; max-height:100%;" alt="">
+      </mu-row>
+    </div>
   </mu-container>
   <!-- END 评论 -->
 
