@@ -56,7 +56,7 @@
         <mu-avatar size="28">
           <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg">
         </mu-avatar>
-        <span style="margin-left:.5rem; font-size:14px; color:#03a9f4;">
+        <span style="margin-left:.5rem; font-size:14px; color:#4db6ac;">
           小鸟依人哦 
         </span>
         <span style="margin-left: auto; font-size:12px; color:#9e9e9e;">2018-01-02 01:02:03</span>
@@ -64,6 +64,18 @@
       <mu-row style="padding:.5rem 0 0 2rem; font-size:12px; color:#616161;">
         其实啊，我真的不想那样做，但是我不那样做的话，我又会出现这样那样的问题，为什么呢，因为我也不想的啊
       </mu-row>
+
+      <mu-row justify-content="end" style="padding:.5rem;">
+          <mu-flex align-items="center">
+            <mu-icon value="thumb_up" size="12" color="#4db6ac"></mu-icon><span style="font-size:12px; margin-left:.2rem; color:#9e9e9e;">1000</span>
+          </mu-flex>
+
+          <mu-flex align-items="center" style="margin-left:.8rem;">
+            <mu-icon value="comment" size="12" color="#4db6ac"></mu-icon><span style="font-size:12px; margin-left:.2rem; color:#9e9e9e;">2000</span>
+          </mu-flex>
+      </mu-row>
+
+      <mu-divider></mu-divider>
     </div>
 
     <div style="margin-bottom:2rem;">
@@ -71,7 +83,7 @@
         <mu-avatar size="28">
           <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg">
         </mu-avatar>
-        <span style="margin-left:.5rem; font-size:14px; color:#e91e63;">
+        <span style="margin-left:.5rem; font-size:14px; color:#4db6ac;">
           瓦卡萨拉 
         </span>
         <span style="margin-left: auto; font-size:12px; color:#9e9e9e;">2018-01-02 01:02:03</span>
@@ -80,6 +92,18 @@
       <mu-row style="padding:.5rem 0 0 2rem; font-size:12px; color:#616161;">
         其实啊，我真的不想那样做，但是我不那样做的话，我又会出现这样那样的问题，为什么呢，因为我也不想的啊
       </mu-row>
+
+      <mu-row justify-content="end" style="padding:.5rem;">
+          <mu-flex align-items="center">
+            <mu-icon value="thumb_up" size="12" color="#4db6ac"></mu-icon><span style="font-size:12px; margin-left:.2rem; color:#9e9e9e;">1000</span>
+          </mu-flex>
+
+          <mu-flex align-items="center" style="margin-left:.8rem;">
+            <mu-icon value="comment" size="12" color="#4db6ac"></mu-icon><span style="font-size:12px; margin-left:.2rem; color:#9e9e9e;">2000</span>
+          </mu-flex>
+      </mu-row>
+
+      <mu-divider></mu-divider>
     </div>
 
     <div style="margin-bottom:2rem;">
@@ -87,7 +111,7 @@
         <mu-avatar size="28">
           <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg">
         </mu-avatar>
-        <span style="margin-left:.5rem; font-size:14px; color:#e91e63;">
+        <span style="margin-left:.5rem; font-size:14px; color:#4db6ac;">
           瓦卡萨拉 
         </span>
         <span style="margin-left: auto; font-size:12px; color:#9e9e9e;">2018-01-02 01:02:03</span>
@@ -100,6 +124,18 @@
       <mu-row style="padding:.5rem .5rem 0 2rem; font-size:12px; color:#616161;">
         <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3758273131,3198344184&fm=27&gp=0.jpg" style="max-width:100%; max-height:100%;" alt="">
       </mu-row>
+
+      <mu-row justify-content="end" style="padding:.5rem;">
+          <mu-flex align-items="center">
+            <mu-icon value="thumb_up" size="12" color="#4db6ac"></mu-icon><span style="font-size:12px; margin-left:.2rem; color:#9e9e9e;">1000</span>
+          </mu-flex>
+
+          <mu-flex align-items="center" style="margin-left:.8rem;">
+            <mu-icon value="comment" size="12" color="#4db6ac"></mu-icon><span style="font-size:12px; margin-left:.2rem; color:#9e9e9e;">2000</span>
+          </mu-flex>
+      </mu-row>
+
+      <mu-divider></mu-divider>
     </div>
   </mu-container>
   <!-- END 评论 -->
