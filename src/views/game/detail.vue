@@ -143,7 +143,9 @@
   <!-- BEGIN 组队 -->
   <mu-container v-show="active === 1" style="margin-top:.5rem;">
     <mu-flex>
-      应该是一样的吧，其实我真的不懂怎么写样式，不过就是布局的话，我觉得超难搞耶
+      <div style="float:left; width:3rem; height:3rem; background:gray; border-radius:.3rem;"></div>
+      <div style="float:left; width:3rem; height:3rem; background:gray; border-radius:.3rem;"></div>
+      <div style="float:left; width:3rem; height:3rem; background:gray; border-radius:.3rem;"></div>
     </mu-flex>
   </mu-container>
   <!-- END 组队 -->
