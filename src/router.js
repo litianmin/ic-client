@@ -120,16 +120,16 @@ const router =  new Router({
     // 记录用户进来的路径， 当授权成功的时候跳转到这个地址
     if(!store.state.mdeLogin.usrInfo.isLogin && to.path != '/auth' && to.path != '/auth/base'){
 
-      let isWxBrowser = utils.isWxBrowser()
-      if(isWxBrowser === true) {
-        utils.cookieObj.setCookie("beforeLoginURL", to.fullPath, 's1000')
-        next('/auth')
-        return
-      }else{
+      // let isWxBrowser = utils.isWxBrowser()
+      // if(isWxBrowser === true) {
+      //   utils.cookieObj.setCookie("beforeLoginURL", to.fullPath, 's1000')
+      //   next('/auth')
+      //   return
+      // }else{
         utils.cookieObj.setCookie("beforeLoginURL", to.fullPath, 's1000')
         next('/auth/base')
         return
-      }
+      // }
 
       // utils.cookieObj.setCookie("beforeLoginURL", to.fullPath, 's100')
       // next('/auth')

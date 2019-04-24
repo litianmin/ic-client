@@ -50,7 +50,7 @@
     <mu-tab><span>组 队</span></mu-tab>
   </mu-tabs>
   <!-- BEGIN 评论 -->
-  <mu-container v-show="active === 0" style="margin-top:.5rem; padding:.5rem 1rem;">
+  <mu-container v-show="active === 1" style="margin-top:.5rem; padding:.5rem 1rem;">
     <div style="margin-bottom:2rem;">
       <mu-flex align-items="center">
         <mu-avatar size="28">
@@ -141,12 +141,54 @@
   <!-- END 评论 -->
 
   <!-- BEGIN 组队 -->
-  <mu-container v-show="active === 1" style="margin-top:.5rem;">
-    <mu-flex>
-      <div style="float:left; width:3rem; height:3rem; background:gray; border-radius:.3rem;"></div>
-      <div style="float:left; width:3rem; height:3rem; background:gray; border-radius:.3rem;"></div>
-      <div style="float:left; width:3rem; height:3rem; background:gray; border-radius:.3rem;"></div>
-    </mu-flex>
+  <mu-container v-show="active === 0" style="margin-top:.5rem;">
+    <div style="float:left; width:100%; height:50rem; background:white; border-radius:.3rem;"></div>
+
+  aaaa
+
+    <mu-container>
+
+      <mu-expansion-panel :expand="panel === 'panel1'" @change="toggle('panel1')" style="margin-bottom:1rem; border-radius:.5rem;">
+        <div slot="header" style="padding:.5rem 0;">
+        
+          <!-- BEGIN 队长基本信息 -->
+          <mu-flex align-items="center" style="width:100%; background:gray;">
+            <mu-avatar size="28">
+              <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
+            </mu-avatar>
+            <span style="margin-left:.5rem; font-size:14px; color:#4db6ac;">Ae</span>
+
+            <span style="margin-left: 2rem; font-size:12px; color:#9e9e9e;">2小时前</span>
+          </mu-flex>
+          <!-- END -->
+
+          <mu-row style="margin-top:.5rem;">
+
+            <div style="width:100%; height:auto; border-radius:.5rem; margin-top:.5rem;">
+              <img style="max-width:100%; max-height:100%; border-radius:.5rem;" src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1752411726,1766304763&fm=27&gp=0.jpg" />
+            </div>
+
+            <div style="width:100%;"><span style="font-size:12px;">角色：</span> <span style="font-size:12px;">亦菲啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</span></div>
+            <div style="width:100%;"><span style="font-size:12px;">区服：</span> <span style="font-size:12px;">暗杀6区</span></div>
+            <div style="width:100%;"><span style="font-size:12px;">等级/段位：</span> <span style="font-size:12px;">66级</span></div>
+
+          </mu-row>
+
+        </div>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
+      </mu-expansion-panel>
+      <mu-expansion-panel :expand="panel === 'panel2'" @change="toggle('panel2')">
+        <div slot="header">Panel 2</div>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
+      </mu-expansion-panel>
+      <mu-expansion-panel :expand="panel === 'panel3'" @change="toggle('panel3')">
+        <div slot="header">Panel 3</div>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
+      </mu-expansion-panel>
+
+    </mu-container>
+
+
   </mu-container>
   <!-- END 组队 -->
 </div>
@@ -170,7 +212,7 @@
           speed: 2000,  // 切换所用的时间
           navigation: {
             nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev'
+            prevEl: '.swiper-button-prev' 
           }
         },
         swiperOptionThumbs: {
@@ -182,7 +224,8 @@
           slideToClickedSlide: true,
         },
 
-        displayImgList: [
+        // 轮播图展示图片
+        displayImgList: [ 
         {id: 1, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"},
         {id: 2, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"},
         {id: 3, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"},
@@ -191,10 +234,13 @@
       ],
 
       active: 0,
-      tabBarFixed: false
+      tabBarFixed: false,   // 评论和组队导航栏是否固定
+
+      panel: ''
 
       }
     },
+
     mounted () {
       this.$nextTick(() => {
         const swiperTop = this.$refs.swiperTop.swiper
@@ -205,18 +251,23 @@
 
       window.addEventListener('scroll', this.handleScroll)
     },
+
     methods: {
-      handleScroll () {
+      handleScroll () { // 处理评论、组队消息栏目
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
         let offsetTop = document.querySelector('#tabBar').offsetTop
 
         if (scrollTop > offsetTop) {
           this.tabBarFixed = true
         } else {
-        this.tabBarFixed = false
+          this.tabBarFixed = false
         }
+      },
+      toggle (panel) {
+        this.panel = panel === this.panel ? '' : panel;
       }
     },
+
     destroyed () {
       window.removeEventListener('scroll', this.handleScroll)
     },
