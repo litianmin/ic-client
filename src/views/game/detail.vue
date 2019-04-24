@@ -50,7 +50,7 @@
     <mu-tab><span>组 队</span></mu-tab>
   </mu-tabs>
   <!-- BEGIN 评论 -->
-  <mu-container v-show="active === 1" style="margin-top:.5rem; padding:.5rem 1rem;">
+  <mu-container v-show="active === 0" style="margin-top:.5rem; padding:.5rem 1rem;">
     <div style="margin-bottom:2rem;">
       <mu-flex align-items="center">
         <mu-avatar size="28">
@@ -141,53 +141,143 @@
   <!-- END 评论 -->
 
   <!-- BEGIN 组队 -->
-  <mu-container v-show="active === 0" style="margin-top:.5rem;">
-    <div style="float:left; width:100%; height:50rem; background:white; border-radius:.3rem;"></div>
+  <mu-container v-show="active === 1" class="teammake-flag" style="margin-top:.5rem;">
 
-  aaaa
-
-    <mu-container>
-
-      <mu-expansion-panel :expand="panel === 'panel1'" @change="toggle('panel1')" style="margin-bottom:1rem; border-radius:.5rem;">
-        <div slot="header" style="padding:.5rem 0;">
+      <mu-expansion-panel style="margin-bottom:1rem; border-radius:.5rem;">
+        <div slot="header" style="padding:1rem 0;">
         
           <!-- BEGIN 队长基本信息 -->
-          <mu-flex align-items="center" style="width:100%; background:gray;">
+          <mu-flex align-items="center" style="width:100%;">
             <mu-avatar size="28">
               <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
             </mu-avatar>
             <span style="margin-left:.5rem; font-size:14px; color:#4db6ac;">Ae</span>
 
-            <span style="margin-left: 2rem; font-size:12px; color:#9e9e9e;">2小时前</span>
+            <div style="margin-left: auto; font-size:12px; color:#9e9e9e;">2小时前</div>
           </mu-flex>
           <!-- END -->
 
-          <mu-row style="margin-top:.5rem;">
 
-            <div style="width:100%; height:auto; border-radius:.5rem; margin-top:.5rem;">
-              <img style="max-width:100%; max-height:100%; border-radius:.5rem;" src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1752411726,1766304763&fm=27&gp=0.jpg" />
-            </div>
+          <div style="width:100%; height:auto; text-align:center; border-radius:.5rem; margin-top:.5rem;">
+            <img style="max-width:100%; max-height:15rem; border-radius:.5rem;" src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1752411726,1766304763&fm=27&gp=0.jpg" />
+          </div>
 
-            <div style="width:100%;"><span style="font-size:12px;">角色：</span> <span style="font-size:12px;">亦菲啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</span></div>
-            <div style="width:100%;"><span style="font-size:12px;">区服：</span> <span style="font-size:12px;">暗杀6区</span></div>
-            <div style="width:100%;"><span style="font-size:12px;">等级/段位：</span> <span style="font-size:12px;">66级</span></div>
+          <mu-row style="margin-top:.5rem;" gutter>
+            <!-- <mu-flex justify-content="around">
+              <div style="width:100%; font-size:12px;">角色：亦啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
+              <div style="width:100%; font-size:12px;">区服：暗杀6区</div>
+              <div style="width:100%; font-size:12px;">等级/段位：66级</div>
+            </mu-flex> -->
+            <mu-col col="5">
+              <div style="font-size:12px;">角色：洛奇英雄传</div>
+            </mu-col>
 
+            <mu-col col="6">
+              <div style="font-size:12px;">区服：暗杀6区</div>
+            </mu-col>
+          </mu-row>
+
+          <mu-row style="margin-top:.5rem;" gutter>
+            <mu-col col="5">
+              <div style="font-size:12px;">等级/段位：66</div>
+            </mu-col>
+
+            <mu-col col="6">
+              <div style="font-size:12px;">招募人数：77</div>
+            </mu-col>
+          </mu-row>
+
+          <mu-row style="margin-top:.5rem;" gutter>
+            <mu-col col="12" style="font-size:12px;">
+              队友偏向：男性/老油条/妹子
+            </mu-col>
+          </mu-row>
+
+          <mu-row style="margin-top:.5rem;" gutter>
+            <mu-col col="12" style="font-size:12px;">
+              招募宣言：来几个好基友一起玩了
+            </mu-col>
           </mu-row>
 
         </div>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
       </mu-expansion-panel>
-      <mu-expansion-panel :expand="panel === 'panel2'" @change="toggle('panel2')">
-        <div slot="header">Panel 2</div>
+
+
+      <mu-expansion-panel style="margin-bottom:1rem; border-radius:.5rem;">
+        <div slot="header" style="padding:.5rem 0 1rem 0;">
+        
+          <!-- BEGIN 队长基本信息 -->
+          <!-- <mu-flex align-items="center" style="width:100%;">
+            <mu-avatar size="28">
+              <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
+            </mu-avatar>
+            <span style="margin-left:.5rem; font-size:14px; color:#4db6ac;">Ae</span>
+
+            <div style="margin-left: auto; font-size:12px; color:#9e9e9e;">2小时前</div>
+          </mu-flex> -->
+          <!-- END -->
+
+
+
+
+          <mu-row style="margin-top:.5rem;" gutter>
+
+            <mu-col col="6" style="padding:.5rem 0 0 .5rem;">
+
+            <mu-flex align-items="center" style="width:100%;">
+              <mu-avatar size="25">
+                <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
+              </mu-avatar>
+              <span style="margin-left:.5rem; font-size:14px;">Ae</span>
+            </mu-flex>
+
+              <div style="font-size:12px; margin-bottom:.2rem; margin-top:.5rem;">
+                <span style="">角色：</span>
+                <span style="color:#9e9e9e;">洛奇英雄传</span>
+                </div>
+              <div style="font-size:12px; margin-bottom:.2rem;">
+                <span style="">区服：</span>
+                <span style="color:#9e9e9e;">暗杀6区</span>
+              </div>
+              <div style="font-size:12px; margin-bottom:.2rem;">
+                <span style="">等级/段位：</span>
+                <span style="color:#9e9e9e;">66</span>
+              </div>
+              <div style="font-size:12px; margin-bottom:.2rem;">
+                <span style="">招募人数：</span>
+                <span style="color:#9e9e9e;">77</span>
+              </div>
+              <div style="font-size:12px; margin-bottom:.2rem;">
+                <span style="">队友偏向：</span>
+                <span style="color:#9e9e9e;">男性/老油条/妹子</span>
+              </div>
+            </mu-col>
+
+
+                        <mu-col col="6">
+              <div style="width:100%; height:auto; text-align:center; border-radius:.5rem; margin-top:.5rem;">
+                <img style="max-width:100%; max-height:10rem; border-radius:.5rem;" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556126871136&di=96c4c07f9ec7abb39c6ccff8611524e3&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2Fa0698da271c805c12a9b96d71b8364e3f0202d1c7b3e-xwZp1o_fw658" />
+              </div>
+            </mu-col>
+          </mu-row>
+
+          <mu-row style="margin-top:.5rem;" gutter>
+            <mu-col col="12" style="font-size:12px;">
+              <span style="">招募宣言：</span> 
+              <span style="color:#9e9e9e;">来几个好基友一起玩了, 最好是风情万种的男人，潇洒风流的女人。come on!</span>
+            </mu-col>
+          </mu-row>
+
+        </div>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
       </mu-expansion-panel>
-      <mu-expansion-panel :expand="panel === 'panel3'" @change="toggle('panel3')">
+
+
+      <mu-expansion-panel>
         <div slot="header">Panel 3</div>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
       </mu-expansion-panel>
-
-    </mu-container>
-
 
   </mu-container>
   <!-- END 组队 -->
@@ -249,32 +339,32 @@
         swiperThumbs.controller.control = swiperTop
       })
 
-      window.addEventListener('scroll', this.handleScroll)
+      // window.addEventListener('scroll', this.handleScroll)
     },
 
     methods: {
-      handleScroll () { // 处理评论、组队消息栏目
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        let offsetTop = document.querySelector('#tabBar').offsetTop
+      // handleScroll () { // 处理评论、组队消息栏目
+      //   let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      //   let offsetTop = document.querySelector('#tabBar').offsetTop
 
-        if (scrollTop > offsetTop) {
-          this.tabBarFixed = true
-        } else {
-          this.tabBarFixed = false
-        }
-      },
+      //   if (scrollTop > offsetTop) {
+      //     this.tabBarFixed = true
+      //   } else {
+      //     this.tabBarFixed = false
+      //   }
+      // },
       toggle (panel) {
         this.panel = panel === this.panel ? '' : panel;
       }
     },
 
     destroyed () {
-      window.removeEventListener('scroll', this.handleScroll)
+      // window.removeEventListener('scroll', this.handleScroll)
     },
   }
 </script>
 
-<style scoped>
+<style>
 
 .mine-appbar { width: 100%; height:2.5rem; }
 
@@ -289,5 +379,7 @@
 .gallery-thumbs .swiper-slide-active { opacity: 1; }
 
  .isFixed{ position:fixed; background-color:#Fff; top:0; z-index:999; }
+
+.mu-expansion-toggle-btn { display: none; }
 
 </style>
