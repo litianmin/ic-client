@@ -336,16 +336,82 @@
 
             </div>
 
+            <!-- 队友所需内容 角色、游戏名、等级段位、队友偏向 -->
             <!-- 展开的内容，队友信息 -->
-            <div>
-              <div style="width:100%; height:2rem;">
-                <mu-flex align-items="center">
-                  <mu-avatar size="25">
-                    <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
-                  </mu-avatar>
-                  <span style="margin-left:.5rem; font-size:12px;">风吹裤裆</span>
-                </mu-flex>
-              </div>
+            <mu-divider></mu-divider>  
+            <div style="margin-top:.5rem;">
+              <mu-row style="margin-bottom:1rem;">
+                <mu-col span="9">
+                  <mu-flex align-items="center" style="height:4rem;">
+                    <div style="width:2.5rem; height:2.5rem;">
+                      <img style="max-width:100%; max-height:100%; border-radius:50%;" src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
+                    </div>
+
+                    <div>
+                      <span style="margin-left:.5rem; font-size:13px;">风吹裤裆</span>
+                      <br/>
+                      <span style="margin-left:.5rem; font-size:12px;">角色名：我是你的神</span>
+                      <br/>
+                      <span style="margin-left:.5rem; font-size:12px;">亦非/69级/大叔</span>
+                    </div>
+                  </mu-flex>
+                </mu-col>
+
+                <mu-col span="3" justify-content="center">
+                  <mu-flex justify-content="center" align-items="center" style="width:100%; height:4rem; text-align:center; border-radius:.5rem; ">
+                      <img style="max-width:4rem; max-height:4rem; border-radius:.2rem;" src="http://pic1.cxtuku.com/00/15/12/b018d091a51d.jpg" />
+                  </mu-flex>
+                </mu-col>
+              </mu-row>
+
+              <mu-row style="margin-bottom:1rem;">
+                <mu-col span="9">
+                  <mu-flex align-items="center" style="height:4rem;">
+                    <div style="width:2.5rem; height:2.5rem;">
+                      <img style="max-width:100%; max-height:100%; border-radius:50%;" src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
+                    </div>
+
+                    <div>
+                      <span style="margin-left:.5rem; font-size:13px;">风吹裤裆</span>
+                      <br/>
+                      <span style="margin-left:.5rem; font-size:12px;">角色名：我是你的神</span>
+                      <br/>
+                      <span style="margin-left:.5rem; font-size:12px;">亦非/69级/大叔</span>
+                    </div>
+                  </mu-flex>
+                </mu-col>
+
+                <mu-col span="3" justify-content="center">
+                  <mu-flex justify-content="center" align-items="center" style="width:100%; height:4rem; text-align:center; border-radius:.5rem; ">
+                      <img style="max-width:4rem; max-height:4rem; border-radius:.2rem;" src="http://img.zcool.cn/community/0113d3577f9cea0000018c1b42c704.jpg@2o.jpg" />
+                  </mu-flex>
+                </mu-col>
+              </mu-row>
+
+              <mu-row style="margin-bottom:1rem;">
+                <mu-col span="9">
+                  <mu-flex align-items="center" style="height:4rem;">
+                    <div style="width:2.5rem; height:2.5rem;">
+                      <img style="max-width:100%; max-height:100%; border-radius:50%;" src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
+                    </div>
+
+                    <div>
+                      <span style="margin-left:.5rem; font-size:13px;">风吹裤裆</span>
+                      <br/>
+                      <span style="margin-left:.5rem; font-size:12px;">角色名：我是你的神</span>
+                      <br/>
+                      <span style="margin-left:.5rem; font-size:12px;">亦非/69级/大叔</span>
+                    </div>
+                  </mu-flex>
+                </mu-col>
+
+                <mu-col span="3" justify-content="center">
+                  <mu-flex justify-content="center" align-items="center" style="width:100%; height:4rem; text-align:center; border-radius:.5rem; ">
+                      <img style="max-width:4rem; max-height:4rem; border-radius:.2rem;" src="http://pic33.photophoto.cn/20141204/0005018330800906_b.jpg" />
+                  </mu-flex>
+                </mu-col>
+              </mu-row>
+              
             </div>
 
           </mu-expansion-panel>
@@ -439,12 +505,12 @@
 
 .mine-appbar { width: 100%; height:2.5rem; }
 
-.swiper-container { background-color: #e0e0e0; }
+.swiper-container { background-color: #ffffff; }
 .swiper-slide { background-size: cover; background-position: center; }
 .swiper-img { max-width:100%; height:auto; border-bottom-left-radius:3px; border-bottom-right-radius:5px; }
 
 
-.gallery-top { height: 80%!important; width: 100%; margin-top:.1rem; }
+.gallery-top { height: 80%!important; width: 100%; margin-top:1px; }
 .gallery-thumbs { height: 20%!important; box-sizing: border-box; padding: 1px 0; }
 .gallery-thumbs .swiper-slide { width: 25%; height: 100%; opacity: 0.4; }
 .gallery-thumbs .swiper-slide-active { opacity: 1; }
