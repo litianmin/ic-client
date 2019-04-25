@@ -207,30 +207,16 @@
       <mu-expansion-panel style="margin-bottom:1rem; border-radius:.5rem;">
         <div slot="header" style="padding:.5rem 0 1rem 0;">
         
-          <!-- BEGIN 队长基本信息 -->
-          <!-- <mu-flex align-items="center" style="width:100%;">
-            <mu-avatar size="28">
-              <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
-            </mu-avatar>
-            <span style="margin-left:.5rem; font-size:14px; color:#4db6ac;">Ae</span>
-
-            <div style="margin-left: auto; font-size:12px; color:#9e9e9e;">2小时前</div>
-          </mu-flex> -->
-          <!-- END -->
-
-
-
-
           <mu-row style="margin-top:.5rem;" gutter>
 
             <mu-col col="6" style="padding:.5rem 0 0 .5rem;">
 
-            <mu-flex align-items="center" style="width:100%;">
-              <mu-avatar size="25">
-                <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
-              </mu-avatar>
-              <span style="margin-left:.5rem; font-size:14px;">Ae</span>
-            </mu-flex>
+              <mu-flex align-items="center" style="width:100%;">
+                <mu-avatar size="25">
+                  <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
+                </mu-avatar>
+                <span style="margin-left:.5rem; font-size:14px;">Ae</span>
+              </mu-flex>
 
               <div style="font-size:12px; margin-bottom:.2rem; margin-top:.5rem;">
                 <span style="">角色：</span>
@@ -254,8 +240,7 @@
               </div>
             </mu-col>
 
-
-                        <mu-col col="6">
+            <mu-col col="6">
               <div style="width:100%; height:auto; text-align:center; border-radius:.5rem; margin-top:.5rem;">
                 <img style="max-width:100%; max-height:10rem; border-radius:.5rem;" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556126871136&di=96c4c07f9ec7abb39c6ccff8611524e3&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2Fa0698da271c805c12a9b96d71b8364e3f0202d1c7b3e-xwZp1o_fw658" />
               </div>
@@ -274,8 +259,64 @@
       </mu-expansion-panel>
 
 
-      <mu-expansion-panel>
-        <div slot="header">Panel 3</div>
+      <mu-expansion-panel style="margin-bottom:1rem; border-radius:.5rem;">
+        <div slot="header" style="padding:.5rem 0 1rem 0;">
+
+          <mu-row style="margin-top:.2rem;" gutter>
+
+            <mu-col col="6" style="padding:.5rem 0 0 .5rem;">
+
+              <mu-flex align-items="center" style="width:90%; margin-left:-.5rem;">
+                <mu-avatar size="25">
+                  <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
+                </mu-avatar>
+                <span style="margin-left:.5rem; font-size:14px;">风吹裤裆</span>
+              </mu-flex>
+
+              <div style="font-size:12px; margin-bottom:.2rem; margin-top:.5rem;">
+                <span style="">角色：</span>
+                <span style="color:#9e9e9e;">洛奇英雄传</span>
+                </div>
+              <div style="font-size:12px; margin-bottom:.2rem;">
+                <span style="">区服：</span>
+                <span style="color:#9e9e9e;">暗杀6区</span>
+              </div>
+              <div style="font-size:12px; margin-bottom:.2rem;">
+                <span style="">等级/段位：</span>
+                <span style="color:#9e9e9e;">66</span>
+              </div>
+              <div style="font-size:12px; margin-bottom:.2rem;">
+                <span style="">招募人数：</span>
+                <span style="color:#9e9e9e;">77</span>
+              </div>
+              <div style="font-size:12px; margin-bottom:.2rem;">
+                <span style="">队友偏向：</span>
+                <span style="color:#9e9e9e;">男性/老油条/妹子</span>
+              </div>
+            </mu-col>  
+
+            <mu-col col="6" justify-content="center" align-items="center">
+              <mu-flex justify-content="center" align-items="center" style="width:100%; height:9.5rem; text-align:center; border-radius:.5rem; margin-top:.5rem; ">
+                <img style="max-width:100%; max-height:9.5rem; border-radius:.5rem;" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556172407865&di=6171b22f5c8d59e11d35faef8afe7d54&imgtype=0&src=http%3A%2F%2Fimgsa.baidu.com%2Fexp%2Fw%3D500%2Fsign%3D4332c8a0dd54564ee565e43983df9cde%2Fb812c8fcc3cec3fdf66553c6d688d43f8794272d.jpg" />
+              </mu-flex>
+            </mu-col>
+          </mu-row>
+
+          <mu-row style="margin-top:.5rem;" gutter>
+            <mu-col col="12" style="font-size:12px;">
+              <span style="">招募宣言：</span> 
+              <span style="color:#9e9e9e;">来几个好基友一起玩了, 最好是风情万种的男人，潇洒风流的女人。come on!</span>
+            </mu-col>
+          </mu-row>
+
+          <mu-flex>
+            <div style="margin-left:auto;">
+              <span style="font-size:12px; margin-right:1rem; color:#9e9e9e;">2分钟前</span>
+              <span style="font-size:12px; color:#009688;">进入聊天</span>
+            </div>
+          </mu-flex>
+
+        </div>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
       </mu-expansion-panel>
 
