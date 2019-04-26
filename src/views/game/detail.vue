@@ -282,31 +282,31 @@
                     <mu-avatar size="25">
                       <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
                     </mu-avatar>
-                    <span style="margin-left:.5rem; font-size:14px;">风吹裤裆</span>
+                    <span style="margin-left:.5rem; font-size:14px; color:#795548;">风吹裤裆</span>
                   </mu-flex>
 
                   <div style="font-size:12px; margin-bottom:.2rem; margin-top:.5rem;">
-                    <span style="">角色：</span>
+                    <span style="color:#795548;">角色：</span>
                     <span style="color:#9e9e9e;">洛奇英雄传</span>
                   </div>
                   <div style="font-size:12px; margin-bottom:.2rem; margin-top:.5rem;">
-                    <span style="">游戏名称：</span>
+                    <span style="color:#795548;">游戏名称：</span>
                     <span style="color:#9e9e9e;">我的名字</span>
                   </div>
                   <div style="font-size:12px; margin-bottom:.2rem;">
-                    <span style="">区服：</span>
+                    <span style="color:#795548;">区服：</span>
                     <span style="color:#9e9e9e;">暗杀6区</span>
                   </div>
                   <div style="font-size:12px; margin-bottom:.2rem;">
-                    <span style="">等级/段位：</span>
+                    <span style="color:#795548;">等级/段位：</span>
                     <span style="color:#9e9e9e;">66</span>
                   </div>
                   <div style="font-size:12px; margin-bottom:.2rem;">
-                    <span style="">招募人数：</span>
+                    <span style="color:#795548;">招募人数：</span>
                     <span style="color:#9e9e9e;">77</span>
                   </div>
                   <div style="font-size:12px; margin-bottom:.2rem;">
-                    <span style="">队友偏向：</span>
+                    <span style="color:#795548;">队友偏向：</span>
                     <span style="color:#9e9e9e;">男性/老油条/妹子</span>
                   </div>
                 </mu-col>  
@@ -322,11 +322,12 @@
               <!-- 招募宣言 -->
               <mu-row style="margin-top:.5rem;" gutter>
                 <mu-col col="12" style="font-size:12px;">
-                  <span style="">招募宣言：</span> 
+                  <span style="color:#795548;">招募宣言：</span> 
                   <span style="color:#9e9e9e;">来几个好基友一起玩了, 最好是风情万种的男人，潇洒风流的女人。come on!</span>
                 </mu-col>
               </mu-row>
 
+              <!-- 额外内容 -->
               <mu-flex>
                 <div style="margin-left:auto;">
                   <span style="font-size:12px; margin-right:1rem; color:#9e9e9e;">2分钟前</span>
@@ -340,19 +341,19 @@
             <!-- 展开的内容，队友信息 -->
             <mu-divider></mu-divider>  
             <div style="margin-top:.5rem;">
-              <mu-row style="margin-bottom:1rem;">
+              <mu-row style="margin-bottom:.5rem; background:rgba(230, 230, 230, .5); padding:.4rem 0 .4rem .5rem; border-radius:.5rem;">
                 <mu-col span="9">
-                  <mu-flex align-items="center" style="height:4rem;">
-                    <div style="width:2.5rem; height:2.5rem;">
-                      <img style="max-width:100%; max-height:100%; border-radius:50%;" src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
-                    </div>
+                  <mu-flex style="height:4rem;">
+                    <mu-avatar size="28">
+                      <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
+                    </mu-avatar>
 
                     <div>
-                      <span style="margin-left:.5rem; font-size:13px;">风吹裤裆</span>
+                      <span style="margin-left:.5rem; font-size:12px; color:#795548;">昵称：<span style="color:#9e9e9e;">风吹裤裆</span></span>
                       <br/>
-                      <span style="margin-left:.5rem; font-size:12px;">角色名：我是你的神</span>
+                      <span style="margin-left:.5rem; font-size:12px; color:#795548;">角色名：<span style="color:#9e9e9e;">我是你的神</span></span>
                       <br/>
-                      <span style="margin-left:.5rem; font-size:12px;">亦非/69级/大叔</span>
+                      <span style="margin-left:.5rem; font-size:12px; color:#795548;">亦非/69级/大叔</span>
                     </div>
                   </mu-flex>
                 </mu-col>
@@ -364,19 +365,19 @@
                 </mu-col>
               </mu-row>
 
-              <mu-row style="margin-bottom:1rem;">
+              <mu-row style="margin-bottom:.5rem; background:rgba(230, 230, 230, .5); padding:.4rem 0 .4rem .5rem; border-radius:.5rem;">
                 <mu-col span="9">
-                  <mu-flex align-items="center" style="height:4rem;">
-                    <div style="width:2.5rem; height:2.5rem;">
-                      <img style="max-width:100%; max-height:100%; border-radius:50%;" src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
-                    </div>
+                  <mu-flex style="height:4rem;">
+                    <mu-avatar size="28">
+                      <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
+                    </mu-avatar>
 
                     <div>
-                      <span style="margin-left:.5rem; font-size:13px;">风吹裤裆</span>
+                      <span style="margin-left:.5rem; font-size:12px; color:#795548;">昵称：<span style="color:#9e9e9e;">风吹裤裆</span></span>
                       <br/>
-                      <span style="margin-left:.5rem; font-size:12px;">角色名：我是你的神</span>
+                      <span style="margin-left:.5rem; font-size:12px; color:#795548;">角色名：<span style="color:#9e9e9e;">我是你的神</span></span>
                       <br/>
-                      <span style="margin-left:.5rem; font-size:12px;">亦非/69级/大叔</span>
+                      <span style="margin-left:.5rem; font-size:12px; color:#795548;">亦非/69级/大叔</span>
                     </div>
                   </mu-flex>
                 </mu-col>
@@ -388,19 +389,19 @@
                 </mu-col>
               </mu-row>
 
-              <mu-row style="margin-bottom:1rem;">
+              <mu-row style="margin-bottom:.5rem; background:rgba(230, 230, 230, .5); padding:.4rem 0 .4rem .5rem; border-radius:.5rem;">
                 <mu-col span="9">
-                  <mu-flex align-items="center" style="height:4rem;">
-                    <div style="width:2.5rem; height:2.5rem;">
-                      <img style="max-width:100%; max-height:100%; border-radius:50%;" src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
-                    </div>
+                  <mu-flex style="height:4rem;">
+                    <mu-avatar size="28">
+                      <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
+                    </mu-avatar>
 
                     <div>
-                      <span style="margin-left:.5rem; font-size:13px;">风吹裤裆</span>
+                      <span style="margin-left:.5rem; font-size:12px; color:#795548;">昵称：<span style="color:#9e9e9e;">风吹裤裆</span></span>
                       <br/>
-                      <span style="margin-left:.5rem; font-size:12px;">角色名：我是你的神</span>
+                      <span style="margin-left:.5rem; font-size:12px; color:#795548;">角色名：<span style="color:#9e9e9e;">我是你的神</span></span>
                       <br/>
-                      <span style="margin-left:.5rem; font-size:12px;">亦非/69级/大叔</span>
+                      <span style="margin-left:.5rem; font-size:12px; color:#795548;">亦非/69级/大叔</span>
                     </div>
                   </mu-flex>
                 </mu-col>
