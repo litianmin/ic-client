@@ -39,15 +39,15 @@
     <!-- END 游戏简介 -->
 
     <!-- BEGIN 游戏标签 -->
-    <div class="game-badge">
+    <mu-flex class="game-badge" align-items="end">
       <mu-badge content="端游" color="#00bcd4" style="margin-right:.5rem;"></mu-badge>
       <mu-badge content="角色扮演" color="#00bcd4" style="margin-right:.5rem;"></mu-badge>
       <mu-badge content="格斗" color="#00bcd4" style="margin-right:.5rem;"></mu-badge>
-    </div>
+    </mu-flex>
     <!-- END 游戏标签 -->
 
     <!-- BEGIN 评论/组队内容 -->
-    <div style="margin-top:.8rem;">
+    <div style="margin-top:1rem;">
       <mu-divider></mu-divider>
 
       <!-- 内容切换条 -->
@@ -157,6 +157,15 @@
 
       <!-- BEGIN 组队 -->
       <mu-container v-show="active === 1" class="teammake-flag" style="margin-top:.5rem;">
+
+          <mu-row justify-content="center" style="margin-top:1rem; margin-bottom:1rem;">
+
+          <!-- 创建队伍按钮 -->
+          <mu-button class="team-create-btn">
+            创建队伍<mu-icon value="add" size="18"></mu-icon>
+          </mu-button>
+          </mu-row>
+
           <!-- BEGIN 组队样式一 -->
           <mu-expansion-panel style="margin-bottom:1rem; border-radius:.5rem;">
             <div slot="header" style="padding:1rem 0;">
@@ -516,6 +525,7 @@
 .comment-item-comment-count { font-size:12px; margin-left:.2rem; color:#9e9e9e; }
 
 .team-panel { margin-bottom:1rem; border-radius:.5rem; }
+.team-create-btn { width:95%; padding:.5rem; text-align:center; color:white; background:#4dd0e1; border-radius:.3rem; border:0; }
 .team-header { padding:.5rem 0 .5rem 0; }
 .team-avatar-flex { width:90%; margin-left:-.5rem; margin-bottom:.5rem; }
 .team-leader-nickname { margin-left:.5rem; font-size:14px; color:#795548; }
@@ -532,10 +542,8 @@
 .teammate-img-flex { width:100%; height:4rem; text-align:center; border-radius:.5rem; }
 .teammate-img-flex img { max-width:4rem; max-height:4rem; border-radius:.2rem; }
 
+/* 修改museui原本样式 */
 .mu-expansion-toggle-btn { display: none; }
 
-
-.list-item-div {width:3.5rem; height:3.5rem;}
-.list-item-div img {max-width:100%; max-height:100%; border-radius:.5rem;}
 
 </style>
