@@ -58,6 +58,14 @@
 
       <!-- BEGIN 评论 -->
       <mu-container v-show="active === 0" class="comment-box">
+
+        <mu-row justify-content="center" style="margin-top:.3rem; margin-bottom:1.5rem;">
+          <!-- 创建队伍按钮 -->
+          <mu-button class="comment-create-btn">
+            评论一下&nbsp; <mu-icon value="border_color" size="14"></mu-icon>
+          </mu-button>
+        </mu-row>
+
         <!-- BEGIN 评论样式一 -->
         <div style="margin-bottom:2rem;">
           <mu-flex align-items="center">
@@ -159,11 +167,10 @@
       <mu-container v-show="active === 1" class="teammake-flag" style="margin-top:.5rem;">
 
           <mu-row justify-content="center" style="margin-top:1rem; margin-bottom:1rem;">
-
-          <!-- 创建队伍按钮 -->
-          <mu-button class="team-create-btn">
-            创建队伍<mu-icon value="add" size="18"></mu-icon>
-          </mu-button>
+            <!-- 创建队伍按钮 -->
+            <mu-button class="team-create-btn">
+              创建队伍<mu-icon value="add" size="18"></mu-icon>
+            </mu-button>
           </mu-row>
 
           <!-- BEGIN 组队样式一 -->
@@ -516,6 +523,7 @@
 .game-badge { margin-top:.5rem; padding:0 .5rem; }
 
 .comment-box { margin-top:.5rem; padding:.5rem 1rem; }
+.comment-create-btn { width:95%; padding:.5rem; text-align:center; color:white; background:#4dd0e1; border-radius:.3rem; border:0; }
 .comment-item-nickname { margin-left:.5rem; font-size:14px; color:#4db6ac; }
 .comment-item-time { margin-left: auto; font-size:12px; color:#9e9e9e; }
 .comment-item-text { padding:.5rem 0 0 2rem; font-size:12px; color:#616161; }
