@@ -76,11 +76,22 @@ const router =  new Router({
       name: 'game-list',
       component: GameList
     },
-    {
+    { // 游戏详情页
       path: '/game/detail/:gameid',
       name: 'game-detail',
-      component: () => import('./views/game/detail.vue')
+      component: () => import('./views/game/detail.vue'),
+    },
+    { // 游戏新建评论
+      path: '/game/newcomment/:gameid',
+      name: 'game-newcomment',
+      component: () => import('./views/game/newComment.vue')
+    },
+    { // 游戏创建组队
+      path: '/game/formteam/:gameid',
+      name: 'game-formteam',
+      component: () => import('./views/game/formTeam.vue')
     }
+    
 
   ],
 })

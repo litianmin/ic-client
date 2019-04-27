@@ -61,7 +61,7 @@
 
         <mu-row justify-content="center" style="margin-top:.3rem; margin-bottom:1.5rem;">
           <!-- 创建队伍按钮 -->
-          <mu-button class="comment-create-btn">
+          <mu-button class="comment-create-btn" @click="newComment()">
             评论一下&nbsp; <mu-icon value="border_color" size="14"></mu-icon>
           </mu-button>
         </mu-row>
@@ -442,8 +442,7 @@
       <!-- END 组队 -->
     </div>
     <!-- END 评论/组队内容 -->
-
-
+  
   </div>
 </template>
 
@@ -475,32 +474,43 @@
 
         // 轮播图展示图片
         displayImgList: [ 
-        {id: 1, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"},
-        {id: 2, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"},
-        {id: 3, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"},
-        {id: 4, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"},
-        {id: 5, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"}
-      ],
+          {id: 1, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"},
+          {id: 2, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"},
+          {id: 3, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"},
+          {id: 4, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"},
+          {id: 5, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"}
+        ],
 
-      active: 0,
-
-      panel: ''
+        active: 0,  // 导航条切换
+        panel: '',  // 组队信息展开
+        gameID: 0,
 
       } 
     },
 
     mounted () {
+      // 轮播图处理
       this.$nextTick(() => {
         const swiperTop = this.$refs.swiperTop.swiper
         const swiperThumbs = this.$refs.swiperThumbs.swiper
         swiperTop.controller.control = swiperThumbs
         swiperThumbs.controller.control = swiperTop
       })
+
+      // 赋值 gameID (这里要注意，$router 和 $route 是不同的两个对象， 一个是全局，一个是局部)
+      this.gameID = this.$route.params.gameid
+
     },
 
     methods: {
       toggle (panel) {
-        this.panel = panel === this.panel ? '' : panel;
+        this.panel = panel === this.panel ? '' : panel
+      },
+      newComment () {
+        this.$router.push(`/game/newcomment/${this.gameID}`)
+      },
+      formTeam () {
+        this.$router.push(`/game/formteam/${this.gameID}`)
       }
     },
   }

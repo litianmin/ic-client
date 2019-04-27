@@ -1,6 +1,6 @@
 <template>
   <div>
-      
+    创建组队
   </div>  
 </template>
 
