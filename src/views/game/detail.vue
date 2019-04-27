@@ -388,7 +388,7 @@
               </mu-row>
 
               <mu-row style="margin-bottom:.5rem; background:rgba(230, 230, 230, .5); padding:.4rem 0 .4rem .5rem; border-radius:.5rem;">
-                <mu-col span="9">
+                <mu-col span="9"> 
                   <mu-flex style="height:4rem;">
                     <mu-avatar size="28">
                       <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
