@@ -2,13 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import axios from 'axios'
+// import axios from 'axios'
+import axios from './request.js'
 import Toast from 'muse-ui-toast';
 import './registerServiceWorker'
 
-
 Vue.prototype.$axios = axios
-axios.defaults.baseURL = "/api"
+// axios.defaults.baseURL = "/api"
 // axios.defaults.baseURL = "127.0.0.1：8888"
 
 // 这是我自己加入的
