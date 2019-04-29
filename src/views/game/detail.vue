@@ -2,7 +2,7 @@
   <div>
     <!-- BEGIN 头部 -->
     <mu-appbar class="mine-appbar" color="#009688">
-      <mu-button icon slot="left">
+      <mu-button icon slot="left" @click="goBack">
         <mu-icon value="navigate_before"></mu-icon>
       </mu-button>
       
@@ -168,7 +168,7 @@
 
           <mu-row justify-content="center" style="margin-top:.3rem; margin-bottom:1rem;">
             <!-- 创建队伍按钮 -->
-            <mu-button class="team-create-btn">
+            <mu-button class="team-create-btn" @click="formTeam">
               创建队伍<mu-icon value="add" size="18"></mu-icon>
             </mu-button>
           </mu-row>
@@ -511,6 +511,9 @@
       },
       formTeam () {
         this.$router.push(`/game/formteam/${this.gameID}`)
+      },
+      goBack () {
+        this.$router.go(-1)
       }
     },
   }

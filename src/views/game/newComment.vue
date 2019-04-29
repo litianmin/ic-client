@@ -2,7 +2,7 @@
   <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:#f5f5f5;">
     <!-- BEGIN 头部 -->
     <mu-appbar class="mine-appbar" color="#009688">
-        <mu-button icon slot="left">
+        <mu-button icon slot="left" @click="goBack">
           <mu-icon value="navigate_before"></mu-icon>
         </mu-button>
         
@@ -67,6 +67,7 @@ export default {
     commentSubmit () {
       if(this.c_cont.length == 0 && this.c_img.length == 0) {
         this.$toast.message('评论内容不能为空')
+        return
       }
       this.$axios.post(
         `/commentToGame`,
@@ -76,8 +77,15 @@ export default {
           c_img: this.c_img
         }
       ).then((resp)=>{
-        console.log(resp)
+        if(resp.data.code === 20000) {
+          this.$toast.success('评论成功')
+          this.$router.go(-1)
+        }
+        // console.log(resp)
       })
+    },
+    goBack () {
+      this.$router.go(-1)
     },
   },
 }

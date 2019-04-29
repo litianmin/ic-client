@@ -79,7 +79,7 @@ const router =  new Router({
     { // 游戏详情页
       path: '/game/detail/:gameid',
       name: 'game-detail',
-      component: () => import('./views/game/detail.vue'),
+      component: () => import('./views/game/detail.vue')
     },
     { // 游戏新建评论
       path: '/game/newcomment/:gameid',

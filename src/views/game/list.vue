@@ -3,7 +3,7 @@
 
     <!-- BEGIN 头部搜索框 -->
     <mu-appbar class="mine-appbar" color="#009688">
-      <mu-button icon slot="left">
+      <mu-button icon slot="left" @click="goBack">
         <mu-icon value="navigate_before"></mu-icon>
       </mu-button>
       
@@ -103,8 +103,6 @@ export default {
     ).then((resp)=>{
       let dataBack = resp.data
 
-      console.log(dataBack)
-
       if(dataBack.code == 20000) {
         if(!!dataBack.hotGameList === false) { 
           // 没有热门游戏，那么隐藏热门游戏列表
@@ -124,15 +122,12 @@ export default {
   methods: {
     load () {
       this.loading = true
-
       if(this.isTheLast == true) {
         this.$toast.message('没有更多的内容')
         this.loading = false
         return
       }
-
       this.page++      
-
       this.$axios.post(
         `/gamelist/${this.page}`,{}
       ).then((resp)=>{
@@ -146,8 +141,10 @@ export default {
 
     linkToDetail (gameid) {
       this.$router.push(`/game/detail/${gameid}`)
-    }
-
+    },
+    goBack () {
+      this.$router.go(-1)
+    },
   }
 }
 </script>
