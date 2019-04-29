@@ -25,7 +25,6 @@ axios.interceptors.request.use(
 // response 拦截器(响应拦截)
 axios.interceptors.response.use(
   response => {
-
     const res = response.data
 
     // 这里主要是处理返回token的错误问题
