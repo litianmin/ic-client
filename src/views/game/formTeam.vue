@@ -96,9 +96,7 @@ export default {
 
 <style scoped>
 .mine-appbar { width: 100%; height:2.5rem; }
-
 .paper-container { border-radius:.5rem; }
-
 .team-header { padding:.5rem 0 .5rem 0; }
 .team-avatar-flex { width:90%; margin-left:-.5rem; margin-bottom:.5rem; }
 .team-leader-nickname { margin-left:.5rem; font-size:14px; color:#795548; }
@@ -109,9 +107,5 @@ export default {
 .team-leaderinfo-img-flex img { max-width:100%; max-height:10rem; border-radius:.5rem; }
 .team-extracont-time { font-size:12px; margin-right:1rem; color:#9e9e9e; }
 .team-extracont-operate { font-size:12px; color:#009688; }
-
 .operate-edit-span { font-size:12px; color:green; }
-
 </style>
-
-  
