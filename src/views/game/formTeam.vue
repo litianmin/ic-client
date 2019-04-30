@@ -14,7 +14,60 @@
 
     <!-- BEGIN 填写内容 -->
     <mu-container style="padding:.5rem;">
-      <mu-text-field label="角色" full-width label-float ></mu-text-field><br/>
+
+      <mu-row>
+        <mu-flex style="width:25%; height:2rem; background:#00bcd4; color:#fff; font-size:12px; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem;" align-items="center" justify-content="center">
+          <span>角 色</span>
+        </mu-flex>
+
+        <mu-flex style="width:75%; height:2rem; background:yellow; font-size:12px;">
+          <input type="text" placeholder="角色，例如：貂蝉" style="width:100%; height:100%; padding: 0 0 0 .5rem;">
+        </mu-flex>
+      </mu-row>
+
+      <mu-row style="margin-top:.5rem;">
+        <mu-flex style="width:25%; height:2rem; background:#00bcd4; color:#fff; font-size:12px; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem;" align-items="center" justify-content="center">
+          <span>昵 称</span>
+        </mu-flex>
+
+        <mu-flex style="width:75%; height:2rem; background:yellow; font-size:12px;">
+          <input type="text" placeholder="游戏中的昵称" style="width:100%; height:100%; padding: 0 0 0 .5rem;">
+        </mu-flex>
+      </mu-row>
+
+      <mu-row style="margin-top:.5rem;">
+        <mu-flex style="width:25%; height:2rem; background:#00bcd4; color:#fff; font-size:12px; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem;" align-items="center" justify-content="center">
+          <span>区 服</span>
+        </mu-flex>
+
+        <mu-flex style="width:75%; height:2rem; background:yellow; font-size:12px;">
+          <input type="text" placeholder="游戏角色所在区服" style="width:100%; height:100%; padding: 0 0 0 .5rem;">
+        </mu-flex>
+      </mu-row>
+
+      <mu-row style="margin-top:.5rem;">
+        <mu-flex style="width:25%; height:2rem; background:#00bcd4; color:#fff; font-size:12px; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem;" align-items="center" justify-content="center">
+          <span>等级/段位</span>
+        </mu-flex>
+
+        <mu-flex style="width:75%; height:2rem; background:yellow; font-size:12px;">
+          <input type="text" placeholder="游戏角色的等级或者段位" style="width:100%; height:100%; padding: 0 0 0 .5rem;">
+        </mu-flex>
+      </mu-row>
+
+      <mu-row style="margin-top:2rem;">
+        <mu-flex style="height:2rem; font-size:12px; color:#00bcd4; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem; padding:0 .5rem;" align-items="center" justify-content="center">
+          <span>招募人数:(已选 {{ teamInfo.recruitNumb }} 人)</span>
+        </mu-flex>
+      </mu-row>
+
+      <mu-row style="margin-top:.5rem;">
+        <mu-flex style="width:100%; height:2rem; font-size:12px; padding: 0 .5rem 0 1rem;">
+          <mu-slider class="demo-slider" track-color="green" v-model="teamInfo.recruitNumb" max="10" step="1" color="#00bcd4"></mu-slider>
+        </mu-flex>
+      </mu-row>
+
+      <!-- <mu-text-field label="游戏中昵称" full-width label-float ></mu-text-field><br/> -->
     </mu-container>
     <!-- END 填写内容 -->
 
@@ -119,7 +172,7 @@ export default {
         roleName: '',
         serverName: '',
         roleRank: '',
-        recruitNumb: '',
+        recruitNumb: '0',
         teamatePrefer: [],
         teamatePreferStr: '',
         displayImg: '',
@@ -168,4 +221,8 @@ export default {
 .team-extracont-time { font-size:12px; margin-right:1rem; color:#9e9e9e; }
 .team-extracont-operate { font-size:12px; color:#009688; }
 .operate-edit-span { font-size:12px; color:green; }
+
+input { border: 1px solid #00bcd4 }
+input:focus { border: 1px solid #4caf50; }
+
 </style>
