@@ -55,17 +55,26 @@
         </mu-flex>
       </mu-row>
 
-      <mu-row style="margin-top:2rem;">
-        <mu-flex style="height:2rem; font-size:12px; color:#00bcd4; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem; padding:0 .5rem;" align-items="center" justify-content="center">
-          <span>招募人数:(已选 {{ teamInfo.recruitNumb }} 人)</span>
+      <mu-row style="margin-top:.5rem;">
+        <mu-flex style="width:25%; height:2rem; background:#00bcd4; color:#fff; font-size:12px; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem;" align-items="center" justify-content="center">
+          <span>队友偏爱</span>
+        </mu-flex>
+
+        <mu-flex style="width:75%; height:2rem; background:yellow; font-size:12px;">
+          
         </mu-flex>
       </mu-row>
 
-      <mu-row style="margin-top:.5rem;">
-        <mu-flex style="width:100%; height:2rem; font-size:12px; padding: 0 .5rem 0 1rem;">
-          <mu-slider class="demo-slider" track-color="green" v-model="teamInfo.recruitNumb" max="10" step="1" color="#00bcd4"></mu-slider>
+      <mu-row style="margin-top:1rem;">
+        <mu-flex style="height:2rem; font-size:12px; color:#00bcd4; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem; padding:0 .5rem;" align-items="center" justify-content="center">
+          <span>招募人数 (已选 {{ teamInfo.recruitNumb }} 人)</span>
         </mu-flex>
       </mu-row>
+      <mu-row style="margin-top:.5rem;">
+        <mu-flex style="width:100%; height:2rem; font-size:12px; padding: 0 .5rem 0 .5rem;">
+          <mu-slider class="demo-slider" track-color="#9e9e9e" v-model="teamInfo.recruitNumb" :max="10" :min="2" :step="1" color="#00bcd4"></mu-slider>
+        </mu-flex>
+      </mu-row> 
 
       <!-- <mu-text-field label="游戏中昵称" full-width label-float ></mu-text-field><br/> -->
     </mu-container>
@@ -172,7 +181,7 @@ export default {
         roleName: '',
         serverName: '',
         roleRank: '',
-        recruitNumb: '0',
+        recruitNumb: 0,
         teamatePrefer: [],
         teamatePreferStr: '',
         displayImg: '',
