@@ -2,13 +2,13 @@
   <mu-container>
     <mu-row gutter>
       <mu-col span="12" sm="6">
-        <mu-select label="Selection Scoped Slot" multiple chips v-model="custom.value2" full-width>
+        <mu-select label="队友偏爱" multiple chips v-model="custom.value2" full-width>
           <template slot="selection" slot-scope="scope">
             <mu-chip :selected="scope.selected" color="teal" small>
               {{scope.label}}
             </mu-chip>
           </template>
-          <mu-option v-for="language,index in languages" :key="language" :label="language" :value="language"></mu-option>
+          <mu-option v-for="(language,index) in languages" :key="index" :label="language" :value="language" style="border-radius:.5rem;"></mu-option>
         </mu-select>
       </mu-col>
     </mu-row>
@@ -38,7 +38,7 @@ export default {
         value1: '',
         value2: []
       },
-      languages: ['java', 'golang', 'php']
+      languages: ['男生', '女生', 'php']
     }
   }
 }

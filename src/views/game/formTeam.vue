@@ -9,79 +9,113 @@
         <div style="font-size:14px;">
           创建队伍
         </div>
+
+        <mu-flex slot="right" style="font-size:12px; color:#fff; margin-right:1rem;" align-items="center">
+          <span>导入记录</span> <mu-icon value="launch" size="18"></mu-icon>
+        </mu-flex>
+
     </mu-appbar>
     <!-- END 头部 -->
 
     <!-- BEGIN 填写内容 -->
-    <mu-container style="padding:.5rem;">
+    <mu-container v-show="!isPreview" style="padding:.5rem;">
 
+      <!-- 角色 -->
       <mu-row>
-        <mu-flex style="width:25%; height:2rem; background:#00bcd4; color:#fff; font-size:12px; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem;" align-items="center" justify-content="center">
+        <mu-flex class="mu-flex-one" align-items="center" justify-content="center">
           <span>角 色</span>
         </mu-flex>
-
-        <mu-flex style="width:75%; height:2rem; background:yellow; font-size:12px;">
-          <input type="text" placeholder="角色，例如：貂蝉" style="width:100%; height:100%; padding: 0 0 0 .5rem;">
+        <mu-flex class="mu-flex-two">
+          <input v-model="teamInfo.role" type="text" placeholder="角色，例如：貂蝉">
         </mu-flex>
       </mu-row>
 
+      <!-- 昵称 -->
       <mu-row style="margin-top:.5rem;">
-        <mu-flex style="width:25%; height:2rem; background:#00bcd4; color:#fff; font-size:12px; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem;" align-items="center" justify-content="center">
+        <mu-flex class="mu-flex-one" align-items="center" justify-content="center">
           <span>昵 称</span>
         </mu-flex>
-
-        <mu-flex style="width:75%; height:2rem; background:yellow; font-size:12px;">
-          <input type="text" placeholder="游戏中的昵称" style="width:100%; height:100%; padding: 0 0 0 .5rem;">
+        <mu-flex class="mu-flex-two">
+          <input v-model="teamInfo.roleName" type="text" placeholder="游戏中的昵称">
         </mu-flex>
       </mu-row>
 
+      <!-- 区服 -->
       <mu-row style="margin-top:.5rem;">
-        <mu-flex style="width:25%; height:2rem; background:#00bcd4; color:#fff; font-size:12px; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem;" align-items="center" justify-content="center">
+        <mu-flex class="mu-flex-one" align-items="center" justify-content="center">
           <span>区 服</span>
         </mu-flex>
-
-        <mu-flex style="width:75%; height:2rem; background:yellow; font-size:12px;">
-          <input type="text" placeholder="游戏角色所在区服" style="width:100%; height:100%; padding: 0 0 0 .5rem;">
+        <mu-flex class="mu-flex-two">
+          <input v-model="teamInfo.serverName" type="text" placeholder="游戏角色所在区服">
         </mu-flex>
       </mu-row>
 
+      <!-- 等级/段位 -->
       <mu-row style="margin-top:.5rem;">
-        <mu-flex style="width:25%; height:2rem; background:#00bcd4; color:#fff; font-size:12px; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem;" align-items="center" justify-content="center">
+        <mu-flex class="mu-flex-one" align-items="center" justify-content="center">
           <span>等级/段位</span>
         </mu-flex>
-
-        <mu-flex style="width:75%; height:2rem; background:yellow; font-size:12px;">
-          <input type="text" placeholder="游戏角色的等级或者段位" style="width:100%; height:100%; padding: 0 0 0 .5rem;">
+        <mu-flex class="mu-flex-two">
+          <input v-model="teamInfo.roleRank" type="text" placeholder="游戏角色的等级或者段位">
         </mu-flex>
       </mu-row>
 
-      <mu-row style="margin-top:.5rem;">
-        <mu-flex style="width:25%; height:2rem; background:#00bcd4; color:#fff; font-size:12px; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem;" align-items="center" justify-content="center">
-          <span>队友偏爱</span>
-        </mu-flex>
-
-        <mu-flex style="width:75%; height:2rem; background:yellow; font-size:12px;">
-          
-        </mu-flex>
+      <!-- 队友偏爱 -->
+      <mu-row style="margin-top:.5rem; padding:.5rem .5rem 0 .5rem;">
+        <mu-col span="12">
+          <mu-select label="队友偏爱" multiple chips v-model="teamatePrefer" full-width style="color:#795548;">
+            <template slot="selection" slot-scope="scope">
+              <mu-chip :selected="scope.selected" color="teal" small>
+                {{scope.label}}
+              </mu-chip>
+            </template>
+            <mu-option v-for="(item,index) in perferList" :key="index" :label="item" :value="item"></mu-option>
+          </mu-select>
+        </mu-col>
       </mu-row>
 
-      <mu-row style="margin-top:1rem;">
-        <mu-flex style="height:2rem; font-size:12px; color:#00bcd4; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem; padding:0 .5rem;" align-items="center" justify-content="center">
+      <!-- 招募人数 -->
+      <mu-row>
+        <mu-flex class="mu-flex-three" align-items="center" justify-content="center">
           <span>招募人数 (已选 {{ teamInfo.recruitNumb }} 人)</span>
         </mu-flex>
       </mu-row>
       <mu-row style="margin-top:.5rem;">
         <mu-flex style="width:100%; height:2rem; font-size:12px; padding: 0 .5rem 0 .5rem;">
-          <mu-slider class="demo-slider" track-color="#9e9e9e" v-model="teamInfo.recruitNumb" :max="10" :min="2" :step="1" color="#00bcd4"></mu-slider>
+          <mu-slider class="demo-slider" track-color="#e0e0e0" v-model="teamInfo.recruitNumb" :max="10" :min="2" :step="1" color="#00bcd4"></mu-slider>
         </mu-flex>
       </mu-row> 
 
-      <!-- <mu-text-field label="游戏中昵称" full-width label-float ></mu-text-field><br/> -->
+      <!-- 是否需要申请入队伍 -->
+      <mu-row style="margin-bottom:1.5rem; margin-top:1rem;">
+        <mu-flex class="mu-flex-three" align-items="center" justify-content="center">
+          <span style="margin-right:1rem;">招募方式:</span>
+          <mu-radio v-model="teamInfo.recruitWay" value="0" label="无限制" style="margin-right:1rem;"></mu-radio>
+          <mu-radio v-model="teamInfo.recruitWay" value="1" label="需要申请"></mu-radio>
+        </mu-flex>
+      </mu-row>
+
+      <!-- 招募宣言 -->
+      <mu-row class="mu-container-one">
+        <mu-text-field v-model="teamInfo.announcement" multi-line :rows="5" :rows-max="7" full-width :max-length="200" underline-color="rgba(139, 69, 19, .2)" placeholder="招募宣言：" style="font-size:14px;">
+        </mu-text-field>
+      </mu-row>
+
+      <!-- 上传招募图片 -->
+      <mu-row style="margin-top:1rem; margin-bottom:3rem;">
+        <mu-flex style="position:relative; width:100%; height:10rem; background:#eeeeee; border-radius:.5rem;" justify-content="center" align-items="center">
+          <span @click="addImg" v-show="!teamInfo.displayImg" style="color:#4caf50;">点击上传招募图片</span>
+          <mu-icon v-show="teamInfo.displayImg" @click="delImg" value="cancel" color="#e91e63" style="position:absolute; top:0; right:0;"></mu-icon>
+          <img style="max-width:100%; max-height:9rem; border-radius:.3rem;" :src="teamInfo.displayImg" />
+        </mu-flex>
+        <input @change="getDisplayImg" ref="imgUpload" type="file" style="display:none;" accept="image/*"/>
+      </mu-row>
+
     </mu-container>
     <!-- END 填写内容 -->
 
     <!-- BEGIN 展示预览 -->
-    <mu-container v-show="isPreview" style="margin-top:.5rem;">
+    <mu-container v-show="isPreview" style="margin-top:2rem;">
       <mu-paper class="paper-container" :z-depth="3">
         <div style="padding:1.5rem;">
           <!-- 队长基本信息(包括图片) -->
@@ -128,7 +162,7 @@
               <div class="team-leaderinfo-item">
                 <span class="team-leaderinfo-title">队友偏爱：</span>
                 <span class="team-leaderinfo-cont">
-                  {{ teamInfo.teamatePreferStr }}
+                  {{ teamatePreferStr }}
                 </span>
               </div>
             </mu-col>  
@@ -153,17 +187,12 @@
     </mu-container>
     <!-- END 展示预览 -->
 
-
-      <!-- <mu-button style="width:33%" color="#00bcd4">卡片模式</mu-button> -->
-      <!-- <mu-button style="width:33%;" color="#03a9f4">列表模式</mu-button> -->
-
-
-    <mu-flex style="position:fixed; width:100%; bottom:0; left:0; padding:0 .1rem; background:#eeeeee; padding:.5rem .1rem;" justify-content="between">
-      <mu-button style="width:34%" color="#00bcd4">
-        卡片模式
-        <mu-icon value="sync" size="14"></mu-icon>
+    <mu-flex class="mu-flex-four" justify-content="between">
+      <mu-button @click="previewPage" style="width:34%" color="#00bcd4">
+        {{ isPreviewCont }}
+        <mu-icon value="touch_app" size="14"></mu-icon>
       </mu-button>
-      <mu-button style="width:65%;" color="#42a5f5">
+      <mu-button @click="mytest" style="width:65%;" color="#42a5f5">
         发起招募
       </mu-button>
     </mu-flex>
@@ -181,44 +210,75 @@ export default {
         roleName: '',
         serverName: '',
         roleRank: '',
-        recruitNumb: 0,
-        teamatePrefer: [],
-        teamatePreferStr: '',
+        recruitNumb: 2,
+        recruitWay: '0',
         displayImg: '',
-        announcement: '无',
+        announcement: '',
       },
+      teamatePrefer: [],
+      teamatePreferStr: '',
 
-      options: [
-        'Option 1', 'Option 2', 'Option 3', 'Option 4',
-        'Option 5', 'Option 6', 'Option 7', 'Option 8',
-        'Option 9', 'Option 10'
-      ],
-      labelPosition: 'top',
-      form: {
-        input: '',
-        select: '',
-        date: '',
-        radio: '',
-        checkbox: [],
-        switch: false,
-        slider: 30,
-        textarea: ''
-      },
+      isPreview: false, // 是否预览
+      isPreviewCont: '预 览',
+      perferList: ['男生', '女生', '菜鸟', '大神', '萌妹子', '抠脚大叔']
 
-      isPreview: false,
+    }
+  },
+  watch: {
+    teamatePrefer (curVal, oldVal) {
+      this.teamatePreferStr = ''
+      for(let i = 0; i < curVal.length; i++) {
+        this.teamatePreferStr += curVal[i] + "/" 
+      }
+      this.teamatePreferStr = this.teamatePreferStr.substring(0, this.teamatePreferStr.length - 1)
     }
   },
   methods: {
     goBack () {
       this.$router.go(-1)
     },
+    delImg () {
+      this.teamInfo.displayImg = ''
+    },
+    addImg () {
+      this.$refs.imgUpload.click()
+    },
+    getDisplayImg () {  // 获取评论图片
+      var _this = this
+      var event = event || window.event
+      var file = event.target.files[0]
+      var reader = new FileReader()
+      //转base64
+      reader.onload = function(e) {
+          _this.teamInfo.displayImg = e.target.result
+      }
+      reader.readAsDataURL(file)
+    },
+    previewPage () {
+      this.isPreview = !this.isPreview
+      this.isPreviewCont = this.isPreview === false ? '预 览' : '返 回'
+    },
+    mytest () {
+      console.log(this.teamatePrefer)
+      console.log(this.teamatePreferStr)
+    }
   }
 }
 </script>
 
-<style scoped>
+<style>
 .mine-appbar { width: 100%; height:2.5rem; }
 .paper-container { border-radius:.5rem; }
+
+/* 队伍详细信息内容 */
+.mu-flex-one { width:25%; height:2rem; background:#00bcd4; color:#fff; font-size:12px; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem; }
+.mu-flex-two { width:75%; height:2rem; background:yellow; font-size:12px; }
+.mu-flex-two input { width:100%; height:100%; padding: 0 0 0 .5rem; }
+.mu-flex-three { height:2rem; font-size:12px; color:#795548; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem; padding:0 .5rem; }
+.mu-flex-four { position:fixed; width:100%; bottom:0; left:0; padding:0 .1rem; background:#e0e0e0; padding:.5rem .1rem; z-index:999 }
+
+.mu-container-one { margin-top:.5rem; width:100%; height:100%; border-radius:.5rem; padding:.5rem .5rem 0 .5rem; background:#eeeeee; }
+
 .team-header { padding:.5rem 0 .5rem 0; }
 .team-avatar-flex { width:90%; margin-left:-.5rem; margin-bottom:.5rem; }
 .team-leader-nickname { margin-left:.5rem; font-size:14px; color:#795548; }
@@ -233,5 +293,11 @@ export default {
 
 input { border: 1px solid #00bcd4 }
 input:focus { border: 1px solid #4caf50; }
+
+.mu-radio-label {
+  color: rgba(0,0,0,.5);
+  white-space: nowrap;
+  font-size: 12px;
+}
 
 </style>
