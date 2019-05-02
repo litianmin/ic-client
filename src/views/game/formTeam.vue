@@ -225,7 +225,7 @@ export default {
     }
   },
   watch: {
-    teamatePrefer (curVal, oldVal) {
+    teamatePrefer (curVal) {
       this.teamatePreferStr = ''
       for(let i = 0; i < curVal.length; i++) {
         this.teamatePreferStr += curVal[i] + "/" 
