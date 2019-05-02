@@ -23,10 +23,10 @@
       <!-- 角色 -->
       <mu-row>
         <mu-flex class="mu-flex-one" align-items="center" justify-content="center">
-          <span>角 色</span>
+          <span>职 业</span>
         </mu-flex>
         <mu-flex class="mu-flex-two">
-          <input v-model="teamInfo.role" type="text" placeholder="角色，例如：貂蝉">
+          <input v-model="teamInfo.role" type="text" placeholder="职业，例如：刺客" maxlength="15">
         </mu-flex>
       </mu-row>
 
@@ -36,7 +36,7 @@
           <span>昵 称</span>
         </mu-flex>
         <mu-flex class="mu-flex-two">
-          <input v-model="teamInfo.roleName" type="text" placeholder="游戏中的昵称">
+          <input v-model="teamInfo.roleName" type="text" placeholder="游戏中的昵称" maxlength="15">
         </mu-flex>
       </mu-row>
 
@@ -46,7 +46,7 @@
           <span>区 服</span>
         </mu-flex>
         <mu-flex class="mu-flex-two">
-          <input v-model="teamInfo.serverName" type="text" placeholder="游戏角色所在区服">
+          <input v-model="teamInfo.serverName" type="text" placeholder="游戏角色所在区服" maxlength="15">
         </mu-flex>
       </mu-row>
 
@@ -56,7 +56,7 @@
           <span>等级/段位</span>
         </mu-flex>
         <mu-flex class="mu-flex-two">
-          <input v-model="teamInfo.roleRank" type="text" placeholder="游戏角色的等级或者段位">
+          <input v-model="teamInfo.roleRank" type="text" placeholder="游戏角色的等级或者段位" maxlength="15">
         </mu-flex>
       </mu-row>
 
@@ -97,7 +97,7 @@
 
       <!-- 招募宣言 -->
       <mu-row class="mu-container-one">
-        <mu-text-field v-model="teamInfo.announcement" multi-line :rows="5" :rows-max="7" full-width :max-length="200" underline-color="rgba(139, 69, 19, .2)" placeholder="招募宣言：" style="font-size:14px;">
+        <mu-text-field v-model="teamInfo.announcement" multi-line :rows="5" :rows-max="7" full-width :max-length="120" underline-color="rgba(139, 69, 19, .2)" placeholder="招募宣言：" style="font-size:14px;">
         </mu-text-field>
       </mu-row>
 
@@ -130,13 +130,13 @@
               </mu-flex>
 
               <div class="team-leaderinfo-item">
-                  <span class="team-leaderinfo-title">角色：</span>
+                  <span class="team-leaderinfo-title">职业：</span>
                   <span class="team-leaderinfo-cont">
                     {{ teamInfo.role }}               
                   </span>
               </div>
               <div class="team-leaderinfo-item">
-                <span class="team-leaderinfo-title">名称：</span>
+                <span class="team-leaderinfo-title">昵称：</span>
                 <span class="team-leaderinfo-cont">
                   {{ teamInfo.roleName }}
                 </span>
@@ -192,7 +192,7 @@
         {{ isPreviewCont }}
         <mu-icon value="touch_app" size="14"></mu-icon>
       </mu-button>
-      <mu-button @click="mytest" style="width:65%;" color="#42a5f5">
+      <mu-button @click="submit" style="width:65%;" color="#42a5f5">
         发起招募
       </mu-button>
     </mu-flex>
@@ -211,7 +211,7 @@ export default {
         serverName: '',
         roleRank: '',
         recruitNumb: 2,
-        recruitWay: '0',
+        recruitWay: 0,
         displayImg: '',
         announcement: '',
       },
@@ -247,10 +247,18 @@ export default {
       var _this = this
       var event = event || window.event
       var file = event.target.files[0]
+
+      // 先判断file的大小
+      if(file.size > 1024 * 1024 * 2) {
+        this.$toast.message('图片上传最大为2M！')
+        return
+      }
+
       var reader = new FileReader()
       //转base64
       reader.onload = function(e) {
-          _this.teamInfo.displayImg = e.target.result
+        console.log(e.target)
+        _this.teamInfo.displayImg = e.target.result
       }
       reader.readAsDataURL(file)
     },
@@ -258,10 +266,53 @@ export default {
       this.isPreview = !this.isPreview
       this.isPreviewCont = this.isPreview === false ? '预 览' : '返 回'
     },
-    mytest () {
-      console.log(this.teamatePrefer)
-      console.log(this.teamatePreferStr)
-    }
+    submit () {
+      if(this.teamInfo.role.length == 0) {
+        this.$toast.message('职业不能为空，如果没有请填：无')
+        return
+      }
+
+      if(this.teamInfo.roleName.length == 0) {
+        this.$toast.message('昵称不能为空，如果没有请填：无')
+        return
+      }
+
+      if(this.teamInfo.serverName.length == 0) {
+        this.$toast.message('区服不能为空，如果没有请填：无')
+        return
+      }
+
+      if(this.teamInfo.roleRank.length == 0) {
+        this.$toast.message('等级/段位不能为空，如果没有请填：无')
+        return
+      }
+
+      if(this.teamInfo.announcement.length == 0) {
+        this.$toast.message('宣言不能为空，如果没有请填：无')
+        return
+      }
+
+
+      this.$axios.post(
+        '/game/formATeam', {
+          g_id: this.teamInfo.gameID,
+          role: this.teamInfo.role,
+          role_name: this.teamInfo.roleName,
+          server_name: this.teamInfo.serverName,
+          role_rank: this.teamInfo.roleRank,
+          recruit_numb: this.teamInfo.recruitNumb,
+          recruit_way: this.teamInfo.recruitWay,
+          teammate_prefer: this.teamatePreferStr,
+          announcement: this.teamInfo.announcement,
+          display_img: this.teamInfo.displayImg
+        }
+      ).then((resp)=>{
+        if(resp.data.code === 20000) {
+          this.$toast.message('创建队伍成功')
+          // TODO 跳转到组队详细页面(此页面可进行分享，加入组队)
+        }
+      })
+    },
   }
 }
 </script>
@@ -294,10 +345,6 @@ export default {
 input { border: 1px solid #00bcd4 }
 input:focus { border: 1px solid #4caf50; }
 
-.mu-radio-label {
-  color: rgba(0,0,0,.5);
-  white-space: nowrap;
-  font-size: 12px;
-}
+.mu-radio-label { color: rgba(0,0,0,.5); white-space: nowrap; font-size: 12px; }
 
 </style>

@@ -307,11 +307,11 @@
                   </mu-flex>
 
                   <div class="team-leaderinfo-item">
-                    <span class="team-leaderinfo-title">角色：</span>
+                    <span class="team-leaderinfo-title">职业：</span>
                     <span class="team-leaderinfo-cont">洛奇英雄传</span>
                   </div>
                   <div class="team-leaderinfo-item">
-                    <span class="team-leaderinfo-title">游戏名称：</span>
+                    <span class="team-leaderinfo-title">昵称：</span>
                     <span class="team-leaderinfo-cont">我的名字</span>
                   </div>
                   <div class="team-leaderinfo-item">

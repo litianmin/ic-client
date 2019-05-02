@@ -54,6 +54,10 @@ export default {
       var _this = this
       var event = event || window.event
       var file = event.target.files[0]
+      if(file.size > 1024 * 1024 * 2) {
+        this.$toast.message('图片上传最大为2M')
+        return
+      }
       var reader = new FileReader()
       //转base64
       reader.onload = function(e) {
@@ -66,7 +70,7 @@ export default {
     },
     commentSubmit () {
       if(this.c_cont.length == 0 && this.c_img.length == 0) {
-        this.$toast.message('评论内容不能为空')
+        this.$toast.message('评论内容不能为空！')
         return
       }
       this.$axios.post(
