@@ -257,7 +257,6 @@ export default {
       var reader = new FileReader()
       //转base64
       reader.onload = function(e) {
-        console.log(e.target)
         _this.teamInfo.displayImg = e.target.result
       }
       reader.readAsDataURL(file)
@@ -267,6 +266,7 @@ export default {
       this.isPreviewCont = this.isPreview === false ? '预 览' : '返 回'
     },
     submit () {
+
       if(this.teamInfo.role.length == 0) {
         this.$toast.message('职业不能为空，如果没有请填：无')
         return
@@ -292,7 +292,6 @@ export default {
         return
       }
 
-
       this.$axios.post(
         '/game/formATeam', {
           g_id: this.teamInfo.gameID,
@@ -301,7 +300,7 @@ export default {
           server_name: this.teamInfo.serverName,
           role_rank: this.teamInfo.roleRank,
           recruit_numb: this.teamInfo.recruitNumb,
-          recruit_way: this.teamInfo.recruitWay,
+          recruit_way: Number(this.teamInfo.recruitWay),
           teammate_prefer: this.teamatePreferStr,
           announcement: this.teamInfo.announcement,
           display_img: this.teamInfo.displayImg

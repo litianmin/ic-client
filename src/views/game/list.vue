@@ -53,7 +53,7 @@
           <mu-sub-header style="color:#4caf50;">--全部游戏--</mu-sub-header>
           
             <div v-for="item in gameList" :key="item.g_id">
-              <mu-list-item avatar :ripple="false" button @click="linkToDetail(item.g_id)">
+              <mu-list-item avatar :ripple="false" button @click="linkToDetail(item.g_id, item.g_name)">
                 <mu-list-item-action>
                   <div class="list-item-div">
                     <img :src="item.g_logo">
@@ -139,8 +139,8 @@ export default {
       })
     },
 
-    linkToDetail (gameid) {
-      this.$router.push(`/game/detail/${gameid}`)
+    linkToDetail (gameid, gamename) {
+      this.$router.push({path:`/game/detail/${gameid}`}, )
     },
     goBack () {
       this.$router.go(-1)
