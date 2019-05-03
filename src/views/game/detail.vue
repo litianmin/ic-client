@@ -511,8 +511,16 @@
       })
 
       // 赋值 gameID (这里要注意，$router 和 $route 是不同的两个对象， 一个是全局，一个是局部)
-      this.gameID = this.$route.params.gameid
-      this.gameName = this.$route.query.gamename
+      this.gameID = this.$route.params.gameid 
+      this.gameName = this.$route.query.gamename 
+      
+      // 渲染游戏的基本信息
+      this.$axios.post(
+        `/game/detail/${this.gameID}`, {}
+      ).then((resp)=>{
+        console.log(resp)
+      })
+
     },
 
     methods: {
