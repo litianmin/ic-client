@@ -140,7 +140,7 @@ export default {
     },
 
     linkToDetail (gameid, gamename) {
-      this.$router.push({path:`/game/detail/${gameid}`}, )
+      this.$router.push({path:`/game/detail/${gameid}`, query: {gamename: gamename}})
     },
     goBack () {
       this.$router.go(-1)

@@ -7,7 +7,7 @@
       </mu-button>
       
       <div style="font-size:14px;">
-        洛奇英雄传
+        {{ gameName }}
       </div>
     </mu-appbar>
     <!-- END 头部 -->
@@ -492,6 +492,7 @@
         active: 0,  // 导航条切换
         panel: '',  // 组队信息展开
         gameID: 0,
+        gameName: '',
 
         commentPage: 1,
         commentIsTheLast: false,
@@ -511,7 +512,7 @@
 
       // 赋值 gameID (这里要注意，$router 和 $route 是不同的两个对象， 一个是全局，一个是局部)
       this.gameID = this.$route.params.gameid
-
+      this.gameName = this.$route.query.gamename
     },
 
     methods: {
