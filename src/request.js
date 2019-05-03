@@ -45,7 +45,7 @@ axios.interceptors.response.use(
         router.push('/auth/base')
         return
       } 
-      // return Promise.reject('error')
+      return Promise.reject('error')
     } 
 
     // 如果没有错误，那么就把数据直接返回去

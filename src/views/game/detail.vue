@@ -57,110 +57,118 @@
       </mu-tabs>
 
       <!-- BEGIN 评论 -->
+      
       <mu-container v-show="active === 0" class="comment-box">
 
-        <mu-row justify-content="center" style="margin-top:.3rem; margin-bottom:1.5rem;">
+        <mu-row justify-content="center" style="margin-top:.3rem;">
           <!-- 创建队伍按钮 -->
           <mu-button class="comment-create-btn" @click="newComment()">
             评论一下&nbsp; <mu-icon value="border_color" size="14"></mu-icon>
           </mu-button>
         </mu-row>
 
-        <!-- BEGIN 评论样式一 -->
-        <div style="margin-bottom:2rem;">
-          <mu-flex align-items="center">
-            <mu-avatar size="28">
-              <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg">
-            </mu-avatar>
-            <span style="margin-left:.5rem; font-size:14px; color:#4db6ac;">
-              小鸟依人哦 
-            </span>
-            <span style="margin-left: auto; font-size:12px; color:#9e9e9e;">2018-01-02 01:02:03</span>
-          </mu-flex>
-          <mu-row style="padding:.5rem 0 0 2rem; font-size:12px; color:#616161;">
-            其实啊，我真的不想那样做，但是我不那样做的话，我又会出现这样那样的问题，为什么呢，因为我也不想的啊
+        <mu-load-more :loading="commentLoading" @load="commentLoad" :loaded-all="commentIsTheLast">
+          <!-- BEGIN 评论样式一 -->
+          <div style="margin-top:2rem;">
+            <mu-flex align-items="center">
+              <mu-avatar size="28">
+                <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg">
+              </mu-avatar>
+              <span style="margin-left:.5rem; font-size:14px; color:#4db6ac;">
+                小鸟依人哦 
+              </span>
+              <span style="margin-left: auto; font-size:12px; color:#9e9e9e;">2018-01-02 01:02:03</span>
+            </mu-flex>
+            <mu-row style="padding:.5rem 0 0 2rem; font-size:12px; color:#616161;">
+              其实啊，我真的不想那样做，但是我不那样做的话，我又会出现这样那样的问题，为什么呢，因为我也不想的啊
+            </mu-row>
+
+            <mu-row justify-content="end" style="padding:.5rem;">
+                <mu-flex align-items="center">
+                  <mu-icon value="thumb_up" size="12" color="#4db6ac"></mu-icon><span style="font-size:12px; margin-left:.2rem; color:#9e9e9e;">1000</span>
+                </mu-flex>
+
+                <mu-flex align-items="center" style="margin-left:.8rem;">
+                  <mu-icon value="comment" size="12" color="#4db6ac"></mu-icon><span style="font-size:12px; margin-left:.2rem; color:#9e9e9e;">2000</span>
+                </mu-flex>
+            </mu-row>
+
+            <mu-divider></mu-divider>
+          </div>
+          <!-- END 评论样式一 -->
+
+          <!-- BEGIN 评论样式二 -->
+          <div style="margin-top:2rem;">
+            <mu-flex align-items="center">
+              <mu-avatar size="28">
+                <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg">
+              </mu-avatar>
+              <span style="margin-left:.5rem; font-size:14px; color:#4db6ac;">
+                瓦卡萨拉 
+              </span>
+              <span style="margin-left: auto; font-size:12px; color:#9e9e9e;">2018-01-02 01:02:03</span>
+            </mu-flex>
+
+            <mu-row style="padding:.5rem 0 0 2rem; font-size:12px; color:#616161;">
+              其实啊，我真的不想那样做，但是我不那样做的话，我又会出现这样那样的问题，为什么呢，因为我也不想的啊
+            </mu-row>
+
+            <mu-row justify-content="end" style="padding:.5rem;">
+                <mu-flex align-items="center">
+                  <mu-icon value="thumb_up" size="12" color="#4db6ac"></mu-icon><span style="font-size:12px; margin-left:.2rem; color:#9e9e9e;">1000</span>
+                </mu-flex>
+
+                <mu-flex align-items="center" style="margin-left:.8rem;">
+                  <mu-icon value="comment" size="12" color="#4db6ac"></mu-icon><span style="font-size:12px; margin-left:.2rem; color:#9e9e9e;">2000</span>
+                </mu-flex>
+            </mu-row>
+
+            <mu-divider></mu-divider>
+          </div>
+          <!-- END 评论样式二 -->
+
+          <!-- BEGIN 评论样式三 -->
+          <div style="margin-top:2rem;">
+            <mu-flex align-items="center">
+              <mu-avatar size="28">
+                <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg">
+              </mu-avatar>
+              <span class="comment-item-nickname">
+                瓦卡萨拉 
+              </span>
+              <span class="comment-item-time">2018-01-02 01:02:03</span>
+            </mu-flex>
+
+            <mu-row class="comment-item-text">
+              我先来一个评论，然后出现这样那样的问题！
+            </mu-row>
+
+            <mu-row class="comment-item-img">
+              <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3758273131,3198344184&fm=27&gp=0.jpg" alt="">
+            </mu-row>
+
+            <mu-row justify-content="end" style="padding:.5rem;">
+                <mu-flex align-items="center">
+                  <mu-icon value="thumb_up" size="12" color="#4db6ac"></mu-icon>
+                  <span class="comment-item-thumbup-count">1000</span>
+                </mu-flex>
+
+                <mu-flex align-items="center" style="margin-left:.8rem;">
+                  <mu-icon value="comment" size="12" color="#4db6ac"></mu-icon>
+                  <span class="comment-item-comment-count">2000</span>
+                </mu-flex>
+            </mu-row>
+
+            <mu-divider></mu-divider>
+          </div>
+          <!-- END 评论样式三 -->
+
+          <mu-row v-show="commentIsTheLast" justify-content="center" style="padding:.5rem;">
+            <span style="">没有更多的内容</span>
           </mu-row>
-
-          <mu-row justify-content="end" style="padding:.5rem;">
-              <mu-flex align-items="center">
-                <mu-icon value="thumb_up" size="12" color="#4db6ac"></mu-icon><span style="font-size:12px; margin-left:.2rem; color:#9e9e9e;">1000</span>
-              </mu-flex>
-
-              <mu-flex align-items="center" style="margin-left:.8rem;">
-                <mu-icon value="comment" size="12" color="#4db6ac"></mu-icon><span style="font-size:12px; margin-left:.2rem; color:#9e9e9e;">2000</span>
-              </mu-flex>
-          </mu-row>
-
-          <mu-divider></mu-divider>
-        </div>
-        <!-- END 评论样式一 -->
-
-        <!-- BEGIN 评论样式二 -->
-        <div style="margin-bottom:2rem;">
-          <mu-flex align-items="center">
-            <mu-avatar size="28">
-              <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg">
-            </mu-avatar>
-            <span style="margin-left:.5rem; font-size:14px; color:#4db6ac;">
-              瓦卡萨拉 
-            </span>
-            <span style="margin-left: auto; font-size:12px; color:#9e9e9e;">2018-01-02 01:02:03</span>
-          </mu-flex>
-
-          <mu-row style="padding:.5rem 0 0 2rem; font-size:12px; color:#616161;">
-            其实啊，我真的不想那样做，但是我不那样做的话，我又会出现这样那样的问题，为什么呢，因为我也不想的啊
-          </mu-row>
-
-          <mu-row justify-content="end" style="padding:.5rem;">
-              <mu-flex align-items="center">
-                <mu-icon value="thumb_up" size="12" color="#4db6ac"></mu-icon><span style="font-size:12px; margin-left:.2rem; color:#9e9e9e;">1000</span>
-              </mu-flex>
-
-              <mu-flex align-items="center" style="margin-left:.8rem;">
-                <mu-icon value="comment" size="12" color="#4db6ac"></mu-icon><span style="font-size:12px; margin-left:.2rem; color:#9e9e9e;">2000</span>
-              </mu-flex>
-          </mu-row>
-
-          <mu-divider></mu-divider>
-        </div>
-        <!-- END 评论样式二 -->
-
-        <!-- BEGIN 评论样式三 -->
-        <div style="margin-bottom:2rem;">
-          <mu-flex align-items="center">
-            <mu-avatar size="28">
-              <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg">
-            </mu-avatar>
-            <span class="comment-item-nickname">
-              瓦卡萨拉 
-            </span>
-            <span class="comment-item-time">2018-01-02 01:02:03</span>
-          </mu-flex>
-
-          <mu-row class="comment-item-text">
-            我先来一个评论，然后出现这样那样的问题！
-          </mu-row>
-
-          <mu-row class="comment-item-img">
-            <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3758273131,3198344184&fm=27&gp=0.jpg" alt="">
-          </mu-row>
-
-          <mu-row justify-content="end" style="padding:.5rem;">
-              <mu-flex align-items="center">
-                <mu-icon value="thumb_up" size="12" color="#4db6ac"></mu-icon>
-                <span class="comment-item-thumbup-count">1000</span>
-              </mu-flex>
-
-              <mu-flex align-items="center" style="margin-left:.8rem;">
-                <mu-icon value="comment" size="12" color="#4db6ac"></mu-icon>
-                <span class="comment-item-comment-count">2000</span>
-              </mu-flex>
-          </mu-row>
-
-          <mu-divider></mu-divider>
-        </div>
-        <!-- END 评论样式三 -->
+        </mu-load-more>
       </mu-container>
+      
       <!-- END 评论 -->
 
       <!-- BEGIN 组队 -->
@@ -485,6 +493,10 @@
         panel: '',  // 组队信息展开
         gameID: 0,
 
+        commentPage: 1,
+        commentIsTheLast: false,
+        commentLoading: false,
+
       } 
     },
 
@@ -514,7 +526,16 @@
       },
       goBack () {
         this.$router.go(-1)
-      }
+      },
+      commentLoad () { // 加载数据
+        this.commentLoading = true
+        if(this.commentIsTheLast == true) {
+          this.$toast.message('没有更多的内容')
+          this.commentLoading = false
+          return
+        }
+        this.$toast.message("触发了到底事件")
+      },
     },
   }
 </script>
