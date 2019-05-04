@@ -530,10 +530,16 @@
         isRender: false,  // 轮播图是否渲染问题，如果一开始就渲染会出现bug,而且图片必须大于4张，否则会出现bug
         displayImgList: [],  // 轮播图展示图片
 
-        commentPage: 1,
+        commentPage: 1, 
         commentIsTheLast: true,
         commentLoading: false,
         commentList: [],
+
+        teamPage: 1,
+        teamListIsInit: false,
+        teamIsTheLast: true,
+        teamLoading: false,
+        teamList: [],
 
       } 
     },
