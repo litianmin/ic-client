@@ -14,17 +14,19 @@
  
     <!-- BEGIN 轮播图 -->
     <!-- swiper1 -->
-    <swiper :options="swiperOptionTop" class="gallery-top" ref="swiperTop">
-      <swiper-slide v-for="(item, index) in displayImgList" :key="index">
-        <img class="swiper-img" :src="item.avatar" alt="">
-      </swiper-slide>
-    </swiper>
-    <!-- swiper2 Thumbs -->
-    <swiper :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
-      <swiper-slide v-for="(item, index) in displayImgList" :key="index">
-        <img class="swiper-img" :src="item.avatar" alt="">
-      </swiper-slide>
-    </swiper>
+    <div v-if="isRender">
+      <swiper :options="swiperOptionTop" class="gallery-top" ref="swiperTop">
+        <swiper-slide v-for="(item, index) in displayImgList" :key="index">
+          <img class="swiper-img" :src="item" alt="">
+        </swiper-slide>
+      </swiper>
+      <!-- swiper2 Thumbs -->
+      <swiper :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
+        <swiper-slide v-for="(item, index) in displayImgList" :key="index">
+          <img class="swiper-img" :src="item" alt="">
+        </swiper-slide>
+      </swiper>
+    </div>
     <!-- END 轮播图 -->
 
     <!-- BEGIN 游戏简介 -->
@@ -32,7 +34,7 @@
       <mu-col span="12">
         <div>
           <span style="color:black; font-size:14px;">简介：</span> 
-          <span style="color:#9e9e9e; font-size:12px;">洛奇英雄传是我最喜欢的游戏哦，不管你喜不喜欢，反正我很喜欢啦，一款大型聊天站街游戏！</span>
+          <span style="color:#9e9e9e; font-size:12px;">{{ gameBriefDesc }}</span>
         </div> 
       </mu-col>
     </mu-row>
@@ -57,10 +59,9 @@
       </mu-tabs>
 
       <!-- BEGIN 评论 -->
-      
       <mu-container v-show="active === 0" class="comment-box">
 
-        <mu-row justify-content="center" style="margin-top:.3rem;">
+        <mu-row justify-content="center" style="margin-top:.3rem; margin-bottom:1rem;">
           <!-- 创建队伍按钮 -->
           <mu-button class="comment-create-btn" @click="newComment()">
             评论一下&nbsp; <mu-icon value="border_color" size="14"></mu-icon>
@@ -69,7 +70,7 @@
 
         <mu-load-more :loading="commentLoading" @load="commentLoad" :loaded-all="commentIsTheLast">
           <!-- BEGIN 评论样式一 -->
-          <div style="margin-top:2rem;">
+          <!-- <div style="margin-top:2rem;">
             <mu-flex align-items="center">
               <mu-avatar size="28">
                 <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg">
@@ -94,11 +95,11 @@
             </mu-row>
 
             <mu-divider></mu-divider>
-          </div>
+          </div> -->
           <!-- END 评论样式一 -->
 
           <!-- BEGIN 评论样式二 -->
-          <div style="margin-top:2rem;">
+          <!-- <div style="margin-top:2rem;">
             <mu-flex align-items="center">
               <mu-avatar size="28">
                 <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg">
@@ -124,11 +125,11 @@
             </mu-row>
 
             <mu-divider></mu-divider>
-          </div>
+          </div> -->
           <!-- END 评论样式二 -->
 
           <!-- BEGIN 评论样式三 -->
-          <div style="margin-top:2rem;">
+          <!-- <div style="margin-top:2rem;">
             <mu-flex align-items="center">
               <mu-avatar size="28">
                 <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg">
@@ -160,15 +161,53 @@
             </mu-row>
 
             <mu-divider></mu-divider>
-          </div>
+          </div> -->
           <!-- END 评论样式三 -->
 
-          <mu-row v-show="commentIsTheLast" justify-content="center" style="padding:.5rem;">
+
+          
+          <!-- BEGIN 评论样式 -->
+          <div style="margin-top:1rem;" v-for="(item, index) in commentList" :key="index">
+            <mu-flex align-items="center">
+              <mu-avatar size="28">
+                <img :src="item.u_avatar">
+              </mu-avatar>
+              <span class="comment-item-nickname">
+                {{ item.u_nickname }} 
+              </span>
+              <span class="comment-item-time">{{ item.c_create_time }}</span>
+            </mu-flex>
+
+            <mu-row v-if="item.c_cont" class="comment-item-text">
+              {{ item.c_cont }}
+            </mu-row>
+
+            <mu-row class="comment-item-img" v-if="item.c_img">
+              <img :src="item.c_img" alt="">
+            </mu-row>
+
+            <mu-row justify-content="end" style="padding:.5rem;">
+                <mu-flex align-items="center">
+                  <mu-icon value="thumb_up" size="12" color="#4db6ac"></mu-icon>
+                  <span class="comment-item-thumbup-count">{{ item.c_likenumb }}</span>
+                </mu-flex>
+
+                <mu-flex align-items="center" style="margin-left:.8rem;">
+                  <mu-icon value="comment" size="12" color="#4db6ac"></mu-icon>
+                  <span class="comment-item-comment-count">{{ item.c_replynumb }}</span>
+                </mu-flex>
+            </mu-row>
+
+            <mu-divider></mu-divider>
+          </div>
+          <!-- END 评论样式 -->
+
+
+          <mu-row v-show="commentIsTheLast" justify-content="center" style="padding:.5rem; margin-top:.5rem;">
             <span style="">没有更多的内容</span>
           </mu-row>
         </mu-load-more>
       </mu-container>
-      
       <!-- END 评论 -->
 
       <!-- BEGIN 组队 -->
@@ -480,48 +519,59 @@
           slideToClickedSlide: true,
         },
 
-        // 轮播图展示图片
-        displayImgList: [ 
-          {id: 1, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"},
-          {id: 2, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"},
-          {id: 3, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"},
-          {id: 4, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"},
-          {id: 5, avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2481108828,1517439278&fm=26&gp=0.jpg"}
-        ],
 
         active: 0,  // 导航条切换
         panel: '',  // 组队信息展开
-        gameID: 0,
-        gameName: '',
+
+        gameID: 0,  // 游戏id
+        gameName: '', // 游戏名称
+        gameTp: '', // 游戏类型
+        gameBriefDesc: '', // 游戏简介
+        isRender: false,  // 轮播图是否渲染问题，如果一开始就渲染会出现bug,而且图片必须大于4张，否则会出现bug
+        displayImgList: [],  // 轮播图展示图片
 
         commentPage: 1,
-        commentIsTheLast: false,
+        commentIsTheLast: true,
         commentLoading: false,
+        commentList: [],
 
       } 
     },
 
     mounted () {
-      // 轮播图处理
-      this.$nextTick(() => {
-        const swiperTop = this.$refs.swiperTop.swiper
-        const swiperThumbs = this.$refs.swiperThumbs.swiper
-        swiperTop.controller.control = swiperThumbs
-        swiperThumbs.controller.control = swiperTop
-      })
 
-      // 赋值 gameID (这里要注意，$router 和 $route 是不同的两个对象， 一个是全局，一个是局部)
-      this.gameID = this.$route.params.gameid 
-      this.gameName = this.$route.query.gamename 
-      
-      // 渲染游戏的基本信息
+      // 赋值 gameID, gameName (这里要注意，$router 和 $route 是不同的两个对象， 一个是全局，一个是局部)
+      this.gameID = this.$route.params.gameid
+      this.gameName = this.$route.query.gamename
+
+      // 获取游戏的基本信息，评论基本信息，组队基本信息
       this.$axios.post(
-        `/game/detail/${this.gameID}`, {}
+        `/game/detail/${this.gameID}`,{}
       ).then((resp)=>{
-        console.log(resp)
-      })
+        let dataBack = resp.data.msg
+        
+        // 游戏基本信息初始化问题
+        this.gameTp = dataBack.gameInfo.g_type
+        this.gameBriefDesc = dataBack.gameInfo.brief_desc
+        this.displayImgList = dataBack.gameInfo.display_imglist
+        // 轮播图数据渲染问题
+        this.isRender =true
+         // 轮播图处理
+        this.$nextTick(() => {
+          const swiperTop = this.$refs.swiperTop.swiper
+          const swiperThumbs = this.$refs.swiperThumbs.swiper
+          swiperTop.controller.control = swiperThumbs
+          swiperThumbs.controller.control = swiperTop
+        })
 
+        // 游戏评论处理
+        this.commentList = this.commentList.concat(dataBack.cmtList)
+        this.commentIsTheLast = dataBack.cmtIsTheLast
+        this.commentPage++
+
+      })
     },
+
 
     methods: {
       toggle (panel) {
@@ -538,12 +588,15 @@
       },
       commentLoad () { // 加载数据
         this.commentLoading = true
-        if(this.commentIsTheLast == true) {
-          this.$toast.message('没有更多的内容')
-          this.commentLoading = false
-          return
-        }
-        this.$toast.message("触发了到底事件")
+
+        this.$axios.post(`/game/commentList/${this.commentPage}/${this.gameID}`,{}).then((resp)=>{
+          let dataBack = resp.data
+          this.commentIsTheLast = dataBack.isTheLast
+          this.commentList = this.commentList.concat(dataBack.listInfo)
+          this.commentPage++  // 页数+1
+          this.commentLoading = false // 关闭转圈圈
+        })
+
       },
     },
   }

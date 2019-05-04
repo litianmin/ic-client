@@ -46,6 +46,9 @@ export default {
       c_img: '',  // base64图片数据
     }
   },
+  mounted () {
+    this.gameID = this.$route.params.gameid
+  },
   methods: {
     addImg () {
       this.$refs.imgUpload.click()
@@ -76,7 +79,7 @@ export default {
       this.$axios.post(
         `/commentToGame`,
         {
-          g_id: this.gameID,
+          g_id: Number(this.gameID),
           c_cont: this.c_cont,
           c_img: this.c_img
         }
