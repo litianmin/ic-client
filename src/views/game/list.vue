@@ -25,7 +25,7 @@
         <mu-sub-header style="color:#00bcd4;">--热门游戏--</mu-sub-header>
 
           <div v-for="item in hotGameList" :key="item.g_id">
-            <mu-list-item avatar :ripple="false" button @click="linkToDetail(item.g_id)">
+            <mu-list-item avatar :ripple="false" button @click="linkToDetail(item.g_id, item.g_name)">
               <mu-list-item-action>
                 <div class="list-item-div">
                   <img :src="item.g_logo">
@@ -104,7 +104,7 @@ export default {
       let dataBack = resp.data
 
       if(dataBack.code == 20000) {
-        if(!!dataBack.hotGameList === false) { 
+        if(dataBack.hotGameList.length == 0) { 
           // 没有热门游戏，那么隐藏热门游戏列表
           this.hotGameListIsShow = false
         }else{

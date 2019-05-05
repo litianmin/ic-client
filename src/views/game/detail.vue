@@ -33,7 +33,7 @@
     <mu-row class="game-brief-desc">
       <mu-col span="12">
         <div>
-          <span style="color:black; font-size:14px;">简介：</span> 
+          <span style="color:#795548; font-size:13px;">简介：</span> 
           <span style="color:#9e9e9e; font-size:12px;">{{ gameBriefDesc }}</span>
         </div> 
       </mu-col>
@@ -485,6 +485,116 @@
 
           </mu-expansion-panel>
           <!-- END 组队样式三 -->
+
+
+          <!-- BEGIN 组队样式 -->
+          <mu-load-more :loading="teamLoading" @load="teamLoad" :loaded-all="teamIsTheLast">
+            <mu-expansion-panel class="team-panel"  v-for="(item, index) in teamList" :key="index">
+              <div slot="header" class="team-header">
+
+                <!-- 队长基本信息(包括图片) -->
+                <mu-row style="margin-top:.2rem;" gutter>
+                  <!-- 左边内容 -->
+                  <mu-col col="6" style="padding:.5rem 0 0 .5rem;">
+                    <mu-flex align-items="center" class="team-avatar-flex">
+                      <mu-avatar size="25">
+                        <img :src="item.captain_avatar" />
+                      </mu-avatar>
+                      <span class="team-leader-nickname">{{ item.captain_nickname }}</span>
+                    </mu-flex>
+
+                    <div class="team-leaderinfo-item">
+                      <span class="team-leaderinfo-title">职业：</span>
+                      <span class="team-leaderinfo-cont">{{ item.role }}</span>
+                    </div>
+                    <div class="team-leaderinfo-item">
+                      <span class="team-leaderinfo-title">角色：</span>
+                      <span class="team-leaderinfo-cont">{{ item.role_name }}</span>
+                    </div>
+                    <div class="team-leaderinfo-item">
+                      <span class="team-leaderinfo-title">区服：</span>
+                      <span class="team-leaderinfo-cont">{{ item.server_name }}</span>
+                    </div>
+                    <div class="team-leaderinfo-item">
+                      <span class="team-leaderinfo-title">等级/段位：</span>
+                      <span class="team-leaderinfo-cont">{{ item.role_rank }}</span>
+                    </div>
+                    <div class="team-leaderinfo-item">
+                      <span class="team-leaderinfo-title">招募人数：</span>
+                      <span class="team-leaderinfo-cont">{{ item.recruit_num }}</span>
+                    </div>
+                    <div class="team-leaderinfo-item">
+                      <span class="team-leaderinfo-title">队友偏向：</span>
+                      <span class="team-leaderinfo-cont">{{ item.teannate_prefer }}</span>
+                    </div>
+                  </mu-col>  
+
+                  <!-- 右边图片展示 -->
+                  <mu-col col="6" justify-content="center" align-items="center">
+                    <mu-flex justify-content="center" align-items="center" class="team-leaderinfo-img-flex">
+                      <img :src="item.display_img" />
+                    </mu-flex>
+                  </mu-col>
+                </mu-row>
+
+                <!-- 招募宣言 -->
+                <mu-row style="margin-top:.5rem;" gutter>
+                  <mu-col col="12" style="font-size:12px;">
+                    <span style="color:#795548;">招募宣言：</span> 
+                    <span style="color:#9e9e9e;">{{ item.announcement }}</span>
+                  </mu-col>
+                </mu-row>
+
+                <!-- 额外内容 -->
+                <mu-flex style="margin-top:.5rem;">
+                  <div style="margin-left:auto;">
+                    <span class="team-extracont-time">2分钟前</span>
+                    <!-- <span style="font-size:12px; color:#009688;">进入聊天</span> -->
+                    <span class="team-extracont-operate">加入组队</span>
+                  </div>
+                </mu-flex>
+
+              </div>
+
+              <!-- 队友所需内容 角色、游戏名、等级段位、队友偏向 -->
+              <!-- 展开的内容，队友信息 -->
+              <mu-divider></mu-divider>  
+              <div style="margin-top:.5rem;">
+                <mu-row class="teammate-box" v-for="(item2, index2) in item.TeammateList" :key="index2">
+                  <mu-col span="9">
+                    <mu-flex style="height:4rem;">
+                      <mu-avatar size="28">
+                        <img :src="item2.user_avatar" />
+                      </mu-avatar>
+
+                      <div>
+                        <span class="teammate-info-title">昵称：<span style="color:#9e9e9e;">{{ item2.nickname }}</span></span>
+                        <br/>
+                        <span class="teammate-info-title">角色：<span style="color:#9e9e9e;">{{ item2.role_name }}</span></span>
+                        <br/>
+                        <span class="teammate-info-title">{{ item2.role + '/' +item2.role_rank + '/' + item2.feature }}</span>
+                      </div>
+                    </mu-flex>
+                  </mu-col>
+
+                  <mu-col span="3" justify-content="center">
+                    <mu-flex justify-content="center" align-items="center" class="teammate-img-flex">
+                        <img :src="item2.display_img" />
+                    </mu-flex>
+                  </mu-col>
+                </mu-row>
+              </div>
+
+            </mu-expansion-panel>
+
+            <mu-row v-show="teamIsTheLast" justify-content="center" style="padding:.5rem; margin-top:.5rem;">
+              <span style="">没有更多的内容</span>
+            </mu-row>
+          </mu-load-more>
+          <!-- END 组队样式 -->
+
+
+
       </mu-container>
       <!-- END 组队 -->
     </div>
@@ -548,18 +658,19 @@
 
       // 赋值 gameID, gameName (这里要注意，$router 和 $route 是不同的两个对象， 一个是全局，一个是局部)
       this.gameID = this.$route.params.gameid
-      this.gameName = this.$route.query.gamename
+      // this.gameName = this.$route.query.gamename
 
       // 获取游戏的基本信息，评论基本信息，组队基本信息
       this.$axios.post(
         `/game/detail/${this.gameID}`,{}
       ).then((resp)=>{
         let dataBack = resp.data.msg
-        
+
         // 游戏基本信息初始化问题
         this.gameTp = dataBack.gameInfo.g_type
         this.gameBriefDesc = dataBack.gameInfo.brief_desc
         this.displayImgList = dataBack.gameInfo.display_imglist
+        this.gameName = dataBack.gameInfo.g_name
         // 轮播图数据渲染问题
         this.isRender =true
          // 轮播图处理
@@ -578,6 +689,15 @@
       })
     },
 
+    watch: {
+      active (newVal) {
+
+        if(newVal == 1 && this.teamListIsInit === false) {
+          this.teamListIsInit = true
+          this.teamLoad()
+        }
+      }
+    },
 
     methods: {
       toggle (panel) {
@@ -602,7 +722,15 @@
           this.commentPage++  // 页数+1
           this.commentLoading = false // 关闭转圈圈
         })
-
+      },
+      teamLoad () {
+        this.$axios.post(`/game/teamList/${this.teamPage}/${this.gameID}`,{}).then((resp)=>{
+          let dataBack = resp.data
+          this.teamIsTheLast = dataBack.isTheLast
+          this.teamList = this.teamList.concat(dataBack.listInfo)
+          this.teamPage++  // 页数+1
+          this.teamLoading = false // 关闭转圈圈
+        })
       },
     },
   }
