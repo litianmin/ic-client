@@ -86,6 +86,11 @@ const router =  new Router({
       name: 'game-newcomment',
       component: () => import('./views/game/newComment.vue')
     },
+    {
+      path: '/game/commenDetail/:commentid',
+      name: 'game-comemntdetail',
+      component: () => import('./views/game/commentDetail.vue')
+    },
     { // 游戏创建组队
       path: '/game/formteam/:gameid',
       name: 'game-formteam',

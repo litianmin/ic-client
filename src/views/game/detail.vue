@@ -167,7 +167,7 @@
 
           
           <!-- BEGIN 评论样式 -->
-          <div style="margin-top:1rem;" v-for="(item, index) in commentList" :key="index">
+          <div style="margin-top:1rem;" v-for="(item, index) in commentList" :key="index" @click="linkToCommentDetail(item.c_id)">
             <mu-flex align-items="center">
               <mu-avatar size="28">
                 <img :src="item.u_avatar">
@@ -717,11 +717,15 @@
 
         this.$axios.post(`/game/commentList/${this.commentPage}/${this.gameID}`,{}).then((resp)=>{
           let dataBack = resp.data
+          console.log(dataBack)
           this.commentIsTheLast = dataBack.isTheLast
           this.commentList = this.commentList.concat(dataBack.listInfo)
           this.commentPage++  // 页数+1
           this.commentLoading = false // 关闭转圈圈
         })
+      },
+      linkToCommentDetail (commentID) {
+        this.$router.push(`/game/commenDetail/${commentID}`)
       },
       teamLoad () {
         this.$axios.post(`/game/teamList/${this.teamPage}/${this.gameID}`,{}).then((resp)=>{
