@@ -14,7 +14,7 @@
 
     <div style="margin-bottom:3rem;">
     <!-- BEGIN 主评论 -->
-    <mu-container style="background:#eeeeee; padding:.5rem; margin-bottom:.5rem;">
+    <mu-container style="background:#eeeeee; padding:1rem .5rem 0 .5rem; margin-bottom:.5rem;">
       <mu-flex align-items="center">
         <mu-avatar size="20">
           <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3279320808,3576872714&fm=27&gp=0.jpg">
@@ -26,7 +26,7 @@
       </mu-flex>
 
       <mu-row class="comment-item-text">
-        这里是我的评论内容
+        这里是我的评论内容，如果内容多一点，应该不会有什么问题吧，怎么一生总部可碰到
       </mu-row>
 
       <mu-row class="comment-item-img">
@@ -95,8 +95,10 @@
     </div>
 
     <mu-flex style="position:fixed; bottom:0; width:100%; padding:.5rem; background:#ffffff; border-top:1px solid #e0e0e0;" align-items="center">
-      <input type="text" style="width:90%; border-radius:.3rem; padding:.3rem; background:#f5f5f5; border:0; font-size:12px;" placeholder="评论一下吧">
-      <span @click="convertFocus"><svg-icon :icon-class="IsFocus == false ? 'focus' : 'had_focus'" style="font-size:18px; margin-left:.5rem;"></svg-icon></span>
+      <div style="width:90%;" @click="replytoComment">
+      <input type="text" style="width:100%; border-radius:.3rem; padding:.3rem; background:#f5f5f5; border:0; font-size:12px;" placeholder="评论一下吧" disabled>
+      </div>
+      <span @click="convertFocus" style="margin-left:auto; font-size:18px; margin-right:.3rem;"><svg-icon :icon-class="IsFocus == false ? 'focus' : 'had_focus'"></svg-icon></span>
     </mu-flex>
 
   </div>
@@ -126,6 +128,9 @@ export default {
     },
     convertFocus () {
       this.IsFocus = !this.IsFocus
+    },
+    replytoComment () {
+      this.$router.push(`/game/replytoComment/${this.CommentID}/0`)
     }
   }
 }
@@ -137,7 +142,7 @@ export default {
 .comment-create-btn { width:100%; padding:.5rem; text-align:center; color:white; background:#4dd0e1; border-radius:.3rem; border:0; }
 .comment-item-nickname { margin-left:.5rem; font-size:12px; color:#4db6ac; }
 .comment-item-time { margin-left: auto; font-size:12px; color:#9e9e9e; }
-.comment-item-text { padding:.5rem 0 0 1rem; font-size:12px; color:#616161; }
+.comment-item-text { padding:.5rem 0 .5rem 1.5rem; font-size:12px; }
 .comment-item-img { padding:.5rem .5rem 0 1rem; font-size:12px; color:#616161; }
 .comment-item-img img { max-width:100%; max-height:100%; border-radius:.3rem; }
 .comment-item-thumbup-count { font-size:12px; margin-left:.2rem; color:#9e9e9e; }

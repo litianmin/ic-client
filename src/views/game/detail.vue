@@ -488,6 +488,7 @@
 
 
           <!-- BEGIN 组队样式 -->
+          <!-- TODO 这个还是手动加载吧， 好像加了这个会很卡 -->
           <mu-load-more :loading="teamLoading" @load="teamLoad" :loaded-all="teamIsTheLast">
             <mu-expansion-panel class="team-panel"  v-for="(item, index) in teamList" :key="index">
               <div slot="header" class="team-header">
@@ -725,7 +726,7 @@
         })
       },
       linkToCommentDetail (commentID) {
-        this.$router.push(`/game/commenDetail/${commentID}`)
+        this.$router.push(`/game/commentDetail/${commentID}`)
       },
       teamLoad () {
         this.$axios.post(`/game/teamList/${this.teamPage}/${this.gameID}`,{}).then((resp)=>{

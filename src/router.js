@@ -86,10 +86,15 @@ const router =  new Router({
       name: 'game-newcomment',
       component: () => import('./views/game/newComment.vue')
     },
-    {
-      path: '/game/commenDetail/:commentid',
+    { // 评论详细内容
+      path: '/game/commentDetail/:commentid',
       name: 'game-comemntdetail',
       component: () => import('./views/game/commentDetail.vue')
+    },
+    { // 回复评论
+      path: '/game/replytoComment/:commentid/:replyto',
+      name: 'replyto-comment',
+      component: () => import('./views/game/replyToComment.vue')
     },
     { // 游戏创建组队
       path: '/game/formteam/:gameid',
