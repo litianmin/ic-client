@@ -22,7 +22,7 @@
           <span class="comment-item-nickname">
             人总需要勇敢生存 (楼主)
           </span>
-          <span class="comment-item-time">2019-01-01 02:02:04</span>
+          <!-- <span class="comment-item-time">2019-01-01 02:02:04</span> -->
         </mu-flex>
 
         <mu-row class="comment-item-text">
@@ -33,8 +33,12 @@
           <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2990368894,2130556537&fm=27&gp=0.jpg" alt="">
         </mu-row>
 
-        <mu-row justify-content="end" style="padding:.5rem;">
-            <mu-flex align-items="center">
+        <mu-flex align-items="center" justify-content="start" style="padding:.5rem .8rem .5rem 1rem;">
+            <mu-flex>
+              <span class="comment-item-time">2019-01-01 02:02:04</span>
+            </mu-flex>
+
+            <mu-flex align-items="center" style="margin-left:auto;">
               <mu-button icon color="#9e9e9e" small @click="convertThumbup">
                 <mu-icon :class="{'had-thumbup':HadThumbUp}" value="thumb_up"></mu-icon>
               </mu-button>
@@ -47,19 +51,19 @@
               </mu-button>
               <span class="comment-item-comment-count">200</span>
             </mu-flex>
-        </mu-row>
+        </mu-flex>
       </mu-container>
       <!-- END 主评论 -->
 
       <!-- BEGIN 排序条 -->
-      <mu-flex class="sort-bar" align-items="center">
-        <span>回复列表</span>
+      <mu-flex class="sort-bar" justify-content="center" align-items="center" >
+        <span style="margin-left:.3rem">回复列表</span>
         <span @click="convertSort" class="sort-bar-svg"><svg-icon :icon-class="IsSortup == true ? 'sortup' : 'sortdown'"></svg-icon></span>
       </mu-flex>
       <!-- END 排序条 -->
 
       <!-- BEGIN 回复评论 -->
-      <mu-container style=" padding:.5rem .8rem;">
+      <mu-container style=" padding:.5rem .8rem; border-bottom:.1rem solid #ffffff;">
         <mu-flex align-items="center">
           <mu-avatar size="20">
             <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3279320808,3576872714&fm=27&gp=0.jpg">
@@ -78,7 +82,7 @@
         </mu-row>
       </mu-container>
 
-      <mu-container style=" padding:.5rem .8rem;">
+      <mu-container style=" padding:.5rem .8rem; border-bottom:.1rem solid #ffffff;">
         <mu-flex align-items="center">
           <mu-avatar size="20">
             <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3279320808,3576872714&fm=27&gp=0.jpg">
@@ -96,7 +100,7 @@
           </span>
         </mu-row>
 
-        <mu-row class="comment-item-img" style="padding:.5rem .5rem 0 1rem; ">
+        <mu-row class="comment-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
           <img src="http://img4.imgtn.bdimg.com/it/u=198474340,3584657172&fm=26&gp=0.jpg" alt="">
         </mu-row>
       </mu-container>
@@ -153,8 +157,8 @@ export default {
 <style scoped>
 .mine-appbar { width: 100%; height:2.5rem; }
 
-.main-comment-container { background:#eeeeee; padding:1rem .5rem 0 .5rem; margin-top:.2rem; border-bottom:1px solid #9e9e9e; }
-.sort-bar { background:#eceff1; font-size:12px; padding:.3rem .5rem; margin-top:.3rem; margin-bottom:.5rem; border-top:1px solid #cfd8dc; }
+.main-comment-container { background:#ffffff; padding:1rem .5rem 0 .5rem;  }
+.sort-bar { background:#eeeeee; font-size:12px; padding:.3rem .5rem; margin-bottom:.5rem;  }
 .sort-bar-svg { margin-left:auto; font-size:18px; margin-right:.3rem; }
 
 .reply-nickname { font-size:12px; margin-left:.5rem; margin-right:.5rem; color:#4db6ac; }
@@ -168,7 +172,7 @@ export default {
 
 .comment-box { padding:.5rem 1rem; }
 .comment-item-nickname { margin-left:.5rem; font-size:12px; color:#4db6ac; }
-.comment-item-time { margin-left: auto; font-size:12px; color:#9e9e9e; }
+.comment-item-time { margin-left: auto; margin-right:.3rem; font-size:12px; color:#9e9e9e; }
 .comment-item-text { padding:.5rem 0 .5rem 1.5rem; font-size:12px; }
 .comment-item-img { padding:.5rem .5rem 0 1rem; font-size:12px; color:#616161; }
 .comment-item-img img { max-width:100%; max-height:100%; border-radius:.3rem; }

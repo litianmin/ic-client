@@ -526,7 +526,7 @@
                     </div>
                     <div class="team-leaderinfo-item">
                       <span class="team-leaderinfo-title">队友偏向：</span>
-                      <span class="team-leaderinfo-cont">{{ item.teannate_prefer }}</span>
+                      <span class="team-leaderinfo-cont">{{ item.teanmate_prefer }}</span>
                     </div>
                   </mu-col>  
 
@@ -731,6 +731,7 @@
       teamLoad () {
         this.$axios.post(`/game/teamList/${this.teamPage}/${this.gameID}`,{}).then((resp)=>{
           let dataBack = resp.data
+          console.log(dataBack)
           this.teamIsTheLast = dataBack.isTheLast
           this.teamList = this.teamList.concat(dataBack.listInfo)
           this.teamPage++  // 页数+1
