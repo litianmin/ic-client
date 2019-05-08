@@ -74,13 +74,13 @@ export default{
     let timeNow = parseInt(new Date().getTime()/1000)
     let d = 0
 
-    date = new Date(publishTime*1000),
-    Y = date.getFullYear()
-    M = date.getMonth() + 1
-    D = date.getDate()
-    H = date.getHours()
-    m = date.getMinutes()
-    s = date.getSeconds()
+    let date = new Date(publishTime*1000)
+    let Y = date.getFullYear()
+    let M = date.getMonth() + 1
+    let D = date.getDate()
+    let H = date.getHours()
+    let m = date.getMinutes()
+    let s = date.getSeconds()
     //小于10的在前面补0
     if (M < 10) {
         M = '0' + M

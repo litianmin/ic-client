@@ -17,39 +17,39 @@
       <mu-container class="main-comment-container">
         <mu-flex align-items="center">
           <mu-avatar size="20">
-            <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3279320808,3576872714&fm=27&gp=0.jpg">
+            <img :src="CmtDetailMain.avatar">
           </mu-avatar>
           <span class="comment-item-nickname">
-            人总需要勇敢生存 (楼主)
+            {{ CmtDetailMain.nickname }} (楼主)
           </span>
           <!-- <span class="comment-item-time">2019-01-01 02:02:04</span> -->
         </mu-flex>
 
         <mu-row class="comment-item-text">
-          这里是我的评论内容，如果内容多一点，应该不会有什么问题吧，怎么一生总部可碰到
+          {{ CmtDetailMain.c_cont }}
         </mu-row>
 
-        <mu-row class="comment-item-img">
-          <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2990368894,2130556537&fm=27&gp=0.jpg" alt="">
+        <mu-row v-if="CmtDetailMain.c_img" class="comment-item-img">
+          <img :src="CmtDetailMain.c_img" alt="">
         </mu-row>
 
         <mu-flex align-items="center" justify-content="start" style="padding:.5rem .8rem .5rem 1rem;">
             <mu-flex>
-              <span class="comment-item-time">2019-01-01 02:02:04</span>
+              <span class="comment-item-time">{{ CmtDetailMain.create_time }}</span>
             </mu-flex>
 
             <mu-flex align-items="center" style="margin-left:auto;">
               <mu-button icon color="#9e9e9e" small @click="convertThumbup">
                 <mu-icon :class="{'had-thumbup':HadThumbUp}" value="thumb_up"></mu-icon>
               </mu-button>
-              <span class="comment-item-thumbup-count">100</span>
+              <span class="comment-item-thumbup-count">{{ CmtDetailMain.likeNum }}</span>
             </mu-flex>
 
             <mu-flex align-items="center" style="margin-left:.8rem;">
             <mu-button icon color="#9e9e9e" small>
                 <mu-icon value="comment"></mu-icon>
               </mu-button>
-              <span class="comment-item-comment-count">200</span>
+              <span class="comment-item-comment-count">{{ CmtDetailMain.replyNum }}</span>
             </mu-flex>
         </mu-flex>
       </mu-container>
@@ -63,7 +63,7 @@
       <!-- END 排序条 -->
 
       <!-- BEGIN 回复评论 -->
-      <mu-container style=" padding:.5rem .8rem; border-bottom:.1rem solid #ffffff;">
+      <!-- <mu-container style=" padding:.5rem .8rem; border-bottom:.1rem solid #ffffff;">
         <mu-flex align-items="center">
           <mu-avatar size="20">
             <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3279320808,3576872714&fm=27&gp=0.jpg">
@@ -80,28 +80,28 @@
             <span style="font-size:12px; color:green; margin-left:.5rem;">回复</span>
           </span>
         </mu-row>
-      </mu-container>
+      </mu-container> -->
 
-      <mu-container style=" padding:.5rem .8rem; border-bottom:.1rem solid #ffffff;">
+      <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
         <mu-flex align-items="center">
           <mu-avatar size="20">
-            <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3279320808,3576872714&fm=27&gp=0.jpg">
+            <img :src="item.avatar">
           </mu-avatar>
           <span class="reply-nickname">
-            人总需要勇敢生存 
+            {{ item.nickname }} 
           </span>
-          <span class="reply-time">3分钟前</span>
+          <span class="reply-time">{{ item.create_time }}</span>
         </mu-flex>
 
         <mu-row class="reply-cont-box">
           <span style="font-size:12px; margin-left:.5rem; ">
-            @<span style="color:#795548;">人总需要勇敢生存</span> : 其实你就是一个傻逼啦，整天在这里唧唧歪歪
+            <span v-if="item.reply_to > 0">@<span style="color:#795548;">{{ item.reply_nickname }}</span> :</span> {{ item.c_cont }}
             <span style="color:green; margin-left:.5rem;">回复</span>
           </span>
         </mu-row>
 
-        <mu-row class="comment-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
-          <img src="http://img4.imgtn.bdimg.com/it/u=198474340,3584657172&fm=26&gp=0.jpg" alt="">
+        <mu-row v-if="item.c_img" class="comment-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
+          <img :src="item.c_img">
         </mu-row>
       </mu-container>
       <!-- END 回复评论 -->
@@ -126,11 +126,53 @@ export default {
       HadThumbUp: false,
       IsFocus: false,
       IsSortup: true,
+      IsTheLast: true,
+      CmtDetailMain: {
+        userID: 0,
+        c_cont: '',
+        c_img: "",
+        likeNumb: 0,
+        dislikeNum: 0,
+        replyNum: 0,
+        createTime: "",
+        nickname: "",
+        avatar: "",
+        sex: 1
+      },
+      ReplyList: [],
+      ReplyListPage: 1,
     }
   },
   mounted () {
     let commentID = this.$route.params.commentid
     this.CommentID = commentID
+
+    // 页面初始化
+    this.$axios.post(`/game/commentDetail/${commentID}`, {}).then((resp)=>{
+      let dataBack = resp.data.msg 
+      this.IsTheLast = dataBack.isTheLast
+      this.CmtDetailMain = dataBack.cmtDetailMain
+
+      this.CmtDetailMain.userID = dataBack.cmtDetailMain.user_id
+      this.CmtDetailMain.c_cont = dataBack.cmtDetailMain.c_cont
+      this.CmtDetailMain.c_img = dataBack.cmtDetailMain.c_img
+      this.CmtDetailMain.likeNumb = dataBack.cmtDetailMain.like_num
+      this.CmtDetailMain.dislikeNum = dataBack.cmtDetailMain.dislike_num
+      this.CmtDetailMain.replyNum = dataBack.cmtDetailMain.reply_num
+      this.CmtDetailMain.createTime = dataBack.cmtDetailMain.create_time
+      this.CmtDetailMain.nickname = dataBack.cmtDetailMain.nickname
+      this.CmtDetailMain.avatar = dataBack.cmtDetailMain.avatar
+      this.CmtDetailMain.sex = dataBack.cmtDetailMain.sex
+
+      let replyList = dataBack.replyListInfo
+      for(let i = 0; i < replyList.length; i++) {
+        replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, false)
+      }
+      this.ReplyList = replyList
+      this.ReplyListPage++
+      // console.log(this.ReplyList)
+    })
+
   },
   methods: {
     goBack () {
@@ -160,6 +202,8 @@ export default {
 .main-comment-container { background:#ffffff; padding:1rem .5rem 0 .5rem;  }
 .sort-bar { background:#eeeeee; font-size:12px; padding:.3rem .5rem; margin-bottom:.5rem;  }
 .sort-bar-svg { margin-left:auto; font-size:18px; margin-right:.3rem; }
+
+.reply-container { padding:.5rem .8rem; border-bottom:.1rem solid #ffffff; }
 
 .reply-nickname { font-size:12px; margin-left:.5rem; margin-right:.5rem; color:#4db6ac; }
 .reply-time { margin-left:auto; font-size:12px; color:#9e9e9e; margin-right:.5rem; }
