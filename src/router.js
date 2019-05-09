@@ -100,6 +100,11 @@ const router =  new Router({
       path: '/game/formteam/:gameid',
       name: 'game-formteam',
       component: () => import('./views/game/formTeam.vue')
+    },
+    { // 进入组队详情
+      path: '/game/teamDetail/:teamid',
+      name: 'team-detail',
+      component: () => import('./views/game/teamDetail.vue')
     }
     
 
