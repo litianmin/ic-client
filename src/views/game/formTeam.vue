@@ -224,6 +224,9 @@ export default {
 
     }
   },
+  mounted () {
+    this.teamInfo.gameID = this.$route.params.gameid
+  },
   watch: {
     teamatePrefer (curVal) {
       this.teamatePreferStr = ''
@@ -294,7 +297,7 @@ export default {
 
       this.$axios.post(
         '/game/formATeam', {
-          g_id: this.teamInfo.gameID,
+          g_id: Number(this.teamInfo.gameID),
           role: this.teamInfo.role,
           role_name: this.teamInfo.roleName,
           server_name: this.teamInfo.serverName,

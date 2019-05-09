@@ -4,7 +4,8 @@ import router from './router'
 import store from './store'
 // import axios from 'axios'
 import axios from './request.js'
-import Toast from 'muse-ui-toast';
+import Toast from 'muse-ui-toast'
+import Loading from 'muse-ui-loading'
 import './registerServiceWorker'
 
 Vue.prototype.$axios = axios
@@ -22,11 +23,13 @@ import 'swiper/dist/css/swiper.css'
 Vue.use(MuseUI)
 Vue.use(VueAwesomeSwiper, /* { default global options } */)
 
+// 加载支持svg
 import './icons/index'
 
 Vue.use(Toast, {
   position: 'top'
 })
+Vue.use(Loading)
 
 // END 使用muse-ui
 
