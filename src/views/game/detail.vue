@@ -660,7 +660,6 @@
         teamIsTheLast: true,
         teamLoading: false,
         teamList: [],
-        teamLoading: false,
         teamListOperate: '没有更多内容'
 
       } 
