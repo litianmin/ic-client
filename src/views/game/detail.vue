@@ -747,10 +747,7 @@
             this.teamHadJoinList = dataBack.hadJoinTeam
           }
           
-
-          
           let listInfo = dataBack.teamInfo
-          console.log(listInfo)
 
           for(let i = 0; i < listInfo.length; i++) {
             listInfo[i]['hadJoin'] = listInfo[i]['TeammateList'].length
@@ -798,23 +795,18 @@
           case 0:
             this.$toast.message('申请中，请耐心等待')
             return
-            break
           case 1:
             this.$toast.message('队长拒绝了你的入队请求')
             return
-            break
           case 2: // TODO
             this.$router.push(`/game/teamDetail/${teamID}`)
             return
-            break
           case 3: // TODO
             this.$toast.message('正在重新加入，请等待，我还没写接口')
             return
-            break
           case 4:
             this.$toast.message('你已被踢出组队')
             return
-            break
           default:
             break
         }
@@ -825,7 +817,7 @@
         }
 
         if(recruitWay == 1) { // TODO
-          this.$toast.message('正在提交申请，请稍等')
+          this.$router.push(`/game/joinTeam/${teamID}`)
           return
         }
         // 去发起加入组队的请求

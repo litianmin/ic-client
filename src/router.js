@@ -105,9 +105,12 @@ const router =  new Router({
       path: '/game/teamDetail/:teamid',
       name: 'team-detail',
       component: () => import('./views/game/teamDetail.vue')
+    },
+    { // 加入组队界面
+      path: '/game/joinTeam/:teamid',
+      name: 'team-join',
+      component: () => import('./views/game/joinTeam.vue')
     }
-    
-
   ],
 })
 
