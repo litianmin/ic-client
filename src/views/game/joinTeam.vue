@@ -27,7 +27,7 @@
           <span>职 业</span>
         </mu-flex>
         <mu-flex class="mu-flex-two">
-          <input v-model="role" type="text" placeholder="职业，例如：刺客" maxlength="15">
+          <input v-model="Role" type="text" placeholder="职业，例如：刺客" maxlength="15">
         </mu-flex>
       </mu-row>
 
@@ -37,7 +37,7 @@
           <span>昵 称</span>
         </mu-flex>
         <mu-flex class="mu-flex-two">
-          <input v-model="roleName" type="text" placeholder="游戏中的昵称" maxlength="15">
+          <input v-model="RoleName" type="text" placeholder="游戏中的昵称" maxlength="15">
         </mu-flex>
       </mu-row>
 
@@ -47,7 +47,7 @@
           <span>等级/段位</span>
         </mu-flex>
         <mu-flex class="mu-flex-two">
-          <input v-model="roleRank" type="text" placeholder="游戏角色的等级或者段位" maxlength="15">
+          <input v-model="RoleRank" type="text" placeholder="游戏角色的等级或者段位" maxlength="15">
         </mu-flex>
       </mu-row>
 
@@ -57,16 +57,16 @@
           <span>自身特性</span>
         </mu-flex>
         <mu-flex class="mu-flex-two">
-          <input v-model="selfCharacter" type="text" placeholder="例如：大神/菜鸟" maxlength="15">
+          <input v-model="SelfCharacter" type="text" placeholder="例如：大神/菜鸟" maxlength="15">
         </mu-flex>
       </mu-row>
 
       <!-- 上传招募图片 -->
       <mu-row class="img-upload-row">
         <mu-flex class="img-upload-flex" justify-content="center" align-items="center">
-          <span @click="addImg" v-show="!displayImg" style="color:#4caf50;">点击上传角色图片</span>
-          <mu-icon v-show="displayImg" @click="delImg" value="cancel" color="#e91e63" class="img-upload-icon"></mu-icon>
-          <img class="img-upload-img" :src="displayImg" />
+          <span @click="addImg" v-show="!DisplayImg" style="color:#4caf50;">点击上传角色图片</span>
+          <mu-icon v-show="DisplayImg" @click="delImg" value="cancel" color="#e91e63" class="img-upload-icon"></mu-icon>
+          <img class="img-upload-img" :src="DisplayImg" />
         </mu-flex>
         <input @change="getDisplayImg" ref="imgUpload" type="file" style="display:none;" accept="image/*"/>
       </mu-row>
@@ -75,7 +75,7 @@
     <!-- END 填写内容 -->
 
     <mu-flex class="mu-flex-four" justify-content="center">
-      <mu-button style="width:95%;" color="#42a5f5">
+      <mu-button style="width:95%;" color="#42a5f5" @click="submit">
         申请加入
       </mu-button>
     </mu-flex>
@@ -87,19 +87,23 @@
 export default {
   data () {
     return {
-      role: '',
-      roleName: '',
-      roleRank: '',
-      selfCharacter: '',
-      displayImg: ''
+      TeamID: 0,
+      Role: '',
+      RoleName: '',
+      RoleRank: '',
+      SelfCharacter: '',
+      DisplayImg: ''
     }
+  },
+  mounted () {
+    this.teamID = this.$route.params.teamid
   },
   methods: {
     goBack () {
       this.$router.go(-1)
     },
     delImg () {
-      this.displayImg = ''
+      this.DisplayImg = ''
     },
     addImg () {
       this.$refs.imgUpload.click()
@@ -118,9 +122,45 @@ export default {
       var reader = new FileReader()
       //转base64
       reader.onload = function(e) {
-        _this.displayImg = e.target.result
+        _this.DisplayImg = e.target.result
       }
       reader.readAsDataURL(file)
+    },
+    submit () { // 提交数据
+
+      // let mytest = " 这是我的字符串 "
+
+      let role = this.Role.trim()
+      let roleName = this.RoleName.trim()
+      let roleRank = this.RoleRank.trim()
+      let selfCharacter = this.SelfCharacter.trim()
+
+      if(role.length == 0) {
+        this.$toast.message('职业不能为空')
+        return
+      }
+      if(roleName.length == 0) {
+        this.$toast.message('角色昵称不能为空')
+        return
+      }
+      if(roleRank.length == 0) {
+        this.$toast.message('等级/段位不能为空')
+        return
+      }
+      if(selfCharacter.length == 0) {
+        selfCharacter = '无'
+      }
+
+      this.$axios.post('/game/joinTeam',{
+        t_id: Number(this.teamID),
+        role: role,
+        role_name: roleName,
+        role_rank: roleRank,
+        self_character: selfCharacter,
+        display_img: this.DisplayImg
+      }).then((resp)=>{
+        console.log(resp)
+      })
     },
   }
 }
