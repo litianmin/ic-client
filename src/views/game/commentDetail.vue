@@ -16,7 +16,7 @@
       <!-- BEGIN 主评论 -->
       <mu-container class="main-comment-container">
         <mu-flex align-items="center">
-          <mu-avatar size="20">
+          <mu-avatar size="26">
             <img :src="CmtDetailMain.avatar">
           </mu-avatar>
           <span class="comment-item-nickname">
@@ -84,7 +84,7 @@
 
       <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
         <mu-flex align-items="center">
-          <mu-avatar size="20">
+          <mu-avatar size="24">
             <img :src="item.avatar">
           </mu-avatar>
           <span class="reply-nickname">

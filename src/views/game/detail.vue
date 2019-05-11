@@ -741,6 +741,9 @@
         this.teamLoading = true
         this.$axios.post(`/game/teamList/${this.teamPage}/${this.gameID}`,{}).then((resp)=>{
           let dataBack = resp.data
+
+          console.log(dataBack)
+
           this.teamIsTheLast = dataBack.isTheLast
 
           if(dataBack.hadJoinTeam.length > 0) {
