@@ -563,9 +563,11 @@
               <mu-row class="teammate-box" v-for="(item2, index2) in item.TeammateList" :key="index2">
                 <mu-col span="9">
                   <mu-flex style="height:4rem;">
-                    <mu-avatar size="28">
-                      <img :src="item2.user_avatar" />
-                    </mu-avatar>
+                    <div>
+                      <mu-avatar size="28">
+                        <img :src="item2.user_avatar" />
+                      </mu-avatar>
+                    </div>
 
                     <div>
                       <span class="teammate-info-title">昵称：<span style="color:#9e9e9e;">{{ item2.nickname }}</span></span>
@@ -741,8 +743,6 @@
         this.teamLoading = true
         this.$axios.post(`/game/teamList/${this.teamPage}/${this.gameID}`,{}).then((resp)=>{
           let dataBack = resp.data
-
-          console.log(dataBack)
 
           this.teamIsTheLast = dataBack.isTheLast
 

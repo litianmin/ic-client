@@ -6,19 +6,18 @@
           <mu-icon value="navigate_before"></mu-icon>
         </mu-button>
         
-        <div style="font-size:14px;">
+        <div ref="menuHide" style="font-size:14px;">
           队伍聊天中 。。。
         </div>
 
-        <!-- <mu-icon slot="right" value="menu" style="margin-right:.5rem;"></mu-icon> -->
-        <mu-menu slot="right" style="margin-top:1rem; right:.5rem;">
+        <mu-menu slot="right" class="mine-menu-box">
           <mu-icon value="menu"></mu-icon>
-          <mu-list slot="content" style="background:#26a69a; color:white; padding:0;">
-            <mu-list-item button>
-              <mu-list-item-title style="color:#fff; font-size:12px;">队友列表</mu-list-item-title>
+          <mu-list slot="content" class="mine-menu-list">
+            <mu-list-item button @click="teamListWindowToggle">
+              <mu-list-item-title class="mine-menu-item">队友列表</mu-list-item-title>
             </mu-list-item>
             <mu-list-item button style="border-top:1px solid #fafafa;">
-              <mu-list-item-title style="color:#fff; font-size:12px;">退出队伍</mu-list-item-title>
+              <mu-list-item-title class="mine-menu-item">退出队伍</mu-list-item-title>
             </mu-list-item>
           </mu-list>
         </mu-menu>
@@ -30,20 +29,20 @@
       <mu-container class="main-team-container">
         <mu-flex align-items="center">
           <mu-avatar size="26">
-            <img :src="CmtDetailMain.avatar">
+            <img :src="ChatDetailMain.captain_avatar">
           </mu-avatar>
           <span class="team-item-nickname">
-            风吹裤裆毛飞扬 <span style="margin-left:1rem; font-size:12px; color:#795548;;">( 队长 · 阿萨卡 )</span>
+            {{ ChatDetailMain.captain_nickname }} <span class="character-title">( 队长 · 阿萨卡 )</span>
           </span>
           <span class="reply-time">10小时前</span>
         </mu-flex>
 
         <mu-row class="team-item-text">
-          {{ CmtDetailMain.c_cont }}
+          {{ ChatDetailMain.recruit_word }}
         </mu-row>
 
-        <mu-row v-if="CmtDetailMain.c_img" class="team-item-img">
-          <img :src="CmtDetailMain.c_img" alt="">
+        <mu-row v-if="ChatDetailMain.recruit_img" class="team-item-img">
+          <img :src="ChatDetailMain.recruit_img" alt="">
         </mu-row>
       </mu-container>
       <!-- END 主评论 -->
@@ -51,30 +50,32 @@
       <!-- BEGIN 排序条 -->
       <mu-flex class="sort-bar" justify-content="center" align-items="center" >
         <span style="margin-left:.3rem">聊天列表</span>
-        <span @click="convertSort" class="sort-bar-svg"><svg-icon :icon-class="IsSortup == true ? 'sortup' : 'sortdown'"></svg-icon></span>
+        <span @click="convertSort" class="sort-bar-svg">
+          <svg-icon :icon-class="IsSortup == true ? 'sortup' : 'sortdown'"></svg-icon>
+        </span>
       </mu-flex>
       <!-- END 排序条 -->
 
       <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
         <mu-flex align-items="center">
           <mu-avatar size="24">
-            <img :src="item.avatar">
+            <img :src="item.user_avatar">
           </mu-avatar>
           <span class="reply-nickname">
-            {{ item.nickname }} 
+            {{ item.user_nickname }} 
           </span>
           <span class="reply-time">{{ item.create_time }}</span>
         </mu-flex>
 
         <mu-row class="reply-cont-box">
           <span style="font-size:12px; margin-left:.5rem; ">
-            <span v-if="item.reply_to > 0">@<span style="color:#795548;">{{ item.reply_nickname }}</span> :</span> {{ item.c_cont }}
+            <span v-if="item.reply_to > 0">@<span style="color:#795548;">{{ item.reply_nickname }}</span> :</span> {{ item.chat_cont }}
             <span style="color:green; margin-left:.5rem;">回复</span>
           </span>
         </mu-row>
 
-        <mu-row v-if="item.c_img" class="team-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
-          <img :src="item.c_img">
+        <mu-row v-if="item.chat_img" class="team-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
+          <img :src="item.chat_img">
         </mu-row>
       </mu-container>
       <!-- END 回复评论 -->
@@ -84,8 +85,77 @@
       <div style="width:90%;" @click="replytoComment">
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
-      <mu-icon value="share" style="margin-left:auto; margin-right:.5rem;" size="18" color="#8A8A8A"></mu-icon>
+      <mu-icon value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
     </mu-flex>
+
+    <!-- BEGIN 弹出窗口 -->
+    <mu-container>
+      <mu-drawer :open.sync="teamListWindowIsShow" :docked="false" :left="true" width="80%">
+        <div style="margin-top:.5rem; padding: 0 .2rem;">
+          <mu-row class="teammate-box">
+            <mu-col span="9">
+              <mu-flex>
+                <div>
+                  <mu-avatar size="28">
+                    <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3293964636,877003056&fm=27&gp=0.jpg" />
+                  </mu-avatar>
+                </div>
+                <div>
+                  <span class="teammate-info-title">昵称：<span style="color:#9e9e9e;">我的昵称(好友)</span></span>
+                  <br/>
+                  <span class="teammate-info-title">角色：<span style="color:#9e9e9e;">这是我的角色</span></span>
+                  <br/>
+                  <span class="teammate-info-title">我是风/我是电啊啊啊啊啊啊</span>
+                </div>
+              </mu-flex>
+            </mu-col>
+
+            <mu-col span="3" justify-content="center">
+              <mu-flex justify-content="center" align-items="center" class="teammate-img-flex">
+                  <img src="http://img0.imgtn.bdimg.com/it/u=2382347150,2324265704&fm=26&gp=0.jpg" />
+              </mu-flex>
+            </mu-col>
+
+    
+
+          </mu-row>
+        </div>
+
+        <div style="margin-top:.5rem; padding: 0 .2rem;">
+          <mu-row class="teammate-box">
+            <mu-col span="9">
+              <mu-flex>
+                <div>
+                  <mu-avatar size="28">
+                    <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3293964636,877003056&fm=27&gp=0.jpg" />
+                  </mu-avatar>
+                </div>
+                <div>
+                  <span class="teammate-info-title">昵称：<span style="color:#9e9e9e;">我的昵称</span></span>
+                  <br/>
+                  <span class="teammate-info-title">角色：<span style="color:#9e9e9e;">这是我的角色</span></span>
+                  <br/>
+                  <span class="teammate-info-title">我是风/我是电啊啊啊啊啊啊</span>
+                </div>
+              </mu-flex>
+            </mu-col>
+
+            <mu-col span="3" justify-content="center">
+              <mu-flex justify-content="center" align-items="center" class="teammate-img-flex">
+                  <img src="http://img0.imgtn.bdimg.com/it/u=2382347150,2324265704&fm=26&gp=0.jpg" />
+              </mu-flex>
+            </mu-col>
+
+            <mu-flex justify-content="center" align-items="center" style="width:100%; font-size:12px; background:#00bcd4; color:#fff; border-radius:.2rem; margin-right:.3rem;">
+              <div>加为玩友</div> <mu-icon value="add" size="12"></mu-icon>
+            </mu-flex>
+
+          </mu-row>
+        </div>
+      </mu-drawer>
+    </mu-container>
+    <!-- END 弹出窗口 -->
+
 
   </div>
 </template>
@@ -95,49 +165,50 @@ import utils from 'common/utils.js'
 export default {
   data () {
     return {
-      CommentID: 0,
-      HadThumbUp: false,
-      IsFocus: false,
+      TeamID: 0,
       IsSortup: true,
       IsTheLast: true,
-      CmtDetailMain: {
+      ChatDetailMain: {
         userID: 0,
-        c_cont: '',
-        c_img: "",
-        likeNumb: 0,
-        dislikeNum: 0,
-        replyNum: 0,
-        createTime: "",
-        nickname: "",
-        avatar: "",
-        sex: 1
+        recruit_word: '',
+        recruit_img: "",
+        recruit_way: "",
+        captain_avatar: "",
+        captain_nickname: "",
+        captain_sex: 0,
+        server_name: '',
+        recruit_num: 0,
+        teanmate_prefer: ''
       },
+      ChatList: [],
+      ChatListPage: 1,
+      TeammateList: [],
       ReplyList: [],
-      ReplyListPage: 1,
+      teamListWindowIsShow: false,
     }
   },
   mounted () {
-    let commentID = 1
-    this.CommentID = commentID
+    this.TeamID = this.$route.params.teamid
 
     // 页面初始化
-    this.$axios.post(`/game/commentDetail/${commentID}`, {}).then((resp)=>{
+    this.$axios.post(`/game/teamDetail/${this.TeamID}`, {}).then((resp)=>{
       let dataBack = resp.data.msg 
-      this.IsTheLast = dataBack.isTheLast
-      this.CmtDetailMain = dataBack.cmtDetailMain
+      this.IsTheLast = dataBack.replyIsTheLast
+      
+      this.ChatDetailMain.userID = dataBack.teamDetail.captain_userid
+      this.ChatDetailMain.recruit_word = dataBack.teamDetail.announcement
+      this.ChatDetailMain.recruit_img = dataBack.teamDetail.recruit_img
+      this.ChatDetailMain.recruit_way = dataBack.teamDetail.recruit_way
+      this.ChatDetailMain.captain_avatar = dataBack.teamDetail.captain_avatar
+      this.ChatDetailMain.captain_nickname = dataBack.teamDetail.captain_nickname
+      this.ChatDetailMain.captain_sex = dataBack.teamDetail.captain_sex
+      this.ChatDetailMain.server_name = dataBack.teamDetail.server_name
+      this.ChatDetailMain.recruit_num = dataBack.teamDetail.recruit_num
+      this.ChatDetailMain.teanmate_prefer = dataBack.teamDetail.teanmate_prefer
 
-      this.CmtDetailMain.userID = dataBack.cmtDetailMain.user_id
-      this.CmtDetailMain.c_cont = dataBack.cmtDetailMain.c_cont
-      this.CmtDetailMain.c_img = dataBack.cmtDetailMain.c_img
-      this.CmtDetailMain.likeNumb = dataBack.cmtDetailMain.like_num
-      this.CmtDetailMain.dislikeNum = dataBack.cmtDetailMain.dislike_num
-      this.CmtDetailMain.replyNum = dataBack.cmtDetailMain.reply_num
-      this.CmtDetailMain.createTime = dataBack.cmtDetailMain.create_time
-      this.CmtDetailMain.nickname = dataBack.cmtDetailMain.nickname
-      this.CmtDetailMain.avatar = dataBack.cmtDetailMain.avatar
-      this.CmtDetailMain.sex = dataBack.cmtDetailMain.sex
+      this.TeammateList = dataBack.teamDetail
 
-      let replyList = dataBack.replyListInfo
+      let replyList = dataBack.replyList
       for(let i = 0; i < replyList.length; i++) {
         replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, false)
       }
@@ -163,7 +234,11 @@ export default {
       this.IsSortup = !this.IsSortup
     },
     replytoComment () {
-      this.$router.push(`/game/replytoComment/${this.CommentID}/0`)
+      this.$router.push(`/game/replytoComment/${this.TeamID}/0`)
+    },
+    teamListWindowToggle () {
+      this.teamListWindowIsShow = !this.teamListWindowIsShow
+      this.$refs.menuHide.click()
     }
   }
 }
@@ -171,6 +246,12 @@ export default {
 
 <style scoped>
 .mine-appbar { width: 100%; height:2.5rem; position:flex; }
+
+.mine-menu-box { margin-top:1rem; right:.5rem; }
+.mine-menu-list { background:#26a69a; color:white; padding:0; }
+.mine-menu-item { color:#fff; font-size:12px; }
+
+.character-title { margin-left:1rem; font-size:12px; color:#795548; }
 
 .main-team-container { background:#ffffff; padding:1rem .5rem 2rem 1rem;  }
 .sort-bar { background:#eeeeee; font-size:12px; padding:.3rem .5rem; margin-bottom:.5rem;  }
@@ -185,10 +266,16 @@ export default {
 .reply-input-box { position:fixed; bottom:0; width:100%; padding:.5rem; background:#ffffff; border-top:1px solid #e0e0e0; }
 .reply-input-box input { width:100%; border-radius:.3rem; padding:.3rem; background:#f5f5f5; border:0; font-size:12px; }
 .reply-input-box-span { margin-left:auto; font-size:18px; margin-right:.3rem; }
+.reply-input-box-icon { margin-left:auto; margin-right:.5rem; }
 
 .team-item-nickname { margin-left:.5rem; font-size:13px; font-weight:600; color:#4db6ac; }
 .team-item-text { padding:.5rem 0 .5rem 1.5rem; font-size:12px; }
 .team-item-img { padding:.5rem .5rem 0 1rem; font-size:12px; color:#616161; }
 .team-item-img img { max-width:100%; max-height:100%; border-radius:.3rem; }
+
+.teammate-box { margin-bottom:.5rem; background:rgba(230, 230, 230, .5); padding:.4rem 0 .4rem .5rem; border-radius:.5rem; }
+.teammate-info-title { margin-left:.5rem; font-size:12px; color:#795548; }
+.teammate-img-flex { width:100%; height:4rem; text-align:center; border-radius:.5rem; }
+.teammate-img-flex img { max-width:4rem; max-height:4rem; border-radius:.2rem; }
 
 </style>
