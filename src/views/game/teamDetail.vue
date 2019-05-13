@@ -91,7 +91,7 @@
     <!-- BEGIN 弹出窗口 -->
     <mu-container>
       <mu-drawer :open.sync="teamListWindowIsShow" :docked="false" :left="true" width="80%">
-        <div style="margin-top:.5rem; padding: 0 .2rem;">
+        <!-- <div style="margin-top:.5rem; padding: 0 .2rem;">
           <mu-row class="teammate-box">
             <mu-col span="9">
               <mu-flex>
@@ -115,38 +115,40 @@
                   <img src="http://img0.imgtn.bdimg.com/it/u=2382347150,2324265704&fm=26&gp=0.jpg" />
               </mu-flex>
             </mu-col>
-
-    
-
           </mu-row>
+        </div> -->
+
+        <div style="padding:.5rem; padding">
+          <div>游戏基本信息：还好吗，还好吧，嗯？</div>
+          <div>区服 ，招募人数，队友偏向</div>
         </div>
 
-        <div style="margin-top:.5rem; padding: 0 .2rem;">
+        <div style="margin-top:.5rem; padding: 0 .2rem;" v-for="(item, key) in TeammateList">
           <mu-row class="teammate-box">
             <mu-col span="9">
               <mu-flex>
                 <div>
                   <mu-avatar size="28">
-                    <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3293964636,877003056&fm=27&gp=0.jpg" />
+                    <img :src="item.user_avatar" />
                   </mu-avatar>
                 </div>
                 <div>
-                  <span class="teammate-info-title">昵称：<span style="color:#9e9e9e;">我的昵称</span></span>
+                  <span class="teammate-info-title">昵称：<span style="color:#9e9e9e;">{{ item.nickname }}</span></span>
                   <br/>
-                  <span class="teammate-info-title">角色：<span style="color:#9e9e9e;">这是我的角色</span></span>
+                  <span class="teammate-info-title">角色：<span style="color:#9e9e9e;">{{ item.role_name }}</span></span>
                   <br/>
-                  <span class="teammate-info-title">我是风/我是电啊啊啊啊啊啊</span>
+                  <span class="teammate-info-title">{{ item.role }}/{{ item.role_rank }}</span>
                 </div>
               </mu-flex>
             </mu-col>
 
             <mu-col span="3" justify-content="center">
               <mu-flex justify-content="center" align-items="center" class="teammate-img-flex">
-                  <img src="http://img0.imgtn.bdimg.com/it/u=2382347150,2324265704&fm=26&gp=0.jpg" />
+                  <img :src="item.display_img" />
               </mu-flex>
             </mu-col>
 
-            <mu-flex justify-content="center" align-items="center" style="width:100%; font-size:12px; background:#00bcd4; color:#fff; border-radius:.2rem; margin-right:.3rem;">
+            <mu-flex v-show="item.is_friend == 0" justify-content="center" align-items="center" style="width:100%; font-size:12px; background:#00bcd4; color:#fff; border-radius:.2rem; margin-right:.3rem;">
               <div>加为玩友</div> <mu-icon value="add" size="12"></mu-icon>
             </mu-flex>
 
@@ -193,6 +195,9 @@ export default {
     // 页面初始化
     this.$axios.post(`/game/teamDetail/${this.TeamID}`, {}).then((resp)=>{
       let dataBack = resp.data.msg 
+
+      console.log(dataBack)
+
       this.IsTheLast = dataBack.replyIsTheLast
       
       this.ChatDetailMain.userID = dataBack.teamDetail.captain_userid
@@ -206,7 +211,7 @@ export default {
       this.ChatDetailMain.recruit_num = dataBack.teamDetail.recruit_num
       this.ChatDetailMain.teanmate_prefer = dataBack.teamDetail.teanmate_prefer
 
-      this.TeammateList = dataBack.teamDetail
+      this.TeammateList = dataBack.teamDetail.TeammateList
 
       let replyList = dataBack.replyList
       for(let i = 0; i < replyList.length; i++) {
