@@ -70,7 +70,7 @@
         <mu-row class="reply-cont-box">
           <span style="font-size:12px; margin-left:.5rem; ">
             <span v-if="item.reply_to > 0">@<span style="color:#795548;">{{ item.reply_nickname }}</span> :</span> {{ item.chat_cont }}
-            <span style="color:green; margin-left:.5rem;">回复</span>
+            <span style="color:green; margin-left:.5rem;" @click="newChat(true, item.user_id, item.user_nickname)">回复</span>
           </span>
         </mu-row>
 
@@ -82,7 +82,7 @@
     </div>
 
     <mu-flex class="reply-input-box" align-items="center">
-      <div style="width:90%;" @click="replytoComment">
+      <div style="width:90%;" @click="newChat(false, 0, '')">
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
       <mu-icon value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
@@ -91,39 +91,16 @@
     <!-- BEGIN 弹出窗口 -->
     <mu-container>
       <mu-drawer :open.sync="teamListWindowIsShow" :docked="false" :left="true" width="80%">
-        <!-- <div style="margin-top:.5rem; padding: 0 .2rem;">
-          <mu-row class="teammate-box">
-            <mu-col span="9">
-              <mu-flex>
-                <div>
-                  <mu-avatar size="28">
-                    <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3293964636,877003056&fm=27&gp=0.jpg" />
-                  </mu-avatar>
-                </div>
-                <div>
-                  <span class="teammate-info-title">昵称：<span style="color:#9e9e9e;">我的昵称(好友)</span></span>
-                  <br/>
-                  <span class="teammate-info-title">角色：<span style="color:#9e9e9e;">这是我的角色</span></span>
-                  <br/>
-                  <span class="teammate-info-title">我是风/我是电啊啊啊啊啊啊</span>
-                </div>
-              </mu-flex>
-            </mu-col>
-
-            <mu-col span="3" justify-content="center">
-              <mu-flex justify-content="center" align-items="center" class="teammate-img-flex">
-                  <img src="http://img0.imgtn.bdimg.com/it/u=2382347150,2324265704&fm=26&gp=0.jpg" />
-              </mu-flex>
-            </mu-col>
-          </mu-row>
-        </div> -->
-
-        <div style="padding:.5rem; padding">
-          <div>游戏基本信息：还好吗，还好吧，嗯？</div>
-          <div>区服 ，招募人数，队友偏向</div>
+        <div style="padding:0 .2rem;">
+          <div style="padding:.5rem; background:rgba(220, 220, 220, .5);">
+            <div style="padding:.5rem; color:green;">游戏基本信息</div>
+            <div style="padding:.3rem 1rem; font-size:12px; color:green;">区服: <span style="margin-left:.5rem; color:gray;">{{ ChatDetailMain.server_name }}</span></div>
+            <div style="padding:.3rem 1rem; font-size:12px; color:green;">招募人数: <span style="margin-left:.5rem; color:gray;">{{ ChatDetailMain.recruit_num }}/<span style="font-size:8px;">{{ ChatDetailMain.had_join }}</span></span></div>
+            <div style="padding:.3rem 1rem; font-size:12px; color:green;">队友偏向: <span style="margin-left:.5rem; color:gray;">{{ ChatDetailMain.teammate_prefer }}</span></div>
+          </div>
         </div>
 
-        <div style="margin-top:.5rem; padding: 0 .2rem;" v-for="(item, key) in TeammateList">
+        <div style="margin-top:.5rem; padding: 0 .2rem;" v-for="(item, index) in TeammateList" :key="index">
           <mu-row class="teammate-box">
             <mu-col span="9">
               <mu-flex>
@@ -148,7 +125,7 @@
               </mu-flex>
             </mu-col>
 
-            <mu-flex v-show="item.is_friend == 0" justify-content="center" align-items="center" style="width:100%; font-size:12px; background:#00bcd4; color:#fff; border-radius:.2rem; margin-right:.3rem;">
+            <mu-flex v-show="item.is_friend == 0" justify-content="center" align-items="center" style="width:100%; font-size:12px; background:#00bcd4; color:#fff; border-radius:.2rem; margin-right:.3rem; margin-top:.3rem;">
               <div>加为玩友</div> <mu-icon value="add" size="12"></mu-icon>
             </mu-flex>
 
@@ -180,7 +157,10 @@ export default {
         captain_sex: 0,
         server_name: '',
         recruit_num: 0,
-        teanmate_prefer: ''
+        server_name: '',
+        recruit_numb: 0,
+        had_join: 0,
+        teammate_prefer: '',
       },
       ChatList: [],
       ChatListPage: 1,
@@ -209,7 +189,10 @@ export default {
       this.ChatDetailMain.captain_sex = dataBack.teamDetail.captain_sex
       this.ChatDetailMain.server_name = dataBack.teamDetail.server_name
       this.ChatDetailMain.recruit_num = dataBack.teamDetail.recruit_num
-      this.ChatDetailMain.teanmate_prefer = dataBack.teamDetail.teanmate_prefer
+      this.ChatDetailMain.server_name = dataBack.teamDetail.server_name
+      this.ChatDetailMain.recruit_numb = dataBack.teamDetail.recruit_num
+      this.ChatDetailMain.had_join = dataBack.teamDetail.TeammateList.length
+      this.ChatDetailMain.teammate_prefer = dataBack.teamDetail.teanmate_prefer
 
       this.TeammateList = dataBack.teamDetail.TeammateList
 
@@ -238,8 +221,8 @@ export default {
     convertSort () {
       this.IsSortup = !this.IsSortup
     },
-    replytoComment () {
-      this.$router.push(`/game/replytoComment/${this.TeamID}/0`)
+    newChat (isReply, replyID, replyNickname) {
+      this.$router.push({path:`/game/teamchat`, query:{teamID:this.TeamID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
     },
     teamListWindowToggle () {
       this.teamListWindowIsShow = !this.teamListWindowIsShow

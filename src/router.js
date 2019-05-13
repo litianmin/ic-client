@@ -110,6 +110,11 @@ const router =  new Router({
       path: '/game/joinTeam/:teamid',
       name: 'team-join',
       component: () => import('./views/game/joinTeam.vue')
+    },
+    {
+      path: '/game/teamchat',
+      name: 'team-chat',
+      component: () => import('./views/game/teamChat.vue')
     }
   ],
 })
