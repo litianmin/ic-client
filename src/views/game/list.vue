@@ -8,10 +8,10 @@
       </mu-button>
       
       <div style="padding: 0 0 .4rem 0;">
-        <input type="text" placeholder=" 搜 索 热 门 游 戏" class="search-input">
+        <input type="text" v-model="SearchCont" placeholder=" 搜 索 热 门 游 戏" class="search-input">
       </div>
 
-      <mu-button flat slot="right">
+      <mu-button flat slot="right" @click="searchGame">
         <mu-icon value="search"></mu-icon>
       </mu-button>
     </mu-appbar>
@@ -69,7 +69,7 @@
               <mu-divider></mu-divider>
             </div>
           
-          <mu-row v-show="isTheLast" justify-content="center" style="padding:.5rem;">
+          <mu-row v-show="isTheLast" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.3rem;">
             <span style="">没有更多的内容</span>
           </mu-row>
           
@@ -88,6 +88,7 @@
 export default {
   data () {
     return {
+      SearchCont: '',
       hotGameListIsShow: true,
       hotGameList: [],
       gameList: [],
@@ -99,7 +100,10 @@ export default {
   mounted () {
     // 初始化，获取热门游戏列表和普通游戏列表
     this.$axios.post(
-      `/gamelist/${this.page}`,{}
+      `/gamelist/${this.page}`,{
+        is_search: false,
+        search_cont: ''
+      }
     ).then((resp)=>{
       let dataBack = resp.data
 
@@ -129,7 +133,10 @@ export default {
       }
       this.page++      
       this.$axios.post(
-        `/gamelist/${this.page}`,{}
+        `/gamelist/${this.page}`,{
+          is_search: false,
+          search_cont: ''
+        }
       ).then((resp)=>{
         let dataBack = resp.data
         this.gameList = this.gameList.concat(dataBack.gameList)
@@ -145,6 +152,33 @@ export default {
     goBack () {
       this.$router.go(-1)
     },
+    searchGame () {
+      let searchCont = this.SearchCont
+      if(searchCont.trim().length == 0) {
+        this.$toast.message('搜索内容不能为空')
+        return
+      } 
+
+
+      this.loading = true
+      this.page++      
+      this.$axios.post(
+        `/gamelist/1`,{
+          is_search: true,
+          search_cont: searchCont
+        }
+      ).then((resp)=>{
+        this.hotGameListIsShow = false
+        let dataBack = resp.data
+        this.gameList = dataBack.gameList
+        this.isTheLast = true
+        this.loading = false
+        return
+      })
+      
+
+      console.log("shenmegui")
+    },
   }
 }
 </script>
@@ -157,12 +191,9 @@ export default {
 .list-item-div {width:3.5rem; height:3.5rem;}
 .list-item-div img {max-width:100%; max-height:100%; border-radius:.5rem;}
 
-.demo-list-wrap {
-  width: 100%;
-  overflow: hidden;
-}
+.demo-list-wrap { width: 100%; overflow: hidden; }
 
-.mu-item-action {
+.mu-item-action { 
     min-width: 70px;
     display: -webkit-box;
     display: -ms-flexbox;
