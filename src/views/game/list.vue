@@ -8,7 +8,7 @@
       </mu-button>
       
       <div style="padding: 0 0 .4rem 0;">
-        <input type="text" v-model="SearchCont" placeholder=" 搜 索 热 门 游 戏" class="search-input">
+        <input type="text" v-model="SearchCont" placeholder=" 搜 索 游 戏" class="search-input">
       </div>
 
       <mu-button flat slot="right" @click="searchGame">
@@ -175,9 +175,6 @@ export default {
         this.loading = false
         return
       })
-      
-
-      console.log("shenmegui")
     },
   }
 }

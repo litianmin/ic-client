@@ -157,7 +157,6 @@ export default {
         captain_sex: 0,
         server_name: '',
         recruit_num: 0,
-        server_name: '',
         recruit_numb: 0,
         had_join: 0,
         teammate_prefer: '',
