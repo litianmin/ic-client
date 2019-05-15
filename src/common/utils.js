@@ -82,12 +82,12 @@ export default{
     let m = date.getMinutes()
     let s = date.getSeconds()
     //小于10的在前面补0
-    if (M < 10) {
-        M = '0' + M
-    }
-    if (D < 10) {
-        D = '0' + D
-    }
+    // if (M < 10) {
+    //     M = '0' + M
+    // }
+    // if (D < 10) {
+    //     D = '0' + D
+    // }
     if (H < 10) {
         H = '0' + H
     }
@@ -124,11 +124,11 @@ export default{
     }
 
     if(d_days >= 3 && d_days < 30) {
-      return `${M}-${D} ${H}:${m}`
+      return `${M}月${D}日 ${H}:${m}`
     }
 
     if(d_days >= 30) {
-      return `${Y}-${M}-${D} ${H}:${m}`
+      return `${Y}年${M}月${D}日 ${H}:${m}`
     }
   }  
 }

@@ -22,7 +22,7 @@
           <span class="comment-item-nickname">
             {{ CmtDetailMain.nickname }} (楼主)
           </span>
-          <!-- <span class="comment-item-time">2019-01-01 02:02:04</span> -->
+          <span class="comment-item-time" style="margin-right:.6rem;">{{ CmtDetailMain.createTime }}</span>
         </mu-flex>
 
         <mu-row class="comment-item-text">
@@ -33,54 +33,17 @@
           <img :src="CmtDetailMain.c_img" alt="">
         </mu-row>
 
-        <mu-flex align-items="center" justify-content="start" style="padding:.5rem .8rem .5rem 1rem;">
-            <mu-flex>
-              <span class="comment-item-time">{{ CmtDetailMain.create_time }}</span>
-            </mu-flex>
-
-            <mu-flex align-items="center" style="margin-left:auto;">
-              <mu-button icon color="#9e9e9e" small @click="convertThumbup">
-                <mu-icon :class="{'had-thumbup':HadThumbUp}" value="thumb_up"></mu-icon>
-              </mu-button>
-              <span class="comment-item-thumbup-count">{{ CmtDetailMain.likeNum }}</span>
-            </mu-flex>
-
-            <mu-flex align-items="center" style="margin-left:.8rem;">
-            <mu-button icon color="#9e9e9e" small>
-                <mu-icon value="comment"></mu-icon>
-              </mu-button>
-              <span class="comment-item-comment-count">{{ CmtDetailMain.replyNum }}</span>
-            </mu-flex>
-        </mu-flex>
       </mu-container>
       <!-- END 主评论 -->
 
       <!-- BEGIN 排序条 -->
       <mu-flex class="sort-bar" justify-content="center" align-items="center" >
-        <span style="margin-left:.3rem">回复列表</span>
+        <span style="margin-left:.3rem">回复列表 ({{ CmtDetailMain.replyNum }})</span>
         <span @click="convertSort" class="sort-bar-svg"><svg-icon :icon-class="IsSortup == true ? 'sortup' : 'sortdown'"></svg-icon></span>
       </mu-flex>
       <!-- END 排序条 -->
 
       <!-- BEGIN 回复评论 -->
-      <!-- <mu-container style=" padding:.5rem .8rem; border-bottom:.1rem solid #ffffff;">
-        <mu-flex align-items="center">
-          <mu-avatar size="20">
-            <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3279320808,3576872714&fm=27&gp=0.jpg">
-          </mu-avatar>
-          <span style="font-size:12px; margin-left:.5rem; margin-right:.5rem; color:#4db6ac;">
-            人总需要勇敢生存 
-          </span>
-          <span style="margin-left:auto; font-size:12px; color:#9e9e9e; margin-right:.5rem;">2分钟前</span>
-        </mu-flex>
-
-        <mu-row style="font-size:12px; padding:.5rem .5rem .5rem 1rem;">
-          <span style="font-size:12px; margin-left:.5rem; ">
-            @<span style="color:#795548;">人总需要勇敢生存</span> : 其实你就是一个傻逼啦，整天在这里唧唧歪歪
-            <span style="font-size:12px; color:green; margin-left:.5rem;">回复</span>
-          </span>
-        </mu-row>
-      </mu-container> -->
 
       <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
         <mu-flex align-items="center">
@@ -108,10 +71,11 @@
     </div>
 
     <mu-flex class="reply-input-box" align-items="center">
-      <div style="width:90%;" @click="replytoComment">
+      <div style="width:80%;" @click="replytoComment">
       <input type="text" placeholder="评论一下吧" disabled>
       </div>
       <span @click="convertFocus" class="reply-input-box-span"><svg-icon :icon-class="IsFocus == false ? 'focus' : 'had_focus'"></svg-icon></span>
+      <span @click="convertThumbup" class="reply-input-box-span" style="font-size:17px;"><svg-icon :icon-class="IsThumbup == false ? 'thumb_up_empty' : 'thumb_up'"></svg-icon></span>
     </mu-flex>
 
   </div>
@@ -125,7 +89,8 @@ export default {
       CommentID: 0,
       HadThumbUp: false,
       IsFocus: false,
-      IsSortup: true,
+      IsThumbup: false,
+      IsSortup: false,
       IsTheLast: true,
       CmtDetailMain: {
         userID: 0,
@@ -151,7 +116,7 @@ export default {
     this.$axios.post(`/game/commentDetail/${commentID}`, {}).then((resp)=>{
       let dataBack = resp.data.msg 
       this.IsTheLast = dataBack.isTheLast
-      this.CmtDetailMain = dataBack.cmtDetailMain
+      // this.CmtDetailMain = dataBack.cmtDetailMain
 
       this.CmtDetailMain.userID = dataBack.cmtDetailMain.user_id
       this.CmtDetailMain.c_cont = dataBack.cmtDetailMain.c_cont
@@ -159,7 +124,7 @@ export default {
       this.CmtDetailMain.likeNumb = dataBack.cmtDetailMain.like_num
       this.CmtDetailMain.dislikeNum = dataBack.cmtDetailMain.dislike_num
       this.CmtDetailMain.replyNum = dataBack.cmtDetailMain.reply_num
-      this.CmtDetailMain.createTime = dataBack.cmtDetailMain.create_time
+      this.CmtDetailMain.createTime = utils.getDateDiff(dataBack.cmtDetailMain.create_time, false)
       this.CmtDetailMain.nickname = dataBack.cmtDetailMain.nickname
       this.CmtDetailMain.avatar = dataBack.cmtDetailMain.avatar
       this.CmtDetailMain.sex = dataBack.cmtDetailMain.sex
@@ -186,6 +151,9 @@ export default {
     convertFocus () {
       this.IsFocus = !this.IsFocus
     },
+    convertThumbup () {
+      this.IsThumbup = !this.IsThumbup
+    },
     convertSort () {
       this.IsSortup = !this.IsSortup
     },
@@ -199,7 +167,7 @@ export default {
 <style scoped>
 .mine-appbar { width: 100%; height:2.5rem; }
 
-.main-comment-container { background:#ffffff; padding:1rem .5rem 0 .5rem;  }
+.main-comment-container { background:#ffffff; padding:1rem .5rem 1.5rem .5rem;  }
 .sort-bar { background:#eeeeee; font-size:12px; padding:.3rem .5rem; margin-bottom:.5rem;  }
 .sort-bar-svg { margin-left:auto; font-size:18px; margin-right:.3rem; }
 
