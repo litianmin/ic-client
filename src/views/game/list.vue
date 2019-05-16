@@ -69,7 +69,7 @@
               <mu-divider></mu-divider>
             </div>
           
-          <mu-row v-show="isTheLast" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.3rem;">
+          <mu-row v-show="isTheLast" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.3rem; color:#9e9e9e;">
             <span style="">没有更多的内容</span>
           </mu-row>
           

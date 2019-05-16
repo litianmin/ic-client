@@ -44,34 +44,43 @@
       <!-- END 排序条 -->
 
       <!-- BEGIN 回复评论 -->
+      <mu-load-more :loading="Loading" @load="load" :loaded-all="IsTheLast">
+        <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
+          <mu-flex align-items="center">
+            <mu-avatar size="24">
+              <img :src="item.avatar">
+            </mu-avatar>
+            <span class="reply-nickname">
+              {{ item.nickname }} 
+            </span>
+            <span class="reply-time">{{ item.create_time }}</span>
+          </mu-flex>
 
-      <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
-        <mu-flex align-items="center">
-          <mu-avatar size="24">
-            <img :src="item.avatar">
-          </mu-avatar>
-          <span class="reply-nickname">
-            {{ item.nickname }} 
-          </span>
-          <span class="reply-time">{{ item.create_time }}</span>
-        </mu-flex>
+          <mu-row class="reply-cont-box">
+            <span style="font-size:12px; margin-left:.5rem; ">
+              <span v-if="item.reply_to > 0">@<span style="color:#795548;">{{ item.reply_nickname }}</span> :</span> {{ item.c_cont }}
 
-        <mu-row class="reply-cont-box">
-          <span style="font-size:12px; margin-left:.5rem; ">
-            <span v-if="item.reply_to > 0">@<span style="color:#795548;">{{ item.reply_nickname }}</span> :</span> {{ item.c_cont }}
-            <span style="color:green; margin-left:.5rem;">回复</span>
-          </span>
+              <span style="color:green; margin-left:.5rem;"  @click="replytoComment(true, item.user_id, item.nickname)">
+                回复
+              </span>
+            </span>
+          </mu-row>
+
+          <mu-row v-if="item.c_img" class="comment-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
+            <img :src="item.c_img">
+          </mu-row>
+        </mu-container>
+
+        <mu-row v-show="IsTheLast" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.3rem; color:#9e9e9e;">
+          <span> 没有更多的回复 </span>
         </mu-row>
 
-        <mu-row v-if="item.c_img" class="comment-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
-          <img :src="item.c_img">
-        </mu-row>
-      </mu-container>
+      </mu-load-more>
       <!-- END 回复评论 -->
     </div>
 
     <mu-flex class="reply-input-box" align-items="center">
-      <div style="width:80%;" @click="replytoComment">
+      <div style="width:80%;" @click="replytoComment(false, 0, '')">
       <input type="text" placeholder="评论一下吧" disabled>
       </div>
       <span @click="convertFocus" class="reply-input-box-span"><svg-icon :icon-class="IsFocus == false ? 'focus' : 'had_focus'"></svg-icon></span>
@@ -106,6 +115,7 @@ export default {
       },
       ReplyList: [],
       ReplyListPage: 1,
+      Loading: false,
     }
   },
   mounted () {
@@ -115,8 +125,8 @@ export default {
     // 页面初始化
     this.$axios.post(`/game/commentDetail/${commentID}`, {}).then((resp)=>{
       let dataBack = resp.data.msg 
+      console.log(dataBack)
       this.IsTheLast = dataBack.isTheLast
-      // this.CmtDetailMain = dataBack.cmtDetailMain
 
       this.CmtDetailMain.userID = dataBack.cmtDetailMain.user_id
       this.CmtDetailMain.c_cont = dataBack.cmtDetailMain.c_cont
@@ -140,25 +150,41 @@ export default {
 
   },
   methods: {
+    load () {
+      this.Loading = true      
+      let sortWay = this.IsSortup == false ? 0 : 1
+      this.$axios.post(`/game/commentReplyList/${this.ReplyListPage}/${this.CommentID}/${sortWay}`,{}).then((resp)=>{
+        let dataBack = resp.data
+        this.IsTheLast = dataBack.isTheLast
+        let replyList = dataBack.listInfo
+        for(let i = 0; i < replyList.length; i++) {
+          replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, false)
+        }
+        this.ReplyList = this.ReplyList.concat(replyList)
+        this.ReplyListPage++
+        this.Loading = false
+      })
+    },
     goBack () {
       this.$router.go(-1)
     },
     convertThumbup () {
-      this.HadThumbUp = !this.HadThumbUp
+      this.IsThumbup = !this.IsThumbup
       let msg = this.HadThumbUp == true ? '已点赞' : '取消点赞'
       this.$toast.success(msg)
     },
     convertFocus () {
       this.IsFocus = !this.IsFocus
     },
-    convertThumbup () {
-      this.IsThumbup = !this.IsThumbup
-    },
     convertSort () {
+      // 当转换排序顺序的时候，把页数重置，然后，重新加载回复评论
+      this.ReplyListPage = 1
+      this.ReplyList = []
       this.IsSortup = !this.IsSortup
+      this.load()
     },
-    replytoComment () {
-      this.$router.push(`/game/replytoComment/${this.CommentID}/0`)
+    replytoComment (isReply, replyID, replyNickname) {
+      this.$router.push({path:`/game/replytoComment`, query:{commentID:this.CommentID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
     }
   }
 }

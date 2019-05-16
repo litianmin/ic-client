@@ -107,7 +107,7 @@
           <!-- END 评论样式 -->
 
 
-          <mu-row v-show="commentIsTheLast" justify-content="center" style="padding:.5rem; margin-top:.5rem;">
+          <mu-row v-show="commentIsTheLast" justify-content="center" style="padding:.5rem; margin-top:.5rem; color:#9e9e9e;">
             <span style="">没有更多的内容</span>
           </mu-row>
         </mu-load-more>
@@ -226,7 +226,7 @@
 
           </mu-expansion-panel>
 
-          <mu-row v-show="teamIsTheLast" justify-content="center" style="padding:.5rem; margin-top:.5rem;">
+          <mu-row v-show="teamIsTheLast" justify-content="center" style="padding:.5rem; margin-top:.5rem; color:#9e9e9e;">
             <span style="">没有更多的内容</span>
           </mu-row>
           <div v-show="!teamIsTheLast">
@@ -374,8 +374,13 @@
 
         this.$axios.post(`/game/commentList/${this.commentPage}/${this.gameID}`,{}).then((resp)=>{
           let dataBack = resp.data
+          console.log(dataBack)
           this.commentIsTheLast = dataBack.isTheLast
-          this.commentList = this.commentList.concat(dataBack.listInfo)
+          let cmtList = dataBack.listInfo
+          for(let i = 0; i < cmtList.length; i++) {
+            cmtList[i].c_create_time = utils.getDateDiff(cmtList[i].c_create_time, false)
+          }
+          this.commentList = this.commentList.concat(cmtList)
           this.commentPage++  // 页数+1
           this.commentLoading = false // 关闭转圈圈
         })

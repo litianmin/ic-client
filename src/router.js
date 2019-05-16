@@ -92,7 +92,7 @@ const router =  new Router({
       component: () => import('./views/game/commentDetail.vue')
     },
     { // 回复评论
-      path: '/game/replytoComment/:commentid/:replyto',
+      path: '/game/replytoComment',
       name: 'replyto-comment',
       component: () => import('./views/game/replyToComment.vue')
     },

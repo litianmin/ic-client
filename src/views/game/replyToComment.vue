@@ -7,7 +7,7 @@
         </mu-button>
         
         <div style="font-size:14px;">
-          回复评论
+          {{ Title }}
         </div>
     </mu-appbar>
     <!-- END 头部 -->
@@ -41,15 +41,22 @@
 export default {
   data () {
     return {
+      Title: '回复评论',
       CommentID: 0,
       CommentCont: '',
       CommentImg: '',  // base64图片数据
-      ReplyTo: 0
+      ReplyTo: 0,
     }
   },
   mounted () {
-    this.CommentID = this.$route.params.commentid
-    this.ReplyTo = this.$route.params.replyto
+
+    this.CommentID = this.$route.query.commentID
+    this.ReplyTo = this.$route.query.replyID
+    let isReply = this.$route.query.isReply
+    if(isReply == true) {
+      this.Title = '@ ' + this.$route.query.replyNickname
+    }
+
   },
   methods: {
     addImg () {
