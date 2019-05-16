@@ -374,7 +374,6 @@
 
         this.$axios.post(`/game/commentList/${this.commentPage}/${this.gameID}`,{}).then((resp)=>{
           let dataBack = resp.data
-          console.log(dataBack)
           this.commentIsTheLast = dataBack.isTheLast
           let cmtList = dataBack.listInfo
           for(let i = 0; i < cmtList.length; i++) {
@@ -510,7 +509,7 @@
 .team-create-btn { width:100%; padding:.5rem; text-align:center; color:white; background:#4dd0e1; border-radius:.3rem; border:0; }
 .team-header { padding:.5rem 0 .5rem 0; }
 .team-avatar-flex { width:90%; margin-left:-.5rem; margin-bottom:.5rem; }
-.team-leader-nickname { margin-left:.5rem; font-size:14px; color:#795548; }
+.team-leader-nickname { margin-left:.5rem; font-size:12px; color:#795548; }
 .team-leaderinfo-item { font-size:12px; margin-bottom:.2rem; }
 .team-leaderinfo-title { color:#795548; }
 .team-leaderinfo-cont { color:#9e9e9e; }

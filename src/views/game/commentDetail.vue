@@ -125,7 +125,6 @@ export default {
     // 页面初始化
     this.$axios.post(`/game/commentDetail/${commentID}`, {}).then((resp)=>{
       let dataBack = resp.data.msg 
-      console.log(dataBack)
       this.IsTheLast = dataBack.isTheLast
 
       this.CmtDetailMain.userID = dataBack.cmtDetailMain.user_id
@@ -145,7 +144,10 @@ export default {
       }
       this.ReplyList = replyList
       this.ReplyListPage++
-      // console.log(this.ReplyList)
+
+      // 渲染相关状态
+      this.IsFocus = dataBack.relativeStmt.collectStmt == 0 ? false : true
+      this.IsThumbup = dataBack.relativeStmt.thumbupStmt == 0 ? false : true
     })
 
   },
@@ -169,12 +171,48 @@ export default {
       this.$router.go(-1)
     },
     convertThumbup () {
-      this.IsThumbup = !this.IsThumbup
-      let msg = this.HadThumbUp == true ? '已点赞' : '取消点赞'
-      this.$toast.success(msg)
+
+      let operateTp = this.IsThumbup == true ? 0 : 1
+      let contTp = 1
+      let contID = this.CommentID
+      this.$axios.post(`common/thumbupOrNot`,{
+        operate_tp: operateTp,
+        cont_tp: contTp,
+        cont_id: Number(contID)
+      }).then((resp)=>{
+        if(resp.data.code == 20000) {
+          this.IsThumbup = !this.IsThumbup
+          let msg = this.IsThumbup == true ? '已点赞' : '取消点赞'
+          this.$toast.message(msg)
+        } else {
+          this.$toast.message('请不要频繁操作')
+        }
+      })
+
+      // this.IsThumbup = !this.IsThumbup
+      // let msg = this.HadThumbUp == true ? '已点赞' : '取消点赞'
+      // this.$toast.success(msg)
     },
-    convertFocus () {
-      this.IsFocus = !this.IsFocus
+    convertFocus () { // 收藏
+  //   	OperateType uint8  `json:"operate_tp"`
+	// ContType    uint8  `json:"cont_tp"`
+	// ContID      uint64 `josn:"cont_id"`
+      let operateTp = this.IsFocus == true ? 0 : 1
+      let contTp = 1
+      let contID = this.CommentID
+      this.$axios.post(`common/collect`,{
+        operate_tp: operateTp,
+        cont_tp: contTp,
+        cont_id: Number(contID)
+      }).then((resp)=>{
+        if(resp.data.code == 20000) {
+          this.IsFocus = !this.IsFocus
+          let msg = this.IsFocus == true ? '收藏成功' : '取消收藏'
+          this.$toast.message(msg)
+        } else {
+          this.$toast.message('请不要频繁操作')
+        }
+      })
     },
     convertSort () {
       // 当转换排序顺序的时候，把页数重置，然后，重新加载回复评论
