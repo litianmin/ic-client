@@ -56,6 +56,7 @@
       </mu-flex>
       <!-- END 排序条 -->
 
+      <!-- BEGIN 回复评论 -->
       <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
         <mu-flex align-items="center">
           <mu-avatar size="24">
@@ -91,15 +92,19 @@
     <!-- BEGIN 弹出窗口 -->
     <mu-container>
       <mu-drawer :open.sync="teamListWindowIsShow" :docked="false" :left="true" width="80%">
-        <div style="padding:0 .2rem;">
-          <div style="padding:.5rem; background:rgba(220, 220, 220, .5);">
-            <div style="padding:.5rem; color:green;">游戏基本信息</div>
-            <div style="padding:.3rem 1rem; font-size:12px; color:green;">区服: <span style="margin-left:.5rem; color:gray;">{{ ChatDetailMain.server_name }}</span></div>
-            <div style="padding:.3rem 1rem; font-size:12px; color:green;">招募人数: <span style="margin-left:.5rem; color:gray;">{{ ChatDetailMain.recruit_num }}/<span style="font-size:8px;">{{ ChatDetailMain.had_join }}</span></span></div>
-            <div style="padding:.3rem 1rem; font-size:12px; color:green;">队友偏向: <span style="margin-left:.5rem; color:gray;">{{ ChatDetailMain.teammate_prefer }}</span></div>
-          </div>
-        </div>
+        <!-- 游戏基本信息 -->
+        <mu-row style="position:relative;">
+          <img style="max-width:100%; max-height:100%;" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3235392929,1873239219&fm=26&gp=0.jpg" alt="">
 
+          <div style="position:absolute; left:0; bottom:0; width:100%; padding:.5rem 1rem;  background:rgba(30, 30, 30, .3)">
+            <div style="color:#fff;">洛奇英雄传</div>
+            <div style="font-size:12px; color:#fff;">区服: <span style="margin-left:.5rem; color:#fff;">{{ ChatDetailMain.server_name }}</span></div>
+            <div style="font-size:12px; color:#fff;">招募人数: <span style="margin-left:.5rem; color:#fff;">{{ ChatDetailMain.recruit_num }}/<span style="font-size:8px;">{{ ChatDetailMain.had_join }}</span></span></div>
+            <div style="font-size:12px; color:#fff;">队友偏向: <span style="margin-left:.5rem; color:#fff;">{{ ChatDetailMain.teammate_prefer }}</span></div>
+          </div>
+        </mu-row>
+
+        <!-- 队友列表 -->
         <div style="margin-top:.5rem; padding: 0 .2rem;" v-for="(item, index) in TeammateList" :key="index">
           <mu-row class="teammate-box">
             <mu-col span="9">
@@ -147,6 +152,7 @@ export default {
       TeamID: 0,
       IsSortup: true,
       IsTheLast: true,
+      SelfIsCamptain: false,
       ChatDetailMain: {
         userID: 0,
         recruit_word: '',
@@ -157,7 +163,6 @@ export default {
         captain_sex: 0,
         server_name: '',
         recruit_num: 0,
-        recruit_numb: 0,
         had_join: 0,
         teammate_prefer: '',
       },
@@ -188,10 +193,9 @@ export default {
       this.ChatDetailMain.captain_sex = dataBack.teamDetail.captain_sex
       this.ChatDetailMain.server_name = dataBack.teamDetail.server_name
       this.ChatDetailMain.recruit_num = dataBack.teamDetail.recruit_num
-      this.ChatDetailMain.server_name = dataBack.teamDetail.server_name
-      this.ChatDetailMain.recruit_numb = dataBack.teamDetail.recruit_num
       this.ChatDetailMain.had_join = dataBack.teamDetail.TeammateList.length
       this.ChatDetailMain.teammate_prefer = dataBack.teamDetail.teanmate_prefer
+      this.SelfIsCamptain = dataBack.teamDetail.self_iscaptain == 0 ? false : true
 
       this.TeammateList = dataBack.teamDetail.TeammateList
 

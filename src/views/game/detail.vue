@@ -170,7 +170,7 @@
                 <!-- 右边图片展示 -->
                 <mu-col col="6" justify-content="center" align-items="center">
                   <mu-flex justify-content="center" align-items="center" class="team-leaderinfo-img-flex">
-                    <img :src="item.display_img" />
+                    <img :src="item.recruit_img" />
                   </mu-flex>
                 </mu-col>
               </mu-row>
@@ -316,7 +316,6 @@
         `/game/detail/${this.gameID}`,{}
       ).then((resp)=>{
         let dataBack = resp.data.msg
-        console.log(dataBack)
 
         // 游戏基本信息初始化问题
         this.gameTp = dataBack.gameInfo.g_type

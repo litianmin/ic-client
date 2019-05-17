@@ -102,13 +102,23 @@
       </mu-row>
 
       <!-- 上传招募图片 -->
-      <mu-row style="margin-top:1rem; margin-bottom:3rem;">
+      <mu-row style="margin-top:1rem; margin-bottom:.5rem;">
         <mu-flex style="position:relative; width:100%; height:10rem; background:#eeeeee; border-radius:.5rem;" justify-content="center" align-items="center">
           <span @click="addImg" v-show="!teamInfo.displayImg" style="color:#4caf50;">点击上传招募图片</span>
           <mu-icon v-show="teamInfo.displayImg" @click="delImg" value="cancel" color="#e91e63" style="position:absolute; top:0; right:0;"></mu-icon>
           <img style="max-width:100%; max-height:9rem; border-radius:.3rem;" :src="teamInfo.displayImg" />
         </mu-flex>
         <input @change="getDisplayImg" ref="imgUpload" type="file" style="display:none;" accept="image/*"/>
+      </mu-row>
+
+      <!-- 上传角色图片 -->
+      <mu-row style="margin-top:1rem; margin-bottom:3rem;">
+        <mu-flex style="position:relative; width:100%; height:10rem; background:#eeeeee; border-radius:.5rem;" justify-content="center" align-items="center">
+          <span @click="addImg2" v-show="!teamInfo.roleImg" style="color:#4caf50;">点击上传角色图片</span>
+          <mu-icon v-show="teamInfo.roleImg" @click="delImg2" value="cancel" color="#e91e63" style="position:absolute; top:0; right:0;"></mu-icon>
+          <img style="max-width:100%; max-height:9rem; border-radius:.3rem;" :src="teamInfo.roleImg" />
+        </mu-flex>
+        <input @change="getRoleImg" ref="imgUpload2" type="file" style="display:none;" accept="image/*"/>
       </mu-row>
 
     </mu-container>
@@ -214,6 +224,7 @@ export default {
         recruitWay: 0,
         displayImg: '',
         announcement: '',
+        roleImg: '',
       },
       teamatePrefer: [],
       teamatePreferStr: '',
@@ -264,6 +275,30 @@ export default {
       }
       reader.readAsDataURL(file)
     },
+    getRoleImg () {  // 获取评论图片
+      var _this = this
+      var event = event || window.event
+      var file = event.target.files[0]
+
+      // 先判断file的大小
+      if(file.size > 1024 * 1024 * 2) {
+        this.$toast.message('图片上传最大为2M！')
+        return
+      }
+
+      var reader = new FileReader()
+      //转base64
+      reader.onload = function(e) {
+        _this.teamInfo.roleImg = e.target.result
+      }
+      reader.readAsDataURL(file)
+    },
+    delImg2 () {
+      this.teamInfo.roleImg = ''
+    },
+    addImg2 () {
+      this.$refs.imgUpload2.click()
+    },
     previewPage () {
       this.isPreview = !this.isPreview
       this.isPreviewCont = this.isPreview === false ? '预 览' : '返 回'
@@ -306,12 +341,14 @@ export default {
           recruit_way: Number(this.teamInfo.recruitWay),
           teammate_prefer: this.teamatePreferStr,
           announcement: this.teamInfo.announcement,
-          display_img: this.teamInfo.displayImg
+          display_img: this.teamInfo.displayImg,
+          role_img: this.teamInfo.roleImg
         }
       ).then((resp)=>{
         if(resp.data.code === 20000) {
           this.$toast.message('创建队伍成功')
           // TODO 跳转到组队详细页面(此页面可进行分享，加入组队)
+          this.$router.push(`/game/teamDetail/${resp.data.newTeamID}`)
         }
       })
     },
