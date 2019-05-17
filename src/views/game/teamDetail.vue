@@ -105,9 +105,9 @@
         </mu-row>
 
         <!-- 队友列表 -->
-        <div style="margin-top:.5rem; padding: 0 .2rem;" v-for="(item, index) in TeammateList" :key="index">
+        <div style="margin-top:.5rem; padding: 0 .5rem;" v-for="(item, index) in TeammateList" :key="index">
           <mu-row class="teammate-box">
-            <mu-col span="9">
+            <mu-col span="8">
               <mu-flex>
                 <div>
                   <mu-avatar size="28">
@@ -119,21 +119,24 @@
                   <br/>
                   <span class="teammate-info-title">角色：<span style="color:#9e9e9e;">{{ item.role_name }}</span></span>
                   <br/>
-                  <span class="teammate-info-title">{{ item.role }}/{{ item.role_rank }}</span>
+                  <span class="teammate-info-title">职业：<span style="color:#9e9e9e;">{{ item.role }}/{{ item.role_rank }}</span></span>
                 </div>
               </mu-flex>
             </mu-col>
 
-            <mu-col span="3" justify-content="center">
+            <mu-col span="4" justify-content="center">
               <mu-flex justify-content="center" align-items="center" class="teammate-img-flex">
                   <img :src="item.display_img" />
               </mu-flex>
             </mu-col>
 
-            <mu-flex v-show="item.is_friend == 0" justify-content="center" align-items="center" style="width:100%; font-size:12px; background:#00bcd4; color:#fff; border-radius:.2rem; margin-right:.3rem; margin-top:.3rem;">
+            <!-- <mu-flex v-if="item.is_friend == 0" @click="applytoBeFriend(item.user_id)" justify-content="center" align-items="center" class="friendstmt-flex-one">
               <div>加为玩友</div> <mu-icon value="add" size="12"></mu-icon>
             </mu-flex>
 
+            <mu-flex v-if="item.is_friend == 2" justify-content="center" align-items="center" class="friendstmt-flex-two">
+              <div>已申请</div>
+            </mu-flex> -->
           </mu-row>
         </div>
       </mu-drawer>
@@ -230,7 +233,7 @@ export default {
     teamListWindowToggle () {
       this.teamListWindowIsShow = !this.teamListWindowIsShow
       this.$refs.menuHide.click()
-    }
+    },
   }
 }
 </script>
@@ -269,4 +272,6 @@ export default {
 .teammate-img-flex { width:100%; height:4rem; text-align:center; border-radius:.5rem; }
 .teammate-img-flex img { max-width:4rem; max-height:4rem; border-radius:.2rem; }
 
+.friendstmt-flex-one { width:100%; font-size:12px; background:#00bcd4; color:#fff; border-radius:.2rem; margin-right:.3rem; margin-top:.3rem; }
+.friendstmt-flex-two { width:100%; font-size:12px; background:#bdbdbd; color:#fff; border-radius:.2rem; margin-right:.3rem; margin-top:.3rem; }
 </style>
