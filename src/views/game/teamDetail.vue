@@ -83,9 +83,22 @@
     </div>
 
     <mu-flex class="reply-input-box" align-items="center">
-      <div style="width:90%;" @click="newChat(false, 0, '')">
+      <div style="width:80%;" @click="newChat(false, 0, '')">
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
+      <!-- <span style="font-size:20px; margin-left:auto;"><svg-icon icon-class="readyto_jointeam"></svg-icon></span> -->
+      <span v-if="JointeamStmt == 3" @click="joinTeam(3)" style="font-size:19px; margin-left:auto;">
+        <svg-icon icon-class="jointeam_refuse"></svg-icon>
+      </span>
+      <span v-if="JointeamStmt == 2" @click="joinTeam(2)" style="font-size:19px; margin-left:auto;">
+        <svg-icon icon-class="hadjointeam"></svg-icon>
+      </span>
+      <span v-if="JointeamStmt == 1" @click="joinTeam(1)" style="font-size:20px; margin-left:auto;">
+        <svg-icon icon-class="jointeam_applying"></svg-icon>
+      </span>
+      <span v-if="JointeamStmt == 0" @click="joinTeam(0)" style="font-size:20px; margin-left:auto;">
+        <svg-icon icon-class="jointeam"></svg-icon>
+      </span>
       <mu-icon value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
     </mu-flex>
 
@@ -174,6 +187,8 @@ export default {
       TeammateList: [],
       ReplyList: [],
       teamListWindowIsShow: false,
+      JointeamStmt: 0,
+      TeamStmt: 0,
     }
   },
   mounted () {
@@ -200,7 +215,35 @@ export default {
       this.ChatDetailMain.teammate_prefer = dataBack.teamDetail.teanmate_prefer
       this.SelfIsCamptain = dataBack.teamDetail.self_iscaptain == 0 ? false : true
 
+      switch(dataBack.selfJoinStmt) { // 判断当前用户加入的状态
+        case -1:  // 没有加入的记录
+        this.JointeamStmt = 0
+        break
+        case 0: // 申请中
+        this.JointeamStmt = 1
+        break
+        case 1: // 拒绝加入
+        this.JointeamStmt = 3
+        break
+        case 2: // 已加入组队
+        this.JointeamStmt = 2
+        break
+        case 3: // 已离队
+        this.JointeamStmt = 0
+        break
+        case 4: // 已被踢
+        this.JointeamStmt = 3
+        break
+      }
+       
+      this.TeamStmt = dataBack.teamDetail.t_stmt
+      // 判断队伍的状态，然后再去修改加入队伍的状态
+      if(this.TeamStmt > 0) { // 只有队伍有效的时候，才显示加入，申请中，加入成功的按钮
+        this.JointeamStmt = 3
+      }
+
       this.TeammateList = dataBack.teamDetail.TeammateList
+
 
       let replyList = dataBack.replyList
       for(let i = 0; i < replyList.length; i++) {
@@ -226,6 +269,23 @@ export default {
     },
     convertSort () {
       this.IsSortup = !this.IsSortup
+    },
+    joinTeam (stmt) {
+      switch(stmt) {
+        case 0: // 可申请
+        this.$router.push(`/game/joinTeam/${this.TeamID}`)
+        break
+        case 1: // 申请中
+        this.$toast.message("正在申请中。。。")
+        break
+        case 2: // 已经加入组队
+        this.$toast.message("你已加入组队，要退出组队请点右上角功能按钮")
+        break
+        case 3: // 不能加入
+        this.$toast.message("不能加入")
+        break
+      }
+
     },
     newChat (isReply, replyID, replyNickname) {
       this.$router.push({path:`/game/teamchat`, query:{teamID:this.TeamID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
