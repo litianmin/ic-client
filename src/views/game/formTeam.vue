@@ -375,7 +375,7 @@ export default {
 .team-leaderinfo-item { font-size:12px; margin-bottom:.2rem; }
 .team-leaderinfo-title { color:#795548; }
 .team-leaderinfo-cont { color:#9e9e9e; }
-.team-leaderinfo-img-flex { width:100%; height:10rem; text-align:center; border-radius:.5rem; margin-top:.5rem; background:rgba(230,230,230,.5); }
+.team-leaderinfo-img-flex { width:100%; height:10rem; text-align:center; border-radius:.5rem; margin-top:.5rem; background:rgba(230,230,230,.2); }
 .team-leaderinfo-img-flex img { max-width:100%; max-height:10rem; border-radius:.5rem; }
 .team-extracont-time { font-size:12px; margin-right:1rem; color:#9e9e9e; }
 .team-extracont-operate { font-size:12px; color:#009688; }

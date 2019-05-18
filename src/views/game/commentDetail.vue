@@ -175,7 +175,7 @@ export default {
       let operateTp = this.IsThumbup == true ? 0 : 1
       let contTp = 1
       let contID = this.CommentID
-      this.$axios.post(`common/thumbupOrNot`,{
+      this.$axios.post(`/common/thumbupOrNot`,{
         operate_tp: operateTp,
         cont_tp: contTp,
         cont_id: Number(contID)
@@ -200,7 +200,7 @@ export default {
       let operateTp = this.IsFocus == true ? 0 : 1
       let contTp = 1
       let contID = this.CommentID
-      this.$axios.post(`common/collect`,{
+      this.$axios.post(`/common/collect`,{
         operate_tp: operateTp,
         cont_tp: contTp,
         cont_id: Number(contID)

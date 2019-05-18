@@ -63,36 +63,39 @@
       <!-- END 排序条 -->
 
       <!-- BEGIN 回复评论 -->
-      <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
-        <mu-flex align-items="center">
-          <mu-avatar size="24">
-            <img :src="item.user_avatar">
-          </mu-avatar>
-          <span class="reply-nickname">
-            {{ item.user_nickname }} 
-          </span>
-          <span class="reply-time">{{ item.create_time }}</span>
-        </mu-flex>
+      <mu-load-more :loading="Loading" @load="load" :loaded-all="IsTheLast">
+        <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
+          <mu-flex align-items="center">
+            <mu-avatar size="24">
+              <img :src="item.user_avatar">
+            </mu-avatar>
+            <span class="reply-nickname">
+              {{ item.user_nickname }} 
+            </span>
+            <span class="reply-time">{{ item.create_time }}</span>
+          </mu-flex>
 
-        <mu-row class="reply-cont-box">
-          <span style="font-size:12px; margin-left:.5rem; ">
-            <span v-if="item.reply_to > 0">@<span style="color:#795548;">{{ item.reply_nickname }}</span> :</span> {{ item.chat_cont }}
-            <span style="color:green; margin-left:.5rem;" @click="newChat(true, item.user_id, item.user_nickname)">回复</span>
-          </span>
-        </mu-row>
+          <mu-row class="reply-cont-box">
+            <span style="font-size:12px; margin-left:.5rem; ">
+              <span v-if="item.reply_to > 0">@<span style="color:#795548;">{{ item.reply_nickname }}</span> :</span> {{ item.chat_cont }}
+              <span style="color:green; margin-left:.5rem;" @click="newChat(true, item.user_id, item.user_nickname)">回复</span>
+            </span>
+          </mu-row>
 
-        <mu-row v-if="item.chat_img" class="team-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
-          <img :src="item.chat_img">
-        </mu-row>
-      </mu-container>
+          <mu-row v-if="item.chat_img" class="team-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
+            <img :src="item.chat_img">
+          </mu-row>
+        </mu-container>
+      </mu-load-more>
       <!-- END 回复评论 -->
     </div>
 
+    <!-- 发起评论框 -->
     <mu-flex class="reply-input-box" align-items="center">
       <div style="width:80%;" @click="newChat(false, 0, '')">
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
-      <!-- <span style="font-size:20px; margin-left:auto;"><svg-icon icon-class="readyto_jointeam"></svg-icon></span> -->
+
       <span v-if="JointeamStmt == 3" @click="joinTeam(3)" style="font-size:19px; margin-left:auto;">
         <svg-icon icon-class="jointeam_refuse"></svg-icon>
       </span>
@@ -109,7 +112,7 @@
     </mu-flex>
 
     <!-- BEGIN 弹出窗口 -->
-    <mu-container>
+    <mu-container style="position:fixed; top:0; left:0; z-index:9999;">
       <mu-drawer :open.sync="teamListWindowIsShow" :docked="false" :left="true" width="80%">
         <!-- 游戏基本信息 -->
         <mu-row style="position:relative;">
@@ -158,6 +161,7 @@
             </mu-flex> -->
           </mu-row>
         </div>
+        
       </mu-drawer>
     </mu-container>
     <!-- END 弹出窗口 -->
@@ -174,8 +178,9 @@ export default {
       Title: '队伍招募中。。。',
       TeamID: 0,
       GameID: 0,
-      IsSortup: true,
+      IsSortup: false,
       IsTheLast: true,
+      Loading: false,
       SelfIsCamptain: false,
       ChatDetailMain: {
         userID: 0,
@@ -190,7 +195,6 @@ export default {
         had_join: 0,
         teammate_prefer: '',
       },
-      ChatList: [],
       ChatListPage: 1,
       TeammateList: [],
       ReplyList: [],
@@ -283,11 +287,26 @@ export default {
         replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, false)
       }
       this.ReplyList = replyList
-      this.ReplyListPage++
+      this.ChatListPage++
     })
 
   },
   methods: {
+    load () {
+      this.Loading = true      
+      let sortWay = this.IsSortup == false ? 0 : 1
+      this.$axios.post(`/game/teamchatList/${this.ChatListPage}/${this.TeamID}/${sortWay}`,{}).then((resp)=>{
+        let dataBack = resp.data
+        this.IsTheLast = dataBack.isTheLast
+        let replyList = dataBack.listInfo
+        for(let i = 0; i < replyList.length; i++) {
+          replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, false)
+        }
+        this.ReplyList = this.ReplyList.concat(replyList)
+        this.ChatListPage++
+        this.Loading = false
+      })
+    },
     goBack () {
       this.$router.go(-1)
     },
@@ -300,7 +319,11 @@ export default {
       this.IsFocus = !this.IsFocus
     },
     convertSort () {
+      // this.IsSortup = !this.IsSortup
+      this.ChatListPage = 1
+      this.ReplyList = []
       this.IsSortup = !this.IsSortup
+      this.load()
     },
     joinTeam (stmt) {
       switch(stmt) {
@@ -311,7 +334,7 @@ export default {
         this.$toast.message("正在申请中。。。")
         break
         case 2: // 已经加入组队
-        this.$toast.message("你已加入组队，要退出组队请点右上角功能按钮")
+        this.$toast.message("你已加入组队")
         break
         case 3: // 不能加入
         this.$toast.message("不能加入")
@@ -361,6 +384,7 @@ export default {
 </script>
 
 <style scoped>
+.mytest { overflow:hidden;}
 .mine-appbar { width: 100%; height:2.5rem; position:flex; }
 
 .mine-menu-box { margin-top:1rem; right:.5rem; }
@@ -389,7 +413,7 @@ export default {
 .team-item-img { padding:.5rem .5rem 0 1rem; font-size:12px; color:#616161; }
 .team-item-img img { max-width:100%; max-height:100%; border-radius:.3rem; }
 
-.teammate-box { margin-bottom:.5rem; background:rgba(230, 230, 230, .5); padding:.4rem 0 .4rem .5rem; border-radius:.5rem; }
+.teammate-box { margin-bottom:.5rem; background:rgba(240, 240, 240, .3); padding:.4rem 0 .4rem .5rem; border-radius:.5rem; border-bottom:1px #bdbdbd solid; border-right:1px #e0e0e0 solid; border-top:1px #f5f5f5 solid; }
 .teammate-info-title { margin-left:.5rem; font-size:12px; color:#795548; }
 .teammate-img-flex { width:100%; height:4rem; text-align:center; border-radius:.5rem; }
 .teammate-img-flex img { max-width:4rem; max-height:4rem; border-radius:.2rem; }

@@ -451,12 +451,12 @@
 .team-leaderinfo-item { font-size:12px; margin-bottom:.2rem; }
 .team-leaderinfo-title { color:#795548; }
 .team-leaderinfo-cont { color:#9e9e9e; }
-.team-leaderinfo-img-flex { width:100%; height:10rem; text-align:center; border-radius:.5rem; margin-top:.5rem; }
+.team-leaderinfo-img-flex { width:100%; height:10rem; text-align:center; border-radius:.5rem; margin-top:.5rem; background:rgba(230,230,230,.2); }
 .team-leaderinfo-img-flex img { max-width:100%; max-height:10rem; border-radius:.5rem; }
 .team-extracont-time { font-size:12px; margin-right:1rem; color:#9e9e9e; }
 .team-extracont-operate { font-size:12px; color:#009688; }
 
-.teammate-box { margin-bottom:.5rem; background:rgba(230, 230, 230, .5); padding:.4rem 0 .4rem .5rem; border-radius:.5rem; }
+.teammate-box { margin-bottom:.5rem; background:rgba(240, 240, 240, .3); padding:.4rem 0 .4rem .5rem; border-radius:.5rem; border-bottom:1px #bdbdbd solid; border-right:1px #e0e0e0 solid; border-top:1px #f5f5f5 solid; }
 .teammate-info-title { margin-left:.5rem; font-size:12px; color:#795548; }
 .teammate-img-flex { width:100%; height:4rem; text-align:center; border-radius:.5rem; }
 .teammate-img-flex img { max-width:4rem; max-height:4rem; border-radius:.2rem; }
