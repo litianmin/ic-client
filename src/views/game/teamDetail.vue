@@ -7,7 +7,7 @@
         </mu-button>
         
         <div ref="menuHide" style="font-size:14px;">
-          队伍聊天中 。。。
+          {{ JointeamStmtDesc }}
         </div>
 
         <mu-menu slot="right" class="mine-menu-box">
@@ -16,7 +16,7 @@
             <mu-list-item button @click="teamListWindowToggle">
               <mu-list-item-title class="mine-menu-item">队友列表</mu-list-item-title>
             </mu-list-item>
-            <mu-list-item button style="border-top:1px solid #fafafa;">
+            <mu-list-item v-if="JointeamStmt == 2" button style="border-top:1px solid #fafafa;">
               <mu-list-item-title class="mine-menu-item">退出队伍</mu-list-item-title>
             </mu-list-item>
           </mu-list>
@@ -26,7 +26,7 @@
 
     <div style="margin-bottom:3rem;">  
       <!-- BEGIN 主评论 -->
-      <mu-container class="main-team-container">
+      <mu-container class="main-team-container" style="position:relative;">
         <mu-flex align-items="center">
           <mu-avatar size="26">
             <img :src="ChatDetailMain.captain_avatar">
@@ -34,7 +34,7 @@
           <span class="team-item-nickname">
             {{ ChatDetailMain.captain_nickname }} <span class="character-title">( 队长 · 阿萨卡 )</span>
           </span>
-          <span class="reply-time">10小时前</span>
+          <!-- <span class="reply-time">10小时前</span> -->
         </mu-flex>
 
         <mu-row class="team-item-text">
@@ -44,6 +44,12 @@
         <mu-row v-if="ChatDetailMain.recruit_img" class="team-item-img">
           <img :src="ChatDetailMain.recruit_img" alt="">
         </mu-row>
+
+        <svg-icon v-if="TeamStmt == 0" icon-class="recruiting" style="opacity: .5; position:absolute; right:.5rem; top:0; font-size:60px;"></svg-icon>
+        <svg-icon v-if="TeamStmt == 1" icon-class="recruit_finished" style="opacity: .5; position:absolute; right:.5rem; top:0; font-size:60px;"></svg-icon>
+        <svg-icon v-if="TeamStmt == 2" icon-class="recruit_fail" style="opacity: .5; position:absolute; right:.5rem; top:0; font-size:60px;"></svg-icon>
+        <svg-icon v-if="TeamStmt == 3" icon-class="recruit_delete" style="opacity: .5; position:absolute; right:.5rem; top:0; font-size:60px;"></svg-icon>
+
       </mu-container>
       <!-- END 主评论 -->
 
@@ -107,10 +113,10 @@
       <mu-drawer :open.sync="teamListWindowIsShow" :docked="false" :left="true" width="80%">
         <!-- 游戏基本信息 -->
         <mu-row style="position:relative;">
-          <img style="max-width:100%; max-height:100%;" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3235392929,1873239219&fm=26&gp=0.jpg" alt="">
+          <img style="max-width:100%; max-height:100%;" :src="GameDisplayImg" alt="">
 
           <div style="position:absolute; left:0; bottom:0; width:100%; padding:.5rem 1rem;  background:rgba(30, 30, 30, .3)">
-            <div style="color:#fff;">洛奇英雄传</div>
+            <div style="color:#fff;">{{ GameName }}</div>
             <div style="font-size:12px; color:#fff;">区服: <span style="margin-left:.5rem; color:#fff;">{{ ChatDetailMain.server_name }}</span></div>
             <div style="font-size:12px; color:#fff;">招募人数: <span style="margin-left:.5rem; color:#fff;">{{ ChatDetailMain.recruit_num }}/<span style="font-size:8px;">{{ ChatDetailMain.had_join }}</span></span></div>
             <div style="font-size:12px; color:#fff;">队友偏向: <span style="margin-left:.5rem; color:#fff;">{{ ChatDetailMain.teammate_prefer }}</span></div>
@@ -165,6 +171,7 @@ import utils from 'common/utils.js'
 export default {
   data () {
     return {
+      Title: '队伍招募中。。。',
       TeamID: 0,
       IsSortup: true,
       IsTheLast: true,
@@ -188,7 +195,10 @@ export default {
       ReplyList: [],
       teamListWindowIsShow: false,
       JointeamStmt: 0,
+      JointeamStmtDesc: '',
       TeamStmt: 0,
+      GameDisplayImg: '',
+      GameName: '',
     }
   },
   mounted () {
@@ -200,7 +210,7 @@ export default {
 
       console.log(dataBack)
 
-      this.IsTheLast = dataBack.replyIsTheLast
+      this.IsTheLast = dataBack.replyIsTheLast  // 聊天列表是否已经是最后一页了
       
       this.ChatDetailMain.userID = dataBack.teamDetail.captain_userid
       this.ChatDetailMain.recruit_word = dataBack.teamDetail.announcement
@@ -214,25 +224,33 @@ export default {
       this.ChatDetailMain.had_join = dataBack.teamDetail.TeammateList.length
       this.ChatDetailMain.teammate_prefer = dataBack.teamDetail.teanmate_prefer
       this.SelfIsCamptain = dataBack.teamDetail.self_iscaptain == 0 ? false : true
+      this.GameDisplayImg = dataBack.gameInfo.gameDisplayImg
+      this.GameName = dataBack.gameInfo.gameName
 
       switch(dataBack.selfJoinStmt) { // 判断当前用户加入的状态
         case -1:  // 没有加入的记录
         this.JointeamStmt = 0
+        this.JointeamStmtDesc = '快加入组队吧'
         break
         case 0: // 申请中
         this.JointeamStmt = 1
+        this.JointeamStmtDesc = '组队申请中。。。'
         break
         case 1: // 拒绝加入
         this.JointeamStmt = 3
+        this.JointeamStmtDesc = '已被拒绝！'
         break
         case 2: // 已加入组队
         this.JointeamStmt = 2
+        this.JointeamStmtDesc = '已加入组队'
         break
         case 3: // 已离队
         this.JointeamStmt = 0
+        this.JointeamStmtDesc = '还不快回来'
         break
         case 4: // 已被踢
         this.JointeamStmt = 3
+        this.JointeamStmtDesc = '已被踢出组队'
         break
       }
        
@@ -240,6 +258,21 @@ export default {
       // 判断队伍的状态，然后再去修改加入队伍的状态
       if(this.TeamStmt > 0) { // 只有队伍有效的时候，才显示加入，申请中，加入成功的按钮
         this.JointeamStmt = 3
+      }
+      // 组队状态, 0=>组队中， 1=>成功， 2=>失效, 3=>删除
+      switch(this.TeamStmt) {
+        case 0:
+        this.Title = '招募中'
+        break
+        case 1:
+        this.Title = '招募完成'
+        break
+        case 2:
+        this.Title = '招募失效'
+        break
+        case 3:
+        this.Title = '已被删除'
+        break
       }
 
       this.TeammateList = dataBack.teamDetail.TeammateList
