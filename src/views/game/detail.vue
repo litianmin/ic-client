@@ -187,7 +187,7 @@
               <mu-flex style="margin-top:.5rem;">
                 <div style="margin-left:auto;">
                   <span class="team-extracont-time">{{ item.create_time }}</span>
-                  <span class="team-extracont-operate" @click.stop="joinTeam(item.t_id, index, item.recruit_way, item.hadJoinStmt)">{{ item.joinStr }}</span>
+                  <span class="team-extracont-operate" @click.stop="joinTeam(item.t_id)">查看详情</span>
                 </div>
               </mu-flex>
 
@@ -401,36 +401,6 @@
 
           for(let i = 0; i < listInfo.length; i++) {
             listInfo[i]['hadJoin'] = listInfo[i]['TeammateList'].length
-            listInfo[i]['joinStr'] = listInfo[i]['recruit_way'] == 0 ? '加入组队' : '申请加入'
-            listInfo[i]['hadJoinStmt'] = -1   // 加入状态初始值 
-            listInfo[i]['isCaptain'] = false
-            // 0=>申请，1=>拒绝加入，2=>已加入，3=>离队, 4=>被踢',
-            for(let j = 0; j < this.teamHadJoinList.length; j++) {  // 判断是否有状态
-              if(this.teamHadJoinList[j].t_id == listInfo[i].t_id) {
-                listInfo[i]['hadJoinStmt'] = this.teamHadJoinList[j].join_stmt
-                switch(this.teamHadJoinList[j].join_stmt) {
-                  case 0:
-                    listInfo[i]['joinStr'] = '申请中'
-                    break
-                  case 1:
-                    listInfo[i]['joinStr'] = '已被拒绝'
-                    break
-                  case 2:
-                    listInfo[i]['joinStr'] = '进入查看'
-                    break
-                  case 3:
-                    listInfo[i]['joinStr'] = '加入组队'
-                    break
-                  case 4:
-                    listInfo[i]['joinStr'] = '已被踢出'
-                    break
-                  default:
-                    break
-                }
-              }
-            }
-
-            
             listInfo[i]['create_time'] = utils.getDateDiff(listInfo[i]['create_time'], false)
           }
 
@@ -439,39 +409,8 @@
           this.teamLoading = false // 关闭转圈圈
         })
       },
-      joinTeam (teamID, index, recruitWay, hadJoinStmt) {
-        // 0=>申请，1=>拒绝加入，2=>已加入，3=>离队, 4=>被踢',
-        switch(hadJoinStmt) {
-          case 0:
-            this.$toast.message('申请中，请耐心等待')
-            return
-          case 1:
-            this.$toast.message('队长拒绝了你的入队请求')
-            return
-          case 2: // TODO
-            this.$router.push(`/game/teamDetail/${teamID}`)
-            return
-          case 3: // TODO
-            this.$toast.message('正在重新加入，请等待，我还没写接口')
-            return
-          case 4:
-            this.$toast.message('你已被踢出组队')
-            return
-          default:
-            break
-        }
-
-        if(recruitWay == 0) { // 加入组队，不用申请的   TODO
-          this.$toast.message('正在加入组队，请等待，我还没写接口')
-          return
-        }
-
-        if(recruitWay == 1) { // TODO
-          this.$router.push(`/game/joinTeam/${teamID}`)
-          return
-        }
-        // 去发起加入组队的请求
-        
+      joinTeam (teamID) {
+        this.$router.push(`/game/teamDetail/${teamID}`)
       }
     },
   }

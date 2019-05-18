@@ -23,6 +23,11 @@ import 'swiper/dist/css/swiper.css'
 Vue.use(MuseUI)
 Vue.use(VueAwesomeSwiper, /* { default global options } */)
 
+
+import 'muse-ui-message/dist/muse-ui-message.css'
+import Message from 'muse-ui-message'
+Vue.use(Message)
+
 // 加载支持svg
 import './icons/index'
 

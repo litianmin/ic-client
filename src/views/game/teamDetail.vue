@@ -16,7 +16,7 @@
             <mu-list-item button @click="teamListWindowToggle">
               <mu-list-item-title class="mine-menu-item">队友列表</mu-list-item-title>
             </mu-list-item>
-            <mu-list-item v-if="JointeamStmt == 2" button style="border-top:1px solid #fafafa;">
+            <mu-list-item @click="leaveTeam" v-if="JointeamStmt == 2" button style="border-top:1px solid #fafafa;">
               <mu-list-item-title class="mine-menu-item">退出队伍</mu-list-item-title>
             </mu-list-item>
           </mu-list>
@@ -173,6 +173,7 @@ export default {
     return {
       Title: '队伍招募中。。。',
       TeamID: 0,
+      GameID: 0,
       IsSortup: true,
       IsTheLast: true,
       SelfIsCamptain: false,
@@ -208,8 +209,6 @@ export default {
     this.$axios.post(`/game/teamDetail/${this.TeamID}`, {}).then((resp)=>{
       let dataBack = resp.data.msg 
 
-      console.log(dataBack)
-
       this.IsTheLast = dataBack.replyIsTheLast  // 聊天列表是否已经是最后一页了
       
       this.ChatDetailMain.userID = dataBack.teamDetail.captain_userid
@@ -226,6 +225,7 @@ export default {
       this.SelfIsCamptain = dataBack.teamDetail.self_iscaptain == 0 ? false : true
       this.GameDisplayImg = dataBack.gameInfo.gameDisplayImg
       this.GameName = dataBack.gameInfo.gameName
+      this.GameID = dataBack.teamDetail.g_id
 
       switch(dataBack.selfJoinStmt) { // 判断当前用户加入的状态
         case -1:  // 没有加入的记录
@@ -284,7 +284,6 @@ export default {
       }
       this.ReplyList = replyList
       this.ReplyListPage++
-      // console.log(this.ReplyList)
     })
 
   },
@@ -320,7 +319,37 @@ export default {
       }
 
     },
+    leaveTeam () {
+      // 先判断是否为队长，如果是队长，提示会解散队伍
+      if(this.SelfIsCamptain == true) {
+        this.$confirm('是否解散队伍？').then((resp)=>{
+          if(resp.result == true) { // 确定解散队伍
+            // this.$toast.message('你确定解散了队伍')
+            this.$axios.post(`/game/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
+              if(resp.data.code == 20000) {
+                this.$toast.message('已成功解散')
+                this.$router.push(`/game/detail/${this.GameID}`)
+                return
+              }
+            }) 
+          }
+        })
+      } else {
+        this.$axios.post(`/game/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
+          if(resp.data.code == 20000) {
+            this.$toast.message('已退出队伍')
+            this.$router.push(`/game/detail/${this.GameID}`)
+            return
+          }
+        }) 
+      }
+    },
     newChat (isReply, replyID, replyNickname) {
+      // 只有加入组队的人才能进行评论
+      if(this.JointeamStmt != 2) {
+        this.$toast.message('加入组队后才能聊天哦')
+        return
+      }
       this.$router.push({path:`/game/teamchat`, query:{teamID:this.TeamID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
     },
     teamListWindowToggle () {
