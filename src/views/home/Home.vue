@@ -1,35 +1,18 @@
 <template>
   <div class="home">
-    <div style="width:100%; height:3.3rem; background:#00bcd4; padding:.5rem 1rem;">
-      <mu-row>
-        <mu-col span="2">
-          <div>
-            <mu-avatar size="35">
-              <img :src="selfAvatar">
-            </mu-avatar>
-          </div>
-        </mu-col>
 
-        <mu-col span="5">
-          <div style="margin-left:-.5rem; padding:.6rem 0 0 0; font-weight:700; color:#ffffff;">
-            <span>{{ selfNickname }}</span>
-          </div>
-        </mu-col>
-
-        <mu-col span="2"></mu-col>
-
-        <mu-col span="3">
-          <div style="padding:.5rem 0; float:right; color:#ffffff;">
-            吴川市
-          </div>   
-          <div style="float:right; padding:.5rem 0; color:#00bcd4;">
-            <mu-icon color="white" size="18" value="person_pin_circle"></mu-icon>
-          </div>       
-        </mu-col>
-
-
-      </mu-row>
-    </div>
+    <!-- BEGIN 头部 -->
+    <mu-flex align-items="center" style="background:#00bcd4; padding:.5rem .3rem .5rem .5rem; color:#ffffff;">
+      <mu-flex align-items="center">
+        <mu-avatar size="30"><img :src="selfAvatar" alt=""></mu-avatar>
+        <span style="margin-left:.5rem;">{{ selfNickname }}</span>
+      </mu-flex>
+      <mu-flex style="margin-left:auto;" align-items="center">
+          <span>吴川市</span>
+          <mu-icon color="#fff" size="18" value="person_pin_circle"></mu-icon>
+      </mu-flex>
+    </mu-flex>
+    <!-- END 头部 -->
 
 
     <!-- // 游戏\话题\周边游        -->
@@ -39,17 +22,17 @@
       <mu-row justify-content="center">
         <div @click="linkToGameList" style="float:left; width:20%; height:3rem; text-align:center;">
           <svg-icon icon-class="game" class="icon-class"></svg-icon>
-          <div style="margin-top:.2rem;">游 戏</div>
+          <div style="margin-top:.2rem; font-size:12px;">游 戏</div>
         </div>
 
         <div style="float:left; width:20%; height:3rem; margin-left:10%; text-align:center;">
           <svg-icon icon-class="tour" class="icon-class"></svg-icon>
-          <div style="margin-top:.2rem;">周边游</div>
+          <div style="margin-top:.2rem; font-size:12px;">周边游</div>
         </div>
 
         <div style="float:left; width:20%; height:3rem; margin-left:10%; text-align:center;">
           <svg-icon icon-class="topic2" class="icon-class"></svg-icon>
-          <div style="margin-top:.2rem;">话 题</div>
+          <div style="margin-top:.2rem; font-size:12px;">话 题</div>
         </div>
       </mu-row>
     </div>
@@ -362,7 +345,7 @@ export default {
 .main-nav { position: relative; width: 30%; height: 3rem; display: flex; justify-content: center; align-items: center; 
             border-radius: 4px; margin-left: 2%; margin-top: .5rem; color: white; }
 
-.icon-class {font-size:32px;}
+.icon-class {font-size:30px;}
 
 .card-panel-icon{ width:2rem; height:2rem;  }
 
