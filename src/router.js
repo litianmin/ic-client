@@ -100,7 +100,7 @@ const router =  new Router({
       path: '/game/formteam/:gameid',
       name: 'game-formteam',
       component: () => import('./views/game/formTeam.vue')
-    },
+    },  
     { // 进入组队详情
       path: '/game/teamDetail/:teamid',
       name: 'team-detail',
@@ -115,7 +115,15 @@ const router =  new Router({
       path: '/game/teamchat',
       name: 'team-chat',
       component: () => import('./views/game/teamChat.vue')
+    },
+
+    // party 模块
+    {
+      path: '/party/list',
+      name: 'party-list',
+      component: () => import("./views/party/list.vue")
     }
+
   ],
 })
 

@@ -41,7 +41,7 @@
       </mu-row>
     </div> -->
 
-    <div style="width:100%; height:5rem; margin-top:1.2rem;">
+    <div style="padding:1.2rem 0 1rem 0; background:rgba(240, 240, 240, .4); border-bottom:1px solid #eeeeee;">
       <mu-flex justify-content="around">
         <div @click="linkToGameList">
           <div style="text-align:center;">
@@ -50,7 +50,7 @@
           <div style="text-align:center; font-size:12px; margin-top:.3rem;">游 戏</div>
         </div>
 
-        <div>
+        <div @click="linkToPartyList">
           <div style="text-align:center;">
             <svg-icon icon-class="party" class="icon-class"></svg-icon>
             </div>
@@ -76,7 +76,7 @@
 
 
     <!-- BEGIN 头部话题、美文轮播图 -->
-    <div>
+    <div style="margin-top:1rem; margin-bottom:1rem">
         <swiper :options="swiperOption">
             <swiper-slide v-for="(item, index) in friendsMsgsList" :key="index">
               <img class="swiper-img" :src="item.avatar" alt="">
@@ -85,7 +85,7 @@
     </div> 
     <!-- END 头部话题、 美文轮播图 -->
 
-    <mu-row style="margin-top:2rem;"></mu-row>
+    <mu-row style="margin-top:0rem;"></mu-row>
     <mu-divider></mu-divider>
     <mu-sub-header><span style="font-size:14px; font-weight:600; color:#795548;">- 动态 . 足迹 -</span></mu-sub-header> 
 
@@ -293,24 +293,6 @@
     <!-- END 附近组队信息， 好友动态和悄悄话 -->
 
 
-    <!-- BEGIN 图片信息 -->
-    <mu-container style="margin-top:2rem; margin-bottom:10rem;">
-      <mu-row justify-content="center">
-        <div style="width:100%; background:#eeeeee; border-radius:1rem; padding:0.5rem 0.5rem;">
-          <mu-row>
-            她给你发来了一张图片哦：
-          </mu-row>
-
-          <mu-row style="background:red; height:3rem; margin-top:1rem;">
-
-          </mu-row>
-
-        </div>
-      </mu-row>
-    </mu-container>
-    <!-- END 图片信息-->
-
-
     <!-- BEGIN  用户窗口-->
     <div>
       <UsrWindow/>
@@ -333,11 +315,9 @@ export default {
       selfAvatar: '',
       selfNickname: '',
       friendsMsgsList: [
-        {id: 1, avatar: "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1550752522&di=4f947c4df1c30a34d0102f86b088036d&src=http://img15.3lian.com/2015/f2/57/d/93.jpg"},
-        {id: 2, avatar: "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1550752522&di=4f947c4df1c30a34d0102f86b088036d&src=http://img15.3lian.com/2015/f2/57/d/93.jpg"},
-        {id: 3, avatar: "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1550752522&di=4f947c4df1c30a34d0102f86b088036d&src=http://img15.3lian.com/2015/f2/57/d/93.jpg"},
-        {id: 4, avatar: "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1550752522&di=4f947c4df1c30a34d0102f86b088036d&src=http://img15.3lian.com/2015/f2/57/d/93.jpg"},
-        {id: 5, avatar: "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1550752522&di=4f947c4df1c30a34d0102f86b088036d&src=http://img15.3lian.com/2015/f2/57/d/93.jpg"}
+        {id: 1, avatar: "http://img1.imgtn.bdimg.com/it/u=1933646039,1559720906&fm=26&gp=0.jpg"},
+        {id: 2, avatar: "http://img4.imgtn.bdimg.com/it/u=2978120334,1182775360&fm=26&gp=0.jpg"},
+        {id: 3, avatar: "http://img4.imgtn.bdimg.com/it/u=288298761,4065532967&fm=26&gp=0.jpg"}
       ],
       swiperOption: {
         effect: 'coverflow',  // 切换效果
@@ -365,7 +345,10 @@ export default {
   methods:{
     linkToGameList () {
       this.$router.push('/game/list')
-    }
+    },
+    linkToPartyList () {
+      this.$router.push('/party/list')
+    },
   },
   components: {
     Footer,
