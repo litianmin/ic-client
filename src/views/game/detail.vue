@@ -456,7 +456,7 @@
 .team-extracont-time { font-size:12px; margin-right:1rem; color:#9e9e9e; }
 .team-extracont-operate { font-size:12px; color:#009688; }
 
-.teammate-box { margin-bottom:.5rem; background:rgba(240, 240, 240, .3); padding:.4rem 0 .4rem .5rem; border-radius:.5rem; border-bottom:1px #bdbdbd solid; border-right:1px #e0e0e0 solid; border-top:1px #f5f5f5 solid; }
+.teammate-box { margin-bottom:.5rem; background:rgba(240, 240, 240, .3); padding:.4rem 0 .4rem .5rem; border-radius:.5rem; box-shadow: 0px 0px 1px gray; }
 .teammate-info-title { margin-left:.5rem; font-size:12px; color:#795548; }
 .teammate-img-flex { width:100%; height:4rem; text-align:center; border-radius:.5rem; }
 .teammate-img-flex img { max-width:4rem; max-height:4rem; border-radius:.2rem; }

@@ -14,11 +14,10 @@
     </mu-flex>
     <!-- END 头部 -->
 
-
     <!-- // 游戏\话题\周边游        -->
 
 
-    <div style="width:100%; height:5rem; margin-top:1.2rem;">
+    <!-- <div style="width:100%; height:5rem; margin-top:1.2rem;">
       <mu-row justify-content="center">
         <div @click="linkToGameList" style="float:left; width:20%; height:3rem; text-align:center;">
           <svg-icon icon-class="game" class="icon-class"></svg-icon>
@@ -27,15 +26,53 @@
 
         <div style="float:left; width:20%; height:3rem; margin-left:10%; text-align:center;">
           <svg-icon icon-class="tour" class="icon-class"></svg-icon>
-          <div style="margin-top:.2rem; font-size:12px;">周边游</div>
+          <div style="margin-top:.2rem; font-size:12px;">聚 会</div>
         </div>
 
         <div style="float:left; width:20%; height:3rem; margin-left:10%; text-align:center;">
           <svg-icon icon-class="topic2" class="icon-class"></svg-icon>
-          <div style="margin-top:.2rem; font-size:12px;">话 题</div>
+          <div style="margin-top:.2rem; font-size:12px;">周 边 游</div>
+        </div>
+
+        <div style="float:left; width:20%; height:3rem; margin-left:10%; text-align:center;">
+          <svg-icon icon-class="topic2" class="icon-class"></svg-icon>
+          <div style="margin-top:.2rem; font-size:12px;">自 定 义</div>
         </div>
       </mu-row>
+    </div> -->
+
+    <div style="width:100%; height:5rem; margin-top:1.2rem;">
+      <mu-flex justify-content="around">
+        <div @click="linkToGameList">
+          <div style="text-align:center;">
+            <svg-icon icon-class="game" class="icon-class"></svg-icon>
+          </div>
+          <div style="text-align:center; font-size:12px; margin-top:.3rem;">游 戏</div>
+        </div>
+
+        <div>
+          <div style="text-align:center;">
+            <svg-icon icon-class="party" class="icon-class"></svg-icon>
+            </div>
+          <div style="text-align:center; font-size:12px; margin-top:.3rem;">聚 会</div>
+        </div>
+
+        <div>
+          <div style="text-align:center;">
+            <svg-icon icon-class="travel" class="icon-class"></svg-icon>
+          </div>
+          <div style="text-align:center; font-size:12px; margin-top:.3rem;">周 边 游</div>
+        </div>
+
+        <div>
+          <div style="text-align:center;">
+            <svg-icon icon-class="selfedit" class="icon-class"></svg-icon>
+          </div>
+          <div style="text-align:center; font-size:12px; margin-top:.3rem;">自 定 义</div>
+        </div>
+      </mu-flex>
     </div>
+
 
 
     <!-- BEGIN 头部话题、美文轮播图 -->

@@ -112,7 +112,7 @@
     </mu-flex>
 
     <!-- BEGIN 弹出窗口 -->
-    <mu-container style="position:fixed; top:0; left:0; z-index:9999;">
+    <mu-container>
       <mu-drawer :open.sync="teamListWindowIsShow" :docked="false" :left="true" width="80%">
         <!-- 游戏基本信息 -->
         <mu-row style="position:relative;">
@@ -413,7 +413,8 @@ export default {
 .team-item-img { padding:.5rem .5rem 0 1rem; font-size:12px; color:#616161; }
 .team-item-img img { max-width:100%; max-height:100%; border-radius:.3rem; }
 
-.teammate-box { margin-bottom:.5rem; background:rgba(240, 240, 240, .3); padding:.4rem 0 .4rem .5rem; border-radius:.5rem; border-bottom:1px #bdbdbd solid; border-right:1px #e0e0e0 solid; border-top:1px #f5f5f5 solid; }
+/* .teammate-box { margin-bottom:.5rem; background:rgba(240, 240, 240, .3); padding:.4rem 0 .4rem .5rem; border-radius:.5rem; border-bottom:1px #bdbdbd solid; border-right:1px #e0e0e0 solid; border-top:1px #f5f5f5 solid; } */
+.teammate-box { margin-bottom:.5rem; background:rgba(240, 240, 240, .3); padding:.4rem 0 .4rem .5rem; border-radius:.5rem; box-shadow: 0px 0px 1px gray; }
 .teammate-info-title { margin-left:.5rem; font-size:12px; color:#795548; }
 .teammate-img-flex { width:100%; height:4rem; text-align:center; border-radius:.5rem; }
 .teammate-img-flex img { max-width:4rem; max-height:4rem; border-radius:.2rem; }
