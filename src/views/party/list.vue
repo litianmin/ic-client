@@ -18,113 +18,146 @@
 
     </mu-appbar>
     <!-- END 头部 -->
+    <!-- http://img4.imgtn.bdimg.com/it/u=2815404356,1532344722&fm=26&gp=0.jpg -->
 
-    <div>
-      <mu-container style="margin-top:1rem; margin-bottom:2rem;">
-        <mu-row justify-content="center">
-          <mu-col span="12">
-            <div style="width:100%; background:#f5f5f5; border-radius:1rem; padding:0.1rem 0.1rem;">
+    <div style="padding:.5rem; margin-bottom:2rem;">
+      <div style="box-shadow: 0px 0px 2px #9e9e9e; ">
 
-              <mu-row style="background:white; padding:0.5rem; border-top-left-radius:0.5rem; border-top-right-radius:0.5rem; padding:1rem .5rem .5rem 1rem;">
-                <mu-col span="2">
-                  <mu-avatar :size="34" class="avatar-distance">
-                    <img src="http://img4.imgtn.bdimg.com/it/u=3868410791,3959511573&fm=26&gp=0.jpg">
-                  </mu-avatar>
-                </mu-col>
-                <mu-col span="7" style="">
-                  <mu-row>Ae</mu-row>
-                  <mu-row style="font-size:5px; color:#651fff;">社交达人</mu-row>
-                </mu-col>
-                <mu-col span="3" style="padding:0.4rem; color:#00b0ff;">
-                  查看详情
-                </mu-col>
-              </mu-row>
-
-              <mu-row>
-                <!-- http://img2.imgtn.bdimg.com/it/u=3967207443,110383055&fm=26&gp=0.jpg -->
-                <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
-                  <mu-card-media title="巴黎阿萨塔" sub-title="">
-                    <img src="http://img0.imgtn.bdimg.com/it/u=208836676,259468604&fm=26&gp=0.jpg">
-                    <mu-flex style="position:absolute; right:1rem; bottom:0.5rem; z-index:9999; color:#FFFFFF">
-                      <mu-button slot="action" icon>
-                        <mu-icon value="star_border"></mu-icon>
-                      </mu-button>
-                    </mu-flex>
-                  </mu-card-media>
-                  <mu-card-title title="巴黎阿萨塔" sub-title="真的很不错的"></mu-card-title>
-                  <mu-card-text>
-                    散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影。
-                    调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。
-                    似乎在诉说着，我也可以在漆黑的角落里，找到阴影背后的阳光，
-                    找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！
-                  </mu-card-text>
-                  <mu-card-actions>
-                    <mu-button flat>Action 1</mu-button>
-                    <mu-button flat>Action 2</mu-button>
-                  </mu-card-actions>
-                </mu-card>
-              </mu-row>
-
+        <!-- 用户头部昵称 -->
+        <div style="padding:.5rem; border-bottom:1px solid #eeeeee; ">
+          <mu-flex align-items="center">
+            <mu-avatar size="35">
+              <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3340295553,242321368&fm=27&gp=0.jpg" alt="">
+            </mu-avatar>
+            <div style="margin-left:1rem;">
+              <mu-row style="font-size:12px;">朝花夕誓</mu-row>
+              <mu-row style="margin-top:.2rem;font-size:7px; color:#43a047;">社交菜鸟Lv1</mu-row>
             </div>
-          </mu-col>
-        </mu-row>
-      </mu-container>
+            <span style="margin-left:auto; color:#9e9e9e; font-size:13px;">2分钟前</span>
+          </mu-flex>
+        </div>
+
+        <!-- 展示图片 -->
+        <mu-flex style="position:relative;" justify-content="center">
+          <img style="max-width:100%; max-height:30rem;" src="http://img2.imgtn.bdimg.com/it/u=2440520473,4156973381&fm=26&gp=0.jpg" alt="">
+
+          <mu-flex style="width:100%; position:absolute; bottom:0; padding:0 .2rem; background:rgba(0, 0, 0, .5); padding:1rem;" align-items="center">
+            <span style="color:#fff;">聚餐（百隆广场）</span>
+          </mu-flex>
+        </mu-flex>
+
+        <div style="padding:1rem 1rem 0rem .5rem;">
+          <mu-row style="margin-bottom:.3rem;">
+            <span style="color:#795548; font-size:13px;">主要活动:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">聚餐，玩游戏</span>
+          </mu-row>
+          <mu-row style="margin-bottom:.3rem;">
+            <span style="color:#795548; font-size:13px;">活动地点:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">百隆广场56好街602室</span>
+          </mu-row>
+          <mu-row style="margin-bottom:.3rem;">
+            <span style="color:#795548; font-size:13px;">活动时间:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">1/02 02:02  ~  3/02 03:04</span>
+          </mu-row>
+          <mu-row style="margin-bottom:.3rem;">
+            <span style="color:#795548; font-size:13px;">招募人数:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">20/<span style="color:green; font-size:10px;">4</span></span>
+          </mu-row>
+          <mu-row style="margin-bottom:.3rem;">
+            <span style="color:#795548; font-size:13px;">队友偏爱:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">来个风情万种的</span>
+          </mu-row>
+
+          <mu-row style="margin-top:.5rem;">
+            <span style="color:#795548; font-size:13px;">招募宣言:            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">这里最多就显示个100个字吧，因为如果内容太多的话，也不好粗粒不是，如果说，哎，其实我也不清就是了。</span></span>
+          </mu-row>
+        </div>
+
+        <mu-flex style="font-size:12px; padding:.8rem 1rem 1rem .8rem;" align-items="center">
+          <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
+          <span style="font-size:12px;">距离你<span style="font-size:12px; color:green;">600</span>米</span>
+          <span style="margin-left:auto; color:#00bcd4;">查看详情</span>
+        </mu-flex>
+
+      </div>
     </div>
-    
 
-    <div>
-      <mu-container style="margin-top:1rem; margin-bottom:2rem;">
-        <mu-row justify-content="center">
-          <mu-col span="12">
-            <div style="width:100%; background:#f5f5f5; border-radius:1rem; padding:0.1rem 0.1rem;">
 
-              <mu-row style="background:white; padding:0.5rem; border-top-left-radius:0.5rem; border-top-right-radius:0.5rem; padding:1rem .5rem .5rem 1rem;">
-                <mu-col span="2">
-                  <mu-avatar :size="34" class="avatar-distance">
-                    <img src="http://img4.imgtn.bdimg.com/it/u=3868410791,3959511573&fm=26&gp=0.jpg">
-                  </mu-avatar>
-                </mu-col>
-                <mu-col span="7" style="">
-                  <mu-row>Ae</mu-row>
-                  <mu-row style="font-size:5px; color:#651fff;">社交达人</mu-row>
-                </mu-col>
-                <mu-col span="3" style="padding:0.4rem; color:#00b0ff;">
-                  查看详情
-                </mu-col>
-              </mu-row>
+    <div style="padding:.5rem; margin-bottom:2rem;">
+      <div style="box-shadow: 0px 0px 2px #9e9e9e; ">
 
-              <mu-row>
-                <!-- http://img2.imgtn.bdimg.com/it/u=3967207443,110383055&fm=26&gp=0.jpg -->
-                <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
-                  <mu-card-media title="萨隆广场" sub-title="">
-                    <img src="http://img0.imgtn.bdimg.com/it/u=208836676,259468604&fm=26&gp=0.jpg">
-                    <mu-flex style="position:absolute; right:1rem; bottom:0.5rem; z-index:9999; color:#FFFFFF">
-                      <mu-button slot="action" icon>
-                        <mu-icon value="star_border"></mu-icon>
-                      </mu-button>
-                    </mu-flex>
-                  </mu-card-media>
-                  <mu-card-title title="音乐派对" sub-title="真的很不错的"></mu-card-title>
-                  <mu-card-text>
-                   主    题：聚餐、玩游戏<br/>
-                   地    点：沉浮广场<br/>
-                   时间段：2019-07-01 05:30  至 2019-08-02 06:20<br/>
-                   <!-- 活动内容： 一起来玩狼人杀啦，好不好<br/> -->
-                   招募人数： 60人<br/>
-                   队友偏爱：老油条，这个还是自己来定义吧<br/>
-                  </mu-card-text>
-                  <mu-card-actions>
-                    <mu-button flat>Action 1</mu-button>
-                    <mu-button flat>Action 2</mu-button>
-                  </mu-card-actions>
-                </mu-card>
-              </mu-row>
-
+        <!-- 用户头部昵称 -->
+        <div style="padding:.5rem; border-bottom:1px solid #eeeeee; ">
+          <mu-flex align-items="center">
+            <mu-avatar size="35">
+              <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3340295553,242321368&fm=27&gp=0.jpg" alt="">
+            </mu-avatar>
+            <div style="margin-left:1rem;">
+              <mu-row style="font-size:12px;">朝花夕誓</mu-row>
+              <mu-row style="margin-top:.2rem;font-size:7px; color:#43a047;">社交菜鸟Lv1</mu-row>
             </div>
-          </mu-col>
-        </mu-row>
-      </mu-container>
+            <span style="margin-left:auto; color:#9e9e9e; font-size:13px;">2分钟前</span>
+          </mu-flex>
+        </div>
+
+        <!-- 展示图片 -->
+        <mu-flex style="position:relative;" justify-content="center">
+          <img style="max-width:100%; max-height:30rem;" src="http://img4.imgtn.bdimg.com/it/u=2815404356,1532344722&fm=26&gp=0.jpg" alt="">
+
+          <mu-flex style="width:100%; position:absolute; bottom:0; padding:0 .2rem; background:rgba(0, 0, 0, .5); padding:1rem;" align-items="center">
+            <span style="color:#fff;">聚餐（百隆广场）</span>
+          </mu-flex>
+        </mu-flex>
+
+        <div style="padding:1rem 1rem 0rem .5rem;">
+          <mu-row style="margin-bottom:.3rem;">
+            <span style="color:#795548; font-size:13px;">主要活动:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">聚餐，玩游戏</span>
+          </mu-row>
+          <mu-row style="margin-bottom:.3rem;">
+            <span style="color:#795548; font-size:13px;">活动地点:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">百隆广场56好街602室</span>
+          </mu-row>
+          <mu-row style="margin-bottom:.3rem;">
+            <span style="color:#795548; font-size:13px;">活动时间:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">1/02 02:02  ~  3/02 03:04</span>
+          </mu-row>
+          <mu-row style="margin-bottom:.3rem;">
+            <span style="color:#795548; font-size:13px;">招募人数:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">20/<span style="color:green; font-size:10px;">4</span></span>
+          </mu-row>
+          <mu-row style="margin-bottom:.3rem;">
+            <span style="color:#795548; font-size:13px;">队友偏爱:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">来个风情万种的</span>
+          </mu-row>
+
+          <mu-row style="margin-top:.5rem;">
+            <span style="color:#795548; font-size:13px;">招募宣言:            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">这里最多就显示个100个字吧，因为如果内容太多的话，也不好粗粒不是，如果说，哎，其实我也不清就是了。</span></span>
+          </mu-row>
+        </div>
+
+        <mu-flex style="font-size:12px; padding:.8rem 1rem 1rem .8rem;" align-items="center">
+          <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
+          <span style="font-size:12px;">距离你<span style="font-size:12px; color:green;">600</span>米</span>
+          <span style="margin-left:auto; color:#00bcd4;">查看详情</span>
+        </mu-flex>
+
+      </div>
     </div>
+
+    <mu-flex style="position:fixed; bottom:0; left:0; padding:.5rem; background:yellow; width:100%;" align-items="center" justify-content="center">
+      <mu-button style="width:50%;" color="#00bcd4">发起组队</mu-button>
+      <mu-button style="width:40%;" color="#00bcd4">筛选</mu-button>
+    </mu-flex>
+
+ 
+    <!-- <mu-container>
+      <mu-flex justify-content="between" align-items="end" wrap="wrap">
+        <mu-paper :z-depth="1" class="demo-date-picker">
+          <mu-date-picker :date.sync="date" @change="mytest" color="#7B68EE"></mu-date-picker>
+        </mu-paper>
+      </mu-flex>
+    </mu-container> -->
 
 
   </div>
@@ -132,15 +165,19 @@
 
 <script>
 export default {
+  
   data () {
     return {
-
+      date: undefined
     }
   },
   methods: {
     goBack () {
       this.$router.go(-1)
     },
+    mytest (chooseDate) {
+      console.log(chooseDate.getFullYear() +'-'+ chooseDate.getMonth() +'-'+ chooseDate.getDate())
+    }
   }
 }
 </script>
