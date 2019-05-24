@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- BEGIN 头部 -->
-    <mu-appbar class="mine-appbar" color="#00bcd4">
+    <mu-appbar class="mine-appbar" color="#00bcd4" z-depth="1">
       <mu-button icon slot="left" @click="goBack">
         <mu-icon value="navigate_before"></mu-icon>
       </mu-button>
@@ -18,10 +18,16 @@
 
     </mu-appbar>
     <!-- END 头部 -->
-    <!-- http://img4.imgtn.bdimg.com/it/u=2815404356,1532344722&fm=26&gp=0.jpg -->
 
-    <div style="padding:.5rem; margin-bottom:2rem;">
-      <div style="box-shadow: 0px 0px 2px #9e9e9e; ">
+
+    <div style="padding:.5rem; position:relative;">
+      <!-- <div style="position:absolute; top:-.8rem; left:1rem; padding:0 .5rem; background:rgba(250, 250, 250, 1);">
+        <mu-flex style="padding:.3rem; background:#4db6ac; border-radius:.2rem;" align-items="center" justify-content="center">
+          <span style="font-size:12px;color:#fff;">Team01</span>
+        </mu-flex>
+      </div> -->
+
+      <div style="box-shadow: 1px 1px 1px #9e9e9e; border-top-left-radius:.3rem; border-top-right-radius:.3rem; border-top:1px solid #e0e0e0; border-left:1px solid #e0e0e0;">
 
         <!-- 用户头部昵称 -->
         <div style="padding:.5rem; border-bottom:1px solid #eeeeee; ">
@@ -33,7 +39,8 @@
               <mu-row style="font-size:12px;">朝花夕誓</mu-row>
               <mu-row style="margin-top:.2rem;font-size:7px; color:#43a047;">社交菜鸟Lv1</mu-row>
             </div>
-            <span style="margin-left:auto; color:#9e9e9e; font-size:13px;">2分钟前</span>
+            <div style="margin-left:auto; background:#4db6ac; padding:.2rem .3rem; color:#fff; border-radius:.2rem; font-size:12px;">Team01</div>
+            <!-- <span style="margin-left:auto; color:#9e9e9e; font-size:13px;">2分钟前</span> -->
           </mu-flex>
         </div>
 
@@ -76,15 +83,24 @@
         <mu-flex style="font-size:12px; padding:.8rem 1rem 1rem .8rem;" align-items="center">
           <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
           <span style="font-size:12px;">距离你<span style="font-size:12px; color:green;">600</span>米</span>
-          <span style="margin-left:auto; color:#00bcd4;">查看详情</span>
+          <span style="margin-left:auto; color:#9e9e9e; font-size:12px;">2分钟前· <span style="color:#00bcd4;"> 查看详情</span></span>
+          
         </mu-flex>
 
       </div>
     </div>
 
+    <!-- 样式二 -->
+    <div style="padding:.5rem; margin-top:2rem; position:relative;">
+<!-- 
+      <div style="position:absolute; top:-.8rem; left:1rem; padding:0 .5rem; background:rgba(250, 250, 250, 1);">
+        <mu-flex style="padding:.3rem; background:#4db6ac; border-radius:.2rem;" align-items="center" justify-content="center">
+          <span style="font-size:12px;color:#fff;">Team01</span>
+        </mu-flex>
+      </div> -->
 
-    <div style="padding:.5rem; margin-bottom:2rem;">
-      <div style="box-shadow: 0px 0px 2px #9e9e9e; ">
+
+      <div style="box-shadow: 1px 1px 1px #9e9e9e; border-top-left-radius:.3rem; border-top-right-radius:.3rem; border-top:1px solid #e0e0e0; border-left:1px solid #e0e0e0;">
 
         <!-- 用户头部昵称 -->
         <div style="padding:.5rem; border-bottom:1px solid #eeeeee; ">
@@ -96,7 +112,7 @@
               <mu-row style="font-size:12px;">朝花夕誓</mu-row>
               <mu-row style="margin-top:.2rem;font-size:7px; color:#43a047;">社交菜鸟Lv1</mu-row>
             </div>
-            <span style="margin-left:auto; color:#9e9e9e; font-size:13px;">2分钟前</span>
+            <div style="margin-left:auto; background:#4db6ac; padding:.2rem .3rem; color:#fff; border-radius:.2rem; font-size:12px; margin-right:.5rem;">Team02</div>
           </mu-flex>
         </div>
 
@@ -139,16 +155,19 @@
         <mu-flex style="font-size:12px; padding:.8rem 1rem 1rem .8rem;" align-items="center">
           <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
           <span style="font-size:12px;">距离你<span style="font-size:12px; color:green;">600</span>米</span>
-          <span style="margin-left:auto; color:#00bcd4;">查看详情</span>
+          <span style="margin-left:auto; color:#9e9e9e; font-size:12px;">2分钟前· <span style="color:#00bcd4;"> 查看详情</span></span>
         </mu-flex>
 
       </div>
     </div>
 
-    <mu-flex style="position:fixed; bottom:0; left:0; padding:.5rem; background:yellow; width:100%;" align-items="center" justify-content="center">
-      <mu-button style="width:50%;" color="#00bcd4">发起组队</mu-button>
-      <mu-button style="width:40%;" color="#00bcd4">筛选</mu-button>
-    </mu-flex>
+    <!-- <mu-flex style="position:fixed; bottom:0; left:0; padding:.5rem; background:#f5f5f5; width:100%; border-top:1px solid #e0e0e0;" align-items="center" justify-content="center">
+      <mu-button style="width:100%;" color="#03a9f4">
+        创建组队
+        <mu-icon value="add" size="20"></mu-icon>
+      </mu-button> -->
+      <!-- <mu-button style="width:40%;" color="#03a9f4">筛选</mu-button> -->
+    <!-- </mu-flex> -->
 
  
     <!-- <mu-container>
