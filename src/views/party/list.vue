@@ -1,24 +1,51 @@
 <template>
-  <div>
+  <div :class="AddrChooseWindowIsShow == true ? 'mytest': ''">
     <!-- BEGIN 头部 -->
     <mu-appbar class="mine-appbar" color="#00bcd4" z-depth="1">
       <mu-button icon slot="left" @click="goBack">
         <mu-icon value="navigate_before"></mu-icon>
       </mu-button>
       
-      <div style="font-size:14px;">
+      <div ref="menuHide" style="font-size:14px;">
         聚会party
       </div>
 
-
-      <mu-flex align-items="center" slot="right">
-        <span>佛山</span>
-        <mu-icon value="person_pin_circle" size="18"></mu-icon>
-      </mu-flex>
+      <mu-menu slot="right" class="mine-menu-box">
+        <mu-icon value="menu"></mu-icon>
+        <mu-list slot="content" class="mine-menu-list">
+          <mu-list-item button @click="teamFilterWindowToggle">
+            <mu-list-item-title class="mine-menu-item">队友列表</mu-list-item-title>
+          </mu-list-item>
+          <mu-list-item button style="border-top:1px solid #fafafa;">
+            <mu-list-item-title class="mine-menu-item">退出队伍</mu-list-item-title>
+          </mu-list-item>
+        </mu-list>
+      </mu-menu>
 
     </mu-appbar>
     <!-- END 头部 -->
 
+
+    <!-- <mu-divider style="margin-top:.5rem; margin-bottom:.5rem;"></mu-divider> -->
+
+    <mu-flex style="padding:.2rem; margin-top:.5rem;" align-items="center">
+      <span style="font-size:12px; color:#795548; margin-left:.3rem;">主题筛选：</span>
+      <select name="" id="" style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4;">
+        <option value="0">选择主题</option>
+        <option value="1">健身运动</option>
+        <option value="2">随便逛逛</option>
+        <option value="3">线下手游</option>
+        <option value="4">野外聚餐</option>
+        <option value="5">音乐派对</option>
+        <option value="6">单身派对</option>
+        <option value="7">联谊聚会</option>
+      </select>
+
+      <span style="font-size:12px; color:#795548; margin-left:1rem;">所在地：</span>
+      <span style="font-size:12px; color:#009688;">{{ LocateAddr }}</span>
+      <mu-button @click="chooseAddr" small style="font-size:12px;">选择地址</mu-button>
+
+    </mu-flex>
 
     <div style="padding:.5rem; position:relative;">
       <!-- <div style="position:absolute; top:-.8rem; left:1rem; padding:0 .5rem; background:rgba(250, 250, 250, 1);">
@@ -179,6 +206,23 @@
     </mu-container> -->
 
 
+    <!-- BEGIN 弹出窗口 -->
+    <mu-container>
+      <mu-drawer :open.sync="teamFilterWindowIsShow" :docked="false" :left="true" width="80%">
+        <!-- 游戏基本信息 -->
+        他朝
+      </mu-drawer>
+    </mu-container>
+    <!-- END 弹出窗口 -->
+
+    <div v-if="AddrChooseWindowIsShow" id="iframe" style="position:fixed; top:0; width:100%; height:100%;">
+      <div style="width:3rem; height:3rem; background:gray; z-index:99999; position:fixed; top:0; left:0;">
+        <button @click="closeAddrChooseWindow">closeAddrChooseWindow</button>
+      </div>
+      <iframe class="map-item"  id="getAddress" @load="loadiframe" src="https://m.amap.com/picker/?key=8906f77f66bcbd2b82a57d844e270fe7" style="width:100%; height:100%; position: absolute; border:0;">
+      </iframe>
+    </div>
+
   </div>
 </template>
 
@@ -187,22 +231,71 @@ export default {
   
   data () {
     return {
-      date: undefined
+      date: undefined,
+      teamFilterWindowIsShow: false,
+      LocateAddr: '',
+      AddrChooseWindowIsShow: false,
     }
   },
   methods: {
     goBack () {
       this.$router.go(-1)
     },
+    teamFilterWindowToggle () {
+      this.teamFilterWindowIsShow = !this.teamFilterWindowIsShow
+      this.$refs.menuHide.click()
+    },
     mytest (chooseDate) {
       console.log(chooseDate.getFullYear() +'-'+ chooseDate.getMonth() +'-'+ chooseDate.getDate())
-    }
+    },
+    loadiframe() {
+      let iframe = document.getElementById('getAddress').contentWindow;
+      iframe.postMessage('hello', 'https://m.amap.com/picker/');
+      window.addEventListener("message", function (e) {
+        if (e.data.command != "COMMAND_GET_TITLE") {
+          //业务代码
+          this.$toast.message(e.data.name)
+          console.log(e)     
+        }
+
+      }.bind(this), false);
+    },
+    chooseAddr () {
+      this.AddrChooseWindowIsShow = !this.AddrChooseWindowIsShow
+      // this.stop()
+      // setInterval(this.move, 5000)
+      console.log(this.AddrChooseWindowIsShow)
+    },
+
+    stop(){
+      var mo=function(e){e.preventDefault();};
+      document.body.style.overflow='hidden';
+      document.addEventListener("touchmove",mo,false);//禁止页面滑动
+    },
+    /***取消滑动限制***/
+    move(){
+      var mo=function(e){e.preventDefault();};
+      document.body.style.overflow='';//出现滚动条
+      document.removeEventListener("touchmove",mo,false);
+    },
+    closeAddrChooseWindow () {
+      this.AddrChooseWindowIsShow = false
+    },
+
   }
 }
 </script>
 
 <style scoped>
 .mine-appbar { width: 100%; height:2.5rem; }
+
+.mine-menu-box { margin-top:1rem; right:.5rem; }
+.mine-menu-list { background:#26c6da; color:white; padding:0; }
+.mine-menu-item { color:#fff; font-size:12px; }
+
+.map-item { position: fixed; width: 100%; height: 100%; top: 0; background: #fff; }
+
+.mytest{ position:fixed; }
 </style>
 
 
