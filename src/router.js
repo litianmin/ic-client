@@ -118,10 +118,15 @@ const router =  new Router({
     },
 
     // party 模块
-    {
+    { // party 组队列表
       path: '/party/list',
       name: 'party-list',
       component: () => import("./views/party/list.vue")
+    },
+    { // 创建一个新的party组队
+      path: '/party/newTeam',
+      name: 'party-newteam',
+      component: () => import('./views/party/newTeam.vue')
     }
 
   ],

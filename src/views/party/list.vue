@@ -10,7 +10,7 @@
         聚会party
       </div>
 
-      <span style="color:#fff; font-size:12px; padding:0 .5rem;" slot="right">创建组队</span>
+      <span @click="newTeam" style="color:#fff; font-size:12px; padding:0 .5rem;" slot="right">创建组队</span>
 
     </mu-appbar>
     <!-- END 头部 -->
@@ -207,10 +207,6 @@ export default {
     goBack () {
       this.$router.go(-1)
     },
-    teamFilterWindowToggle () {
-      this.teamFilterWindowIsShow = !this.teamFilterWindowIsShow
-      this.$refs.menuHide.click()
-    },
     mytest (chooseDate) {
       console.log(chooseDate.getFullYear() +'-'+ chooseDate.getMonth() +'-'+ chooseDate.getDate())
     },
@@ -229,13 +225,14 @@ export default {
 
       }.bind(this), false)
     },
-    chooseAddr () {
-      this.AddrChooseWindowIsShow = !this.AddrChooseWindowIsShow
-
-      // console.log(this.AddrChooseWindowIsShow)
+    chooseAddr () { // 点击选择地址的时候，弹出地址选择窗口
+      this.AddrChooseWindowIsShow = true
     },
-    shutdownWindow () {
+    shutdownWindow () { // 关闭地图窗口
       this.AddrChooseWindowIsShow = false
+    },
+    newTeam () {  // 创建一个新的组队
+      this.$router.push('/party/newTeam')
     },
   }
 }
