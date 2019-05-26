@@ -64,7 +64,14 @@ const MdeLogin = {
       authToken: ''
     },
     beforeLoginURL: '',
-    wxAuthTp: 'base'
+    wxAuthTp: 'base',
+    // {name: "市东下路20号B座", location: "113.122629,23.029735", address: "市东下路20号b座"}
+    userAddrInfo: {
+      name: '市东下路20号B座',
+      lng: 113.122629,
+      lat: 23.029735,
+      addr: '市东下路20号b座',
+    }
   },
   mutations: {
     usrWxLogin (state, payload) {
@@ -75,7 +82,6 @@ const MdeLogin = {
       state.usrInfo.authToken = payload.authToken
       state.usrInfo.sex = payload.sex
       state.usrInfo.usrID = payload.usrID
-      return
     },
 
     usrLogin (state, payload) {
@@ -89,7 +95,8 @@ const MdeLogin = {
     logBeforeLoginURL (state, bURL) {
       // 记录登陆之前进来的URL
       state.beforeLoginURL = bURL
-    }
+    },
+
   }
 }
 
