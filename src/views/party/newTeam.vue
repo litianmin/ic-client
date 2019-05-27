@@ -168,7 +168,9 @@ export default {
       iframe.postMessage('hello', 'https://m.amap.com/picker/')
       window.addEventListener("message", function (e) {
         if (e.data.command != "COMMAND_GET_TITLE") {
-          // {name: "市东下路20号B座", location: "113.122629,23.029735", address: "市东下路20号b座"}
+          if(!!e.data.location === false) {
+            return
+          }
           let locationStrArr = e.data.location.split(',')
           let venueObj = {
             name: e.data.name,
@@ -266,7 +268,10 @@ export default {
           uploadImgList,
         }
       ).then((resp)=>{
-        console.log(resp)
+        if(resp.data.code === 20000) {
+          this.$toast.success('创建成功') // 这里应该跳转到组队详情了
+          this.$router.push('/party/list')
+        }
       })
 
     },
