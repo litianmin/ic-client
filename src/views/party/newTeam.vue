@@ -171,6 +171,7 @@ export default {
           if(!!e.data.location === false) {
             return
           }
+          console.log(e.data.location)
           let locationStrArr = e.data.location.split(',')
           let venueObj = {
             name: e.data.name,
