@@ -49,8 +49,8 @@
 
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
         <span style="font-size:12px; color:#795548; margin-right:.5rem;">招募人数：</span>
-        <select v-bind="RecruitNumb" name="" id="" style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4; text-align:center;">
-          <option v-for="(item, index) in RecruitNumbList" :key="index" value="item">{{ item }} 人</option>
+        <select v-model="RecruitNumb" name="" id="" style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4; text-align:center;">
+          <option v-for="(item, index) in RecruitNumbList" :key="index" :value="item">{{ item }} 人</option>
         </select>
       </mu-flex>
 
@@ -123,7 +123,7 @@ export default {
       PartyTitle: '', // 聚会的标题
       PartyDetail: '',  // 聚会详细内容
       TeammatePrefer: '', // 队友偏爱
-      RecruitNumb: 0, // 招募人数
+      RecruitNumb: 1, // 招募人数
       RecruitNumbList: [],  // 招募人数的列表
       AddrChooseWindowIsShow: false,  // 选择地址的窗口是否打开
       PartyVenue: '',  // 活动地点
