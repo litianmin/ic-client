@@ -36,7 +36,8 @@
 
     <mu-divider></mu-divider>
 
-    <div style="padding:.5rem; position:relative; ">
+    <!-- 样式一 -->
+    <div style="padding:.5rem; position:relative; margin-bottom:2rem;">
 
       <div style="box-shadow: 1px 1px 1px #9e9e9e; border-top-left-radius:.3rem; border-top-right-radius:.3rem; border-top:1px solid #e0e0e0; border-left:1px solid #e0e0e0;">
 
@@ -102,7 +103,7 @@
     </div>
 
     <!-- 样式二 -->
-    <div style="padding:.5rem; margin-top:2rem; position:relative;">
+    <div style="padding:.5rem;  position:relative;  margin-bottom:2rem;">
 
 
       <div style="box-shadow: 1px 1px 1px #9e9e9e; border-top-left-radius:.3rem; border-top-right-radius:.3rem; border-top:1px solid #e0e0e0; border-left:1px solid #e0e0e0;">
@@ -167,6 +168,89 @@
     </div>
 
 
+<!-- type TeamBaseInfo struct {
+	TeamID          int64   `json:"teamID" bson:"teamID"`
+	CaptainAvatar   string  `json:"captainAvatar" bson:"captainAvatar"`
+	CaptainNickname string  `json:"captainNickname" bson:"captainNickname"`
+	RecruitImg      string  `json:"recruitImg" bson:"recruitImg"`
+	PartyTheme      uint8   `json:"partyTheme" bson:"partyTheme"`
+	PartyTitle      string  `json:"partyTitle" bson:"partyTitle"`
+	PartyDetail     string  `json:"partyDetail" bson:"partyDetail"`
+	TeammatePrefer  string  `json:"temmatePrefer" bson:"temmatePrefer"`
+	RecruitNumb     uint8   `json:"recruitNumb" bson:"recruitNumb"`
+	HadRecruitNumb  uint8   `json:"hadRecruitNumb" bson:"hadRecruitNumb"`
+	PartyVenue      AddrObj `json:"partyVenue" bson:"partyVenue"`
+	MeetingVenue    AddrObj `json:"meetingVenue" bson:"meetingVenue"`
+	PartyBeginTime  uint64  `json:"partyBeginTime" bson:"partyBeginTime"`
+	PartyEndTime    uint64  `json:"partyEndTime" bson:"partyEndTime"`
+	ExpiredTime     uint64  `json:"expiredTime" bson:"expiredTime"`
+	Distance        float64 `json:"distance" bson:"distance"`
+} -->
+
+    <!-- 循环样式 -->
+    <div v-for="(item, index) in TeamList" style="padding:.5rem;  position:relative;  margin-bottom:2rem;" >
+      <div style="box-shadow: 1px 1px 1px #9e9e9e; border-top-left-radius:.3rem; border-top-right-radius:.3rem; border-top:1px solid #e0e0e0; border-left:1px solid #e0e0e0;">
+
+        <!-- 用户头部昵称 -->
+        <div style="padding:.5rem; border-bottom:1px solid #eeeeee; ">
+          <mu-flex align-items="center">
+            <mu-avatar size="35">
+              <img :src="item.captainAvatar" alt="">
+            </mu-avatar>
+            <div style="margin-left:1rem;">
+              <mu-row style="font-size:12px;">{{ item.captainNickname }}</mu-row>
+              <mu-row style="margin-top:.2rem;font-size:7px; color:#43a047;">社交菜鸟Lv1</mu-row>
+            </div>
+            <div style="margin-left:auto; background:#4db6ac; padding:.2rem .3rem; color:#fff; border-radius:.2rem; font-size:12px; margin-right:.5rem;">Team{{ index }}</div>
+          </mu-flex>
+        </div>
+
+        <!-- 展示图片 -->
+        <mu-flex style="position:relative;" justify-content="center">
+          <img style="max-width:100%; max-height:30rem;" :src="item.recruitImg" alt="">
+
+          <mu-flex style="width:100%; position:absolute; bottom:0; padding:0 .2rem; background:rgba(0, 0, 0, .5); padding:1rem;" align-items="center">
+            <span style="color:#fff;">{{ item.partyTheme }}（{{ item.partyVenue.name }}）</span>
+          </mu-flex>
+        </mu-flex>
+
+        <div style="padding:1rem 1rem 0rem .5rem;">
+          <mu-row style="margin-bottom:.3rem;">
+            <span style="color:#795548; font-size:13px;">主要活动:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyTitle }}</span>
+          </mu-row>
+          <mu-row style="margin-bottom:.3rem;">
+            <span style="color:#795548; font-size:13px;">活动地点:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyVenue.addr }}</span>
+          </mu-row>
+          <mu-row style="margin-bottom:.3rem;">
+            <span style="color:#795548; font-size:13px;">活动时间:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyBeginTime }}  ~  {{ item.partyEndTime }}</span>
+          </mu-row>
+          <mu-row style="margin-bottom:.3rem;">
+            <span style="color:#795548; font-size:13px;">招募人数:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.recruitNumb }}/<span style="color:green; font-size:10px;">{{ item.hadRecruitNumb }}</span></span>
+          </mu-row>
+          <mu-row style="margin-bottom:.3rem;">
+            <span style="color:#795548; font-size:13px;">队友偏爱:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.temmatePrefer }}</span>
+          </mu-row>
+
+          <mu-row style="margin-top:.5rem;">
+            <span style="color:#795548; font-size:13px;">详细内容:            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyDetail }}</span></span>
+          </mu-row>
+        </div>
+
+        <mu-flex style="font-size:12px; padding:.8rem 1rem 1rem .8rem;" align-items="center">
+          <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
+          <span style="font-size:12px;">距离你<span style="font-size:12px; color:green;">{{ item.distance }}</span>米</span>
+          <span style="margin-left:auto; color:#9e9e9e; font-size:12px;">2分钟前· <span style="color:#00bcd4;"> 查看详情</span></span>
+        </mu-flex>
+
+      </div>
+    </div>
+
+
     <!-- BEGIN 弹出窗口 -->
     <mu-container>
       <mu-drawer :open.sync="teamFilterWindowIsShow" :docked="false" :left="true" width="80%">
@@ -201,16 +285,34 @@ export default {
         location: '',
         address: '',
       },
+      TeamList: [],
+      Page: 1,
+      Lng: 113.122629,
+      Lat: 23.029735,
+      Theme: 0,
     }
+  },
+  mounted () {
+    this.loadTeamList()
   },
   methods: {
     goBack () {
       this.$router.go(-1)
     },
-    mytest (chooseDate) {
-      console.log(chooseDate.getFullYear() +'-'+ chooseDate.getMonth() +'-'+ chooseDate.getDate())
+    loadTeamList () { // 加载组队
+      this.$axios.post('/party/teamList', {
+        page: this.Page,
+        lng: this.Lng,
+        lat: this.Lat,
+        theme: this.Theme
+      }).then((resp)=>{
+        let dataBack = resp.data
+        this.TeamList = this.TeamList.concat(dataBack.listInfo)
+        this.Page++
+        console.log(resp)
+      })
     },
-    loadiframe() {
+    loadiframe () {
       let iframe = document.getElementById('getAddress').contentWindow
       iframe.postMessage('hello', 'https://m.amap.com/picker/')
       window.addEventListener("message", function (e) {
