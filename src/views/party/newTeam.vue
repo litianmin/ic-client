@@ -19,15 +19,15 @@
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
         <span style="font-size:12px; color:#795548; margin-right:.5rem;">活动主题：</span>
         <select v-model="PartyTheme" name="partyTitle" id="" style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4; ">
-          <option value="0">普通聚会</option>
-          <option value="1">节日聚会</option>
-          <option value="2">健身运动</option>
-          <option value="3">随便逛逛</option>
-          <option value="4">线下手游</option>
-          <option value="5">野外聚餐</option>
-          <option value="6">音乐派对</option>
-          <option value="7">单身派对</option>
-          <option value="8">联谊聚会</option>
+          <option value="1">普通聚会</option>
+          <option value="2">节日聚会</option>
+          <option value="3">健身运动</option>
+          <option value="4">随便逛逛</option>
+          <option value="5">线下手游</option>
+          <option value="6">野外聚餐</option>
+          <option value="7">音乐派对</option>
+          <option value="8">单身派对</option>
+          <option value="9">联谊聚会</option>
         </select>
       </mu-flex>
 

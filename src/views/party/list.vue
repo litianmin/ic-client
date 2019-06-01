@@ -20,13 +20,15 @@
       <span style="font-size:12px; color:#795548; margin-left:.3rem;">主题筛选：</span>
       <select name="" id="" style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4;">
         <option value="0">选择主题</option>
-        <option value="1">健身运动</option>
-        <option value="2">随便逛逛</option>
-        <option value="3">线下手游</option>
-        <option value="4">野外聚餐</option>
-        <option value="5">音乐派对</option>
-        <option value="6">单身派对</option>
-        <option value="7">联谊聚会</option>
+        <option value="1">普通聚会</option>
+        <option value="2">节日聚会</option>
+        <option value="3">健身运动</option>
+        <option value="4">随便逛逛</option>
+        <option value="5">线下手游</option>
+        <option value="6">野外聚餐</option>
+        <option value="7">音乐派对</option>
+        <option value="8">单身派对</option>
+        <option value="9">联谊聚会</option>
       </select>
 
       <span style="font-size:12px; color:#795548; margin-left:1rem;">所在地：</span>
@@ -36,159 +38,8 @@
 
     <mu-divider></mu-divider>
 
-    <!-- 样式一 -->
-    <div style="padding:.5rem; position:relative; margin-bottom:2rem;">
-
-      <div style="box-shadow: 1px 1px 1px #9e9e9e; border-top-left-radius:.3rem; border-top-right-radius:.3rem; border-top:1px solid #e0e0e0; border-left:1px solid #e0e0e0;">
-
-        <!-- 用户头部昵称 -->
-        <div style="padding:.5rem; border-bottom:1px solid #eeeeee; ">
-          <mu-flex align-items="center">
-            <mu-avatar size="35">
-              <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3340295553,242321368&fm=27&gp=0.jpg" alt="">
-            </mu-avatar>
-            <div style="margin-left:1rem;">
-              <mu-row style="font-size:12px;">朝花夕誓</mu-row>
-              <mu-row style="margin-top:.2rem;font-size:7px; color:#43a047;">社交菜鸟Lv1</mu-row>
-            </div>
-            <div style="margin-left:auto; background:#4db6ac; padding:.2rem .3rem; color:#fff; border-radius:.2rem; font-size:12px;">Team01</div>
-            <!-- <span style="margin-left:auto; color:#9e9e9e; font-size:13px;">2分钟前</span> -->
-          </mu-flex>
-        </div>
-
-        <!-- 展示图片 -->
-        <mu-flex style="position:relative;" justify-content="center">
-          <img style="max-width:100%; max-height:30rem;" src="http://img2.imgtn.bdimg.com/it/u=2440520473,4156973381&fm=26&gp=0.jpg" alt="">
-
-          <mu-flex style="width:100%; position:absolute; bottom:0; padding:0 .2rem; background:rgba(0, 0, 0, .5); padding:1rem;" align-items="center">
-            <span style="color:#fff;">聚餐（百隆广场）</span>
-          </mu-flex>
-        </mu-flex>
-
-        <div style="padding:1rem 1rem 0rem .5rem;">
-          <mu-row style="margin-bottom:.3rem;">
-            <span style="color:#795548; font-size:13px;">主要活动:</span>
-            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">聚餐，玩游戏</span>
-          </mu-row>
-          <mu-row style="margin-bottom:.3rem;">
-            <span style="color:#795548; font-size:13px;">活动地点:</span>
-            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">百隆广场56好街602室</span>
-          </mu-row>
-          <mu-row style="margin-bottom:.3rem;">
-            <span style="color:#795548; font-size:13px;">活动时间:</span>
-            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">1/02 02:02  ~  3/02 03:04</span>
-          </mu-row>
-          <mu-row style="margin-bottom:.3rem;">
-            <span style="color:#795548; font-size:13px;">招募人数:</span>
-            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">20/<span style="color:green; font-size:10px;">4</span></span>
-          </mu-row>
-          <mu-row style="margin-bottom:.3rem;">
-            <span style="color:#795548; font-size:13px;">队友偏爱:</span>
-            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">来个风情万种的</span>
-          </mu-row>
-
-          <mu-row style="margin-top:.5rem;">
-            <span style="color:#795548; font-size:13px;">招募宣言:            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">这里最多就显示个100个字吧，因为如果内容太多的话，也不好粗粒不是，如果说，哎，其实我也不清就是了。</span></span>
-          </mu-row>
-        </div>
-
-        <mu-flex style="font-size:12px; padding:.8rem 1rem 1rem .8rem;" align-items="center">
-          <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
-          <span style="font-size:12px;">距离你<span style="font-size:12px; color:green;">600</span>米</span>
-          <span style="margin-left:auto; color:#9e9e9e; font-size:12px;">2分钟前· <span style="color:#00bcd4;"> 查看详情</span></span>
-          
-        </mu-flex>
-
-      </div>
-    </div>
-
-    <!-- 样式二 -->
-    <div style="padding:.5rem;  position:relative;  margin-bottom:2rem;">
-
-
-      <div style="box-shadow: 1px 1px 1px #9e9e9e; border-top-left-radius:.3rem; border-top-right-radius:.3rem; border-top:1px solid #e0e0e0; border-left:1px solid #e0e0e0;">
-
-        <!-- 用户头部昵称 -->
-        <div style="padding:.5rem; border-bottom:1px solid #eeeeee; ">
-          <mu-flex align-items="center">
-            <mu-avatar size="35">
-              <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3340295553,242321368&fm=27&gp=0.jpg" alt="">
-            </mu-avatar>
-            <div style="margin-left:1rem;">
-              <mu-row style="font-size:12px;">朝花夕誓</mu-row>
-              <mu-row style="margin-top:.2rem;font-size:7px; color:#43a047;">社交菜鸟Lv1</mu-row>
-            </div>
-            <div style="margin-left:auto; background:#4db6ac; padding:.2rem .3rem; color:#fff; border-radius:.2rem; font-size:12px; margin-right:.5rem;">Team02</div>
-          </mu-flex>
-        </div>
-
-        <!-- 展示图片 -->
-        <mu-flex style="position:relative;" justify-content="center">
-          <img style="max-width:100%; max-height:30rem;" src="http://img4.imgtn.bdimg.com/it/u=2815404356,1532344722&fm=26&gp=0.jpg" alt="">
-
-          <mu-flex style="width:100%; position:absolute; bottom:0; padding:0 .2rem; background:rgba(0, 0, 0, .5); padding:1rem;" align-items="center">
-            <span style="color:#fff;">聚餐（百隆广场）</span>
-          </mu-flex>
-        </mu-flex>
-
-        <div style="padding:1rem 1rem 0rem .5rem;">
-          <mu-row style="margin-bottom:.3rem;">
-            <span style="color:#795548; font-size:13px;">主要活动:</span>
-            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">聚餐，玩游戏</span>
-          </mu-row>
-          <mu-row style="margin-bottom:.3rem;">
-            <span style="color:#795548; font-size:13px;">活动地点:</span>
-            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">百隆广场56好街602室</span>
-          </mu-row>
-          <mu-row style="margin-bottom:.3rem;">
-            <span style="color:#795548; font-size:13px;">活动时间:</span>
-            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">1/02 02:02  ~  3/02 03:04</span>
-          </mu-row>
-          <mu-row style="margin-bottom:.3rem;">
-            <span style="color:#795548; font-size:13px;">招募人数:</span>
-            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">20/<span style="color:green; font-size:10px;">4</span></span>
-          </mu-row>
-          <mu-row style="margin-bottom:.3rem;">
-            <span style="color:#795548; font-size:13px;">队友偏爱:</span>
-            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">来个风情万种的</span>
-          </mu-row>
-
-          <mu-row style="margin-top:.5rem;">
-            <span style="color:#795548; font-size:13px;">招募宣言:            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">这里最多就显示个100个字吧，因为如果内容太多的话，也不好粗粒不是，如果说，哎，其实我也不清就是了。</span></span>
-          </mu-row>
-        </div>
-
-        <mu-flex style="font-size:12px; padding:.8rem 1rem 1rem .8rem;" align-items="center">
-          <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
-          <span style="font-size:12px;">距离你<span style="font-size:12px; color:green;">600</span>米</span>
-          <span style="margin-left:auto; color:#9e9e9e; font-size:12px;">2分钟前· <span style="color:#00bcd4;"> 查看详情</span></span>
-        </mu-flex>
-
-      </div>
-    </div>
-
-
-<!-- type TeamBaseInfo struct {
-	TeamID          int64   `json:"teamID" bson:"teamID"`
-	CaptainAvatar   string  `json:"captainAvatar" bson:"captainAvatar"`
-	CaptainNickname string  `json:"captainNickname" bson:"captainNickname"`
-	RecruitImg      string  `json:"recruitImg" bson:"recruitImg"`
-	PartyTheme      uint8   `json:"partyTheme" bson:"partyTheme"`
-	PartyTitle      string  `json:"partyTitle" bson:"partyTitle"`
-	PartyDetail     string  `json:"partyDetail" bson:"partyDetail"`
-	TeammatePrefer  string  `json:"temmatePrefer" bson:"temmatePrefer"`
-	RecruitNumb     uint8   `json:"recruitNumb" bson:"recruitNumb"`
-	HadRecruitNumb  uint8   `json:"hadRecruitNumb" bson:"hadRecruitNumb"`
-	PartyVenue      AddrObj `json:"partyVenue" bson:"partyVenue"`
-	MeetingVenue    AddrObj `json:"meetingVenue" bson:"meetingVenue"`
-	PartyBeginTime  uint64  `json:"partyBeginTime" bson:"partyBeginTime"`
-	PartyEndTime    uint64  `json:"partyEndTime" bson:"partyEndTime"`
-	ExpiredTime     uint64  `json:"expiredTime" bson:"expiredTime"`
-	Distance        float64 `json:"distance" bson:"distance"`
-} -->
-
     <!-- 循环样式 -->
-    <div v-for="(item, index) in TeamList" style="padding:.5rem;  position:relative;  margin-bottom:2rem;" >
+    <div v-for="(item, index) in TeamList" :key="index" style="padding:.5rem;  position:relative;  margin-bottom:2rem;" >
       <div style="box-shadow: 1px 1px 1px #9e9e9e; border-top-left-radius:.3rem; border-top-right-radius:.3rem; border-top:1px solid #e0e0e0; border-left:1px solid #e0e0e0;">
 
         <!-- 用户头部昵称 -->
@@ -201,7 +52,7 @@
               <mu-row style="font-size:12px;">{{ item.captainNickname }}</mu-row>
               <mu-row style="margin-top:.2rem;font-size:7px; color:#43a047;">社交菜鸟Lv1</mu-row>
             </div>
-            <div style="margin-left:auto; background:#4db6ac; padding:.2rem .3rem; color:#fff; border-radius:.2rem; font-size:12px; margin-right:.5rem;">Team{{ index }}</div>
+            <div style="margin-left:auto; background:#4db6ac; padding:.2rem .3rem; color:#fff; border-radius:.2rem; font-size:12px; margin-right:.5rem;">Team{{ index + 1 }}</div>
           </mu-flex>
         </div>
 
@@ -210,41 +61,45 @@
           <img style="max-width:100%; max-height:30rem;" :src="item.recruitImg" alt="">
 
           <mu-flex style="width:100%; position:absolute; bottom:0; padding:0 .2rem; background:rgba(0, 0, 0, .5); padding:1rem;" align-items="center">
-            <span style="color:#fff;">{{ item.partyTheme }}（{{ item.partyVenue.name }}）</span>
+            <span style="color:#fff;">{{ item.partyTheme }} - {{ item.partyVenue.name }}</span>
           </mu-flex>
         </mu-flex>
 
         <div style="padding:1rem 1rem 0rem .5rem;">
           <mu-row style="margin-bottom:.3rem;">
-            <span style="color:#795548; font-size:13px;">主要活动:</span>
+            <span style="color:#795548; font-size:12px;">主要活动:</span>
             <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyTitle }}</span>
           </mu-row>
           <mu-row style="margin-bottom:.3rem;">
-            <span style="color:#795548; font-size:13px;">活动地点:</span>
+            <span style="color:#795548; font-size:12px;">活动地点:</span>
             <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyVenue.addr }}</span>
           </mu-row>
           <mu-row style="margin-bottom:.3rem;">
-            <span style="color:#795548; font-size:13px;">活动时间:</span>
+            <span style="color:#795548; font-size:12px;">活动时间:</span>
             <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyBeginTime }}  ~  {{ item.partyEndTime }}</span>
           </mu-row>
           <mu-row style="margin-bottom:.3rem;">
-            <span style="color:#795548; font-size:13px;">招募人数:</span>
+            <span style="color:#795548; font-size:12px;">集合地点:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.meetingVenue.addr }}</span>
+          </mu-row>
+          <mu-row style="margin-bottom:.3rem;">
+            <span style="color:#795548; font-size:12px;">招募人数:</span>
             <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.recruitNumb }}/<span style="color:green; font-size:10px;">{{ item.hadRecruitNumb }}</span></span>
           </mu-row>
           <mu-row style="margin-bottom:.3rem;">
-            <span style="color:#795548; font-size:13px;">队友偏爱:</span>
-            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.temmatePrefer }}</span>
+            <span style="color:#795548; font-size:12px;">队友偏爱:</span>
+            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.teammatePrefer }}</span>
           </mu-row>
 
           <mu-row style="margin-top:.5rem;">
-            <span style="color:#795548; font-size:13px;">详细内容:            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyDetail }}</span></span>
+            <span style="color:#795548; font-size:12px;">详细内容:            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyDetail }}</span></span>
           </mu-row>
         </div>
 
-        <mu-flex style="font-size:12px; padding:.8rem 1rem 1rem .8rem;" align-items="center">
+        <mu-flex style="font-size:12px; padding:.8rem 1rem 1rem .5rem; margin-top:.5rem;" align-items="center">
           <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
-          <span style="font-size:12px;">距离你<span style="font-size:12px; color:green;">{{ item.distance }}</span>米</span>
-          <span style="margin-left:auto; color:#9e9e9e; font-size:12px;">2分钟前· <span style="color:#00bcd4;"> 查看详情</span></span>
+          <span style="font-size:12px;">距离你 <span style="font-size:12px;">{{ item.distance }}</span></span>
+          <span style="margin-left:auto; color:#9e9e9e; font-size:12px;">{{ item.createTime }}· <span style="color:#00bcd4;"> 查看详情</span></span>
         </mu-flex>
 
       </div>
@@ -272,6 +127,7 @@
 </template>
 
 <script>
+import utils from 'common/utils.js'
 export default {
   
   data () {
@@ -307,6 +163,27 @@ export default {
         theme: this.Theme
       }).then((resp)=>{
         let dataBack = resp.data
+
+        let listInfo = dataBack.listInfo
+        for(let i = 0; i < listInfo.length; i++) {
+          // 处理主题
+          listInfo[i].partyTheme = utils.getPartyThemeName(listInfo[i].partyTheme)
+
+          listInfo[i].partyTitle = listInfo[i].partyTitle == '' ? '一起来玩吧' : listInfo[i].partyTitle
+          listInfo[i].partyDetail = listInfo[i].partyDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : listInfo[i].partyDetail
+          listInfo[i].teammatePrefer = listInfo[i].teammatePrefer == '' ? '随便来！' : listInfo[i].teammatePrefer
+          listInfo[i].recruitImg = listInfo[i].recruitImg  == '' ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1559386791000&di=b883951b4a21c41643c0e62f02827f57&imgtype=0&src=http%3A%2F%2Fpic30.nipic.com%2F20130612%2F12724384_085414541114_2.jpg' : listInfo[i].recruitImg
+          // 先格式化活动时间  {{ item.partyBeginTime }}  ~  {{ item.partyEndTime }}
+          // 2019/1/02 02:02  ~  2019/3/02 03:04
+          listInfo[i].partyBeginTime = utils.unixToDate(listInfo[i].partyBeginTime)
+          listInfo[i].partyEndTime = utils.unixToDate(listInfo[i].partyEndTime)
+          // 距离处理
+          listInfo[i].distance = utils.distanceFormat(listInfo[i].distance)
+          // 队伍发布时间处理
+          listInfo[i].createTime = utils.getDateDiff(listInfo[i].createTime, true)
+        }
+
+
         this.TeamList = this.TeamList.concat(dataBack.listInfo)
         this.Page++
         console.log(resp)

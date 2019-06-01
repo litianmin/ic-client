@@ -66,6 +66,8 @@ export default{
     let publishTime = 0
     if(isUnix === false) {
       publishTime = Date.parse(time.replace(/-/gi,"/")) / 1000
+    } else {
+      publishTime = time * 1000
     }
     let d_seconds = 0
     let d_minutes = 0
@@ -131,5 +133,60 @@ export default{
       return `${Y}年${M}月${D}日 ${H}:${m}`
     }
   },
+
+  unixToDate (unixTime) { // 时间戳转换成日期格式
+    unixTime = unixTime * 1000
+    let time = new Date(unixTime);
+    let y = time.getFullYear()
+    let m = time.getMonth()+1
+    let d = time.getDate() < 10 ? ('0'+time.getDate()) : time.getDate()
+    let h = time.getHours() < 10 ? ('0'+time.getHours()) : time.getHours()
+    let i = time.getMinutes() < 10 ? ('0'+time.getMinutes()) : time.getMinutes()  
+    return `${y}/${m}/${d} ${h}:${i}`
+  },
+
+  distanceFormat (distance) { // 距离格式化
+    let newDistance = parseInt(distance)
+    if(newDistance < 1000) {
+      return newDistance + 'm'
+    }
+    return newDistance = parseInt(newDistance / 100) / 10 + 'km'
+  },
+
+  getPartyThemeName (themeID) { // 获取party主题的名称
+    let themeName = ''
+    switch(themeID) {
+      case 1:
+        themeName = '普通聚会'
+        break
+      case 2:
+        themeName = '节日聚会'
+        break
+      case 3:
+        themeName = '健身运动'
+        break
+      case 4:
+        themeName = '随便逛逛'
+        break
+      case 5:
+        themeName = '线下手游'
+        break
+      case 6:
+        themeName = '野外聚餐'
+        break
+      case 7:
+        themeName = '音乐派对'
+        break
+      case 8:
+        themeName = '单身派对'
+        break
+      case 9:
+        themeName = '联谊聚会'
+        break
+      default:
+        break
+    }
+    return themeName
+  }
 
 }
