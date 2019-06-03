@@ -127,6 +127,11 @@ const router =  new Router({
       path: '/party/newTeam',
       name: 'party-newteam',
       component: () => import('./views/party/newTeam.vue')
+    },
+    { // party 队伍详情
+      path: '/party/teamDetail/:teamID',
+      name: 'party-teamDetail',
+      component: () => import('./views/party/teamDetail.vue')
     }
 
   ],

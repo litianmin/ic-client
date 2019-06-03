@@ -119,7 +119,7 @@
 export default {
   data () {
     return {
-      PartyTheme: 0,  // 聚会的主题
+      PartyTheme: 1,  // 聚会的主题
       PartyTitle: '', // 聚会的标题
       PartyDetail: '',  // 聚会详细内容
       TeammatePrefer: '', // 队友偏爱
