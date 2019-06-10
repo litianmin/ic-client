@@ -179,7 +179,7 @@ export default {
           listInfo[i].partyTitle = listInfo[i].partyTitle == '' ? '一起来玩吧' : listInfo[i].partyTitle
           listInfo[i].partyDetail = listInfo[i].partyDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : listInfo[i].partyDetail
           listInfo[i].teammatePrefer = listInfo[i].teammatePrefer == '' ? '随便来！' : listInfo[i].teammatePrefer
-          listInfo[i].recruitImg = listInfo[i].recruitImg  == '' ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1559386791000&di=b883951b4a21c41643c0e62f02827f57&imgtype=0&src=http%3A%2F%2Fpic30.nipic.com%2F20130612%2F12724384_085414541114_2.jpg' : listInfo[i].recruitImg
+          listInfo[i].recruitImg = listInfo[i].recruitImg.length == 0 ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1559386791000&di=b883951b4a21c41643c0e62f02827f57&imgtype=0&src=http%3A%2F%2Fpic30.nipic.com%2F20130612%2F12724384_085414541114_2.jpg' : listInfo[i].recruitImg[0]
           // 先格式化活动时间  {{ item.partyBeginTime }}  ~  {{ item.partyEndTime }}
           // 2019/1/02 02:02  ~  2019/3/02 03:04
           listInfo[i].partyBeginTime = utils.unixToDate(listInfo[i].partyBeginTime)
