@@ -74,15 +74,19 @@
       </mu-flex>
     </div>
 
+    <!-- BEGIN 队长和队友列表 -->
     <mu-flex style="padding:.5rem 1rem; background:#fff;" justify-content="center" align-items="center" wrap="wrap">
         <mu-avatar v-for="(item, index) in TeammateList" :key="index" size="35" style="padding:.1rem; border:1px solid #f8bbd0; border-radius:50%; background:white; margin-right:.5rem;">
           <img :src="item.avatar" alt="">
         </mu-avatar>
-        <svg-icon icon-class="add_circle_outline" style="font-size:40px; color:red;"></svg-icon>
+        <span @click="joinTeam">
+          <svg-icon icon-class="add_circle_outline" style="font-size:40px; color:red;"></svg-icon>
+        </span>
     </mu-flex>
     <mu-flex justify-content="center" style="padding:.3rem 0 .5rem 0; border-bottom:1px dashed #e0e0e0; background:#fff;">
       <span style="font-size:12px; color:#9e9e9e;">-- 招募{{ TeamBaseInfo.recruitNumb }}人，还差{{ TeamBaseInfo.hadRecruitNumb }}人 --</span>
     </mu-flex>
+    <!-- END 队长和队友列表 -->
 
     <!-- BEGIN 排序条 -->
     <mu-flex class="sort-bar" justify-content="center" align-items="center" >
@@ -132,16 +136,16 @@
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
 
-      <span v-if="JointeamStmt == 3" @click="joinTeam(3)" style="font-size:19px; margin-left:auto;">
+      <span v-if="JointeamStmt == 1 || JointeamStmt == 2 || JointeamStmt == 5" @click="joinTeam" style="font-size:19px; margin-left:auto;">
         <svg-icon icon-class="jointeam_refuse"></svg-icon>
       </span>
-      <span v-if="JointeamStmt == 2" @click="joinTeam(2)" style="font-size:19px; margin-left:auto;">
+      <span v-if="JointeamStmt == 3" @click="joinTeam" style="font-size:19px; margin-left:auto;">
         <svg-icon icon-class="hadjointeam"></svg-icon>
       </span>
-      <span v-if="JointeamStmt == 1" @click="joinTeam(1)" style="font-size:20px; margin-left:auto;">
+      <!-- <span v-if="JointeamStmt == 1" @click="joinTeam" style="font-size:20px; margin-left:auto;">
         <svg-icon icon-class="jointeam_applying"></svg-icon>
-      </span>
-      <span v-if="JointeamStmt == 0" @click="joinTeam(0)" style="font-size:20px; margin-left:auto;">
+      </span> -->
+      <span v-if="JointeamStmt == 0 || JointeamStmt == 4" @click="joinTeam" style="font-size:20px; margin-left:auto;">
         <svg-icon icon-class="jointeam"></svg-icon>
       </span>
       <mu-icon value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
@@ -180,6 +184,7 @@ export default {
           lng: 0,
           name: ''
         },
+        recruitStatus: 1, // 0=>组队中， 1=>停止招募(招募成功或者已过期), 2=>已解散
       },
       TeammateList: [],
       JointeamStmt: 0,
@@ -265,22 +270,77 @@ export default {
     replytoComment (isReply, replyID, replyNickname) {
       this.$router.push({path:`/game/replytoComment`, query:{commentID:this.CommentID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
     },
-    joinTeam (stmt) {
-      switch(stmt) {
-        case 0: // 可申请
-        this.$router.push(`/game/joinTeam/${this.TeamID}`)
-        break
-        case 1: // 申请中
-        this.$toast.message("正在申请中。。。")
-        break
-        case 2: // 已经加入组队
-        this.$toast.message("你已加入组队")
-        break
-        case 3: // 不能加入
-        this.$toast.message("不能加入")
-        break
+    joinTeam () {
+      // 首先判断队伍的状态是否停止招募
+      if(this.TeamBaseInfo.recruitStatus > 0) {
+        switch(this.TeamBaseInfo.recruitStatus) {
+          case 1:
+            this.$toast.message('该队伍已停止招募，不能加入组队')
+          break
+          case 2:
+            this.$toast.message('该队伍已解散，不能加入组队')
+          break
+        }
+        return
       }
 
+      // 点击加入组队的时候，判断加入组队的状态
+      // 0 => 未加入，1=>申请，2=>拒绝加入，3=>已加入，4=>离队, 5=>被踢
+      // 因为party里面没有1、2、5状态， 只需要判断 0 、3、 4(暂时不做其他的)
+
+      switch(this.JointeamStmt) {
+        case 0: // 未加入
+          this.$toast.message('现在正在准备加入')
+        break
+        case 1: // 申请
+          // 不做处理
+        break
+        case 2: // 拒绝加入
+          // 不做处理
+        break
+        case 3: // 已加入
+          // 不做处理
+        break
+        case 4: // 已离队，重新加入
+          this.$toast.message('你离开组队了，准备重新加入')
+        break
+        case 5:
+          // 不做处理
+        break
+      }
+    },
+    leaveTeam () {
+      // 先判断是否为队长，如果是队长，提示会解散队伍
+      if(this.SelfIsCamptain == true) {
+        this.$confirm('是否解散队伍？').then((resp)=>{
+          if(resp.result == true) { // 确定解散队伍
+            // this.$toast.message('你确定解散了队伍')
+            this.$axios.post(`/game/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
+              if(resp.data.code == 20000) {
+                this.$toast.message('已成功解散')
+                this.$router.push(`/game/detail/${this.GameID}`)
+                return
+              }
+            }) 
+          }
+        })
+      } else {
+        this.$axios.post(`/game/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
+          if(resp.data.code == 20000) {
+            this.$toast.message('已退出队伍')
+            this.$router.push(`/game/detail/${this.GameID}`)
+            return
+          }
+        }) 
+      }
+    },
+    newChat (isReply, replyID, replyNickname) {
+      // 只有加入组队的人才能进行评论
+      if(this.JointeamStmt != 2) {
+        this.$toast.message('加入组队后才能聊天哦')
+        return
+      }
+      this.$router.push({path:`/game/teamchat`, query:{teamID:this.TeamID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
     },
   },
 }
