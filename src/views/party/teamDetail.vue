@@ -119,12 +119,34 @@
         </mu-row>
       </mu-container>
 
-      <mu-row v-show="IsTheLast" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.3rem; margin-bottom:.8rem; color:#9e9e9e;">
+      <mu-row v-show="IsTheLast" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.3rem; margin-bottom:4rem; color:#9e9e9e;">
         <span> 没有更多的回复 </span>
       </mu-row>
 
     </mu-load-more>
     <!-- END 回复评论 -->
+
+    <!-- 发起评论框 -->
+    <mu-flex class="reply-input-box" align-items="center">
+      <div style="width:80%;" @click="newChat(false, 0, '')">
+        <input type="text" placeholder="我也来说一句吧" disabled>
+      </div>
+
+      <span v-if="JointeamStmt == 3" @click="joinTeam(3)" style="font-size:19px; margin-left:auto;">
+        <svg-icon icon-class="jointeam_refuse"></svg-icon>
+      </span>
+      <span v-if="JointeamStmt == 2" @click="joinTeam(2)" style="font-size:19px; margin-left:auto;">
+        <svg-icon icon-class="hadjointeam"></svg-icon>
+      </span>
+      <span v-if="JointeamStmt == 1" @click="joinTeam(1)" style="font-size:20px; margin-left:auto;">
+        <svg-icon icon-class="jointeam_applying"></svg-icon>
+      </span>
+      <span v-if="JointeamStmt == 0" @click="joinTeam(0)" style="font-size:20px; margin-left:auto;">
+        <svg-icon icon-class="jointeam"></svg-icon>
+      </span>
+      <mu-icon value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
+    </mu-flex>
+
 
   </div>
 
@@ -160,6 +182,8 @@ export default {
         },
       },
       TeammateList: [],
+      JointeamStmt: 0,
+
       swiperOption: {
         autoHeight: true, //enable auto height
         spaceBetween: 20,
@@ -240,7 +264,24 @@ export default {
     },
     replytoComment (isReply, replyID, replyNickname) {
       this.$router.push({path:`/game/replytoComment`, query:{commentID:this.CommentID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
-    }
+    },
+    joinTeam (stmt) {
+      switch(stmt) {
+        case 0: // 可申请
+        this.$router.push(`/game/joinTeam/${this.TeamID}`)
+        break
+        case 1: // 申请中
+        this.$toast.message("正在申请中。。。")
+        break
+        case 2: // 已经加入组队
+        this.$toast.message("你已加入组队")
+        break
+        case 3: // 不能加入
+        this.$toast.message("不能加入")
+        break
+      }
+
+    },
   },
 }
 </script>
@@ -260,6 +301,7 @@ export default {
 .reply-input-box { position:fixed; bottom:0; width:100%; padding:.5rem; background:#ffffff; border-top:1px solid #e0e0e0; }
 .reply-input-box input { width:100%; border-radius:.3rem; padding:.3rem; background:#f5f5f5; border:0; font-size:12px; }
 .reply-input-box-span { margin-left:auto; font-size:18px; margin-right:.3rem; }
+.reply-input-box-icon { margin-left:auto; margin-right:.5rem; }
 
 
 .comment-box { padding:.5rem 1rem; }
