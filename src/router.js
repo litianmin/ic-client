@@ -138,7 +138,9 @@ const router =  new Router({
       path: `/party/newChat`,
       name: 'party-newChat',
       component: () => import('./views/party/newChat.vue')
-    }
+    },
+
+    // 旅游模块
 
   ],
 })
