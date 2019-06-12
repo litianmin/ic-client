@@ -117,6 +117,7 @@ const router =  new Router({
       component: () => import('./views/game/teamChat.vue')
     },
 
+
     // party 模块
     { // party 组队列表
       path: '/party/list',
@@ -132,6 +133,11 @@ const router =  new Router({
       path: '/party/teamDetail/:teamID',
       name: 'party-teamDetail',
       component: () => import('./views/party/teamDetail.vue')
+    },
+    { // 发表聊天界面
+      path: `/party/newChat`,
+      name: 'party-newChat',
+      component: () => import('./views/party/newChat.vue')
     }
 
   ],

@@ -79,12 +79,12 @@
         <mu-avatar v-for="(item, index) in TeammateList" :key="index" size="35" style="padding:.1rem; border:1px solid #f8bbd0; border-radius:50%; background:white; margin-right:.5rem;">
           <img :src="item.avatar" alt="">
         </mu-avatar>
-        <span @click="joinTeam">
+        <span v-if="TeamBaseInfo.recruitStatus == 0" @click="joinTeam">
           <svg-icon icon-class="add_circle_outline" style="font-size:40px; color:red;"></svg-icon>
         </span>
     </mu-flex>
     <mu-flex justify-content="center" style="padding:.3rem 0 .5rem 0; border-bottom:1px dashed #e0e0e0; background:#fff;">
-      <span style="font-size:12px; color:#9e9e9e;">-- 招募{{ TeamBaseInfo.recruitNumb }}人，还差{{ TeamBaseInfo.hadRecruitNumb }}人 --</span>
+      <span style="font-size:12px; color:#9e9e9e;">-- 招募{{ TeamBaseInfo.recruitNumb }}人，还差{{ TeamBaseInfo.recruitNumb - TeamBaseInfo.hadRecruitNumb }}人 --</span>
     </mu-flex>
     <!-- END 队长和队友列表 -->
 
@@ -184,10 +184,11 @@ export default {
           lng: 0,
           name: ''
         },
-        recruitStatus: 1, // 0=>组队中， 1=>停止招募(招募成功或者已过期), 2=>已解散
+        recruitStatus: 0, // 0=>组队中， 1=>停止招募(招募成功或者已过期), 2=>已解散
       },
       TeammateList: [],
       JointeamStmt: 0,
+      IsCaptain: false,
 
       swiperOption: {
         autoHeight: true, //enable auto height
@@ -237,6 +238,8 @@ export default {
       this.TeamBaseInfo = teamBaseInfo  // 赋值
       this.TeammateList = dataBack.teammateList
       this.ReplyList = dataBack.chatList
+      this.IsCaptain = dataBack.isCaptain
+      this.JointeamStmt = dataBack.joinStmt
 
       console.log(resp.data)
     })
@@ -287,10 +290,18 @@ export default {
       // 点击加入组队的时候，判断加入组队的状态
       // 0 => 未加入，1=>申请，2=>拒绝加入，3=>已加入，4=>离队, 5=>被踢
       // 因为party里面没有1、2、5状态， 只需要判断 0 、3、 4(暂时不做其他的)
-
       switch(this.JointeamStmt) {
         case 0: // 未加入
-          this.$toast.message('现在正在准备加入')
+          this.$axios.post(
+            `/party/joinTeam/${this.TeamID}`,{}
+          ).then((resp)=>{
+            let dataBack = resp.data
+            this.$toast.message(dataBack.msg)
+            if(dataBack.code == 20000) {
+              window.location.reload()
+              console.log('准备更新工作')
+            }
+          })
         break
         case 1: // 申请
           // 不做处理
@@ -300,9 +311,23 @@ export default {
         break
         case 3: // 已加入
           // 不做处理
+          if(this.IsCaptain == true) {
+            this.$toast.message('你是队长，你要邀请别人进来吗？')
+          }else{
+            this.$toast.message('你已加入组队！')
+          }
         break
         case 4: // 已离队，重新加入
-          this.$toast.message('你离开组队了，准备重新加入')
+          this.$axios.post(
+            `/party/joinTeam/${this.TeamID}`,{}
+          ).then((resp)=>{
+            let dataBack = resp.data
+            this.$toast.message(dataBack.msg)
+            if(dataBack.code == 20000) {
+              window.location.reload()
+              console.log('准备更新工作')
+            }
+          })
         break
         case 5:
           // 不做处理
@@ -336,11 +361,11 @@ export default {
     },
     newChat (isReply, replyID, replyNickname) {
       // 只有加入组队的人才能进行评论
-      if(this.JointeamStmt != 2) {
+      if(this.JointeamStmt != 3) {
         this.$toast.message('加入组队后才能聊天哦')
         return
       }
-      this.$router.push({path:`/game/teamchat`, query:{teamID:this.TeamID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
+      this.$router.push({path:`/party/newChat`, query:{teamID:this.TeamID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
     },
   },
 }
