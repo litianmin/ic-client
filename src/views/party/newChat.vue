@@ -86,7 +86,7 @@ export default {
       }
 
       this.$axios.post(
-        `/game/teamChat`,
+        `/party/teamChat`,
         {
           team_id: Number(this.TeamID),
           chat_cont: this.c_cont,

@@ -100,34 +100,30 @@
       <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
         <mu-flex align-items="center">
           <mu-avatar size="24">
-            <img :src="item.avatar">
+            <img :src="item.user_avatar">
           </mu-avatar>
           <span class="reply-nickname">
-            {{ item.nickname }} 
+            {{ item.user_nickname }} 
           </span>
           <span class="reply-time">{{ item.create_time }}</span>
         </mu-flex>
 
         <mu-row class="reply-cont-box">
           <span style="font-size:12px; margin-left:.5rem; ">
-            <span v-if="item.reply_to > 0">@<span style="color:#795548;">{{ item.reply_nickname }}</span> :</span> {{ item.c_cont }}
-
-            <span style="color:green; margin-left:.5rem;"  @click="replytoComment(true, item.user_id, item.nickname)">
-              回复
-            </span>
+            <span v-if="item.reply_to > 0">@<span style="color:#795548;">{{ item.reply_nickname }}</span> :</span> {{ item.chat_cont }}
+            <span style="color:green; margin-left:.5rem;" @click="newChat(true, item.user_id, item.user_nickname)">回复</span>
           </span>
         </mu-row>
 
-        <mu-row v-if="item.c_img" class="comment-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
-          <img :src="item.c_img">
+        <mu-row v-if="item.chat_img" class="team-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
+          <img :src="item.chat_img">
         </mu-row>
       </mu-container>
-
-      <mu-row v-show="IsTheLast" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.3rem; margin-bottom:4rem; color:#9e9e9e;">
-        <span> 没有更多的回复 </span>
-      </mu-row>
-
     </mu-load-more>
+
+    <mu-row v-show="IsTheLast" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.3rem; margin-bottom:4rem; color:#9e9e9e;">
+      <span> 没有更多的回复 </span>
+    </mu-row>
     <!-- END 回复评论 -->
 
     <!-- 发起评论框 -->
@@ -184,7 +180,7 @@ export default {
           lng: 0,
           name: ''
         },
-        recruitStatus: 0, // 0=>组队中， 1=>停止招募(招募成功或者已过期), 2=>已解散
+        recruitStatus: 0, // 0=>组队中， 1=>停止招募(招募成功或者已过期), 2=>已解散(只有组队中才能解散，停止招募后不能解散)
       },
       TeammateList: [],
       JointeamStmt: 0,
@@ -214,6 +210,12 @@ export default {
       `/party/teamDetail/${this.TeamID}`, 
       {}
     ).then((resp)=>{
+      if(resp.data.code == 40105) {
+        this.$toast.message(resp.data.msg)
+        this.$router.push('/party/list')
+        return
+      }
+
       let dataBack = resp.data.msg
       this.IsTheLast = dataBack.isTheLast
       
@@ -237,9 +239,16 @@ export default {
 
       this.TeamBaseInfo = teamBaseInfo  // 赋值
       this.TeammateList = dataBack.teammateList
-      this.ReplyList = dataBack.chatList
       this.IsCaptain = dataBack.isCaptain
       this.JointeamStmt = dataBack.joinStmt
+
+      // 评论处理
+      let replyList =  dataBack.chatList
+      for(let i = 0; i < replyList.length; i++) {
+        replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, true)
+      }
+      this.ReplyList = this.ReplyList.concat(replyList)
+      // this.ReplyList = dataBack.chatList
 
       console.log(resp.data)
     })
@@ -251,12 +260,12 @@ export default {
     load () {
       this.Loading = true      
       let sortWay = this.IsSortup == false ? 0 : 1
-      this.$axios.post(`/game/commentReplyList/${this.ReplyListPage}/${this.CommentID}/${sortWay}`,{}).then((resp)=>{
+      this.$axios.post(`/party/chatList/${this.ReplyListPage}/${this.CommentID}/${sortWay}`,{}).then((resp)=>{
         let dataBack = resp.data
         this.IsTheLast = dataBack.isTheLast
         let replyList = dataBack.listInfo
         for(let i = 0; i < replyList.length; i++) {
-          replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, false)
+          replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, true)
         }
         this.ReplyList = this.ReplyList.concat(replyList)
         this.ReplyListPage++
@@ -336,6 +345,7 @@ export default {
     },
     leaveTeam () {
       // 先判断是否为队长，如果是队长，提示会解散队伍
+      // 并且如果是队长，只有组队中才可以解散
       if(this.SelfIsCamptain == true) {
         this.$confirm('是否解散队伍？').then((resp)=>{
           if(resp.result == true) { // 确定解散队伍
