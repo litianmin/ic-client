@@ -27,6 +27,7 @@ axios.interceptors.response.use(
   response => {
     const res = response.data
 
+    console.log(res)
     // 这里主要是处理返回token的错误问题
     if (res.code !== 20000) { 
       // 40002:Token 没有token，未登录
@@ -45,7 +46,7 @@ axios.interceptors.response.use(
         router.push('/auth/base')
         return
       } 
-      return Promise.reject('error')
+      // return Promise.reject('error')
     } 
 
     // 如果没有错误，那么就把数据直接返回去

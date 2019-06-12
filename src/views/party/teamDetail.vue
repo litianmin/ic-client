@@ -210,6 +210,7 @@ export default {
       `/party/teamDetail/${this.TeamID}`, 
       {}
     ).then((resp)=>{
+      // 如果队伍已经解散了，直接跳转到组队列表去
       if(resp.data.code == 40105) {
         this.$toast.message(resp.data.msg)
         this.$router.push('/party/list')
