@@ -10,7 +10,14 @@
         节日聚会
       </div>
 
-      <span style="color:#fff; font-size:12px; padding:0 .5rem;" slot="right">创建组队</span>
+      <mu-menu slot="right" class="mine-menu-box">
+        <mu-icon value="menu"></mu-icon>
+        <mu-list slot="content" class="mine-menu-list">
+          <mu-list-item @click="leaveTeam" v-if="JointeamStmt == 3" button style="border-top:1px solid #fafafa;">
+            <mu-list-item-title class="mine-menu-item">退出队伍</mu-list-item-title>
+          </mu-list-item>
+        </mu-list>
+      </mu-menu>
     </mu-appbar>
     <!-- END 头部 -->
 
@@ -121,7 +128,7 @@
       </mu-container>
     </mu-load-more>
 
-    <mu-row v-show="IsTheLast" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.3rem; margin-bottom:4rem; color:#9e9e9e;">
+    <mu-row v-show="IsTheLast" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.3rem; margin-bottom:3rem; color:#9e9e9e;">
       <span> 没有更多的回复 </span>
     </mu-row>
     <!-- END 回复评论 -->
@@ -347,24 +354,24 @@ export default {
     leaveTeam () {
       // 先判断是否为队长，如果是队长，提示会解散队伍
       // 并且如果是队长，只有组队中才可以解散
-      if(this.SelfIsCamptain == true) {
+      if(this.IsCaptain == true) {
         this.$confirm('是否解散队伍？').then((resp)=>{
           if(resp.result == true) { // 确定解散队伍
             // this.$toast.message('你确定解散了队伍')
-            this.$axios.post(`/game/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
+            this.$axios.post(`/party/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
               if(resp.data.code == 20000) {
                 this.$toast.message('已成功解散')
-                this.$router.push(`/game/detail/${this.GameID}`)
+                this.$router.push(`/party/list`)
                 return
               }
             }) 
           }
         })
       } else {
-        this.$axios.post(`/game/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
+        this.$axios.post(`/party/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
           if(resp.data.code == 20000) {
             this.$toast.message('已退出队伍')
-            this.$router.push(`/game/detail/${this.GameID}`)
+            this.$router.push(`/party/list`)
             return
           }
         }) 
@@ -384,6 +391,10 @@ export default {
 
 <style scoped>
 .mine-appbar { width: 100%; height:2.5rem; }
+
+.mine-menu-box { margin-top:1rem; right:.5rem; }
+.mine-menu-list { background:#4dd0e1; color:white; padding:0; }
+.mine-menu-item { color:#fff; font-size:12px; }
 
 .sort-bar { background:#f5f5f5; border-top:1px solid #fff; font-size:12px; padding:.4rem .5rem; margin-bottom:.5rem; }
 .sort-bar-svg { margin-left:auto; font-size:18px; margin-right:.3rem; }
