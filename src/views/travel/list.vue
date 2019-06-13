@@ -15,7 +15,7 @@
     </mu-appbar>
     <!-- END 头部 -->
 
-    <!-- 队伍样式 -->
+    <!-- BEGIN 队伍样式 -->
     <div style="padding:.5rem;">
       <div style="box-shadow: 1px 1px 1px #9e9e9e; border-top-left-radius:.5rem; border-top-right-radius:.5rem; ">
         <mu-flex style="position:relative;" justify-content="center">
@@ -43,6 +43,7 @@
         </mu-flex>
       </div>
     </div>
+    <!-- END 队伍样式 -->
 
   </div>
 </template>
