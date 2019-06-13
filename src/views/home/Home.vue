@@ -57,7 +57,7 @@
           <div style="text-align:center; font-size:12px; margin-top:.3rem;">聚 会</div>
         </div>
 
-        <div>
+        <div @click="linkToTravelList">
           <div style="text-align:center;">
             <svg-icon icon-class="travel" class="icon-class"></svg-icon>
           </div>
@@ -348,6 +348,9 @@ export default {
     },
     linkToPartyList () {
       this.$router.push('/party/list')
+    },
+    linkToTravelList () {
+      this.$router.push('/travel/list')
     },
   },
   components: {

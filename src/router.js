@@ -141,7 +141,11 @@ const router =  new Router({
     },
 
     // 旅游模块
-
+    { // 旅游列表
+      path: '/travel/list',
+      name: 'travel-list',
+      component: () => import('./views/travel/list.vue')
+    },
   ],
 })
 
