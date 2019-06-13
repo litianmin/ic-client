@@ -146,6 +146,11 @@ const router =  new Router({
       name: 'travel-list',
       component: () => import('./views/travel/list.vue')
     },
+    {
+      path: '/travel/newTeam',
+      name: 'travel-newTeam',
+      component: () => import('./views/travel/newTeam.vue')
+    },
   ],
 })
 

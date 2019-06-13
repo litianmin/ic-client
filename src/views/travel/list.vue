@@ -11,7 +11,7 @@
         旅游
       </div>
 
-      <span style="color:#fff; font-size:12px; padding:0 .5rem;" slot="right">创建组队</span>
+      <span @click="newTeam" style="color:#fff; font-size:12px; padding:0 .5rem;" slot="right">创建组队</span>
     </mu-appbar>
     <!-- END 头部 -->
 
@@ -53,6 +53,9 @@ export default {
   methods: {
     goBack () {
       this.$router.go(-1)
+    },
+    newTeam () {
+      this.$router.push('/travel/newTeam')
     },
   }
 }
