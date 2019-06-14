@@ -14,6 +14,7 @@
 
     <mu-container style="padding:1rem .8rem;">
       <!-- 心灵、朝圣、亲子、摄影、漂流、美食、滑雪、沙滩、踏青 -->
+      <!-- 旅游主题 -->
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
         <span style="font-size:12px; color:#795548; margin-right:.5rem;">旅游主题：</span>
         <select v-model="TravelTheme" name="partyTitle" id="" style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4; ">
@@ -29,6 +30,7 @@
         </select>
       </mu-flex>
 
+      <!-- 旅游路程、形式 -->
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
         <span style="font-size:12px; color:#795548; margin-right:.5rem;">旅游路程：</span>
         <select v-model="PathLength" name="partyTitle" id="" style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4; ">
@@ -43,11 +45,13 @@
         </select>
       </mu-flex>
 
+      <!-- 招募标题 -->
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
         <span style="font-size:12px; color:#795548; margin-right:.5rem;">招募标题：</span>
         <input maxlength="15" v-model="TravelTitle" style="padding:.4rem; width:70%; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4; color:#212121;" type="text" placeholder="一起来玩吧！（不超过15个字符）">
       </mu-flex>
 
+      <!-- 招募人数 -->
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
         <span style="font-size:12px; color:#795548; margin-right:.5rem;">招募人数：</span>
         <select v-model="RecruitNumb" name="" id="" style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4; text-align:center;">
@@ -55,27 +59,26 @@
         </select>
       </mu-flex>
 
+      <!-- 集合地点 -->
       <mu-flex style="width:100%; margin-bottom:1rem; margin-top:1rem;" align-items="center">
         <span style="font-size:12px; color:#795548; margin-right:.5rem;">集合地点：</span>
         <span style="font-size:12px; color:#9e9e9e;">{{ MeetingVenue }}</span>
         <mu-icon value="person_pin_circle" size="20" color="#009688"></mu-icon>
       </mu-flex>
 
+      <!-- 集合时间 -->
+      <mu-date-input v-model="MeetingTime" type="dateTime"  prefix="集合时间：" style="font-size:12px;" landscape container="bottomSheet" clock-type="24hr" view-type="clock" full-width actions></mu-date-input>
 
-
-
-      <mu-date-input v-model="BeginTime" type="dateTime"  prefix="集合时间：" style="font-size:12px;" landscape container="bottomSheet" clock-type="24hr" view-type="clock" full-width actions></mu-date-input>
-
-
-
+      <!-- 详细说明 -->
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="start">
         <span style="font-size:12px; color:#795548; margin-right:.5rem;">详细说明：</span>
         <textarea v-model="TravelDetail" style="width:75%; height:7rem; border:1px solid #80cbc4; color:#212121; font-size:12px; padding:.4rem; border-radius:.2rem;" placeholder="大家来这里一起玩吧，出来走走也好！（活动的详细内容）">
         </textarea>
       </mu-flex>
-      
+
     </mu-container>
 
+    <!-- 路线、活动内容 -->
     <mu-container style="padding:0 .8rem 0 0;">
       <span style="font-size:12px; color:#795548; margin-right:.5rem; margin-left:.5rem; ">路线/活动内容：</span>
       <div class="demo-vsteper-container">
@@ -161,8 +164,7 @@ export default {
       RecruitNumb: 1, // 招募人数
       RecruitNumbList: [],  // 招募人数的列表
       MeetingVenue: '', // 聚会地点
-      BeginTime: new Date, // 活动开始时间
-      EndTime: new Date, // 活动结束时间
+      MeetingTime: new Date, // 活动开始时间
       StepList: [
         {meetingVenue: '地点/路线/时间', beginTime: new Date, endTime: new Date, travelDesc: '这里是我的描述'},
         {meetingVenue: '地点/路线/时间', beginTime: new Date, endTime: new Date, travelDesc: '这里是我的描述'},
