@@ -81,7 +81,7 @@
       <div class="demo-vsteper-container">
         <mu-stepper :active-step="vactiveStep" orientation="vertical">
 
-          <mu-step v-for="(item, index) in StepList">
+          <mu-step v-for="(item, index) in StepList" :key="index">
             <mu-step-label>
               {{ item.meetingVenue }}
             </mu-step-label>
