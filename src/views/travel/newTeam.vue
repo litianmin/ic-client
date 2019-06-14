@@ -73,30 +73,33 @@
         <textarea v-model="TravelDetail" style="width:75%; height:7rem; border:1px solid #80cbc4; color:#212121; font-size:12px; padding:.4rem; border-radius:.2rem;" placeholder="大家来这里一起玩吧，出来走走也好！（活动的详细内容）">
         </textarea>
       </mu-flex>
+      
     </mu-container>
 
-    <mu-container>
+    <mu-container style="padding:0 .8rem 0 0;">
+      <span style="font-size:12px; color:#795548; margin-right:.5rem; margin-left:.5rem; ">路线/活动内容：</span>
       <div class="demo-vsteper-container">
         <mu-stepper :active-step="vactiveStep" orientation="vertical">
-          <mu-step>
+
+          <mu-step v-for="(item, index) in StepList">
             <mu-step-label>
-              选择地点时间
+              {{ item.meetingVenue }}
             </mu-step-label>
             <mu-step-content>
 
               <mu-flex style="width:100%; margin-bottom:.5rem; margin-top:.5rem;" align-items="center">
                 <span style="font-size:12px; color:#795548; margin-right:.5rem;">集合地点：</span>
-                <span style="font-size:12px; color:#9e9e9e;">{{ MeetingVenue }}</span>
+                <span style="font-size:12px; color:#9e9e9e;">{{ item.meetingVenue }}</span>
                 <mu-icon value="person_pin_circle" size="20" color="#009688"></mu-icon>
               </mu-flex>
 
               <mu-row style="width:100%; margin-top:.5rem;" align-items="end">
-                  <mu-date-input v-model="BeginTime" type="dateTime"  prefix="开始时间：" style="font-size:12px;" landscape container="bottomSheet" clock-type="24hr" view-type="clock" actions ></mu-date-input>
-                  <mu-date-input v-model="EndTime" type="dateTime" prefix="结束时间：" style="font-size:12px; margin-top:-1rem;" landscape container="bottomSheet" clock-type="24hr" view-type="clock" actions></mu-date-input>
+                  <mu-date-input v-model="item.beginTime" type="dateTime"  prefix="开始时间：" style="font-size:12px;" landscape container="bottomSheet" clock-type="24hr" view-type="clock" actions ></mu-date-input>
+                  <mu-date-input v-model="item.endTime" type="dateTime" prefix="结束时间：" style="font-size:12px; margin-top:-1rem;" landscape container="bottomSheet" clock-type="24hr" view-type="clock" actions></mu-date-input>
               </mu-row>
 
               <mu-flex style="width:100%; margin-bottom:1rem; margin-top:-.5rem;" align-items="start">
-                <textarea v-model="TravelDetail" style="width:90%; height:5rem; border:1px solid #e0e0e0; color:#212121; font-size:12px; padding:.4rem; border-radius:.2rem;" placeholder="活动说明， 例如：大家来这里一起玩吧，出来走走也好！（活动的详细内容）">
+                <textarea v-model="item.travelDesc" style="width:90%; height:5rem; border:1px solid #e0e0e0; color:#212121; font-size:12px; padding:.4rem; border-radius:.2rem;" placeholder="活动说明， 例如：大家来这里一起玩吧，出来走走也好！（活动的详细内容）">
                 </textarea>
               </mu-flex>
 
@@ -108,6 +111,7 @@
               <mu-button class="demo-step-button" @click="vhandleNext" color="primary">完成</mu-button>
             </mu-step-content>
           </mu-step>
+
           <mu-step>
             <mu-step-label>
               创建一个群组
@@ -120,6 +124,7 @@
               <mu-button flat class="demo-step-button" @click="vhandlePrev">上一步</mu-button>
             </mu-step-content>
           </mu-step>
+
           <mu-step>
             <mu-step-label>
               宣传活动
@@ -158,6 +163,13 @@ export default {
       MeetingVenue: '', // 聚会地点
       BeginTime: new Date, // 活动开始时间
       EndTime: new Date, // 活动结束时间
+      StepList: [
+        {meetingVenue: '地点/路线/时间', beginTime: new Date, endTime: new Date, travelDesc: '这里是我的描述'},
+        {meetingVenue: '地点/路线/时间', beginTime: new Date, endTime: new Date, travelDesc: '这里是我的描述'},
+        {meetingVenue: '地点/路线/时间', beginTime: new Date, endTime: new Date, travelDesc: '这里是我的描述'},
+        {meetingVenue: '地点/路线/时间', beginTime: new Date, endTime: new Date, travelDesc: '这里是我的描述'},
+        {meetingVenue: '地点/路线/时间', beginTime: new Date, endTime: new Date, travelDesc: '这里是我的描述'},
+      ],
     }
   },
   mounted () {
@@ -191,9 +203,9 @@ export default {
 .mine-appbar { width: 100%; height:2.5rem; }
 
 .demo-vsteper-container{
-  max-width: 380px;
-  max-height: 400px;
-  margin: auto;
+  max-width: 100%;
+  margin-top:.5rem;
+  padding: 0 0 0 .5rem;
 }
 
 .demo-step-content {
