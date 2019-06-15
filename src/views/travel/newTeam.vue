@@ -194,6 +194,10 @@ export default {
       this.VactiveStep = this.StepList.length + 1
     },
     addImg (index) {
+      if(this.HadAddImg > 2) {
+        this.$toast.message('路线/地点列表最多只能添加三张图片')
+        return
+      } 
       this.ClickAddImgIndex = index
       this.$refs.imgUpload.click()
     },
