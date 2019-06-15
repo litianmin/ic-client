@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="AddrChooseWindowIsShow == true ? 'body-fix': ''" style="background:#ffffff;">
     <!-- BEGIN 头部 -->
     <mu-appbar class="mine-appbar" color="#03a9f4" z-depth="1">
       <mu-button icon slot="left" @click="goBack">
@@ -63,7 +63,7 @@
       <mu-flex style="width:100%; margin-bottom:1rem; margin-top:1rem;" align-items="center">
         <span style="font-size:12px; color:#795548; margin-right:.5rem;">集合地点：</span>
         <span style="font-size:12px; color:#9e9e9e;">{{ MeetingVenue }}</span>
-        <mu-icon value="person_pin_circle" size="20" color="#009688"></mu-icon>
+        <mu-icon @click="chooseMeetingVenue" value="person_pin_circle" size="20" color="#009688"></mu-icon>
       </mu-flex>
 
       <!-- 集合时间 -->
@@ -86,13 +86,13 @@
 
           <mu-step v-for="(item, index) in StepList" :key="index">
             <mu-step-label>
-              地点/活动 <span style="font-size:12px; color:#4caf50;" v-if="item.meetingVenue.length > 0">（{{ item.meetingVenue }}）</span>
+              地点/活动 <span style="font-size:12px; color:#4caf50;" v-if="item.addrOrProgram.length > 0">（{{ item.addrOrProgram }}）</span>
             </mu-step-label>
             <mu-step-content>
 
               <mu-flex style="width:100%; margin-bottom:.5rem; margin-top:.5rem;" align-items="center">
-                <span style="font-size:12px; color:#795548; margin-right:.5rem;">集合地点：</span>
-                  <input maxlength="15" v-model="item.meetingVenue" style="padding:.4rem; width:70%; font-size:12px; border-radius:.2rem; border:1px solid #e0e0e0; color:#212121;" type="text" placeholder="（不超过20个字符）">
+                <span style="font-size:12px; color:#795548; margin-right:.5rem;">地点/活动：</span>
+                  <input maxlength="15" v-model="item.addrOrProgram" style="padding:.4rem; width:70%; font-size:12px; border-radius:.2rem; border:1px solid #e0e0e0; color:#212121;" type="text" placeholder="（不超过20个字符）">
               </mu-flex>
 
               <mu-row style="width:100%; margin-top:.5rem;" align-items="end">
@@ -130,14 +130,22 @@
         
         <!-- 提交按钮 -->
         <mu-flex align-items="center" justify-content="center" style=" width:100%; margin-top:1.5rem;">
-          <mu-button style="width:100%;" color="#03a9f4">
+          <mu-button @click="submit" style="width:100%;" color="#03a9f4">
             发起组队
           </mu-button>
         </mu-flex>
       </div>
-
-
     </mu-container>
+
+    <!-- BEGIN 地图弹出框 -->
+    <div v-show="AddrChooseWindowIsShow" id="iframe" style="position:fixed; top:0; width:100%; height:100%;">
+      <mu-flex @click="shutdownWindow" style="width:10%; height:2.8rem; z-index:9999; position:fixed; top:0; left:0; background:#F8F8F8; text-align:center; padding: 0 0 0 .5rem;" align-items="center" justify-content="center">
+        <mu-icon value="navigate_before"></mu-icon>
+      </mu-flex>
+      <iframe class="map-item"  id="getAddress" @load="loadiframe" src="https://m.amap.com/picker/?key=8906f77f66bcbd2b82a57d844e270fe7" style="width:100%; height:100%; position: absolute; border:0;">
+      </iframe>
+    </div>
+    <!-- END 地图弹出框 -->
 
 
   </div>
@@ -156,13 +164,19 @@ export default {
       RecruitNumb: 1, // 招募人数
       RecruitNumbList: [],  // 招募人数的列表
       MeetingVenue: '', // 聚会地点
+      MeetingVenueObj: {
+        name: '',
+        lng: 0,
+        lat: 0,
+        addr: '',
+      },
       MeetingTime: new Date, // 活动开始时间
       StepList: [
-        {meetingVenue: '', beginTime: new Date, endTime: new Date, travelDesc: '', descImg: ''},
-        {meetingVenue: '', beginTime: new Date, endTime: new Date, travelDesc: '', descImg: ''},
+        {addrOrProgram: '', beginTime: undefined, endTime: undefined, travelDesc: '', descImg: ''},
       ],
       HadAddImg: 0,
       ClickAddImgIndex: 0,
+      AddrChooseWindowIsShow: false,  // 选择地址的窗口是否打开
     }
   },
   mounted () {
@@ -177,6 +191,12 @@ export default {
   },
   methods: {
     vhandleNext (index) {  // 步骤下一步
+      // 判断活动或者地点是否为空
+      if(this.StepList[index].meetingVenue == '') {
+        this.$toast.message('地点/活动 不能为空，如果没有内容请点击完成')
+        return
+      }
+
       // 往StepList添加数据
       if(index == this.StepList.length - 1) {
         let item = {meetingVenue: '', beginTime: undefined, endTime: undefined, travelDesc: '', descImg: ''}
@@ -214,16 +234,105 @@ export default {
       reader.onload = function(e) {
         let imgIndex = _this.ClickAddImgIndex
         _this.StepList[imgIndex].descImg = e.target.result
-        _this.ClickAddImgIndex++
+        _this.HadAddImg++
       }
       reader.readAsDataURL(file)
     },
     delImg (index) {
       this.StepList[index].descImg = ''
-      this.ClickAddImgIndex--
+      this.HadAddImg--
     },
     goBack () {
       this.$router.go(-1)
+    },
+    chooseMeetingVenue () { // 集合地点
+      this.AddrChooseOperate = 1
+      this.AddrChooseWindowIsShow = true
+    },
+    shutdownWindow () { // 关闭地图窗口
+      this.AddrChooseWindowIsShow = false
+    },
+    loadiframe() {
+      let iframe = document.getElementById('getAddress').contentWindow
+      iframe.postMessage('hello', 'https://m.amap.com/picker/')
+      window.addEventListener("message", function (e) {
+        if (e.data.command != "COMMAND_GET_TITLE") {
+          if(!!e.data.location === false) {
+            return
+          }
+          console.log(e.data.location)
+          let locationStrArr = e.data.location.split(',')
+          let venueObj = {
+            name: e.data.name,
+            lng: Number(locationStrArr[0]),
+            lat: Number(locationStrArr[1]),
+            addr: e.data.address,
+          }
+          // 集合地点
+          this.MeetingVenue = e.data.name
+          this.MeetingVenueObj = venueObj
+
+          // this.LocateAddr = e.data.name
+          this.AddrChooseWindowIsShow = false
+          //业务代码
+          // this.$toast.message(e.data.name)
+        }
+
+      }.bind(this), false)
+    },
+    submit () {
+      let travelTheme = Number(this.TravelTheme)  // 主题
+      let pathLength = Number(this.PathLength) // 旅游路程
+      let travelType = Number(this.TravelType) // 旅游的形式
+      let travelTitle = this.TravelTitle // 旅游标题
+      let recruitNumb = Number(this.RecruitNumb) //招募人数
+      let meetingVenue = this.MeetingVenueObj // 集合地点
+      let meetingTime = Date.parse(this.MeetingTime.toString()) / 1000  // 见面的时间
+      let travelDetail = this.TravelDetail // 详细说明
+      let stepList = this.StepList // 路线活动地点
+
+      // 现在来进行数据的验证
+      if(meetingVenue.addr == '') {
+        this.$toast.message('集合地点不能为空')
+        return
+      }
+
+      if(stepList[0].addrOrProgram == '') {
+        stepList = {}
+      }
+
+      for(let i = 0; i < stepList.length; i++) {
+        if(!!stepList[i].beginTime === true) {
+          stepList[i].beginTime = Date.parse(stepList[i].beginTime.toString()) / 1000
+        }else{
+          stepList[i].beginTime = 0
+        }
+        
+        if(!!stepList[i].endTime === true) {
+          stepList[i].endTime = Date.parse(stepList[i].endTime.toString()) / 1000
+        }else{
+          stepList[i].endTime = 0
+        }
+      }
+
+      // 开始提交数据
+      this.$axios.post(
+        '/travel/newTeam',
+        {
+          travelTheme,
+          pathLength,
+          travelType,
+          travelTitle,
+          recruitNumb,
+          meetingVenue,
+          meetingTime,
+          travelDetail,
+          stepList,
+        }
+      ).then((resp)=>{
+        console.log(resp)
+      })
+
     },
   }
 }
@@ -247,5 +356,9 @@ export default {
   margin-top: 1rem;
   margin-right: .5rem;
 }
+
+.map-item { position: fixed; width: 100%; height: 100%; top: 0; background: #fff; }
+
+.body-fix{ position:fixed; }
 </style>
 

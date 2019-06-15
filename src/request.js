@@ -26,8 +26,6 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   response => {
     const res = response.data
-
-    console.log(res)
     // 这里主要是处理返回token的错误问题
     if (res.code !== 20000) { 
       // 40002:Token 没有token，未登录
