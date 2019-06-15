@@ -192,14 +192,14 @@ export default {
   methods: {
     vhandleNext (index) {  // 步骤下一步
       // 判断活动或者地点是否为空
-      if(this.StepList[index].meetingVenue == '') {
+      if(this.StepList[index].addrOrProgram == '') {
         this.$toast.message('地点/活动 不能为空，如果没有内容请点击完成')
         return
       }
 
       // 往StepList添加数据
       if(index == this.StepList.length - 1) {
-        let item = {meetingVenue: '', beginTime: undefined, endTime: undefined, travelDesc: '', descImg: ''}
+        let item = {addrOrProgram: '', beginTime: undefined, endTime: undefined, travelDesc: '', descImg: ''}
         this.StepList.push(item)
       }
       this.VactiveStep++
@@ -302,6 +302,7 @@ export default {
       }
 
       for(let i = 0; i < stepList.length; i++) {
+        // 处理时间， 对象转换成时间戳
         if(!!stepList[i].beginTime === true) {
           stepList[i].beginTime = Date.parse(stepList[i].beginTime.toString()) / 1000
         }else{
@@ -313,6 +314,12 @@ export default {
         }else{
           stepList[i].endTime = 0
         }
+
+        // 检验最后一个是否为空对象, 直接抛出去
+        if(i == (stepList.length - 1) && stepList[i].addrOrProgram == '') {
+          stepList.pop()
+        }
+
       }
 
       // 开始提交数据
