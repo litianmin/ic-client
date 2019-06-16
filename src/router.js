@@ -151,6 +151,11 @@ const router =  new Router({
       name: 'travel-newTeam',
       component: () => import('./views/travel/newTeam.vue')
     },
+    {
+      path: '/travel/teamDetail/:teamID',
+      name: 'travel-teamDetail',
+      component: () => import('./views/travel/teamDetail.vue')
+    },
   ],
 })
 

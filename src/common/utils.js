@@ -187,6 +187,69 @@ export default{
         break
     }
     return themeName
-  }
+  },
 
+  getTravelThemeName (themeID) {  // 获取旅游模块的名称
+    let themeName = ''
+    switch(themeID) {
+      case 1:
+        themeName = '心灵'
+        break
+      case 2:
+        themeName = '漂流'
+        break
+      case 3:
+        themeName = '摄影'
+        break
+      case 4:
+        themeName = '踏青'
+        break
+      case 5:
+        themeName = '美食'
+        break
+      case 6:
+        themeName = '亲子'
+        break
+      case 7:
+        themeName = '沙滩'
+        break
+      case 8:
+        themeName = '滑雪'
+        break
+      case 9:
+        themeName = '朝圣'
+        break
+      default:
+        break
+    }
+    return themeName
+  },
+  getTravelPathLengthName (pathLengthID) {  // 获取旅游模块的路程名称
+    let pathLengthName = ''
+    switch(pathLengthID) {
+      case 1:
+        pathLengthName = '周边游'
+        break
+      case 2:
+        pathLengthName = '长途旅行'
+        break
+      default:
+        break
+    }
+    return pathLengthName
+  },
+  getTravelTypeName (typeID) {  // 获取旅游模块的类型名称
+    let typeName = ''
+    switch(typeID) {
+      case 1:
+        typeName = '周边游'
+        break
+      case 2:
+        typeName = '长途旅行'
+        break
+      default:
+        break
+    }
+    return typeName
+  },
 }

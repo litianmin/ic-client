@@ -298,7 +298,7 @@ export default {
       }
 
       if(stepList[0].addrOrProgram == '') {
-        stepList = {}
+        stepList = []
       }
 
       for(let i = 0; i < stepList.length; i++) {
@@ -337,7 +337,13 @@ export default {
           stepList,
         }
       ).then((resp)=>{
-        console.log(resp)
+        if(resp.data.code == 20000) {
+          this.$toast.success('成功创建组队！')
+          this.$router.go(-1)
+        }else{
+          this.$toast.message('创建组队失败')
+        }
+        // console.log(resp)
       })
 
     },
