@@ -268,7 +268,7 @@ export default {
     load () {
       this.Loading = true      
       let sortWay = this.IsSortup == false ? 0 : 1
-      this.$axios.post(`/party/chatList/${this.ReplyListPage}/${this.CommentID}/${sortWay}`,{}).then((resp)=>{
+      this.$axios.post(`/party/chatList/${this.ReplyListPage}/${this.TeamID}/${sortWay}`,{}).then((resp)=>{
         let dataBack = resp.data
         this.IsTheLast = dataBack.isTheLast
         let replyList = dataBack.listInfo

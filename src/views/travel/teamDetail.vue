@@ -23,16 +23,16 @@
 
     <div style="padding:.5rem 1rem 0rem .5rem;">
       <mu-row style="margin-bottom:.3rem;">
-        <span style="color:#795548; font-size:12px;">招募标题:</span>
-        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.travelTitle }}</span>
-      </mu-row>
-      <mu-row style="margin-bottom:.3rem;">
         <span style="color:#795548; font-size:12px;">旅游类别:</span>
         <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">
           <mu-badge :content="TeamBaseInfo.travelTheme" color="#00bcd4" style="margin-right:.5rem;"></mu-badge>
           <mu-badge :content="TeamBaseInfo.pathLength" color="#00bcd4" style="margin-right:.5rem;"></mu-badge>
           <mu-badge :content="TeamBaseInfo.travelType" color="#00bcd4" style=""></mu-badge>
         </span>
+      </mu-row>
+      <mu-row style="margin-bottom:.3rem;">
+        <span style="color:#795548; font-size:12px;">招募标题:</span>
+        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.travelTitle }}</span>
       </mu-row>
       <mu-row style="margin-bottom:.3rem;">
         <span style="color:#795548; font-size:12px;">集合时间:</span>
@@ -59,7 +59,7 @@
     </mu-flex>
 
     <!-- 步骤列表 -->
-    <div style="padding:1rem;" v-if="TeamBaseInfo.stepList.length > 0">
+    <div style="padding:1rem; border-bottom:2px solid #fff;" v-if="TeamBaseInfo.stepList.length > 0">
       <div v-for="(item, index) in TeamBaseInfo.stepList" :key="index">
         <mu-flex align-items="center">
           <mu-flex align-items="center" justify-content="center" style="font-size:12px; width:1rem; height:1rem; background:#00bcd4; border-radius:50%; color:#fff;">{{ index + 1 }}</mu-flex>
@@ -188,8 +188,6 @@ export default {
       ReplyListPage: 1,
       ReplyList: [],
       Loading: false,
-      RecruitImgs: [],
-      SwiperIsRender: false,
       TeamBaseInfo: {
         partyVenue: {
           addr: '',
@@ -227,14 +225,12 @@ export default {
   },
   mounted () {
     this.TeamID = this.$route.params.teamID
-    console.log(this.TeamID)
 
     // 初始化数据
     this.$axios.post(
       `/travel/teamDetail/${this.TeamID}`, 
       {}
     ).then((resp)=>{
-
       console.log(resp)
 
       // 如果队伍已经解散了，直接跳转到组队列表去
@@ -248,9 +244,6 @@ export default {
       this.IsTheLast = dataBack.isTheLast
       
       // 渲染详情页基本信息
-      this.RecruitImgs = dataBack.teamBaseInfo.recruitImg
-      this.SwiperIsRender = true
-
       let teamBaseInfo = dataBack.teamBaseInfo
       teamBaseInfo.travelTheme = utils.getTravelThemeName(teamBaseInfo.travelTheme)
       teamBaseInfo.pathLength = utils.getTravelPathLengthName(teamBaseInfo.pathLength)
@@ -297,7 +290,8 @@ export default {
     load () {
       this.Loading = true      
       let sortWay = this.IsSortup == false ? 0 : 1
-      this.$axios.post(`/party/chatList/${this.ReplyListPage}/${this.CommentID}/${sortWay}`,{}).then((resp)=>{
+
+      this.$axios.post(`/travel/chatList/${this.ReplyListPage}/${this.TeamID}/${sortWay}`,{}).then((resp)=>{
         let dataBack = resp.data
         this.IsTheLast = dataBack.isTheLast
         let replyList = dataBack.listInfo
@@ -339,7 +333,7 @@ export default {
       switch(this.JointeamStmt) {
         case 0: // 未加入
           this.$axios.post(
-            `/party/joinTeam/${this.TeamID}`,{}
+            `/travel/joinTeam/${this.TeamID}`,{}
           ).then((resp)=>{
             let dataBack = resp.data
             this.$toast.message(dataBack.msg)
@@ -365,7 +359,7 @@ export default {
         break
         case 4: // 已离队，重新加入
           this.$axios.post(
-            `/party/joinTeam/${this.TeamID}`,{}
+            `/travel/joinTeam/${this.TeamID}`,{}
           ).then((resp)=>{
             let dataBack = resp.data
             this.$toast.message(dataBack.msg)
@@ -387,20 +381,20 @@ export default {
         this.$confirm('是否解散队伍？').then((resp)=>{
           if(resp.result == true) { // 确定解散队伍
             // this.$toast.message('你确定解散了队伍')
-            this.$axios.post(`/party/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
+            this.$axios.post(`/travel/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
               if(resp.data.code == 20000) {
                 this.$toast.message('已成功解散')
-                this.$router.push(`/party/list`)
+                this.$router.push(`/travel/list`)
                 return
               }
             }) 
           }
         })
       } else {
-        this.$axios.post(`/party/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
+        this.$axios.post(`/travel/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
           if(resp.data.code == 20000) {
             this.$toast.message('已退出队伍')
-            this.$router.push(`/party/list`)
+            this.$router.push(`/travel/list`)
             return
           }
         }) 
@@ -412,7 +406,7 @@ export default {
         this.$toast.message('加入组队后才能聊天哦')
         return
       }
-      this.$router.push({path:`/party/newChat`, query:{teamID:this.TeamID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
+      this.$router.push({path:`/travel/newChat`, query:{teamID:this.TeamID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
     },
   },
 }
