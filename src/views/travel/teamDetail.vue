@@ -9,7 +9,7 @@
       <div ref="menuHide" style="font-size:14px;">
         节日聚会
       </div>
-
+      
       <mu-menu slot="right" class="mine-menu-box">
         <mu-icon value="menu"></mu-icon>
         <mu-list slot="content" class="mine-menu-list">
@@ -21,28 +21,22 @@
     </mu-appbar>
     <!-- END 头部 -->
 
-    <!-- 展示图片 -->
-    <mu-flex v-if="SwiperIsRender" style="position:relative;" justify-content="center">
-      <swiper :options="swiperOption" style="height: auto">
-        <swiper-slide v-for="(item, index) in RecruitImgs" :key="index" style="text-align:center;">
-          <img style="max-width:100%; max-height:100%;" :src="item" alt="">
-        </swiper-slide>
-        <div class="swiper-pagination" slot="pagination"></div>
-      </swiper>
-    </mu-flex>
-
     <div style="padding:.5rem 1rem 0rem .5rem;">
       <mu-row style="margin-bottom:.3rem;">
-        <span style="color:#795548; font-size:12px;">主要活动:</span>
-        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.partyTitle }}</span>
+        <span style="color:#795548; font-size:12px;">招募标题:</span>
+        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.travelTitle }}</span>
       </mu-row>
       <mu-row style="margin-bottom:.3rem;">
-        <span style="color:#795548; font-size:12px;">活动地点:</span>
-        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.partyVenue.addr }}</span>
+        <span style="color:#795548; font-size:12px;">旅游类别:</span>
+        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">
+          <mu-badge :content="TeamBaseInfo.travelTheme" color="#00bcd4" style="margin-right:.5rem;"></mu-badge>
+          <mu-badge :content="TeamBaseInfo.pathLength" color="#00bcd4" style="margin-right:.5rem;"></mu-badge>
+          <mu-badge :content="TeamBaseInfo.travelType" color="#00bcd4" style=""></mu-badge>
+        </span>
       </mu-row>
       <mu-row style="margin-bottom:.3rem;">
-        <span style="color:#795548; font-size:12px;">活动时间:</span>
-        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.partyBeginTime }}  ~  {{ TeamBaseInfo.partyEndTime }}</span>
+        <span style="color:#795548; font-size:12px;">集合时间:</span>
+        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.meetingTime }} </span>
       </mu-row>
       <mu-row style="margin-bottom:.3rem;">
         <span style="color:#795548; font-size:12px;">集合地点:</span>
@@ -52,13 +46,9 @@
         <span style="color:#795548; font-size:12px;">招募人数:</span>
         <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.recruitNumb }}/<span style="color:green; font-size:10px;">{{ TeamBaseInfo.hadRecruitNumb }}</span></span>
       </mu-row>
-      <mu-row style="margin-bottom:.3rem;">
-        <span style="color:#795548; font-size:12px;">队友偏爱:</span>
-        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.teammatePrefer }}</span>
-      </mu-row>
 
       <mu-row style="margin-top:.5rem;">
-        <span style="color:#795548; font-size:12px;">详细内容:            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.partyDetail }}</span></span>
+        <span style="color:#795548; font-size:12px;">详细内容:            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.travelDetail }}</span></span>
       </mu-row>
     </div>
 
@@ -67,6 +57,32 @@
       <span style="font-size:12px;">距离你 <span style="font-size:12px;">{{ TeamBaseInfo.distance }}</span></span>
       <span style="margin-left:auto; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.createTime }}</span>
     </mu-flex>
+
+    <!-- 步骤列表 -->
+    <div style="padding:1rem;" v-if="TeamBaseInfo.stepList.length > 0">
+      <div v-for="(item, index) in TeamBaseInfo.stepList" :key="index">
+        <mu-flex align-items="center">
+          <mu-flex align-items="center" justify-content="center" style="font-size:12px; width:1rem; height:1rem; background:#00bcd4; border-radius:50%; color:#fff;">{{ index + 1 }}</mu-flex>
+          <span style=" color:#00bcd4; margin-left:1rem;">{{ item.addrOrProgram }}</span>
+        </mu-flex>
+
+        <mu-row style="padding:.5rem;">
+          <div style="border-left:1px solid gray; padding: 0 0 0 1rem;">
+            <div v-if="item.beginTime > 0" style="padding:.5rem .5rem 0 .5rem; font-size:12px;">时间：{{ item.beginTime }}<span v-if="item.endTime > 0"> ~ {{ item.endTime }}</span></div>
+            <div v-if="item.travelDesc.length > 0" style="padding:.5rem; font-size:12px;">描述：{{ item.travelDesc }}</div>
+            <div v-if="item.descImg.length > 0">
+              <img style="max-width:100%; max-height:10rem; border-radius:.3rem;" :src="item.descImg" alt="">
+            </div>
+          </div>
+        </mu-row>
+      </div>
+      <mu-flex align-items="center">
+        <mu-flex align-items="center" justify-content="center" style="font-size:12px; width:1rem; height:1rem; background:#00bcd4; border-radius:50%; color:#fff;">!</mu-flex>
+        <span style=" color:#00bcd4; margin-left:1rem;">旅 程 结 束！</span>
+      </mu-flex>
+    </div>
+
+
 
     <div style="padding:.5rem; border-bottom:1px dashed #eeeeee; ">
       <mu-flex align-items="center">
@@ -188,6 +204,7 @@ export default {
           name: ''
         },
         recruitStatus: 0, // 0=>组队中， 1=>停止招募(招募成功或者已过期), 2=>已解散(只有组队中才能解散，停止招募后不能解散)
+        stepList: [],
       },
       TeammateList: [],
       JointeamStmt: 0,
@@ -214,9 +231,12 @@ export default {
 
     // 初始化数据
     this.$axios.post(
-      `/party/teamDetail/${this.TeamID}`, 
+      `/travel/teamDetail/${this.TeamID}`, 
       {}
     ).then((resp)=>{
+
+      console.log(resp)
+
       // 如果队伍已经解散了，直接跳转到组队列表去
       if(resp.data.code == 40105) {
         this.$toast.message(resp.data.msg)
@@ -232,18 +252,27 @@ export default {
       this.SwiperIsRender = true
 
       let teamBaseInfo = dataBack.teamBaseInfo
-      teamBaseInfo.partyTheme = utils.getPartyThemeName(teamBaseInfo.partyTheme)
-      teamBaseInfo.partyTitle = teamBaseInfo.partyTitle == '' ? '一起来玩吧' : teamBaseInfo.partyTitle
-      teamBaseInfo.partyDetail = teamBaseInfo.partyDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : teamBaseInfo.partyDetail
-      teamBaseInfo.teammatePrefer = teamBaseInfo.teammatePrefer == '' ? '随便来！' : teamBaseInfo.teammatePrefer
+      teamBaseInfo.travelTheme = utils.getTravelThemeName(teamBaseInfo.travelTheme)
+      teamBaseInfo.pathLength = utils.getTravelPathLengthName(teamBaseInfo.pathLength)
+      teamBaseInfo.travelType = utils.getTravelTypeName(teamBaseInfo.travelType)
+
+      teamBaseInfo.travelTitle = teamBaseInfo.travelTitle == '' ? '一起来玩吧' : teamBaseInfo.travelTitle
+      teamBaseInfo.travelDetail = teamBaseInfo.travelDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : teamBaseInfo.travelDetail
+      // 处理招募图片
+      teamBaseInfo.recruitImg = teamBaseInfo.recruitImg.length == 0 ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1559386791000&di=b883951b4a21c41643c0e62f02827f57&imgtype=0&src=http%3A%2F%2Fpic30.nipic.com%2F20130612%2F12724384_085414541114_2.jpg' : teamBaseInfo.recruitImg
       // 先格式化活动时间  {{ item.partyBeginTime }}  ~  {{ item.partyEndTime }}
       // 2019/1/02 02:02  ~  2019/3/02 03:04
-      teamBaseInfo.partyBeginTime = utils.unixToDate(teamBaseInfo.partyBeginTime)
-      teamBaseInfo.partyEndTime = utils.unixToDate(teamBaseInfo.partyEndTime)
+      teamBaseInfo.meetingTime = utils.unixToDate(teamBaseInfo.meetingTime)
       // 距离处理
       teamBaseInfo.distance = utils.distanceFormat(teamBaseInfo.distance)
       // 队伍发布时间处理
       teamBaseInfo.createTime = utils.getDateDiff(teamBaseInfo.createTime, true)
+
+      // 处理步骤
+      for(let i = 0; i < teamBaseInfo.stepList.length; i++) {
+        teamBaseInfo.stepList[i].beginTime = utils.unixToDate(teamBaseInfo.stepList[i].beginTime)
+        teamBaseInfo.stepList[i].endTime = utils.unixToDate(teamBaseInfo.stepList[i].endTime)
+      }
 
       this.TeamBaseInfo = teamBaseInfo  // 赋值
       this.TeammateList = dataBack.teammateList
