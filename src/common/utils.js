@@ -252,4 +252,16 @@ export default{
     }
     return typeName
   },
+
+  imgPrefixDeal (imgURL) {  // 图片前缀处理
+    if(imgURL.length == 0) {
+      return
+    }
+    let prefix = 'http'
+    let isExist = imgURL.indexOf(prefix)
+    if(isExist == -1) {
+      return `https://www.icoming.top/${imgURL}`
+    }
+    return imgURL
+  },
 }

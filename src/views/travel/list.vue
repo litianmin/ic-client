@@ -66,30 +66,37 @@
           <mu-flex style="position:relative;" justify-content="center">
             <img style="max-width:100%; max-height:30rem; border-top-left-radius:.5rem; border-top-right-radius:.5rem;" :src="item.recruitImg" alt="">
 
-            <mu-flex style="width:100%; position:absolute; bottom:0; background:rgba(0, 0, 0, .5); padding:.8rem;" align-items="center">
-              <span style="color:#fff; font-weight:700;">{{ item.travelTitle }}</span>
+              <span style="font-size:14px; font-weight:700; margin-left:auto; color:gray; position:absolute; top:1rem; right:1.5rem; color:#fff;"> {{ item.recruitNumb }}/<span style="font-size:9px;">{{ item.hadRecruitNumb }}</span></span>
+
+            <mu-flex style="width:100%; position:absolute; bottom:0; background:rgba(0, 0, 0, .5); padding:.5rem .8rem;" align-items="center">
+              <mu-flex align-items="center">
+                <div>
+                  <mu-avatar size="25">
+                    <img :src="item.captainAvatar" alt="">
+                  </mu-avatar>
+                </div>
+                <div style="margin-left:.8rem;">
+                  <mu-row style="font-size:12px; color:white;">{{ item.captainNickname }}：{{ item.travelTitle }}</mu-row>
+                  <!-- <mu-row style="margin-top:.2rem;font-size:7px; color:#fff;">社交菜鸟Lv1</mu-row> -->
+                </div>
+              </mu-flex>
+              <!-- <span style="color:#fff; font-weight:700;">{{ item.travelTitle }}</span> -->
             </mu-flex>
+
+
           </mu-flex>
-          <mu-flex style="padding:.5rem;" align-items="center" wrap="wrap">
+          <mu-flex style="padding:.5rem .5rem .5rem 0;" align-items="center" wrap="wrap">
 
             <mu-flex style="width:100%; padding:.5rem .8rem .3rem .5rem;" align-items="center">
               <div style="">
-                <mu-flex align-items="center">
-                  <mu-avatar size="32">
-                    <img :src="item.captainAvatar" alt="">
-                  </mu-avatar>
-                  <div style="margin-left:.8rem;">
-                    <mu-row style="font-size:12px;">{{ item.captainNickname }}</mu-row>
-                    <mu-row style="margin-top:.2rem;font-size:7px; color:#43a047;">社交菜鸟Lv1</mu-row>
-                  </div>
-                </mu-flex>
+                <span style=" font-size:14px; font-weight:600;">{{ item.travelDetail }}</span>
               </div>
-              <span style="font-size:12px; margin-left:auto; color:gray;"> {{ item.recruitNumb }}/<span style="font-size:9px;">{{ item.hadRecruitNumb }}</span></span>
+              <!-- <span style="font-size:12px; margin-left:auto; color:gray;"> {{ item.recruitNumb }}/<span style="font-size:9px;">{{ item.hadRecruitNumb }}</span></span> -->
             </mu-flex>
 
-            <mu-flex style="width:100%; padding: .5rem .5rem .5rem 2.5rem; ">
+            <!-- <mu-flex style="width:100%; padding: .5rem .5rem .5rem 2.5rem; ">
               <span style=" font-size:14px; font-weight:600;">{{ item.travelDetail }}</span>
-            </mu-flex>
+            </mu-flex> -->
 
             <mu-flex style="width:100%; font-size:12px; padding:.8rem .3rem; border-bottom:1px solid #eeeeee;" align-items="center">
               <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
@@ -155,6 +162,7 @@ export default {
   },
   mounted () {
     this.loadTeamList()
+    console.log(document.domain)
   },
   methods: {
     goBack () {
@@ -195,6 +203,7 @@ export default {
         type: this.TravelType
       }).then((resp)=>{
         let dataBack = resp.data.msg
+        console.log(dataBack)
         this.IsTheLast = dataBack.isTheLast
 
         let listInfo = dataBack.listInfo
@@ -216,6 +225,10 @@ export default {
           listInfo[i].distance = utils.distanceFormat(listInfo[i].distance)
           // 队伍发布时间处理
           listInfo[i].createTime = utils.getDateDiff(listInfo[i].createTime, true)
+
+          // 处理头像和图片
+          listInfo[i].captainAvatar = utils.imgPrefixDeal(listInfo[i].captainAvatar)
+          listInfo[i].recruitImg = utils.imgPrefixDeal(listInfo[i].recruitImg)
         }
 
 
