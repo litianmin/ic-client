@@ -15,11 +15,11 @@ const router =  new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
-    // {
-    //   path: '/',
-    //   name: 'home',
-    //   component: Home
-    // },
+    {
+      path: '/mytest',
+      name: 'mytest',
+      component: () => import('./views/test/Test.vue')
+    },
     // {
     //   path: '/about',
     //   name: 'about',

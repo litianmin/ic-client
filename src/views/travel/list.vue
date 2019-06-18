@@ -178,10 +178,7 @@ export default {
         if (e.data.command != "COMMAND_GET_TITLE") {
           this.ChooseAddrInfo = e.data
           this.LocateAddr = e.data.name
-          this.AddrChooseWindowIsShow = false
-          //业务代码
-          // this.$toast.message(e.data.name)
-          // console.log(e)     
+          this.AddrChooseWindowIsShow = false  
         }
 
       }.bind(this), false)

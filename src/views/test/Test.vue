@@ -1,52 +1,41 @@
 <template>
-  <div>
-    <div id="iframe">
-      <iframe v-if="test" class="map-item"  id="getAddress" @load="loadiframe" src="https://m.amap.com/picker/?key=8906f77f66bcbd2b82a57d844e270fe7" style="width:100%; height:100%; position: absolute; border:0;">
-      </iframe>
-      
-    </div>
-    <!-- <div style="width:2rem; height:2rem; background:green; position:fixed; top:0; left:0; z-index:"></div> -->
-    <button @click="ontheway">mytest</button>
-  </div>
+  
+<mu-container data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" v-loading="loading2" class="demo-loading-wrap">
+  <mu-button color="primary" @click="loading()">区域加载</mu-button>
+  <mu-button color="secondary" v-loading="loading1" data-mu-loading-size="24" @click="loading1 = !loading1">按钮加载</mu-button>
+  <mu-button color="teal" @click="fullscreen()">全屏加载</mu-button>
+</mu-container>
 </template>
-
 <script>
-  export default {
-    props: ["ismap"],
-    data() {
-      return {
-        test: false,
-        locationData: {}
-      }
+export default {
+  data () {
+    return {
+      loading1: false,
+      loading2: false
+    };
+  },
+  methods: {
+    loading () {
+      this.loading2 = true;
+      setTimeout(() => {
+        this.loading2 = false;
+      }, 2000)
     },
-    created() {
-
-    },
-    methods: {
-      loadiframe() {
-        let iframe = document.getElementById('getAddress').contentWindow;
-        iframe.postMessage('hello', 'https://m.amap.com/picker/');
-        window.addEventListener("message", function (e) {
-          if (e.data.command != "COMMAND_GET_TITLE") {
-            //业务代码
-            this.$toast.message(e.data.name)
-            console.log(e)     
-          }
-
-        }.bind(this), false);
-      },
-      ontheway () {
-        this.test = true
-      }
+    fullscreen () {
+      const loading = this.$loading();
+      setTimeout(() => {
+        loading.close();
+      }, 2000)
     }
   }
+};
 </script>
-<style>
-  .map-item {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    background: #fff;
+<style lang="less">
+.demo-loading-wrap {
+  height: 300px;
+  position: relative;
+  .mu-button {
+    margin: 6px 8px;
   }
+}
 </style>

@@ -1,4 +1,5 @@
 export default{
+  TravelDefaultDisplayImg: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1559386791000&di=b883951b4a21c41643c0e62f02827f57&imgtype=0&src=http%3A%2F%2Fpic30.nipic.com%2F20130612%2F12724384_085414541114_2.jpg',
 
   isPhoneNumb (phone) {
     let exp = /^1[3|4|5|7|8|9][0-9]{9}$/
@@ -254,8 +255,8 @@ export default{
   },
 
   imgPrefixDeal (imgURL) {  // 图片前缀处理
-    if(imgURL.length == 0) {
-      return
+    if(imgURL == '') {
+      return imgURL
     }
     let prefix = 'http'
     let isExist = imgURL.indexOf(prefix)

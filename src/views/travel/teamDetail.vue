@@ -23,32 +23,61 @@
 
     <div style="padding:.5rem 1rem 0rem .5rem;">
       <mu-row style="margin-bottom:.3rem;">
-        <span style="color:#795548; font-size:12px;">旅游类别:</span>
-        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">
-          <mu-badge :content="TeamBaseInfo.travelTheme" color="#00bcd4" style="margin-right:.5rem;"></mu-badge>
-          <mu-badge :content="TeamBaseInfo.pathLength" color="#00bcd4" style="margin-right:.5rem;"></mu-badge>
-          <mu-badge :content="TeamBaseInfo.travelType" color="#00bcd4" style=""></mu-badge>
-        </span>
+        <mu-col span="2">
+          <span style="color:#795548; font-size:12px;">旅游类别:</span>
+        </mu-col>
+        <mu-col span="10" style="padding: 0 0 0 .5rem;">
+          <span style="color:#9e9e9e; font-size:12px;">
+            <mu-badge :content="TeamBaseInfo.travelTheme" color="#00bcd4" style="margin-right:.5rem;"></mu-badge>
+            <mu-badge :content="TeamBaseInfo.pathLength" color="#00bcd4" style="margin-right:.5rem;"></mu-badge>
+            <mu-badge :content="TeamBaseInfo.travelType" color="#00bcd4" style=""></mu-badge>
+          </span>
+        </mu-col>
       </mu-row>
+
       <mu-row style="margin-bottom:.3rem;">
-        <span style="color:#795548; font-size:12px;">招募标题:</span>
-        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.travelTitle }}</span>
+        <mu-col span="2">
+          <span style="color:#795548; font-size:12px;">招募标题:</span>
+        </mu-col>
+        <mu-col span="10" style="padding: 0 0 0 .5rem;">
+          <span style="color:##212121; font-size:12px;">{{ TeamBaseInfo.travelTitle }}</span>
+        </mu-col>
       </mu-row>
+
       <mu-row style="margin-bottom:.3rem;">
-        <span style="color:#795548; font-size:12px;">集合时间:</span>
-        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.meetingTime }} </span>
+        <mu-col span="2">
+          <span style="color:#795548; font-size:12px;">集合时间:</span>
+        </mu-col>
+        <mu-col span="10" style="padding: 0 0 0 .5rem;">
+          <span style="color:##212121; font-size:12px;">{{ TeamBaseInfo.meetingTime }} </span>
+        </mu-col>
       </mu-row>
+
       <mu-row style="margin-bottom:.3rem;">
-        <span style="color:#795548; font-size:12px;">集合地点:</span>
-        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.meetingVenue.addr }}</span>
+        <mu-col span="2">
+          <span style="color:#795548; font-size:12px;">集合地点:</span>
+        </mu-col>
+        <mu-col span="10" style="padding: 0 0 0 .5rem;">
+          <span style="color:##212121; font-size:12px;">{{ TeamBaseInfo.meetingVenue.addr }}</span>
+        </mu-col>
       </mu-row>
+
       <mu-row style="margin-bottom:.3rem;">
-        <span style="color:#795548; font-size:12px;">招募人数:</span>
-        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.recruitNumb }}/<span style="color:green; font-size:10px;">{{ TeamBaseInfo.hadRecruitNumb }}</span></span>
+        <mu-col span="2">
+          <span style="color:#795548; font-size:12px;">招募人数:</span>
+        </mu-col>
+        <mu-col span="10" style="padding: 0 0 0 .5rem;">
+          <span style="color:##212121; font-size:12px;">{{ TeamBaseInfo.recruitNumb }}/<span style="color:green; font-size:10px;">{{ TeamBaseInfo.hadRecruitNumb }}</span></span>
+        </mu-col>
       </mu-row>
 
       <mu-row style="margin-top:.5rem;">
-        <span style="color:#795548; font-size:12px;">详细内容:            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.travelDetail }}</span></span>
+        <mu-col span="2">
+          <span style="color:#795548; font-size:12px;">详细内容:   </span>  
+        </mu-col>
+        <mu-col span="10" style="padding: 0 0 0 .5rem;">
+          <span style="color:#212121; font-size:12px;">{{ TeamBaseInfo.travelDetail }}</span>
+        </mu-col>
       </mu-row>
     </div>
 
@@ -170,7 +199,9 @@
       <mu-icon value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
     </mu-flex>
 
-
+    <!-- <div style="position:fixed; top:0; width:100%; height:100%; background:red; "> -->
+      <div v-loading="true" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" data-mu-loading-size="20" style="position:fixed; top:0; width:100%; height:100%; background:rgba(0, 0, 0, .6);"></div>
+    <!-- </div> -->
   </div>
 
   
@@ -182,6 +213,7 @@ import utils from 'common/utils'
 export default {
   data () {
     return {
+      loading2:false,
       TeamID: 0,
       IsSortup: false,
       IsTheLast: true,
@@ -224,6 +256,7 @@ export default {
     }
   },
   mounted () {
+
     this.TeamID = this.$route.params.teamID
 
     // 初始化数据
@@ -252,7 +285,7 @@ export default {
       teamBaseInfo.travelTitle = teamBaseInfo.travelTitle == '' ? '一起来玩吧' : teamBaseInfo.travelTitle
       teamBaseInfo.travelDetail = teamBaseInfo.travelDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : teamBaseInfo.travelDetail
       // 处理招募图片
-      teamBaseInfo.recruitImg = teamBaseInfo.recruitImg.length == 0 ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1559386791000&di=b883951b4a21c41643c0e62f02827f57&imgtype=0&src=http%3A%2F%2Fpic30.nipic.com%2F20130612%2F12724384_085414541114_2.jpg' : teamBaseInfo.recruitImg
+      teamBaseInfo.recruitImg = teamBaseInfo.recruitImg == '' ? utils.TravelDefaultDisplayImg : utils.imgPrefixDeal(teamBaseInfo.recruitImg)
       // 先格式化活动时间  {{ item.partyBeginTime }}  ~  {{ item.partyEndTime }}
       // 2019/1/02 02:02  ~  2019/3/02 03:04
       teamBaseInfo.meetingTime = utils.unixToDate(teamBaseInfo.meetingTime)
@@ -265,10 +298,17 @@ export default {
       for(let i = 0; i < teamBaseInfo.stepList.length; i++) {
         teamBaseInfo.stepList[i].beginTime = utils.unixToDate(teamBaseInfo.stepList[i].beginTime)
         teamBaseInfo.stepList[i].endTime = utils.unixToDate(teamBaseInfo.stepList[i].endTime)
+        teamBaseInfo.stepList[i].descImg = utils.imgPrefixDeal(teamBaseInfo.stepList[i].descImg)
       }
 
       this.TeamBaseInfo = teamBaseInfo  // 赋值
+      
+      // 处理队友的头像
+      for(let i = 0; i < dataBack.teammateList; i++) {
+        dataBack.teammateList[i].avatar = utils.imgPrefixDeal(dataBack.teammateList[i].avatar)
+      }
       this.TeammateList = dataBack.teammateList
+
       this.IsCaptain = dataBack.isCaptain
       this.JointeamStmt = dataBack.joinStmt
 
@@ -276,9 +316,10 @@ export default {
       let replyList =  dataBack.chatList
       for(let i = 0; i < replyList.length; i++) {
         replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, true)
+        replyList[i].user_avatar = utils.imgPrefixDeal(replyList[i].user_avatar)
+        replyList[i].chat_img = utils.imgPrefixDeal(replyList[i].chat_img)
       }
       this.ReplyList = this.ReplyList.concat(replyList)
-      // this.ReplyList = dataBack.chatList
 
       console.log(resp.data)
     })
@@ -297,6 +338,8 @@ export default {
         let replyList = dataBack.listInfo
         for(let i = 0; i < replyList.length; i++) {
           replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, true)
+          replyList[i].user_avatar = utils.imgPrefixDeal(replyList[i].user_avatar)
+          replyList[i].chat_img = utils.imgPrefixDeal(replyList[i].chat_img)
         }
         this.ReplyList = this.ReplyList.concat(replyList)
         this.ReplyListPage++
