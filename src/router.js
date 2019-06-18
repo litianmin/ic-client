@@ -18,7 +18,7 @@ const router =  new Router({
     {
       path: '/mytest',
       name: 'mytest',
-      component: () => import('./views/test/Test.vue')
+      component: WxAuth
     },
     // {
     //   path: '/about',

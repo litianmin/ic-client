@@ -1,41 +1,94 @@
 <template>
-  
-<mu-container data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" v-loading="loading2" class="demo-loading-wrap">
-  <mu-button color="primary" @click="loading()">区域加载</mu-button>
-  <mu-button color="secondary" v-loading="loading1" data-mu-loading-size="24" @click="loading1 = !loading1">按钮加载</mu-button>
-  <mu-button color="teal" @click="fullscreen()">全屏加载</mu-button>
-</mu-container>
+  <mu-container style="width:100;">
+
+    <div style="color:white; position:fixed; top:.5rem; right:1rem;">
+      正在登陆 ...
+    </div>
+
+    <!-- BEGIN 广告图片 -->
+    <mu-flex align-items="center" justify-content="center" style="position:fixed; top:0; left:0; background:#fff; width:100%; height:100%;" wrap="wrap">
+      <mu-flex wrap="wrap">
+        <div style="width:100%; text-align:center;">
+          <span style="font-size:45px; font-weight:600; color:#009688;  text-shadow: 10px 5px 5px #b2dfdb;">
+            助 助 社 交
+          </span>
+        </div>
+        <div style="width:100%; text-align:center;">
+          <img style="max-width:100%; max-height:100%;" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2943345944,2558742570&fm=27&gp=0.jpg" alt="">
+        </div>
+      </mu-flex>
+
+      <div style="width:100%; text-align:center; margin-top:3rem;">正在登陆</div>
+    </mu-flex>
+    <!-- END 广告图片 -->
+  </mu-container>
 </template>
+
 <script>
+import utils from 'common/utils.js'
 export default {
-  data () {
-    return {
-      loading1: false,
-      loading2: false
-    };
-  },
   methods: {
-    loading () {
-      this.loading2 = true;
-      setTimeout(() => {
-        this.loading2 = false;
-      }, 2000)
+    getAuthURL () {
+      // 先获取跳转过来的地址
+      // 一开始只是获得code, 使用base获取code
+      let reqTp = 'base'
+      this.$axios.get(`/usr/wxAuth/${reqTp}`,{}).then( (resp)=> {
+        let locateURL = resp.data
+        document.location.href = locateURL
+      })
     },
-    fullscreen () {
-      const loading = this.$loading();
-      setTimeout(() => {
-        loading.close();
-      }, 2000)
+    getUsrInfo (wxCode) {
+      let wxAuthState = this.$router.currentRoute.query.state
+      this.$axios.get(`/usr/wxGetUsrInfo/${wxCode}/${wxAuthState}`, {}).then( (resp) => {
+        // 然后这里开始处理数据
+        // 保存用户的信息，然后跳转回之前的路径
+        let respData = resp.data
+        if(respData.code == '40001') {
+          window.location.href = respData.msg
+        }
+
+        // 如果返回成功的消息，那么就存入数据库
+        if(respData.code == '20000') {
+          // 先保存用户的基本信息
+          let usrInfo = respData.msg
+          let usrAuthToken = resp.headers.usrinfo_jwt
+
+          let usrInfoBody = {
+            usrAvatar: usrInfo.profile_pic,
+            usrNickName: usrInfo.nickname,
+            sex: usrInfo.sex,
+            usrID: usrInfo.user_id,
+            authToken: usrAuthToken
+          }
+          this.$store.commit('mdeLogin/usrWxLogin', usrInfoBody)
+
+          // 跳转到原地址
+          let beforeLoginURL = utils.cookieObj.getCookie('beforeLoginURL')
+          this.$router.push(beforeLoginURL)
+        }
+
+      } )
+    }
+  },
+  created () {
+    // 创建元素的时候，去后台请求授权地址
+    // 一开始是snsapi_base方式去请求，获取openid
+    // 如果用户已经存在，那么就直接返回用户的信息数据给他
+    // 如果用户没有在本站注册过，那么再返回新的验证地址snsapi_userinfo
+
+    // 判断当前路径是否带有code
+    let wxAuthCode = this.$router.currentRoute.query.code
+    if(!!wxAuthCode == false) {
+      // 不存在code
+      this.getAuthURL()
+    }else{
+      // 存在code
+      this.getUsrInfo(wxAuthCode)
     }
   }
-};
-</script>
-<style lang="less">
-.demo-loading-wrap {
-  height: 300px;
-  position: relative;
-  .mu-button {
-    margin: 6px 8px;
-  }
 }
+</script>
+
+<style scoped lang="stylus">
 </style>
+
