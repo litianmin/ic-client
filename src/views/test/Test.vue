@@ -9,16 +9,17 @@
     <mu-flex align-items="center" justify-content="center" style="position:fixed; top:0; left:0; background:#fff; width:100%; height:100%;" wrap="wrap">
       <mu-flex wrap="wrap">
         <div style="width:100%; text-align:center;">
-          <span style="font-size:45px; font-weight:600; color:#009688;  text-shadow: 10px 5px 5px #b2dfdb;">
+          <img style="max-width:100%; max-height:100%;" src="https://icoming.top/image/logo/logo.png" alt="">
+        </div>
+        <!-- <div style="width:100%; text-align:center;">
+          <span style="font-size:40px; font-weight:600; color:#009688;  text-shadow: 10px 5px 5px #b2dfdb;">
             助 助 社 交
           </span>
-        </div>
-        <div style="width:100%; text-align:center;">
-          <img style="max-width:100%; max-height:100%;" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2943345944,2558742570&fm=27&gp=0.jpg" alt="">
-        </div>
+        </div> -->
+
       </mu-flex>
 
-      <div style="width:100%; text-align:center; margin-top:3rem;">正在登陆</div>
+      <div style="width:100%; font-size:16px; text-align:center;">- 正 在 登 陆 -</div>
     </mu-flex>
     <!-- END 广告图片 -->
   </mu-container>
@@ -32,8 +33,10 @@ export default {
       // 先获取跳转过来的地址
       // 一开始只是获得code, 使用base获取code
       let reqTp = 'base'
-      this.$axios.get(`/usr/wxAuth/${reqTp}`,{}).then( (resp)=> {
+      this.$axios.get(`/user/wxLoginAuth`,{}).then( (resp)=> {
         let locateURL = resp.data
+        console.log(locateURL)
+        return
         document.location.href = locateURL
       })
     },
