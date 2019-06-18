@@ -70,7 +70,7 @@
 
     <div style="padding:.5rem; border-bottom:1px dashed #eeeeee; ">
       <mu-flex align-items="center">
-        <mu-avatar size="38" style="padding:.1rem; border:1px solid #bbdefb; border-radius:50%; background:white;">
+        <mu-avatar size="38" :class="TeamBaseInfo.captainSex == 1 ? 'avatar-male' : 'avatar-female'">
           <img :src="TeamBaseInfo.captainAvatar" alt="">
         </mu-avatar>
         <div style="margin-left:.5rem;">
@@ -83,7 +83,7 @@
 
     <!-- BEGIN 队长和队友列表 -->
     <mu-flex style="padding:.5rem 1rem; background:#fff;" justify-content="center" align-items="center" wrap="wrap">
-        <mu-avatar v-for="(item, index) in TeammateList" :key="index" size="35" style="padding:.1rem; border:1px solid #f8bbd0; border-radius:50%; background:white; margin-right:.5rem;">
+        <mu-avatar v-for="(item, index) in TeammateList" :key="index" size="35" :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'" style="margin-right:.5rem;">
           <img :src="item.avatar" alt="">
         </mu-avatar>
         <span v-if="TeamBaseInfo.recruitStatus == 0" @click="joinTeam">
@@ -106,7 +106,7 @@
     <mu-load-more :loading="Loading" @load="load" :loaded-all="IsTheLast">
       <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
         <mu-flex align-items="center">
-          <mu-avatar size="24">
+          <mu-avatar size="24" :class="item.user_sex == 1 ? 'avatar-male' : 'avatar-female'">
             <img :src="item.user_avatar">
           </mu-avatar>
           <span class="reply-nickname">
@@ -154,6 +154,8 @@
       <mu-icon value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
     </mu-flex>
 
+    <!-- 加载层 -->
+    <mu-flex v-if="InitLoading" align-items="center" justify-content="center" v-loading="true" data-mu-loading-overlay-color="background:rgba(250, 250, 250, .7);" style="position:fixed; top:0; width:100%; height:100%; background:rgba(250, 250, 250, .7); z-index:999; "></mu-flex>
 
   </div>
 
@@ -166,6 +168,7 @@ import utils from 'common/utils'
 export default {
   data () {
     return {
+      InitLoading: true,
       TeamID: 0,
       IsSortup: false,
       IsTheLast: true,
@@ -228,7 +231,12 @@ export default {
       this.IsTheLast = dataBack.isTheLast
       
       // 渲染详情页基本信息
-      this.RecruitImgs = dataBack.teamBaseInfo.recruitImg
+      // 渲染图片路径处理
+      let recruitImgs = dataBack.teamBaseInfo.recruitImg
+      for(let i = 0; i < recruitImgs.length; i++ ) {
+        recruitImgs[i] = utils.imgPrefixDeal(recruitImgs[i])
+      }
+      this.RecruitImgs = recruitImgs
       this.SwiperIsRender = true
 
       let teamBaseInfo = dataBack.teamBaseInfo
@@ -247,17 +255,25 @@ export default {
 
       this.TeamBaseInfo = teamBaseInfo  // 赋值
       this.TeammateList = dataBack.teammateList
+      for(let i = 0; i < this.TeammateList.length; i++) { // 队友头像处理
+        this.TeammateList[i].avatar = utils.imgPrefixDeal(this.TeammateList[i].avatar)
+      }
+
       this.IsCaptain = dataBack.isCaptain
       this.JointeamStmt = dataBack.joinStmt
+
+      // 图片路径处理
+      teamBaseInfo.captainAvatar = utils.imgPrefixDeal(teamBaseInfo.captainAvatar)
 
       // 评论处理
       let replyList =  dataBack.chatList
       for(let i = 0; i < replyList.length; i++) {
         replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, true)
+        replyList[i].user_avatar = utils.imgPrefixDeal(replyList[i].user_avatar)
       }
       this.ReplyList = this.ReplyList.concat(replyList)
-      // this.ReplyList = dataBack.chatList
 
+      this.InitLoading = false
       console.log(resp.data)
     })
   },
@@ -274,6 +290,8 @@ export default {
         let replyList = dataBack.listInfo
         for(let i = 0; i < replyList.length; i++) {
           replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, true)
+          replyList[i].user_avatar = utils.imgPrefixDeal(replyList[i].user_avatar)
+          replyList[i].chat_img = utils.imgPrefixDeal(replyList[i].chat_img)
         }
         this.ReplyList = this.ReplyList.concat(replyList)
         this.ReplyListPage++
@@ -419,6 +437,9 @@ export default {
 .comment-item-img img { max-width:100%; max-height:100%; border-radius:.3rem; }
 .comment-item-thumbup-count { font-size:12px; margin-left:.2rem; color:#9e9e9e; }
 .comment-item-comment-count { font-size:12px; margin-left:.2rem; color:#9e9e9e; }
+
+.avatar-male { padding:.1rem; border:1px solid #bbdefb; border-radius:50%; background:white; }
+.avatar-female { padding:.1rem; border:1px solid #f8bbd0; border-radius:50%; background:white; }
 </style>
 
 

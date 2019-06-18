@@ -46,7 +46,7 @@
           <!-- 用户头部昵称 -->
           <div style="padding:.5rem; border-bottom:1px solid #eeeeee; ">
             <mu-flex align-items="center">
-              <mu-avatar size="35">
+              <mu-avatar size="35" :class="item.captainSex == 1 ? 'avatar-male' : 'avatar-female'">
                 <img :src="item.captainAvatar" alt="">
               </mu-avatar>
               <div style="margin-left:1rem;">
@@ -179,7 +179,10 @@ export default {
           listInfo[i].partyTitle = listInfo[i].partyTitle == '' ? '一起来玩吧' : listInfo[i].partyTitle
           listInfo[i].partyDetail = listInfo[i].partyDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : listInfo[i].partyDetail
           listInfo[i].teammatePrefer = listInfo[i].teammatePrefer == '' ? '随便来！' : listInfo[i].teammatePrefer
-          listInfo[i].recruitImg = listInfo[i].recruitImg.length == 0 ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1559386791000&di=b883951b4a21c41643c0e62f02827f57&imgtype=0&src=http%3A%2F%2Fpic30.nipic.com%2F20130612%2F12724384_085414541114_2.jpg' : listInfo[i].recruitImg[0]
+
+          // 图片路径处理
+          listInfo[i].recruitImg = listInfo[i].recruitImg == '' ? utils.PartyDefaultDisplayImg : utils.imgPrefixDeal(listInfo[i].recruitImg[0])
+          listInfo[i].captainAvatar = utils.imgPrefixDeal(listInfo[i].captainAvatar)
           // 先格式化活动时间  {{ item.partyBeginTime }}  ~  {{ item.partyEndTime }}
           // 2019/1/02 02:02  ~  2019/3/02 03:04
           listInfo[i].partyBeginTime = utils.unixToDate(listInfo[i].partyBeginTime)
@@ -188,6 +191,7 @@ export default {
           listInfo[i].distance = utils.distanceFormat(listInfo[i].distance)
           // 队伍发布时间处理
           listInfo[i].createTime = utils.getDateDiff(listInfo[i].createTime, true)
+
         }
 
 
@@ -204,10 +208,7 @@ export default {
         if (e.data.command != "COMMAND_GET_TITLE") {
           this.ChooseAddrInfo = e.data
           this.LocateAddr = e.data.name
-          this.AddrChooseWindowIsShow = false
-          //业务代码
-          // this.$toast.message(e.data.name)
-          // console.log(e)     
+          this.AddrChooseWindowIsShow = false  
         }
 
       }.bind(this), false)
@@ -238,6 +239,9 @@ export default {
 .map-item { position: fixed; width: 100%; height: 100%; top: 0; background: #fff; }
 
 .body-fix{ position:fixed; }
+
+.avatar-male { padding:.1rem; border:1px solid #bbdefb; border-radius:50%; background:white; }
+.avatar-female { padding:.1rem; border:1px solid #f8bbd0; border-radius:50%; background:white; }
 </style>
 
 
