@@ -40,7 +40,7 @@
           <span style="color:#795548; font-size:12px;">招募标题:</span>
         </mu-col>
         <mu-col span="10" style="padding: 0 0 0 .5rem;">
-          <span style="color:##212121; font-size:12px;">{{ TeamBaseInfo.travelTitle }}</span>
+          <span style="color:#212121; font-size:12px;">{{ TeamBaseInfo.travelTitle }}</span>
         </mu-col>
       </mu-row>
 
@@ -49,7 +49,7 @@
           <span style="color:#795548; font-size:12px;">集合时间:</span>
         </mu-col>
         <mu-col span="10" style="padding: 0 0 0 .5rem;">
-          <span style="color:##212121; font-size:12px;">{{ TeamBaseInfo.meetingTime }} </span>
+          <span style="color:#212121; font-size:12px;">{{ TeamBaseInfo.meetingTime }} </span>
         </mu-col>
       </mu-row>
 
@@ -58,7 +58,7 @@
           <span style="color:#795548; font-size:12px;">集合地点:</span>
         </mu-col>
         <mu-col span="10" style="padding: 0 0 0 .5rem;">
-          <span style="color:##212121; font-size:12px;">{{ TeamBaseInfo.meetingVenue.addr }}</span>
+          <span style="color:#212121; font-size:12px;">{{ TeamBaseInfo.meetingVenue.addr }}</span>
         </mu-col>
       </mu-row>
 
@@ -67,7 +67,7 @@
           <span style="color:#795548; font-size:12px;">招募人数:</span>
         </mu-col>
         <mu-col span="10" style="padding: 0 0 0 .5rem;">
-          <span style="color:##212121; font-size:12px;">{{ TeamBaseInfo.recruitNumb }}/<span style="color:green; font-size:10px;">{{ TeamBaseInfo.hadRecruitNumb }}</span></span>
+          <span style="color:#212121; font-size:12px;">{{ TeamBaseInfo.recruitNumb }}/<span style="color:green; font-size:10px;">{{ TeamBaseInfo.hadRecruitNumb }}</span></span>
         </mu-col>
       </mu-row>
 

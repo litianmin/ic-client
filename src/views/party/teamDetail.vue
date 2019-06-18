@@ -34,31 +34,31 @@
     <div style="padding:.5rem 1rem 0rem .5rem;">
       <mu-row style="margin-bottom:.3rem;">
         <span style="color:#795548; font-size:12px;">主要活动:</span>
-        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.partyTitle }}</span>
+        <span style="margin-left:.5rem; color:#212121; font-size:12px;">{{ TeamBaseInfo.partyTitle }}</span>
       </mu-row>
       <mu-row style="margin-bottom:.3rem;">
         <span style="color:#795548; font-size:12px;">活动地点:</span>
-        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.partyVenue.addr }}</span>
+        <span style="margin-left:.5rem; color:#212121; font-size:12px;">{{ TeamBaseInfo.partyVenue.addr }}</span>
       </mu-row>
       <mu-row style="margin-bottom:.3rem;">
         <span style="color:#795548; font-size:12px;">活动时间:</span>
-        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.partyBeginTime }}  ~  {{ TeamBaseInfo.partyEndTime }}</span>
+        <span style="margin-left:.5rem; color:#212121; font-size:12px;">{{ TeamBaseInfo.partyBeginTime }}  ~  {{ TeamBaseInfo.partyEndTime }}</span>
       </mu-row>
       <mu-row style="margin-bottom:.3rem;">
         <span style="color:#795548; font-size:12px;">集合地点:</span>
-        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.meetingVenue.addr }}</span>
+        <span style="margin-left:.5rem; color:#212121; font-size:12px;">{{ TeamBaseInfo.meetingVenue.addr }}</span>
       </mu-row>
       <mu-row style="margin-bottom:.3rem;">
         <span style="color:#795548; font-size:12px;">招募人数:</span>
-        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.recruitNumb }}/<span style="color:green; font-size:10px;">{{ TeamBaseInfo.hadRecruitNumb }}</span></span>
+        <span style="margin-left:.5rem; color:#212121; font-size:12px;">{{ TeamBaseInfo.recruitNumb }}/<span style="color:green; font-size:10px;">{{ TeamBaseInfo.hadRecruitNumb }}</span></span>
       </mu-row>
       <mu-row style="margin-bottom:.3rem;">
         <span style="color:#795548; font-size:12px;">队友偏爱:</span>
-        <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.teammatePrefer }}</span>
+        <span style="margin-left:.5rem; color:#212121; font-size:12px;">{{ TeamBaseInfo.teammatePrefer }}</span>
       </mu-row>
 
       <mu-row style="margin-top:.5rem;">
-        <span style="color:#795548; font-size:12px;">详细内容:            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.partyDetail }}</span></span>
+        <span style="color:#795548; font-size:12px;">详细内容:            <span style="margin-left:.5rem; color:#212121; font-size:12px;">{{ TeamBaseInfo.partyDetail }}</span></span>
       </mu-row>
     </div>
 
