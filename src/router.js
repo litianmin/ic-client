@@ -195,7 +195,7 @@ const router =  new Router({
       return
     }
 
-    localStorage.clear()
+    // localStorage.clear()
 
     // 第一次进入项目， 即登陆状态为空， 并且进入的不是登陆界面
     // 记录用户进来的路径， 当授权成功的时候跳转到这个地址

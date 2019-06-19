@@ -62,7 +62,7 @@
     <mu-load-more :loading="Loading" @load="loadTeamList" :loaded-all="IsTheLast">
       <!-- BEGIN 队伍样式 -->
       <div style="padding:.5rem; margin-bottom:1.5rem;" v-for="(item, index) in TeamList" :key="index">
-        <div style="box-shadow: 1px 1px 1px #9e9e9e; border-top-left-radius:.5rem; border-top-right-radius:.5rem; ">
+        <div style="box-shadow: 1px 1px 1px #9e9e9e; border-top-left-radius:.5rem; border-top-right-radius:.5rem; border-left:1px solid #e0e0e0;">
           <mu-flex style="position:relative;" justify-content="center">
             <img style="max-width:100%; max-height:30rem; border-top-left-radius:.5rem; border-top-right-radius:.5rem;" :src="item.recruitImg" alt="">
 
@@ -89,19 +89,22 @@
 
             <mu-flex style="width:100%; padding:.5rem .8rem .3rem .5rem;" align-items="center">
               <div style="">
-                <span style=" font-size:14px; font-weight:600;">{{ item.travelDetail }}</span>
+                <span style=" font-size:15px; font-weight:700;">{{ item.travelDetail }}</span>
               </div>
-              <!-- <span style="font-size:12px; margin-left:auto; color:gray;"> {{ item.recruitNumb }}/<span style="font-size:9px;">{{ item.hadRecruitNumb }}</span></span> -->
             </mu-flex>
 
-            <!-- <mu-flex style="width:100%; padding: .5rem .5rem .5rem 2.5rem; ">
-              <span style=" font-size:14px; font-weight:600;">{{ item.travelDetail }}</span>
-            </mu-flex> -->
+            <mu-flex v-if="item.stepListStr != ''" style="width:100%; padding: .5rem .5rem 0rem .5rem; ">
+              <span style=" font-size:13px; font-weight:600;"> {{ item.stepListStr }}</span>
+            </mu-flex>
 
-            <mu-flex style="width:100%; font-size:12px; padding:.8rem .3rem; border-bottom:1px solid #eeeeee;" align-items="center">
+            <mu-flex style="width:100%; font-size:12px; padding:.8rem .3rem; border-bottom:1px solid #eeeeee;" align-items="center" wrap="wrap" >
+              <div style="width:100%; margin-bottom:.2rem; text-align:right;">
+                <span style="font-size:12px;  color:gray; margin-left:auto;"> {{ item.meetingTime }} </span>
+              </div>
+
               <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
               <span style="font-size:12px; color:gray;">距离你 <span style="font-size:12px;">{{ item.distance }}</span></span>
-              <span style="font-size:12px; margin-left:auto; color:gray;"> {{ item.meetingTime }} 集合</span>
+              <span style="font-size:12px;  color:gray; margin-left:auto;"> 于 {{ item.meetingVenue.name }} 集合</span>
             </mu-flex>
 
             <mu-flex style="width:100%; padding:1rem .8rem .5rem .5rem" align-items="center">
@@ -225,6 +228,16 @@ export default {
 
           // 处理头像和图片
           listInfo[i].captainAvatar = utils.imgPrefixDeal(listInfo[i].captainAvatar)
+
+          // 处理步骤
+          let stepList = ''
+          for(let j = 0; j < listInfo[i].stepList.length; j++) {
+            stepList += listInfo[i].stepList[j].addrOrProgram + ' -> '
+          }
+          if(stepList.length > 4) {
+            stepList = stepList.substring(0, stepList.length - 4)
+          }
+          listInfo[i].stepListStr = stepList
         }
 
 

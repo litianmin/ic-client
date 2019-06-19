@@ -245,10 +245,10 @@ export default{
     let typeName = ''
     switch(typeID) {
       case 1:
-        typeName = '周边游'
+        typeName = '自由行'
         break
       case 2:
-        typeName = '长途旅行'
+        typeName = '跟团游'
         break
       default:
         break
