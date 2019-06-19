@@ -61,6 +61,7 @@ const MdeLogin = {
       nickname: '',
       sex: '',
       usrID: '',
+      mobile: '',
       authToken: ''
     },
     beforeLoginURL: '',
@@ -90,6 +91,7 @@ const MdeLogin = {
       state.usrInfo.sex = payload.sex 
       state.usrInfo.nickname = payload.nickname 
       state.usrInfo.authToken = payload.token
+      state.usrInfo.mobile = payload.mobile
     },
 
     logBeforeLoginURL (state, bURL) {

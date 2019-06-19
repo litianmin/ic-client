@@ -41,8 +41,8 @@ export default {
       })
     },
     getUsrInfo (wxCode) {
-      let wxAuthState = this.$router.currentRoute.query.state
-      this.$axios.get(`/user/wxGetUserInfo/${wxCode}/${wxAuthState}`, {}).then( (resp) => {
+      // let wxAuthState = this.$router.currentRoute.query.state
+      this.$axios.get(`/user/wxGetUserInfo/${wxCode}`, {}).then( (resp) => {
         // 然后这里开始处理数据
         // 保存用户的信息，然后跳转回之前的路径
         let respData = resp.data
@@ -53,17 +53,12 @@ export default {
         // 如果返回成功的消息，那么就存入数据库
         if(respData.code == '20000') {
           // 先保存用户的基本信息
-          let usrInfo = respData.msg
-          let usrAuthToken = resp.headers.usrinfo_jwt
+          let usrInfo = respData.userBaseInfo
 
-          let usrInfoBody = {
-            usrAvatar: usrInfo.profile_pic,
-            usrNickName: usrInfo.nickname,
-            sex: usrInfo.sex,
-            usrID: usrInfo.user_id,
-            authToken: usrAuthToken
-          }
-          this.$store.commit('mdeLogin/usrWxLogin', usrInfoBody)
+          this.$toast.success('登陆成功！')
+
+          // 保存用户基本信息
+          this.$store.commit('mdeLogin/usrLogin', usrInfo)
 
           // 跳转到原地址
           let beforeLoginURL = utils.cookieObj.getCookie('beforeLoginURL')
