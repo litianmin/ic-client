@@ -89,67 +89,6 @@
     <mu-divider></mu-divider>
     <mu-sub-header><span style="font-size:14px; font-weight:600; color:#795548;">- 动态 . 足迹 -</span></mu-sub-header> 
 
-    <!-- <mu-container style="margin-top:1rem;">
-      <mu-row gutter>
-
-        <mu-col span="3"><div class="grid-cell">走起</div></mu-col>
-
-        <mu-col span="3"><div class="grid-cell">我有空</div></mu-col>
-
-        <mu-col span="3"><div class="grid-cell">随心</div></mu-col>
-
-        <mu-col span="3"><div class="grid-cell">邀请，有人约哦</div></mu-col>
-      </mu-row>
-    </mu-container> -->
-    <!-- BEGIN 用户发起组队或者分享心情 -->
-    <!-- <mu-container style="margin-top:1rem;">
-      <mu-row style="padding:1rem 0.5rem;">
-        <mu-flex style="width:2.5rem; height:2.5rem; ">
-          <img style="width:2.5rem; height:2.5rem; border-radius:0.5rem;" src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3148472799,1130994798&fm=27&gp=0.jpg">
-        </mu-flex>
-        <mu-flex class="myclass" style="margin-left:0.3rem;">
-          <mu-button style="margin-top:.2rem; background:#66bb6a; color:white;">
-            嘿， 社~交~菜鸟👇🏻
-          </mu-button>
-        </mu-flex>
-      </mu-row>
-
-      <mu-row style="padding:0.5rem 0.5rem; " justify-content="end">
-        <mu-flex class="myclass-2" style="margin-right:0.3rem;">
-          <mu-button style="margin-top:.2rem; background:#2196f3; color:white;">
-            😏还是发个小心情呢 
-          </mu-button>
-        </mu-flex>
-        <mu-flex style="width:2.5rem; height:2.5rem; ">
-          <img style="width:2.5rem; height:2.5rem; border-radius:0.5rem;" src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3148472799,1130994798&fm=27&gp=0.jpg">
-        </mu-flex>
-      </mu-row>
-
-      <mu-row style="padding:1rem 0.5rem; " justify-content="end">
-        <mu-flex class="myclass-2" style="margin-right:0.3rem;">
-          <mu-button style="margin-top:.2rem; background:#2196f3; color:white; width:auto;">
-             。。。看看周围有没人吧
-          </mu-button>
-        </mu-flex>
-        <mu-flex style="width:2.5rem; height:2.5rem; ">
-          <img style="width:2.5rem; height:2.5rem; border-radius:0.5rem;" src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3148472799,1130994798&fm=27&gp=0.jpg">
-        </mu-flex>
-      </mu-row>
-
-      <mu-row style="padding:1rem 0.5rem;">
-        <mu-flex style="width:2.5rem; height:2.5rem; ">
-          <img style="width:2.5rem; height:2.5rem; border-radius:0.5rem;" src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3148472799,1130994798&fm=27&gp=0.jpg">
-        </mu-flex>
-        <mu-flex class="myclass" style="margin-left:0.3rem;">
-          <mu-button style="margin-top:.2rem; background:#66bb6a; color:white;">
-            嗯嗯，还是给她发个悄悄话吧😂 
-          </mu-button>
-        </mu-flex>
-      </mu-row>
-
-    </mu-container> -->
-    <!-- END 用户可以发起组队或者分享心情 -->
-
     <!-- BEGIN 附近组队信息，好友动态和悄悄话 -->
     <mu-container style="margin-top:1rem; margin-bottom:2rem;">
       <mu-row justify-content="center">
@@ -364,7 +303,7 @@ export default {
 .home { width:100%; position: relative; float:left;}
 .swiper-inner { width: 100%; height: auto; padding-top: 50px; padding-bottom: 50px; }
 .swiper-slide { background-position: center; background-size: cover; width: 85%; height: auto; }
-.swiper-img { max-width:100%; height:auto; border-bottom-left-radius:3px; border-bottom-right-radius:5px; }
+.swiper-img { max-width:100%; height:auto; border-radius:.3rem; }
 .main-nav { position: relative; width: 30%; height: 3rem; display: flex; justify-content: center; align-items: center; 
             border-radius: 4px; margin-left: 2%; margin-top: .5rem; color: white; }
 

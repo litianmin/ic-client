@@ -24,7 +24,7 @@
     <mu-flex style="background:#eeeeee; padding:.5rem .5rem .5rem 1rem;" align-items="center">
       <mu-icon value="wallpaper" @click="addImg()"></mu-icon>
       <mu-button @click="commentSubmit" small color="#00bcd4" style="margin-left:auto;">发表</mu-button>
-      <input @change="getChatImg" ref="imgUpload" type="file" style="display:none;" accept="image/*"/>
+      <input @change="getChatImg()" ref="imgUpload" type="file" style="display:none;" accept="image/*"/>
     </mu-flex>
     <mu-divider></mu-divider>
 
@@ -65,16 +65,20 @@ export default {
       var _this = this
       var event = event || window.event
       var file = event.target.files[0]
+
       if(file.size > 1024 * 1024 * 2) {
         this.$toast.message('图片上传最大为2M')
         return
       }
       var reader = new FileReader()
+
       //转base64
       reader.onload = function(e) {
           _this.c_img = e.target.result
       }
       reader.readAsDataURL(file)
+
+      console.log(this.$refs.imgUpload.value)
     },
     del_img () {
       this.c_img = ''
