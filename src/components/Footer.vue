@@ -8,19 +8,19 @@
         <mu-bottom-nav-item value="mypage" @click="usrWindowToggle" title="我的" icon="person_pin"></mu-bottom-nav-item>
       </mu-bottom-nav>
     </mu-container> -->
-    <mu-flex style="width:100%; padding:.6rem 2rem .3rem 2rem;" justify-content="between">
+    <mu-flex style="width:100%; padding:.6rem 1rem .3rem 1rem;" justify-content="between">
       <mu-flex @click="linkToNav(0)" justify-content="center" align-items="center" wrap="wrap">
         <svg-icon :icon-class="navActive == 'mainPage' ? 'run_focus' : 'run_blur'" class="icon-class" style="font-size:18px;"></svg-icon>
         <div style="width:100%; text-align:center; margin-top:.1rem; font-size:12px;">
           <span :class="navActive == 'mainPage' ? 'font-active' : ''">Hello!</span>
         </div>
       </mu-flex>
-      <!-- <mu-flex @click="linkToNav(1)" justify-content="center" align-items="center" wrap="wrap">
+      <mu-flex @click="linkToNav(1)" justify-content="center" align-items="center" wrap="wrap">
         <svg-icon :icon-class="navActive == 'nearby' ? 'nearby_focus' : 'nearby_blur'" class="icon-class" style="font-size:18px;"></svg-icon>
         <div style="width:100%; text-align:center; margin-top:.1rem; font-size:12px;">
           <span :class="navActive == 'nearby' ? 'font-active' : ''">附近</span>
         </div>
-      </mu-flex> -->
+      </mu-flex>
       <mu-flex @click="linkToNav(2)" justify-content="center" align-items="center" wrap="wrap">
         <svg-icon :icon-class="navActive == 'msg' ? 'msg_focus' : 'msg_blur'" class="icon-class" style="font-size:18px;"></svg-icon>
         <div style="width:100%; text-align:center; margin-top:.1rem; font-size:12px;">

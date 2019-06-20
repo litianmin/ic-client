@@ -2,7 +2,7 @@
   <div class="home">
 
     <!-- BEGIN 头部 -->
-    <mu-flex align-items="center" style="background:#00bcd4; padding:.5rem .3rem .5rem .5rem; color:#ffffff;">
+    <mu-flex align-items="center" style="background:#26c6da; padding:.5rem .3rem .5rem .5rem; color:#ffffff;">
       <mu-flex align-items="center">
         <mu-avatar size="30"><img :src="selfAvatar" alt=""></mu-avatar>
         <span style="margin-left:.5rem;">{{ selfNickname }}</span>
@@ -14,7 +14,7 @@
     </mu-flex>
     <!-- END 头部 -->
 
-    <div style="padding:1.2rem 0 1rem 0; background:rgba(240, 240, 240, .4); border-bottom:1px solid #eeeeee;">
+    <div style="padding:1.2rem 0 1rem 0; background:rgba(240, 240, 240, .1); border-bottom:1px solid #eeeeee;">
       <mu-flex justify-content="around">
         <div @click="linkToGameList">
           <div style="text-align:center;">
@@ -34,57 +34,104 @@
           <div style="text-align:center;">
             <svg-icon icon-class="travel" class="icon-class"></svg-icon>
           </div>
-          <div style="text-align:center; font-size:12px; margin-top:.3rem;">周 边 游</div>
+          <div style="text-align:center; font-size:12px; margin-top:.3rem;">旅 游</div>
         </div>
 
         <div>
           <div style="text-align:center;">
-            <svg-icon icon-class="selfedit" class="icon-class"></svg-icon>
+            <svg-icon icon-class="team_now" class="icon-class"></svg-icon>
           </div>
-          <div style="text-align:center; font-size:12px; margin-top:.3rem;">自 定 义</div>
+          <div style="text-align:center; font-size:12px; margin-top:.3rem;">即 时</div>
         </div>
       </mu-flex>
     </div>
 
+
     <!-- BEGIN 头部话题、美文轮播图 -->
-    <div style="margin-top:1rem; margin-bottom:1rem">
+    <div style="margin-top:1rem; margin-bottom:1rem; ">
         <swiper :options="swiperOption">
             <swiper-slide v-for="(item, index) in friendsMsgsList" :key="index">
-              <img class="swiper-img" :src="item.avatar" alt="">
+              <mu-flex style="position:relative;" wrap="wrap">
+                <img class="swiper-img" :src="item.avatar" alt="">
+              <mu-flex style="width:100%; position:absolute; bottom:0; border-radius:.3rem; left:0; padding:.5rem; background:rgba(0, 0, 0, .5); color:#fff;" justify-content="center">官方大型活动， 来呀，快活呀 </mu-flex>
+              </mu-flex>
             </swiper-slide>
         </swiper>
     </div> 
     <!-- END 头部话题、 美文轮播图 -->
 
-    <mu-row style="margin-top:0rem; border-top:1px solid #eeeeee;"></mu-row>
+    <mu-row style="margin-top:-.5rem; border-top:1px solid #eeeeee;"></mu-row>
     <!-- <mu-divider></mu-divider> -->
     <mu-sub-header>
-      <span style="font-size:14px; font-weight:600; color:#795548;">- 热点 . 活动 -</span>
+      <span style="font-size:14px; font-weight:600; color:#00bcd4;">- 游戏 . 热门组队 -</span>
     </mu-sub-header> 
 
     <!-- 这里就显示官方活动或者商家活动 -->
-    <div style="width:100%; margin-bottom:3rem;">
-      <mu-row style="padding:.4rem;">
-          <div>
-            <span>这是我的标题</span>
-          </div>
-          <div>
-            <span>地点:来就对了</span>
-            <span style="margin-left:auto;">03:03</span>
-          </div>
-        </mu-col>
-      </mu-row>
+    <mu-flex style="padding:.3rem .5rem; margin-bottom:.5rem;">
+      <div style="padding:0 .5rem;">    
+        <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" src="http://pic2.cxtuku.com/00/15/12/b015ed836136.jpg" alt="">
+        <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">妖姬之言</div>
+      </div>
+      <div style="padding:0 .5rem;">    
+        <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" src="http://pic1.cxtuku.com/00/15/12/b070153ce3d0.jpg" alt="">
+        <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">女神联盟</div>
+      </div>
+      <div style="padding:0 .5rem;">    
+        <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" src="http://pic2.cxtuku.com/00/15/12/b015ed836136.jpg" alt="">
+        <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">妖姬之言</div>
+      </div>
+    </mu-flex>
 
-      <mu-row>
-        
-      </mu-row>
-    </div>
+    <mu-flex style="padding:.3rem .5rem; margin-bottom:.5rem;">
+      <div style="padding:0 .5rem;">    
+        <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" src="http://pic2.cxtuku.com/00/15/12/b015ed836136.jpg" alt="">
+        <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">妖姬之言</div>
+      </div>
+      <div style="padding:0 .5rem;">    
+        <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" src="http://pic1.cxtuku.com/00/15/12/b070153ce3d0.jpg" alt="">
+        <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">女神联盟</div>
+      </div>
+      <div style="padding:0 .5rem;">    
+        <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" src="http://pic2.cxtuku.com/00/15/12/b015ed836136.jpg" alt="">
+        <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">妖姬之言</div>
+      </div>
+    </mu-flex>
 
-    <!-- BEGIN  用户窗口-->
-    <div>
-      <UsrWindow/>
+    <mu-sub-header>
+      <span style="font-size:14px; font-weight:600; color:#00bcd4;">- 官方 . 推荐组队 -</span>
+    </mu-sub-header> 
+
+    <div style="margin-bottom:4rem; padding:.3rem 1rem;">
+      <!-- 这里就显示官方活动或者商家活动 -->
+  
+      <mu-flex style="box-shadow:0 0 1px gray; border-radius:.3rem; margin-bottom:2rem;" wrap="wrap">
+        <mu-flex style="position:relative;">
+          <img style="max-width:100%; max-height:100%; border-top-left-radius:.3rem; border-top-right-radius:.3rem;" src="http://img1.imgtn.bdimg.com/it/u=4035031505,2348472516&fm=26&gp=0.jpg" alt="">
+          <mu-flex style="width:100%; position:absolute; bottom:0; border-radius:.3rem; left:0; padding:.6rem; background:rgba(0, 0, 0, .5); color:#fff;">官方大型活动， 来呀，快活呀 </mu-flex>
+        </mu-flex>
+        <mu-flex style="width:100%; padding:.8rem .5rem .5rem .5rem;">
+          <span>2018/09/02 在广州塔顶与你相聚，这里是我的活动</span>
+        </mu-flex>
+        <mu-flex style="width:100%; padding:0 1rem .5rem .5rem;" align-items="center" justify-content="end">
+          <mu-icon value="person_pin_circle" size="20" color="#009688"></mu-icon>
+          <span style="font-size:12px;">距离你500米</span>
+        </mu-flex>
+      </mu-flex>
+
+      <mu-flex style="box-shadow:0 0 1px gray; border-radius:.3rem; margin-bottom:2rem;" wrap="wrap">
+        <mu-flex style="position:relative;">
+          <img style="max-width:100%; max-height:100%; border-top-left-radius:.3rem; border-top-right-radius:.3rem;" src="http://img1.imgtn.bdimg.com/it/u=4035031505,2348472516&fm=26&gp=0.jpg" alt="">
+          <mu-flex style="width:100%; position:absolute; bottom:0; border-radius:.3rem; left:0; padding:.6rem; background:rgba(0, 0, 0, .5); color:#fff;">官方大型活动， 来呀，快活呀 </mu-flex>
+        </mu-flex>
+        <mu-flex style="width:100%; padding:.8rem .5rem .5rem .5rem;">
+          <span>2018/09/02 在广州塔顶与你相聚，这里是我的活动</span>
+        </mu-flex>
+        <mu-flex style="width:100%; padding:0 1rem .5rem .5rem;" align-items="center" justify-content="end">
+          <mu-icon value="person_pin_circle" size="20" color="#009688"></mu-icon>
+          <span style="font-size:12px;">距离你500米</span>
+        </mu-flex>
+      </mu-flex>
     </div>
-    <!-- END 用户窗口 -->
 
     <div class="footer">
       <Footer/>
@@ -94,7 +141,6 @@
 
 <script>
 import Footer from '@/components/Footer.vue'
-import UsrWindow from '@/views/usr/usrwindow/UsrWindow.vue'
 export default {
   name: 'home',
   data () {
@@ -102,9 +148,9 @@ export default {
       selfAvatar: '',
       selfNickname: '',
       friendsMsgsList: [
-        {id: 1, avatar: "http://img1.imgtn.bdimg.com/it/u=1933646039,1559720906&fm=26&gp=0.jpg"},
-        {id: 2, avatar: "http://img4.imgtn.bdimg.com/it/u=2978120334,1182775360&fm=26&gp=0.jpg"},
-        {id: 3, avatar: "http://img4.imgtn.bdimg.com/it/u=288298761,4065532967&fm=26&gp=0.jpg"}
+        {id: 1, avatar: "http://img2.imgtn.bdimg.com/it/u=150877727,2930125005&fm=26&gp=0.jpg"},
+        {id: 2, avatar: "http://img2.imgtn.bdimg.com/it/u=150877727,2930125005&fm=26&gp=0.jpg"},
+        {id: 3, avatar: "http://img2.imgtn.bdimg.com/it/u=150877727,2930125005&fm=26&gp=0.jpg"}
       ],
       swiperOption: {
         effect: 'coverflow',  // 切换效果
@@ -142,13 +188,12 @@ export default {
   },
   components: {
     Footer,
-    UsrWindow
   }
 }
 </script>
 
-<style lang="stylus" scoped>
-.home { width:100%; position: relative; float:left;}
+<style scoped>
+.home { width:100%; position: relative; float:left; background:#fafafa;}
 .swiper-inner { width: 100%; height: auto; padding-top: 50px; padding-bottom: 50px; }
 .swiper-slide { background-position: center; background-size: cover; width: 85%; height: auto; }
 .swiper-img { max-width:100%; height:auto; border-radius:.3rem; }
@@ -159,66 +204,7 @@ export default {
 
 .card-panel-icon{ width:2rem; height:2rem;  }
 
-  .footer
-    width:100%; position:fixed; bottom:0;
-
-  .usrfortest
-    width:100%; height:90%;
-
-  .container-one
-    width:100%; padding:0.5rem 0.5rem 0.2rem 1rem; border-bottom:1px solid #CCCCCC; overflow:auto;
-
-  .avatar-distance
-    margin-right .8rem
-    margin-bottom .3rem
-
-  .myclass:before
-    content " "
-    position relative
-    top .5rem
-    left 0.6rem
-    display block
-    width .8rem 
-    height .8rem
-    transform rotate(45deg)
-    -ms-transform rotate(45deg)
-    -webkit-transform rotate(45deg)
-    -o-transform rotate(45deg)
-    -moz-transform rotate(45deg)
-    background #66bb6a
-    z-index 9999
-    
-  .myclass-2:after
-    content " "
-    position relative
-    top .5rem
-    right 0.6rem
-    display block
-    width .8rem 
-    height .8rem
-    transform rotate(45deg)
-    -ms-transform rotate(45deg)
-    -webkit-transform rotate(45deg)
-    -o-transform rotate(45deg)
-    -moz-transform rotate(45deg)
-    background #2196f3
-    z-index 9999 
-
-.mu-card-media-title 
-  .mu-card-title 
-    font-size 20px
-    color hsla(0,0%,100%,.87)
-    line-height 28px
-
-.grid-cell 
-  border-radius 4px
-  height 36px
-  background red
-
-
-
-
-
+.footer{width:100%; position:fixed; bottom:0;}
 
 </style>
 
