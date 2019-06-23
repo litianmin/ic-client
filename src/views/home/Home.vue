@@ -14,6 +14,7 @@
     </mu-flex>
     <!-- END 头部 -->
 
+    <!-- BEGIN 导航栏 -->
     <div style="padding:1.2rem 0 1rem 0; background:rgba(240, 240, 240, .1); border-bottom:1px solid #eeeeee;">
       <mu-flex justify-content="around">
         <div @click="linkToGameList">
@@ -45,17 +46,20 @@
         </div>
       </mu-flex>
     </div>
-
+    <!-- END 导航栏 -->
 
     <!-- BEGIN 头部话题、美文轮播图 -->
     <div style="margin-top:1rem; margin-bottom:1rem; ">
         <swiper :options="swiperOption">
-            <swiper-slide v-for="(item, index) in friendsMsgsList" :key="index">
-              <mu-flex style="position:relative;" wrap="wrap">
-                <img class="swiper-img" :src="item.avatar" alt="">
-              <mu-flex style="width:100%; position:absolute; bottom:0; border-radius:.3rem; left:0; padding:.5rem; background:rgba(0, 0, 0, .5); color:#fff;" justify-content="center">官方大型活动， 来呀，快活呀 </mu-flex>
-              </mu-flex>
-            </swiper-slide>
+          <swiper-slide v-for="(item, index) in friendsMsgsList" :key="index">
+            <mu-flex style="position:relative;" wrap="wrap">
+              <img class="swiper-img" :src="item.avatar" alt="">
+              <!-- <mu-flex style="width:100%; position:absolute; bottom:0; border-radius:.3rem; left:0; padding:.5rem; background:rgba(0, 0, 0, .5); color:#fff;" justify-content="center">官方大型活动， 来呀，快活呀 </mu-flex> -->
+            </mu-flex>
+            <mu-flex style="width:100%; background:#fff; padding:.5rem; border:1px solid #9e9e9e; border-top:0; border-bottom-left-radius:.3rem; border-bottom-right-radius:.3rem;">
+              <span style="font-size:12px;">{{ item.content }}</span>
+            </mu-flex>
+          </swiper-slide>
         </swiper>
     </div> 
     <!-- END 头部话题、 美文轮播图 -->
@@ -149,9 +153,9 @@ export default {
       selfAvatar: '',
       selfNickname: '',
       friendsMsgsList: [
-        {id: 1, avatar: "http://img2.imgtn.bdimg.com/it/u=150877727,2930125005&fm=26&gp=0.jpg"},
-        {id: 2, avatar: "http://img2.imgtn.bdimg.com/it/u=150877727,2930125005&fm=26&gp=0.jpg"},
-        {id: 3, avatar: "http://img2.imgtn.bdimg.com/it/u=150877727,2930125005&fm=26&gp=0.jpg"}
+        {id: 1, avatar: "http://img2.imgtn.bdimg.com/it/u=150877727,2930125005&fm=26&gp=0.jpg", content: '好心一早放开我，统统不要好过, 你可曾想过与我一起漫步与这世界之巅'},
+        {id: 2, avatar: "http://img2.imgtn.bdimg.com/it/u=150877727,2930125005&fm=26&gp=0.jpg", content: '好心一早放开我，统统不要世界之巅'},
+        {id: 3, avatar: "http://img2.imgtn.bdimg.com/it/u=150877727,2930125005&fm=26&gp=0.jpg", content: '好心一早放开我，统统不要好过, 你可曾想过与我一起漫步与这世界之巅'}
       ],
       swiperOption: {
         effect: 'coverflow',  // 切换效果
@@ -197,7 +201,7 @@ export default {
 .home { width:100%; position: relative; float:left; background:#fafafa;}
 .swiper-inner { width: 100%; height: auto; padding-top: 50px; padding-bottom: 50px; }
 .swiper-slide { background-position: center; background-size: cover; width: 85%; height: auto; }
-.swiper-img { max-width:100%; height:auto; border-radius:.3rem; }
+.swiper-img { max-width:100%; height:auto; border-top-left-radius:.3rem; border-top-right-radius:.3rem; }
 .main-nav { position: relative; width: 30%; height: 3rem; display: flex; justify-content: center; align-items: center; 
             border-radius: 4px; margin-left: 2%; margin-top: .5rem; color: white; }
 
