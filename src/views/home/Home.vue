@@ -49,15 +49,15 @@
     <!-- END 导航栏 -->
 
     <!-- BEGIN 头部话题、美文轮播图 -->
-    <div style="margin-top:1rem; margin-bottom:1rem; ">
+    <div v-if="CarsoucelIsShow" style="margin-top:1rem; margin-bottom:1rem; ">
         <swiper :options="swiperOption">
-          <swiper-slide v-for="(item, index) in friendsMsgsList" :key="index">
+          <swiper-slide v-for="(item, index) in ArticleList" :key="index">
             <mu-flex style="position:relative;" wrap="wrap">
-              <img class="swiper-img" :src="item.avatar" alt="">
+              <img class="swiper-img" :src="item.displayImg" alt="">
               <!-- <mu-flex style="width:100%; position:absolute; bottom:0; border-radius:.3rem; left:0; padding:.5rem; background:rgba(0, 0, 0, .5); color:#fff;" justify-content="center">官方大型活动， 来呀，快活呀 </mu-flex> -->
             </mu-flex>
             <mu-flex style="width:100%; background:#fff; padding:.5rem; border:1px solid #9e9e9e; border-top:0; border-bottom-left-radius:.3rem; border-bottom-right-radius:.3rem;">
-              <span style="font-size:12px;">{{ item.content }}</span>
+              <span style="font-size:12px;">{{ item.title }}</span>
             </mu-flex>
           </swiper-slide>
         </swiper>
@@ -71,22 +71,14 @@
     </mu-sub-header> 
 
     <!-- 这里就显示官方活动或者商家活动 -->
-    <mu-flex style="padding:.3rem .5rem; margin-bottom:.5rem;">
-      <div style="padding:0 .5rem;">    
-        <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" src="http://pic2.cxtuku.com/00/15/12/b015ed836136.jpg" alt="">
-        <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">妖姬之言</div>
-      </div>
-      <div style="padding:0 .5rem;">    
-        <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" src="http://pic1.cxtuku.com/00/15/12/b070153ce3d0.jpg" alt="">
-        <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">女神联盟</div>
-      </div>
-      <div style="padding:0 .5rem;">    
-        <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" src="http://pic2.cxtuku.com/00/15/12/b015ed836136.jpg" alt="">
-        <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">妖姬之言</div>
+    <mu-flex style="padding:.3rem .5rem; margin-bottom:.5rem;" wrap="wrap">
+      <div v-for="(item, index) in GameList" :key="index" style="padding:0 .5rem; min-width:30%; max-width:33%; margin-bottom:1rem;">    
+        <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" :src="item.logo" alt="">
+        <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">{{ item.gName }}</div>
       </div>
     </mu-flex>
 
-    <mu-flex style="padding:.3rem .5rem; margin-bottom:.5rem;">
+    <!-- <mu-flex style="padding:.3rem .5rem; margin-bottom:.5rem;">
       <div style="padding:0 .5rem;">    
         <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" src="http://pic2.cxtuku.com/00/15/12/b015ed836136.jpg" alt="">
         <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">妖姬之言</div>
@@ -99,7 +91,7 @@
         <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" src="http://pic2.cxtuku.com/00/15/12/b015ed836136.jpg" alt="">
         <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">妖姬之言</div>
       </div>
-    </mu-flex>
+    </mu-flex> -->
 
     <!-- 官方推荐组队 -->
     <mu-sub-header>
@@ -109,21 +101,22 @@
     <div style="margin-bottom:4rem; padding:.3rem 1rem;">
       <!-- 这里就显示官方活动或者商家活动 -->
   
-      <mu-flex style="box-shadow:0 0 1px gray; border-radius:.3rem; margin-bottom:2rem;" wrap="wrap">
+      <mu-flex v-for="(item, index) in ActivityList" :key="index" style="box-shadow:0 0 1px gray; border-radius:.3rem; margin-bottom:2rem;" wrap="wrap">
         <mu-flex style="position:relative;">
-          <img style="max-width:100%; max-height:100%; border-top-left-radius:.3rem; border-top-right-radius:.3rem;" src="http://img1.imgtn.bdimg.com/it/u=4035031505,2348472516&fm=26&gp=0.jpg" alt="">
-          <mu-flex style="width:100%; position:absolute; bottom:0; border-radius:.3rem; left:0; padding:.6rem; background:rgba(0, 0, 0, .5); color:#fff;">官方大型活动， 来呀，快活呀 </mu-flex>
+          <img style="max-width:100%; max-height:100%; border-top-left-radius:.3rem; border-top-right-radius:.3rem;" :src="item.displayImg" alt="">
+          <mu-flex style="width:100%; position:absolute; bottom:0; border-radius:.3rem; left:0; padding:.6rem; background:rgba(0, 0, 0, .5); color:#fff;">{{ item.title }}</mu-flex>
         </mu-flex>
         <mu-flex style="width:100%; padding:.8rem .5rem .5rem .5rem;">
-          <span>2018/09/02 在广州塔顶与你相聚，这里是我的活动</span>
+          <span>{{ item.beginTime }} 在{{ item.venue.name }}与你相聚</span>
         </mu-flex>
-        <mu-flex style="width:100%; padding:0 1rem .5rem .5rem;" align-items="center" justify-content="end">
+        <mu-flex style="width:100%; padding:0 .1rem .5rem .2rem; margin-top:.5rem;" align-items="center">
           <mu-icon value="person_pin_circle" size="20" color="#009688"></mu-icon>
-          <span style="font-size:12px;">距离你500米</span>
+          <span style="font-size:12px;">距离你{{ item.distance }}</span>
+          <span style="font-size:12px; color:#00bcd4; margin-left:auto;">去看看！</span>
         </mu-flex>
       </mu-flex>
 
-      <mu-flex style="box-shadow:0 0 1px gray; border-radius:.3rem; margin-bottom:2rem;" wrap="wrap">
+      <!-- <mu-flex style="box-shadow:0 0 1px gray; border-radius:.3rem; margin-bottom:2rem;" wrap="wrap">
         <mu-flex style="position:relative;">
           <img style="max-width:100%; max-height:100%; border-top-left-radius:.3rem; border-top-right-radius:.3rem;" src="http://img1.imgtn.bdimg.com/it/u=4035031505,2348472516&fm=26&gp=0.jpg" alt="">
           <mu-flex style="width:100%; position:absolute; bottom:0; border-radius:.3rem; left:0; padding:.6rem; background:rgba(0, 0, 0, .5); color:#fff;">官方大型活动， 来呀，快活呀 </mu-flex>
@@ -135,7 +128,7 @@
           <mu-icon value="person_pin_circle" size="20" color="#009688"></mu-icon>
           <span style="font-size:12px;">距离你500米</span>
         </mu-flex>
-      </mu-flex>
+      </mu-flex> -->
     </div>
 
     <div class="footer">
@@ -146,17 +139,52 @@
 
 <script>
 import Footer from '@/components/Footer.vue'
+import utils from 'common/utils.js'
 export default {
   name: 'home',
   data () {
     return {
       selfAvatar: '',
       selfNickname: '',
-      friendsMsgsList: [
-        {id: 1, avatar: "http://img2.imgtn.bdimg.com/it/u=150877727,2930125005&fm=26&gp=0.jpg", content: '好心一早放开我，统统不要好过, 你可曾想过与我一起漫步与这世界之巅'},
-        {id: 2, avatar: "http://img2.imgtn.bdimg.com/it/u=150877727,2930125005&fm=26&gp=0.jpg", content: '好心一早放开我，统统不要世界之巅'},
-        {id: 3, avatar: "http://img2.imgtn.bdimg.com/it/u=150877727,2930125005&fm=26&gp=0.jpg", content: '好心一早放开我，统统不要好过, 你可曾想过与我一起漫步与这世界之巅'}
+      CarsoucelIsShow: false,
+      ArticleList: [
+        {
+          articleID: 1,
+          title: "121212",
+          type: 1,
+          beginTime: 1561737600,
+          endTime: 1563897600,
+          displayImg: "http://img2.imgtn.bdimg.com/it/u=150877727,2930125005&fm=26&gp=0.jpg"
+        },
       ],
+      ActivityList: [
+        {
+          activityID: 1,
+          title: "这里是我的标题",
+          type: 1,
+          beginTime: 1561864483,
+          endTime: 1561865483,
+          venue: {
+              name: "万利商务中心",
+              lng: 113.186702,
+              lat: 23.035872,
+              addr: "夏平西路石龙北路路口附近"
+          },
+          displayImg: "http://img2.imgtn.bdimg.com/it/u=150877727,2930125005&fm=26&gp=0.jpg",
+          recruitNumb: 30,
+          distance: 12235652.41335938,
+          recruitStatus: 0
+        }
+      ],
+      GameList: [
+        {
+          gID: 5,
+          teamNumb: 2,
+          logo: "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=150895625,2917525328&fm=26&gp=0.jpg",
+          gName: "洛奇英雄传"
+        },
+      ],
+
       swiperOption: {
         effect: 'coverflow',  // 切换效果
         grabCursor: true,   // 手形
@@ -179,6 +207,41 @@ export default {
   mounted () {
     this.selfAvatar = this.$store.state.mdeLogin.usrInfo.avatar
     this.selfNickname = this.$store.state.mdeLogin.usrInfo.nickname
+
+    let lng = 113.122629
+    let lat = 23.029735
+    // 获取首页内容
+    this.$axios.get(
+      `/user/homePage/${lng}/${lat}`, {}
+    ).then((resp)=>{
+      // 开始处理返回的数据
+      let data = resp.data.msg
+      console.log(data)
+
+      let activityList = data.activityList  // 活动列表
+      for(let i = 0; i < activityList.length; i++) {
+        activityList[i].beginTime = utils.unixToDate(activityList[i].beginTime)
+        activityList[i].displayImg = utils.imgPrefixDeal(activityList[i].displayImg)
+        activityList[i].distance = utils.distanceFormat(activityList[i].distance)
+      }
+      this.ActivityList = activityList
+
+      let articleList = data.articleList  // 文章列表(轮播图)
+      for(let i = 0; i < articleList.length; i++) {
+        articleList[i].displayImg = utils.imgPrefixDeal(articleList[i].displayImg)
+      }
+      this.ArticleList = articleList
+
+      let gameList = data.gameList  // 游戏列表
+      for(let i = 0; i < gameList.length; i++) {
+        gameList[i].logo = utils.imgPrefixDeal(gameList[i].logo)
+      }
+      this.GameList = gameList
+
+
+      this.CarsoucelIsShow = true
+    })
+
   },
   methods:{
     linkToGameList () {
@@ -189,6 +252,16 @@ export default {
     },
     linkToTravelList () {
       this.$router.push('/travel/list')
+    },
+
+    linkToArticleDetail (articleID) {
+      this.$message('准备跳转到文章详情')
+    },
+    linkToActivityDetail (activityID) {
+      this.$message('准备跳转到活动详情')
+    },
+    linkToGameDetail (gameID) {
+      this.$message('准备跳转到游戏详情')
     },
   },
   components: {
