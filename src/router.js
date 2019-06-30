@@ -161,6 +161,16 @@ const router =  new Router({
       name: 'travel-newChat',
       component: () => import('./views/travel/newChat.vue')
     },
+
+
+    // 文章模块
+    {
+      path: '/article/detail',
+      name: 'article-detail',
+      component: () => import('./views/article/detail.vue')
+    },
+
+
   ],
 })
 

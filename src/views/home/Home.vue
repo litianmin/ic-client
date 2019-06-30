@@ -52,26 +52,26 @@
     <div v-if="CarsoucelIsShow" style="margin-top:1rem; margin-bottom:1rem; ">
         <swiper :options="swiperOption">
           <swiper-slide v-for="(item, index) in ArticleList" :key="index">
-            <mu-flex style="position:relative;" wrap="wrap">
+            <mu-flex style="position:relative; " wrap="wrap" @click="linkToArticleDetail(item.activityID)">
               <img class="swiper-img" :src="item.displayImg" alt="">
-              <!-- <mu-flex style="width:100%; position:absolute; bottom:0; border-radius:.3rem; left:0; padding:.5rem; background:rgba(0, 0, 0, .5); color:#fff;" justify-content="center">官方大型活动， 来呀，快活呀 </mu-flex> -->
+              <mu-flex style="width:100%; position:absolute; bottom:0;  left:0; padding:.6rem .5rem; background:rgba(0, 0, 0, .5); color:#fff; border-bottom-left-radius:.3rem; border-bottom-right-radius:.3rem;" justify-content="start">{{ item.title }} </mu-flex>
             </mu-flex>
-            <mu-flex style="width:100%; background:#fff; padding:.5rem; border:1px solid #9e9e9e; border-top:0; border-bottom-left-radius:.3rem; border-bottom-right-radius:.3rem;">
+            <!-- <mu-flex style="width:100%; background:#fff; padding:.7rem .5rem; border:1px solid #e0e0e0; border-top:0; border-bottom-left-radius:.3rem; border-bottom-right-radius:.3rem;">
               <span style="font-size:12px;">{{ item.title }}</span>
-            </mu-flex>
+            </mu-flex> -->
           </swiper-slide>
         </swiper>
     </div> 
     <!-- END 头部话题、 美文轮播图 -->
 
-    <mu-row style="margin-top:-.5rem; border-top:1px solid #eeeeee;"></mu-row>
+    <mu-row style=" border-top:3px solid #ffffff;"></mu-row>
     <!-- <mu-divider></mu-divider> -->
     <mu-sub-header>
       <span style="font-size:14px; font-weight:600; color:#00bcd4;">- 游戏 . 热门组队 -</span>
     </mu-sub-header> 
 
     <!-- 这里就显示官方活动或者商家活动 -->
-    <mu-flex style="padding:.3rem .5rem; margin-bottom:.5rem;" wrap="wrap">
+    <mu-flex style="padding:.3rem .5rem;" wrap="wrap">
       <div v-for="(item, index) in GameList" :key="index" style="padding:0 .5rem; min-width:30%; max-width:33%; margin-bottom:1rem;">    
         <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" :src="item.logo" alt="">
         <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">{{ item.gName }}</div>
@@ -93,6 +93,8 @@
       </div>
     </mu-flex> -->
 
+    <mu-row style=" border-top:3px solid #ffffff;"></mu-row>
+
     <!-- 官方推荐组队 -->
     <mu-sub-header>
       <span style="font-size:14px; font-weight:600; color:#00bcd4;">- 官方 . 推荐组队 -</span>
@@ -104,10 +106,14 @@
       <mu-flex v-for="(item, index) in ActivityList" :key="index" style="box-shadow:0 0 1px gray; border-radius:.3rem; margin-bottom:2rem;" wrap="wrap">
         <mu-flex style="position:relative;">
           <img style="max-width:100%; max-height:100%; border-top-left-radius:.3rem; border-top-right-radius:.3rem;" :src="item.displayImg" alt="">
-          <mu-flex style="width:100%; position:absolute; bottom:0; border-radius:.3rem; left:0; padding:.6rem; background:rgba(0, 0, 0, .5); color:#fff;">{{ item.title }}</mu-flex>
+          <!-- <mu-flex style="width:100%; position:absolute; bottom:0; border-radius:.3rem; left:0; padding:.6rem; background:rgba(0, 0, 0, .5); color:#fff;">{{ item.title }}</mu-flex> -->
         </mu-flex>
-        <mu-flex style="width:100%; padding:.8rem .5rem .5rem .5rem;">
-          <span>{{ item.beginTime }} 在{{ item.venue.name }}与你相聚</span>
+        <mu-flex style="padding:.8rem .5rem;">
+          <span style="font-weight:700;">{{ item.title }}</span>
+        </mu-flex>
+        <mu-flex style="width:100%; font-size:13px; padding:.2rem .5rem .5rem .5rem;" wrap="wrap">
+          <div style="width:100%;">于 <span style="color:#795548;">{{ item.beginTime }}</span> </div>
+          <div>在 <span style="color:#795548">{{ item.venue.name }}</span> 与你相聚</div>
         </mu-flex>
         <mu-flex style="width:100%; padding:0 .1rem .5rem .2rem; margin-top:.5rem;" align-items="center">
           <mu-icon value="person_pin_circle" size="20" color="#009688"></mu-icon>
@@ -255,13 +261,13 @@ export default {
     },
 
     linkToArticleDetail (articleID) {
-      this.$message('准备跳转到文章详情')
+      this.$router.push('/article/detail')
     },
     linkToActivityDetail (activityID) {
-      this.$message('准备跳转到活动详情')
+      // this.$message('准备跳转到活动详情')
     },
     linkToGameDetail (gameID) {
-      this.$message('准备跳转到游戏详情')
+      // this.$message('准备跳转到游戏详情')
     },
   },
   components: {
@@ -274,7 +280,7 @@ export default {
 .home { width:100%; position: relative; float:left; background:#fafafa;}
 .swiper-inner { width: 100%; height: auto; padding-top: 50px; padding-bottom: 50px; }
 .swiper-slide { background-position: center; background-size: cover; width: 85%; height: auto; }
-.swiper-img { max-width:100%; height:auto; border-top-left-radius:.3rem; border-top-right-radius:.3rem; }
+.swiper-img { max-width:100%; height:auto; border-radius:.3rem; }
 .main-nav { position: relative; width: 30%; height: 3rem; display: flex; justify-content: center; align-items: center; 
             border-radius: 4px; margin-left: 2%; margin-top: .5rem; color: white; }
 
