@@ -165,7 +165,7 @@ const router =  new Router({
 
     // 文章模块
     {
-      path: '/article/detail',
+      path: '/article/detail/:articleID',
       name: 'article-detail',
       component: () => import('./views/article/detail.vue')
     },

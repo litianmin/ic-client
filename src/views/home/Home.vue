@@ -52,7 +52,7 @@
     <div v-if="CarsoucelIsShow" style="margin-top:1rem; margin-bottom:1rem; ">
         <swiper :options="swiperOption">
           <swiper-slide v-for="(item, index) in ArticleList" :key="index">
-            <mu-flex style="position:relative; " wrap="wrap" @click="linkToArticleDetail(item.activityID)">
+            <mu-flex style="position:relative; " wrap="wrap" @click="linkToArticleDetail(item.articleID)">
               <img class="swiper-img" :src="item.displayImg" alt="">
               <mu-flex style="width:100%; position:absolute; bottom:0;  left:0; padding:.6rem .5rem; background:rgba(0, 0, 0, .5); color:#fff; border-bottom-left-radius:.3rem; border-bottom-right-radius:.3rem;" justify-content="start">{{ item.title }} </mu-flex>
             </mu-flex>
@@ -261,7 +261,7 @@ export default {
     },
 
     linkToArticleDetail (articleID) {
-      this.$router.push('/article/detail')
+      this.$router.push(`/article/detail/${articleID}`)
     },
     linkToActivityDetail (activityID) {
       // this.$message('准备跳转到活动详情')
