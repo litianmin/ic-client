@@ -98,13 +98,25 @@ export default {
         return
       }
 
+      let msg = resp.data.msg
+
       // 开始处理数据
-      let data = resp.data.msg
-      this.Title = data.title
-      this.Type = data.type
-      this.DisplayImg = utils.imgPrefixDeal(data.displayImg)
-      this.BeginTime = utils.unixToDate(data.beginTime)
-      this.Cont = data.cont
+      let articleDetail = msg.articleDetail
+      this.Title = articleDetail.title
+      this.Type = articleDetail.type
+      this.DisplayImg = utils.imgPrefixDeal(articleDetail.displayImg)
+      this.BeginTime = utils.unixToDate(articleDetail.beginTime)
+      this.Cont = articleDetail.cont
+
+      this.IsTheLast = msg.isTheLast
+
+      for(let i = 0; i < msg.chatList.length; i++) {
+        msg.chatList[i].create_time = utils.getDateDiff(msg.chatList[i].create_time, true)
+        msg.chatList[i].user_avatar = utils.imgPrefixDeal(msg.chatList[i].user_avatar)
+        msg.chatList[i].chat_img = utils.imgPrefixDeal(msg.chatList[i].chat_img)
+      }
+      this.ReplyList = msg.chatList
+      this.ReplyListPage++
     })
   },
   methods: {
@@ -112,8 +124,9 @@ export default {
       this.Loading = true      
       let sortWay = this.IsSortup == false ? 0 : 1
 
-      this.$axios.post(`/travel/chatList/${this.ReplyListPage}/${this.TeamID}/${sortWay}`,{}).then((resp)=>{
-        let dataBack = resp.data
+      this.$axios.get(`/article/chatList/${this.ReplyListPage}/${this.ArticleID}/${sortWay}`,{}).then((resp)=>{
+        let dataBack = resp.data.msg
+        console.log(dataBack)
         this.IsTheLast = dataBack.isTheLast
         let replyList = dataBack.listInfo
         for(let i = 0; i < replyList.length; i++) {
@@ -138,12 +151,7 @@ export default {
     },
 
     newChat (isReply, replyID, replyNickname) {
-      // 只有加入组队的人才能进行评论
-      if(this.JointeamStmt != 3) {
-        this.$toast.message('加入组队后才能聊天哦')
-        return
-      }
-      this.$router.push({path:`/travel/newChat`, query:{teamID:this.TeamID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
+      this.$router.push({path:`/article/newChat`, query:{articleID:this.ArticleID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
     },
 
   },
