@@ -193,6 +193,10 @@ export default {
       this.$router.push({path:`/article/newChat`, query:{articleID:this.ArticleID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
     },
 
+    joinTeam () {
+      this.$toast.message('something new')
+    }
+
   },
 }
 </script>
