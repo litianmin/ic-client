@@ -173,7 +173,15 @@ const router =  new Router({
       path: '/article/newChat',
       name: 'article-newChat',
       component: () => import('./views/article/newChat.vue')
-    }
+    },
+
+
+    // 活动模块
+    {
+      path: '/activity/detail/:activityID',
+      name: 'activity-detail',
+      component: () => import('./views/activity/detail.vue')
+    },
 
 
   ],

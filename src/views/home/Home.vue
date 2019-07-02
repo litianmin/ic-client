@@ -72,26 +72,11 @@
 
     <!-- 这里就显示官方活动或者商家活动 -->
     <mu-flex style="padding:.3rem .5rem;" wrap="wrap">
-      <div v-for="(item, index) in GameList" :key="index" style="padding:0 .5rem; min-width:30%; max-width:33%; margin-bottom:1rem;">    
+      <div v-for="(item, index) in GameList" :key="index" @click="linkToGameDetail(item.gID)" style="padding:0 .5rem; min-width:30%; max-width:33%; margin-bottom:1rem;">    
         <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" :src="item.logo" alt="">
         <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">{{ item.gName }}</div>
       </div>
     </mu-flex>
-
-    <!-- <mu-flex style="padding:.3rem .5rem; margin-bottom:.5rem;">
-      <div style="padding:0 .5rem;">    
-        <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" src="http://pic2.cxtuku.com/00/15/12/b015ed836136.jpg" alt="">
-        <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">妖姬之言</div>
-      </div>
-      <div style="padding:0 .5rem;">    
-        <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" src="http://pic1.cxtuku.com/00/15/12/b070153ce3d0.jpg" alt="">
-        <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">女神联盟</div>
-      </div>
-      <div style="padding:0 .5rem;">    
-        <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" src="http://pic2.cxtuku.com/00/15/12/b015ed836136.jpg" alt="">
-        <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">妖姬之言</div>
-      </div>
-    </mu-flex> -->
 
     <mu-row style=" border-top:3px solid #ffffff;"></mu-row>
 
@@ -103,10 +88,9 @@
     <div style="margin-bottom:4rem; padding:.3rem 1rem;">
       <!-- 这里就显示官方活动或者商家活动 -->
   
-      <mu-flex v-for="(item, index) in ActivityList" :key="index" style="box-shadow:0 0 1px gray; border-radius:.3rem; margin-bottom:2rem;" wrap="wrap">
+      <mu-flex v-for="(item, index) in ActivityList" :key="index" @click="linkToActivityDetail(item.activityID)" style="box-shadow:0 0 1px gray; border-radius:.3rem; margin-bottom:2rem;" wrap="wrap">
         <mu-flex style="position:relative;">
           <img style="max-width:100%; max-height:100%; border-top-left-radius:.3rem; border-top-right-radius:.3rem;" :src="item.displayImg" alt="">
-          <!-- <mu-flex style="width:100%; position:absolute; bottom:0; border-radius:.3rem; left:0; padding:.6rem; background:rgba(0, 0, 0, .5); color:#fff;">{{ item.title }}</mu-flex> -->
         </mu-flex>
         <mu-flex style="padding:.8rem .5rem;">
           <span style="font-weight:700;">{{ item.title }}</span>
@@ -121,20 +105,6 @@
           <span style="font-size:12px; color:#00bcd4; margin-left:auto;">去看看！</span>
         </mu-flex>
       </mu-flex>
-
-      <!-- <mu-flex style="box-shadow:0 0 1px gray; border-radius:.3rem; margin-bottom:2rem;" wrap="wrap">
-        <mu-flex style="position:relative;">
-          <img style="max-width:100%; max-height:100%; border-top-left-radius:.3rem; border-top-right-radius:.3rem;" src="http://img1.imgtn.bdimg.com/it/u=4035031505,2348472516&fm=26&gp=0.jpg" alt="">
-          <mu-flex style="width:100%; position:absolute; bottom:0; border-radius:.3rem; left:0; padding:.6rem; background:rgba(0, 0, 0, .5); color:#fff;">官方大型活动， 来呀，快活呀 </mu-flex>
-        </mu-flex>
-        <mu-flex style="width:100%; padding:.8rem .5rem .5rem .5rem;">
-          <span>2018/09/02 在广州塔顶与你相聚，这里是我的活动</span>
-        </mu-flex>
-        <mu-flex style="width:100%; padding:0 1rem .5rem .5rem;" align-items="center" justify-content="end">
-          <mu-icon value="person_pin_circle" size="20" color="#009688"></mu-icon>
-          <span style="font-size:12px;">距离你500米</span>
-        </mu-flex>
-      </mu-flex> -->
     </div>
 
     <div class="footer">
@@ -264,10 +234,10 @@ export default {
       this.$router.push(`/article/detail/${articleID}`)
     },
     linkToActivityDetail (activityID) {
-      // this.$message('准备跳转到活动详情')
+      this.$router.push(`/activity/detail/${activityID}`)
     },
     linkToGameDetail (gameID) {
-      // this.$message('准备跳转到游戏详情')
+      this.$router.push(`/game/detail/${gameID}`)
     },
   },
   components: {
