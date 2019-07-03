@@ -1,21 +1,21 @@
 <template>
   <div>
     <mu-flex style="width:100%;">
-      <img style="width:100%; height:auto;" :src="DisplayImg" alt="">
+      <img style="width:100%; height:auto;" :src="BaseInfo.displayImg" alt="">
     </mu-flex>
     <mu-flex>
-      <span style="font-size:18px; font-weight:700; padding:.5rem .8rem;">{{ Title }}</span>
+      <span style="font-size:18px; font-weight:700; padding:.5rem .8rem;">{{ BaseInfo.title }}</span>
     </mu-flex>
 
     <!-- 文章详情 -->
-    <mu-flex style="padding:.2rem 1rem;" v-html="Cont"></mu-flex>
+    <mu-flex style="padding:.5rem .8rem;" v-html="BaseInfo.cont"></mu-flex>
 
-    <mu-flex style="width:100%; font-size:13px; padding:.5rem .5rem 1rem .5rem;" wrap="wrap" justify-content="end">
-      <div style="width:100%; text-align:right;">-- 于 <span style="">2019/02/03</span> </div>
+    <mu-flex style="width:100%; font-size:13px; padding:.5rem 1rem 1rem .5rem;" wrap="wrap" justify-content="end">
+      <div style="width:100%; text-align:right;">-- 于 <span style="">{{ BaseInfo.beginTime }}</span> </div>
       <mu-flex align-items="center">
-        <span>在</span> 
-        <mu-icon value="person_pin_circle" size="20" color="#009688"></mu-icon>
-        <span> <span style="color:#009688; font-weight:700; font-size:12px;">艾萨拉广场</span> 与你相聚</span>
+        <!-- <span>在</span>  -->
+        <!-- <mu-icon value="person_pin_circle" size="16" color="#009688"></mu-icon> -->
+        <span>在 <span style="color:#009688; font-weight:700; font-size:12px; text-decoration:underline">{{ BaseInfo.venue.name }}</span> 与你相聚</span>
       </mu-flex>
     </mu-flex>
 
@@ -25,12 +25,12 @@
         <mu-avatar v-for="(item, index) in TeammateList" :key="index" size="35" :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'" style="margin-right:.5rem;">
           <img :src="item.avatar" alt="">
         </mu-avatar>
-        <span v-if="TeamBaseInfo.recruitStatus == 0" @click="joinTeam">
+        <span v-if="BaseInfo.recruitStatus == 0" @click="joinTeam">
           <svg-icon icon-class="add_circle_outline" style="font-size:40px; color:red;"></svg-icon>
         </span>
     </mu-flex>
     <mu-flex justify-content="center" style="padding:.3rem 0 .5rem 0; border-bottom:1px dashed #e0e0e0; background:#fff;">
-      <span style="font-size:12px; color:#9e9e9e;">-- 招募{{ TeamBaseInfo.recruitNumb }}人，还差{{ TeamBaseInfo.recruitNumb - TeamBaseInfo.hadRecruitNumb }}人 --</span>
+      <span style="font-size:12px; color:#9e9e9e;">-- 招募{{ BaseInfo.recruitNumb }}人，还差{{ BaseInfo.recruitNumb - BaseInfo.hadRecruitNumb }}人 --</span>
     </mu-flex>
     <!-- END 队长和队友列表 -->
 
@@ -78,6 +78,21 @@
       <div style="width:80%;" @click="newChat(false, 0, '')">
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
+
+      <span v-if="JoinStatus == 1 || JoinStatus == 2" @click="joinTeam" style="font-size:19px; margin-left:auto;">
+        <svg-icon icon-class="jointeam_refuse"></svg-icon>
+      </span>
+      <span v-if="JoinStatus == 3" @click="joinTeam" style="font-size:19px; margin-left:auto;">
+        <svg-icon icon-class="hadjointeam"></svg-icon>
+      </span>
+      <span v-if="JoinStatus == 1" @click="joinTeam" style="font-size:20px; margin-left:auto;">
+        <svg-icon icon-class="jointeam_applying"></svg-icon>
+      </span>
+      <span v-if="JoinStatus == 0 || JoinStatus == 4" @click="joinTeam" style="font-size:20px; margin-left:auto;">
+        <svg-icon icon-class="jointeam"></svg-icon>
+      </span>
+
+
       <mu-icon value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
     </mu-flex>
 
@@ -89,12 +104,37 @@ import utils from 'common/utils.js'
 export default {
   data () {
     return {
-      ArticleID: 0,
-      Type: 0,
-      Title: '这里是我的标题',
-      DisplayImg: 'http://img2.imgtn.bdimg.com/it/u=822066738,2758317140&fm=26&gp=0.jpg',
-      Cont: '<p>没错，这里就是我想要展示的内容</p>',
-      BeginTime: '',
+      ActivityID: 0,
+
+      BaseInfo: {
+        id: 0,
+        title: "最新的活动标题",
+        type: 1,
+        displayImg: "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2595508360,28762262&fm=26&gp=0.jpg",
+        venue: {
+          name: "万利商务中心",
+          lng: 113.186702,
+          lat: 23.035872,
+          addr: "夏平西路石龙北路路口附近"
+        },
+        beginTime: 1562083200,
+        endTime: 1564156800,
+        recruitNumb: 5,
+        hadRecruitNumb: 0,
+        recruitStatus: 0,
+        cont: "<p>这里是我完整的内容</p>"
+      },
+      TeammateList: [
+        {
+          user_id: 2,
+          nickname: "朝花夕誓",
+          avatar: "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3293964636,877003056&fm=27&gp=0.jpg",
+          sex: 2,
+          jointime: 0
+        }
+      ],
+
+      JoinStatus: 0, // 1=>申请，2=>拒绝加入，3=>已加入，4=>离队
 
       IsSortup: false,
       IsTheLast: true,
@@ -102,61 +142,39 @@ export default {
       ReplyList: [],
       Loading: false,
 
-
-      TeammateList: [],
-
-      TeamBaseInfo: {
-        partyVenue: {
-          addr: '',
-          lat: 0,
-          lng: 0,
-          name: ''
-        },
-        meetingVenue: {
-          addr: '',
-          lat: 0,
-          lng: 0,
-          name: ''
-        },
-        recruitStatus: 0, // 0=>组队中， 1=>停止招募(招募成功或者已过期), 2=>已解散(只有组队中才能解散，停止招募后不能解散)
-      },
-
     }
   },
   mounted () {
-    this.ArticleID = this.$route.params.articleID
+    this.ActivityID = this.$route.params.activityID
 
-    // 去获取文章的详细内容
-    // this.$axios.get(
-    //   `/article/detail/${this.ArticleID}`, {}
-    // ).then((resp)=>{
-    //   console.log(resp)
-    //   if(resp.data.code != 20000) {
-    //     this.$toast.message(resp.data.msg)
-    //     this.$router.push('/')
-    //     return
-    //   }
+    this.$axios.get(`/activity/detail/${this.ActivityID}`, {}).then((resp)=>{
+      let dataBack = resp.data.msg
 
-    //   let msg = resp.data.msg
+      console.log(dataBack)
 
-    //   // 开始处理数据
-    //   let articleDetail = msg.articleDetail
-    //   this.Title = articleDetail.title
-    //   this.Type = articleDetail.type
-    //   this.DisplayImg = utils.imgPrefixDeal(articleDetail.displayImg)
-    //   this.BeginTime = utils.unixToDate(articleDetail.beginTime)
-    //   this.Cont = articleDetail.cont
+      if(resp.data.code != 20000) {
+        this.$toast.message(dataBack)
+        if(resp.data.code == 40301) {
+          this.$router.push('/')
+        }
+      }
 
-    //   this.IsTheLast = msg.isTheLast
+      // 现在开始处理数据
+      let baseInfo = dataBack.baseInfo
+      baseInfo.displayImg = utils.imgPrefixDeal(baseInfo.displayImg)
+      baseInfo.beginTime = utils.unixToDate(baseInfo.beginTime)
+      baseInfo.hadRecruitNumb = dataBack.teammateList.length
+      this.BaseInfo = baseInfo
 
-    //   for(let i = 0; i < msg.chatList.length; i++) {
-    //     msg.chatList[i].create_time = utils.getDateDiff(msg.chatList[i].create_time, true)
-    //     msg.chatList[i].user_avatar = utils.imgPrefixDeal(msg.chatList[i].user_avatar)
-    //     msg.chatList[i].chat_img = utils.imgPrefixDeal(msg.chatList[i].chat_img)
-    //   }
-    //   this.ReplyList = msg.chatList
-    //   this.ReplyListPage++
-    // })
+      let teammateList = dataBack.teammateList
+      for(let i = 0; i < teammateList.length; i++) {
+        teammateList[i].avatar = utils.imgPrefixDeal(teammateList[i].avatar)
+      }
+      this.TeammateList = teammateList
+
+      this.JoinStatus = dataBack.joinStatus
+    })
+
   },
   methods: {
     load () {
@@ -194,8 +212,54 @@ export default {
     },
 
     joinTeam () {
-      this.$toast.message('something new')
-    }
+      // 首先判断队伍的状态是否停止招募
+      if(this.BaseInfo.recruitStatus > 0) {
+        switch(this.BaseInfo.recruitStatus) {
+          case 1:
+            this.$toast.message('该活动已停止招募，不能加入组队')
+          break
+          case 2:
+            this.$toast.message('该活动已解散，不能加入组队')
+          break
+        }
+        return
+      }
+
+      // 点击加入组队的时候，判断加入组队的状态
+      // 0 => 未加入，1=>申请，2=>拒绝加入，3=>已加入，4=>离队, 5=>被踢
+      // 因为party里面没有1、2、5状态， 只需要判断 0 、3、 4(暂时不做其他的)
+      switch(this.JoinStatus) {
+        case 0: // 未加入
+          this.joinTeamReq()
+          break
+        case 1: // 申请
+          this.$toast.message('申请中')
+          break
+        case 2: // 拒绝加入
+          this.$toast.message('不能加入')
+          break
+        case 3: // 已加入
+          this.$toast.message('你已加入组队，是否离开组队？')
+          break
+        case 4: // 已离队，重新加入
+          this.joinTeamReq()
+          break
+      }
+    },
+    joinTeamReq () {
+      this.$toast.message('what the hell')
+      this.$axios.get(
+        `/activity/joinTeam/${this.ActivityID}`,{}
+      ).then((resp)=>{
+        console.log(resp)
+        let dataBack = resp.data
+        this.$toast.message(dataBack.msg)
+        if(dataBack.code == 20000) {
+          window.location.reload()
+          console.log('准备更新工作')
+        }
+      })
+    },
 
   },
 }
