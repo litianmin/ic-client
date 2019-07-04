@@ -104,10 +104,10 @@ import utils from 'common/utils.js'
 export default {
   data () {
     return {
-      ActivityID: 0,
+      ActivityID: '',
 
       BaseInfo: {
-        id: 0,
+        id: '',
         title: "最新的活动标题",
         type: 1,
         displayImg: "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2595508360,28762262&fm=26&gp=0.jpg",
