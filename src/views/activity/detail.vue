@@ -8,10 +8,10 @@
     </mu-flex>
 
     <!-- 文章详情 -->
-    <mu-flex style="padding:.5rem .8rem;" v-html="BaseInfo.cont"></mu-flex>
+    <div style="padding:.5rem .8rem;" v-html="BaseInfo.cont"></div>
 
     <mu-flex style="width:100%; font-size:13px; padding:.5rem 1rem 1rem .5rem;" wrap="wrap" justify-content="end">
-      <div style="width:100%; text-align:right;">-- 于 <span style="">{{ BaseInfo.beginTime }}</span> </div>
+      <div style="width:100%; text-align:right;">-- <span style="">{{ BaseInfo.beginTime }}</span> </div>
       <mu-flex align-items="center">
         <!-- <span>在</span>  -->
         <!-- <mu-icon value="person_pin_circle" size="16" color="#009688"></mu-icon> -->
@@ -75,25 +75,16 @@
     <!-- END 回复评论 -->
 
     <mu-flex class="reply-input-box" align-items="center">
-      <div style="width:80%;" @click="newChat(false, 0, '')">
+      <div style="width:78%;" @click="newChat(false, 0, '')">
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
 
-      <span v-if="JoinStatus == 1 || JoinStatus == 2" @click="joinTeam" style="font-size:19px; margin-left:auto;">
-        <svg-icon icon-class="jointeam_refuse"></svg-icon>
-      </span>
-      <span v-if="JoinStatus == 3" @click="joinTeam" style="font-size:19px; margin-left:auto;">
-        <svg-icon icon-class="hadjointeam"></svg-icon>
-      </span>
-      <span v-if="JoinStatus == 1" @click="joinTeam" style="font-size:20px; margin-left:auto;">
-        <svg-icon icon-class="jointeam_applying"></svg-icon>
-      </span>
-      <span v-if="JoinStatus == 0 || JoinStatus == 4" @click="joinTeam" style="font-size:20px; margin-left:auto;">
-        <svg-icon icon-class="jointeam"></svg-icon>
+      <span  @click="joinTeam" style="font-size:18px; margin-left:auto;">
+        <svg-icon :icon-class="JoinStatusSvg"></svg-icon>
       </span>
 
 
-      <mu-icon value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
+      <svg-icon icon-class="share" style="font-size:18px; margin-left:.8rem; margin-right:.6rem;"></svg-icon>
     </mu-flex>
 
   </div>  
@@ -121,7 +112,7 @@ export default {
         endTime: 1564156800,
         recruitNumb: 5,
         hadRecruitNumb: 0,
-        recruitStatus: 0,
+        recruitStatus: 0, // 0 => 招募中， 1 => 停止招募， 2 => 队伍已删除
         cont: "<p>这里是我完整的内容</p>"
       },
       TeammateList: [
@@ -134,13 +125,15 @@ export default {
         }
       ],
 
-      JoinStatus: 0, // 1=>申请，2=>拒绝加入，3=>已加入，4=>离队
+      JoinStatus: 0, // 0 => 未加入， 1 => 加入
 
       IsSortup: false,
       IsTheLast: true,
       ReplyListPage: 1,
       ReplyList: [],
       Loading: false,
+
+      JoinStatusSvg: 'jointeam',
 
     }
   },
@@ -171,6 +164,20 @@ export default {
         teammateList[i].avatar = utils.imgPrefixDeal(teammateList[i].avatar)
       }
       this.TeammateList = teammateList
+
+      // 判断赋值 JoinStatusSvg , 首先判断队伍的招募状态，再去判断个人的加入状态
+      switch(baseInfo.recruitStatus) {
+        case 0: // 招募中
+          this.JoinStatusSvg = dataBack.joinStatus == 0 ? 'jointeam' : 'hadjointeam'
+          break
+        case 1: // 停止招募, 拒绝加入
+          this.JoinStatusSvg = 'jointeam_refuse'
+          break
+        case 2: // 已删除
+          this.$toast.message('该活动已删除')
+          this.$router.push('/')
+          break
+      }
 
       this.JoinStatus = dataBack.joinStatus
     })
@@ -232,17 +239,8 @@ export default {
         case 0: // 未加入
           this.joinTeamReq()
           break
-        case 1: // 申请
-          this.$toast.message('申请中')
-          break
-        case 2: // 拒绝加入
-          this.$toast.message('不能加入')
-          break
-        case 3: // 已加入
-          this.$toast.message('你已加入组队，是否离开组队？')
-          break
-        case 4: // 已离队，重新加入
-          this.joinTeamReq()
+        case 1: // 加入
+          this.$toast.message('你已加入组队')
           break
       }
     },
