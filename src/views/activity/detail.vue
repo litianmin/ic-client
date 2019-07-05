@@ -245,7 +245,6 @@ export default {
       }
     },
     joinTeamReq () {
-      this.$toast.message('what the hell')
       this.$axios.get(
         `/activity/joinTeam/${this.ActivityID}`,{}
       ).then((resp)=>{
