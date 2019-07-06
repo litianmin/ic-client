@@ -184,15 +184,17 @@ export default {
     this.selfAvatar = this.$store.state.mdeLogin.usrInfo.avatar
     this.selfNickname = this.$store.state.mdeLogin.usrInfo.nickname
 
-    let lng = 113.122629
-    let lat = 23.029735
+    let lng = 113.207
+    let lat = 22.9058
     // 获取首页内容
     this.$axios.get(
       `/user/homePage/${lng}/${lat}`, {}
     ).then((resp)=>{
       // 开始处理返回的数据
       let data = resp.data.msg
+      console.log(1)
       console.log(data)
+      console.log(2)
 
       let activityList = data.activityList  // 活动列表
       for(let i = 0; i < activityList.length; i++) {
