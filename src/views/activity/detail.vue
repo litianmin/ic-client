@@ -95,7 +95,7 @@ import utils from 'common/utils.js'
 export default {
   data () {
     return {
-      ActivityID: '',
+      ActivityID: 0,
 
       BaseInfo: {
         id: '',
@@ -143,7 +143,7 @@ export default {
     this.$axios.get(`/activity/detail/${this.ActivityID}`, {}).then((resp)=>{
       let dataBack = resp.data.msg
 
-      console.log(dataBack)
+      console.log(resp.data)
 
       if(resp.data.code != 20000) {
         this.$toast.message(dataBack)
@@ -179,7 +179,11 @@ export default {
           break
       }
 
-      this.JoinStatus = dataBack.joinStatus
+      this.JoinStatus = dataBack.joinStatus // 自己加入的状态
+
+      this.IsTheLast = dataBack.isTheLast
+      this.ReplyList = dataBack.chatList
+      this.ReplyListPage++
     })
 
   },
@@ -188,7 +192,9 @@ export default {
       this.Loading = true      
       let sortWay = this.IsSortup == false ? 0 : 1
 
-      this.$axios.get(`/article/chatList/${this.ReplyListPage}/${this.ArticleID}/${sortWay}`,{}).then((resp)=>{
+      console.log(`/activity/chatList/${this.ReplyListPage}/${this.ActivityID}/${sortWay}`)
+
+      this.$axios.get(`/activity/chatList/${this.ReplyListPage}/${this.ActivityID}/${sortWay}`,{}).then((resp)=>{
         let dataBack = resp.data.msg
         console.log(dataBack)
         this.IsTheLast = dataBack.isTheLast
@@ -210,12 +216,9 @@ export default {
       this.IsSortup = !this.IsSortup
       this.load()
     },
-    replytoComment (isReply, replyID, replyNickname) {
-      this.$router.push({path:`/game/replytoComment`, query:{commentID:this.CommentID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
-    },
 
     newChat (isReply, replyID, replyNickname) {
-      this.$router.push({path:`/article/newChat`, query:{articleID:this.ArticleID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
+      this.$router.push({path:`/activity/newChat`, query:{teamID:this.ActivityID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
     },
 
     joinTeam () {

@@ -192,9 +192,7 @@ export default {
     ).then((resp)=>{
       // 开始处理返回的数据
       let data = resp.data.msg
-      console.log(1)
       console.log(data)
-      console.log(2)
 
       let activityList = data.activityList  // 活动列表
       for(let i = 0; i < activityList.length; i++) {

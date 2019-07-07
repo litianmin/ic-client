@@ -182,7 +182,11 @@ const router =  new Router({
       name: 'activity-detail',
       component: () => import('./views/activity/detail.vue')
     },
-
+    {
+      path: '/activity/newChat',
+      name: 'activity-newChat',
+      component: () => import('./views/activity/newChat.vue')
+    },
 
   ],
 })
