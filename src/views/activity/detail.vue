@@ -218,6 +218,11 @@ export default {
     },
 
     newChat (isReply, replyID, replyNickname) {
+      // 先判断用户是否已经加入组队
+      if(this.JoinStatus == 0) {
+        this.$toast.message('未加入组队')
+        return
+      }
       this.$router.push({path:`/activity/newChat`, query:{teamID:this.ActivityID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
     },
 

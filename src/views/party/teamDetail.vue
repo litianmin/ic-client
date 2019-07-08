@@ -220,6 +220,9 @@ export default {
       `/party/teamDetail/${this.TeamID}`, 
       {}
     ).then((resp)=>{
+
+      console.log(resp.data)
+
       // 如果队伍已经解散了，直接跳转到组队列表去
       if(resp.data.code == 40105) {
         this.$toast.message(resp.data.msg)
@@ -228,7 +231,7 @@ export default {
       }
 
       let dataBack = resp.data.msg
-      this.IsTheLast = dataBack.isTheLast
+      this.IsTheLast = dataBack.chatListInfo.isTheLast
       
       // 渲染详情页基本信息
       // 渲染图片路径处理
@@ -266,7 +269,7 @@ export default {
       teamBaseInfo.captainAvatar = utils.imgPrefixDeal(teamBaseInfo.captainAvatar)
 
       // 评论处理
-      let replyList =  dataBack.chatList
+      let replyList =  dataBack.chatListInfo.chatList
       for(let i = 0; i < replyList.length; i++) {
         replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, true)
         replyList[i].user_avatar = utils.imgPrefixDeal(replyList[i].user_avatar)
@@ -274,7 +277,6 @@ export default {
       this.ReplyList = this.ReplyList.concat(replyList)
 
       this.InitLoading = false
-      console.log(resp.data)
     })
   },
   methods: {

@@ -62,7 +62,7 @@
             <img style="max-width:100%; max-height:30rem;" :src="item.recruitImg" alt="">
 
             <mu-flex style="width:100%; position:absolute; bottom:0; padding:0 .2rem; background:rgba(0, 0, 0, .5); padding:1rem;" align-items="center">
-              <span style="color:#fff;">{{ item.partyTheme }} - {{ item.partyVenue.name }}</span>
+              <span style="color:#fff;">{{ item.partyTheme }} - {{ item.partySiteName }}</span>
             </mu-flex>
           </mu-flex>
 
@@ -73,7 +73,7 @@
             </mu-row>
             <mu-row style="margin-bottom:.3rem;">
               <span style="color:#795548; font-size:12px;">活动地点:</span>
-              <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyVenue.addr }}</span>
+              <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partySiteDetail }}</span>
             </mu-row>
             <mu-row style="margin-bottom:.3rem;">
               <span style="color:#795548; font-size:12px;">活动时间:</span>
@@ -81,11 +81,11 @@
             </mu-row>
             <mu-row style="margin-bottom:.3rem;">
               <span style="color:#795548; font-size:12px;">集合地点:</span>
-              <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.meetingVenue.addr }}</span>
+              <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.meetingSiteDetail }}</span>
             </mu-row>
             <mu-row style="margin-bottom:.3rem;">
               <span style="color:#795548; font-size:12px;">招募人数:</span>
-              <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.recruitNumb }}/<span style="color:green; font-size:10px;">{{ item.hadRecruitNumb }}</span></span>
+              <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.recruitNumb }}人</span>
             </mu-row>
             <mu-row style="margin-bottom:.3rem;">
               <span style="color:#795548; font-size:12px;">队友偏爱:</span>
@@ -168,7 +168,9 @@ export default {
         lat: this.Lat,
         theme: this.Theme
       }).then((resp)=>{
-        let dataBack = resp.data
+
+        let dataBack = resp.data.msg
+
         this.IsTheLast = dataBack.isTheLast
 
         let listInfo = dataBack.listInfo
@@ -181,7 +183,7 @@ export default {
           listInfo[i].teammatePrefer = listInfo[i].teammatePrefer == '' ? '随便来！' : listInfo[i].teammatePrefer
 
           // 图片路径处理
-          listInfo[i].recruitImg = listInfo[i].recruitImg == '' ? utils.PartyDefaultDisplayImg : utils.imgPrefixDeal(listInfo[i].recruitImg[0])
+          listInfo[i].recruitImg = listInfo[i].recruitImg == '' ? utils.PartyDefaultDisplayImg : utils.imgPrefixDeal(listInfo[i].recruitImg)
           listInfo[i].captainAvatar = utils.imgPrefixDeal(listInfo[i].captainAvatar)
           // 先格式化活动时间  {{ item.partyBeginTime }}  ~  {{ item.partyEndTime }}
           // 2019/1/02 02:02  ~  2019/3/02 03:04
@@ -198,7 +200,6 @@ export default {
         this.TeamList = this.TeamList.concat(dataBack.listInfo)
         this.Page++
         this.Loading = false
-        console.log(resp)
       })
     },
     loadiframe () {
