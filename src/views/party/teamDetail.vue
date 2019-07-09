@@ -287,7 +287,12 @@ export default {
       this.Loading = true      
       let sortWay = this.IsSortup == false ? 0 : 1
       this.$axios.post(`/party/chatList/${this.ReplyListPage}/${this.TeamID}/${sortWay}`,{}).then((resp)=>{
-        let dataBack = resp.data
+        if(resp.data.code != 20000) {
+          this.$toast.message(resp.data.msg)
+          return
+        }
+
+        let dataBack = resp.data.msg
         this.IsTheLast = dataBack.isTheLast
         let replyList = dataBack.listInfo
         for(let i = 0; i < replyList.length; i++) {
@@ -334,10 +339,7 @@ export default {
           ).then((resp)=>{
             let dataBack = resp.data
             this.$toast.message(dataBack.msg)
-            if(dataBack.code == 20000) {
-              window.location.reload()
-              console.log('准备更新工作')
-            }
+            // window.location.reload()
           })
         break
         case 1: // 申请
@@ -389,6 +391,7 @@ export default {
         })
       } else {
         this.$axios.post(`/party/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
+          console.log(resp)
           if(resp.data.code == 20000) {
             this.$toast.message('已退出队伍')
             this.$router.push(`/party/list`)
