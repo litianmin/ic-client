@@ -338,8 +338,9 @@ export default {
         }
       ).then((resp)=>{
         if(resp.data.code == 20000) {
+          let newTeamID = resp.data.msg
           this.$toast.success('成功创建组队！')
-          this.$router.go(-1)
+          this.$router.go(`/travel/teamDetail/${newTeamID}`)
         }else{
           this.$toast.message('创建组队失败')
         }
