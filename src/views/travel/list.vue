@@ -230,13 +230,16 @@ export default {
           listInfo[i].captainAvatar = utils.imgPrefixDeal(listInfo[i].captainAvatar)
 
           // 处理步骤
-          let stepList = ''
-          for(let j = 0; j < listInfo[i].stepList.length; j++) {
-            stepList += listInfo[i].stepList[j].addrOrProgram + ' -> '
-          }
-          if(stepList.length > 4) {
-            stepList = stepList.substring(0, stepList.length - 4)
-          }
+          let stepList = listInfo[i].stepListStr
+
+          stepList = stepList.replace('|', ' -> ')
+
+          // for(let j = 0; j < listInfo[i].stepList.length; j++) {
+          //   stepList += listInfo[i].stepList[j].addrOrProgram + ' -> '
+          // }
+          // if(stepList.length > 4) {
+          //   stepList = stepList.substring(0, stepList.length - 4)
+          // }
           listInfo[i].stepListStr = stepList
         }
 

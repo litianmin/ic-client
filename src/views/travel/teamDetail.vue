@@ -272,7 +272,7 @@ export default {
       }
 
       let dataBack = resp.data.msg
-      this.IsTheLast = dataBack.isTheLast
+      this.IsTheLast = dataBack.chatListInfo.isTheLast
       
       // 渲染详情页基本信息
       let teamBaseInfo = dataBack.teamBaseInfo
@@ -311,7 +311,7 @@ export default {
       this.JointeamStmt = dataBack.joinStmt
 
       // 评论处理
-      let replyList =  dataBack.chatList
+      let replyList =  dataBack.chatListInfo.chatList
       for(let i = 0; i < replyList.length; i++) {
         replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, true)
         replyList[i].user_avatar = utils.imgPrefixDeal(replyList[i].user_avatar)
