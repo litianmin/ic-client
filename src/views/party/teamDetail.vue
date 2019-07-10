@@ -191,6 +191,7 @@ export default {
           name: ''
         },
         recruitStatus: 0, // 0=>组队中， 1=>停止招募(招募成功或者已过期), 2=>已解散(只有组队中才能解散，停止招募后不能解散)
+        hadRecruitNumb: 0,
       },
       TeammateList: [],
       JointeamStmt: 0,
@@ -255,6 +256,8 @@ export default {
       teamBaseInfo.distance = utils.distanceFormat(teamBaseInfo.distance)
       // 队伍发布时间处理
       teamBaseInfo.createTime = utils.getDateDiff(teamBaseInfo.createTime, true)
+      // 已招募人数
+      teamBaseInfo.hadRecruitNumb = dataBack.teammateList.length
 
       this.TeamBaseInfo = teamBaseInfo  // 赋值
       this.TeammateList = dataBack.teammateList

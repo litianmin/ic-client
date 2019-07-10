@@ -233,6 +233,7 @@ export default {
         },
         recruitStatus: 0, // 0=>组队中， 1=>停止招募(招募成功或者已过期), 2=>已解散(只有组队中才能解散，停止招募后不能解散)
         stepList: [],
+        hadRecruitNumb: 0,
       },
       TeammateList: [],
       JointeamStmt: 0,
@@ -299,10 +300,14 @@ export default {
         teamBaseInfo.stepList[i].descImg = utils.imgPrefixDeal(teamBaseInfo.stepList[i].descImg)
       }
 
+      // 已招募人数
+      teamBaseInfo.hadRecruitNumb = dataBack.teammateList.length
+
+
       this.TeamBaseInfo = teamBaseInfo  // 赋值
       
       // 处理队友的头像
-      for(let i = 0; i < dataBack.teammateList; i++) {
+      for(let i = 0; i < dataBack.teammateList.length; i++) {
         dataBack.teammateList[i].avatar = utils.imgPrefixDeal(dataBack.teammateList[i].avatar)
       }
       this.TeammateList = dataBack.teammateList
@@ -333,7 +338,11 @@ export default {
       let sortWay = this.IsSortup == false ? 0 : 1
 
       this.$axios.post(`/travel/chatList/${this.ReplyListPage}/${this.TeamID}/${sortWay}`,{}).then((resp)=>{
-        let dataBack = resp.data
+        if(resp.data.code != 20000) {
+          this.$toast.message('系统繁忙')
+          return
+        }
+        let dataBack = resp.data.msg
         this.IsTheLast = dataBack.isTheLast
         let replyList = dataBack.listInfo
         for(let i = 0; i < replyList.length; i++) {
@@ -375,16 +384,7 @@ export default {
       // 因为party里面没有1、2、5状态， 只需要判断 0 、3、 4(暂时不做其他的)
       switch(this.JointeamStmt) {
         case 0: // 未加入
-          this.$axios.post(
-            `/travel/joinTeam/${this.TeamID}`,{}
-          ).then((resp)=>{
-            let dataBack = resp.data
-            this.$toast.message(dataBack.msg)
-            if(dataBack.code == 20000) {
-              window.location.reload()
-              console.log('准备更新工作')
-            }
-          })
+          this.joinTeamReq()
         break
         case 1: // 申请
           // 不做处理
@@ -401,21 +401,24 @@ export default {
           }
         break
         case 4: // 已离队，重新加入
-          this.$axios.post(
-            `/travel/joinTeam/${this.TeamID}`,{}
-          ).then((resp)=>{
-            let dataBack = resp.data
-            this.$toast.message(dataBack.msg)
-            if(dataBack.code == 20000) {
-              window.location.reload()
-              console.log('准备更新工作')
-            }
-          })
+          this.joinTeamReq()
         break
         case 5:
           // 不做处理
         break
       }
+    },
+    joinTeamReq () {
+      this.$axios.post(
+        `/travel/joinTeam/${this.TeamID}`,{}
+      ).then((resp)=>{
+        let dataBack = resp.data
+        this.$toast.message(dataBack.msg)
+        if(dataBack.code == 20000) {
+          window.location.reload()
+          console.log('准备更新工作')
+        }
+      })
     },
     leaveTeam () {
       // 先判断是否为队长，如果是队长，提示会解散队伍
