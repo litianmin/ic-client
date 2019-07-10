@@ -13,7 +13,7 @@
     </mu-flex>
 
     <!-- 文章详情 -->
-    <mu-flex style="padding:1rem .5rem;" v-html="Cont"></mu-flex>
+    <div style="padding:1rem .5rem;" v-html="Cont"></div>
 
     <!-- 评论 -->
     <!-- BEGIN 排序条 -->
@@ -101,21 +101,23 @@ export default {
       let msg = resp.data.msg
 
       // 开始处理数据
-      let articleDetail = msg.articleDetail
+      let articleDetail = msg.baseInfo
       this.Title = articleDetail.title
       this.Type = articleDetail.type
       this.DisplayImg = utils.imgPrefixDeal(articleDetail.displayImg)
       this.BeginTime = utils.unixToDate(articleDetail.beginTime)
       this.Cont = articleDetail.cont
 
-      this.IsTheLast = msg.isTheLast
+      this.IsTheLast = msg.chatListInfo.isTheLast
 
-      for(let i = 0; i < msg.chatList.length; i++) {
-        msg.chatList[i].create_time = utils.getDateDiff(msg.chatList[i].create_time, true)
-        msg.chatList[i].user_avatar = utils.imgPrefixDeal(msg.chatList[i].user_avatar)
-        msg.chatList[i].chat_img = utils.imgPrefixDeal(msg.chatList[i].chat_img)
+      let chatList = msg.chatListInfo.listInfo
+
+      for(let i = 0; i < chatList.length; i++) {
+        chatList[i].create_time = utils.getDateDiff(chatList[i].create_time, true)
+        chatList[i].user_avatar = utils.imgPrefixDeal(chatList[i].user_avatar)
+        chatList[i].chat_img = utils.imgPrefixDeal(chatList[i].chat_img)
       }
-      this.ReplyList = msg.chatList
+      this.ReplyList = chatList
       this.ReplyListPage++
     })
   },
@@ -127,8 +129,8 @@ export default {
       this.$axios.get(`/article/chatList/${this.ReplyListPage}/${this.ArticleID}/${sortWay}`,{}).then((resp)=>{
         let dataBack = resp.data.msg
         console.log(dataBack)
-        this.IsTheLast = dataBack.isTheLast
-        let replyList = dataBack.listInfo
+        this.IsTheLast = dataBack.msg.isTheLast
+        let replyList = dataBack.msg.listInfo
         for(let i = 0; i < replyList.length; i++) {
           replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, true)
           replyList[i].user_avatar = utils.imgPrefixDeal(replyList[i].user_avatar)
