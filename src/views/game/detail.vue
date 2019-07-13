@@ -315,14 +315,22 @@
       this.$axios.post(
         `/game/detail/${this.gameID}`,{}
       ).then((resp)=>{
+        console.log(resp)
+
+        if(resp.data.code != 20000) {
+          this.$toast.message('系统繁忙')
+          return
+        }
         let dataBack = resp.data.msg
 
+        let baseInfo = dataBack.baseInfo
+
         // 游戏基本信息初始化问题
-        this.gameTp = dataBack.gameInfo.g_type
-        this.gameBriefDesc = dataBack.gameInfo.brief_desc
-        this.displayImgList = dataBack.gameInfo.display_imglist
-        this.tabList = dataBack.gameInfo.tab_list
-        this.gameName = dataBack.gameInfo.g_name
+        this.gameTp = baseInfo.g_type
+        this.gameBriefDesc = baseInfo.brief_desc
+        this.displayImgList = baseInfo.display_imglist
+        this.tabList = baseInfo.tab_list
+        this.gameName = baseInfo.g_name
         // 轮播图数据渲染问题
         this.isRender =true
          // 轮播图处理
@@ -334,12 +342,12 @@
         })
 
         // 游戏评论处理
-        let cmtList = dataBack.cmtList
+        let cmtList = dataBack.commentInfo.listInfo
         for(let i = 0; i < cmtList.length; i++) {
-          cmtList[i].c_create_time = utils.getDateDiff(cmtList[i].c_create_time, false)
+          cmtList[i].c_create_time = utils.getDateDiff(cmtList[i].c_create_time, true)
         }
         this.commentList = this.commentList.concat(cmtList)
-        this.commentIsTheLast = dataBack.cmtIsTheLast
+        this.commentIsTheLast = dataBack.commentInfo.isTheLast
         this.commentPage++
 
       })
@@ -372,11 +380,15 @@
         this.commentLoading = true
 
         this.$axios.post(`/game/commentList/${this.commentPage}/${this.gameID}`,{}).then((resp)=>{
-          let dataBack = resp.data
+          if(resp.data.code != 20000) {
+            this.$toast.message(resp.data.msg)
+            return
+          }
+          let dataBack = resp.data.msg
           this.commentIsTheLast = dataBack.isTheLast
           let cmtList = dataBack.listInfo
           for(let i = 0; i < cmtList.length; i++) {
-            cmtList[i].c_create_time = utils.getDateDiff(cmtList[i].c_create_time, false)
+            cmtList[i].c_create_time = utils.getDateDiff(cmtList[i].c_create_time, true)
           }
           this.commentList = this.commentList.concat(cmtList)
           this.commentPage++  // 页数+1

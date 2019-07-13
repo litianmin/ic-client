@@ -77,7 +77,7 @@ export default {
         return
       }
       this.$axios.post(
-        `/commentToGame`,
+        `/game/newComment`,
         {
           g_id: Number(this.gameID),
           c_cont: this.c_cont,

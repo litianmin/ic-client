@@ -124,23 +124,33 @@ export default {
 
     // 页面初始化
     this.$axios.post(`/game/commentDetail/${commentID}`, {}).then((resp)=>{
+
+      console.log(resp)
+
+      if(resp.data.code != 20000) {
+        this.$toast.message(resp.data.msg)
+        return
+      }
+
       let dataBack = resp.data.msg 
-      this.IsTheLast = dataBack.isTheLast
+      this.IsTheLast = dataBack.replyListInfo.isTheLast
 
-      this.CmtDetailMain.userID = dataBack.cmtDetailMain.user_id
-      this.CmtDetailMain.c_cont = dataBack.cmtDetailMain.c_cont
-      this.CmtDetailMain.c_img = dataBack.cmtDetailMain.c_img
-      this.CmtDetailMain.likeNumb = dataBack.cmtDetailMain.like_num
-      this.CmtDetailMain.dislikeNum = dataBack.cmtDetailMain.dislike_num
-      this.CmtDetailMain.replyNum = dataBack.cmtDetailMain.reply_num
-      this.CmtDetailMain.createTime = utils.getDateDiff(dataBack.cmtDetailMain.create_time, false)
-      this.CmtDetailMain.nickname = dataBack.cmtDetailMain.nickname
-      this.CmtDetailMain.avatar = dataBack.cmtDetailMain.avatar
-      this.CmtDetailMain.sex = dataBack.cmtDetailMain.sex
+      let cmtDetailMain = dataBack.cmtDetailMain
 
-      let replyList = dataBack.replyListInfo
+      this.CmtDetailMain.userID = cmtDetailMain.user_id
+      this.CmtDetailMain.c_cont = cmtDetailMain.c_cont
+      this.CmtDetailMain.c_img = cmtDetailMain.c_img
+      this.CmtDetailMain.likeNumb = cmtDetailMain.like_num
+      this.CmtDetailMain.dislikeNum = cmtDetailMain.dislike_num
+      this.CmtDetailMain.replyNum = cmtDetailMain.reply_num
+      this.CmtDetailMain.createTime = utils.getDateDiff(cmtDetailMain.create_time, true)
+      this.CmtDetailMain.nickname = cmtDetailMain.nickname
+      this.CmtDetailMain.avatar = cmtDetailMain.avatar
+      this.CmtDetailMain.sex = cmtDetailMain.sex
+
+      let replyList = dataBack.replyListInfo.listInfo
       for(let i = 0; i < replyList.length; i++) {
-        replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, false)
+        replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, true)
       }
       this.ReplyList = replyList
       this.ReplyListPage++
@@ -156,11 +166,16 @@ export default {
       this.Loading = true      
       let sortWay = this.IsSortup == false ? 0 : 1
       this.$axios.post(`/game/commentReplyList/${this.ReplyListPage}/${this.CommentID}/${sortWay}`,{}).then((resp)=>{
-        let dataBack = resp.data
+        if(resp.data.code != 20000) {
+          this.$toast.message(resp.data.msg)
+          return
+        }
+
+        let dataBack = resp.data.msg
         this.IsTheLast = dataBack.isTheLast
         let replyList = dataBack.listInfo
         for(let i = 0; i < replyList.length; i++) {
-          replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, false)
+          replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, true)
         }
         this.ReplyList = this.ReplyList.concat(replyList)
         this.ReplyListPage++

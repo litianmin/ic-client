@@ -99,28 +99,27 @@ export default {
   },
   mounted () {
     // 初始化，获取热门游戏列表和普通游戏列表
-    this.$axios.post(
-      `/gamelist/${this.page}`,{
-        is_search: false,
-        search_cont: ''
+    this.$axios.post(`/game/mainpage`).then((resp)=>{
+      
+      if(resp.data.code != 20000) {
+        this.$toast.message(dataBack.msg)
+        return
       }
-    ).then((resp)=>{
-      let dataBack = resp.data
+      
+      let dataBack = resp.data.msg
 
-      if(dataBack.code == 20000) {
-        if(dataBack.hotGameList.length == 0) { 
-          // 没有热门游戏，那么隐藏热门游戏列表
-          this.hotGameListIsShow = false
-        }else{
-          this.hotGameList = dataBack.hotGameList
-        }
-
-        this.gameList = dataBack.gameList
-
-        // 是否为最后一页了
-        this.isTheLast = dataBack.isTheLast
-
+      if(dataBack.hotGame.length == 0) { 
+        // 没有热门游戏，那么隐藏热门游戏列表
+        this.hotGameListIsShow = false
+      }else{
+        this.hotGameList = dataBack.hotGame
       }
+
+      this.gameList = dataBack.gameInfo.listInfo
+
+      // 是否为最后一页了
+      this.isTheLast = dataBack.gameInfo.isTheLast
+
     })
   },
   methods: {
@@ -133,14 +132,21 @@ export default {
       }
       this.page++      
       this.$axios.post(
-        `/gamelist/${this.page}`,{
+        `/game/list/${this.page}`,{
           is_search: false,
           search_cont: ''
         }
       ).then((resp)=>{
         let dataBack = resp.data
-        this.gameList = this.gameList.concat(dataBack.gameList)
-        this.isTheLast = dataBack.isTheLast
+
+        if(dataBack.code != 20000) {
+          this.$toast.message(dataBack.msg)
+        }
+
+        let gameListInfo = dataBack.msg
+
+        this.gameList = this.gameList.concat(gameListInfo.listInfo)
+        this.isTheLast = gameListInfo.isTheLast
         this.loading = false
         return
       })
@@ -163,14 +169,16 @@ export default {
       this.loading = true
       this.page++      
       this.$axios.post(
-        `/gamelist/1`,{
+        `/game/list/${this.page}`,{
           is_search: true,
           search_cont: searchCont
         }
       ).then((resp)=>{
         this.hotGameListIsShow = false
         let dataBack = resp.data
-        this.gameList = dataBack.gameList
+        let gameListInfo = dataBack.msg
+
+        this.gameList = gameListInfo.listInfo
         this.isTheLast = true
         this.loading = false
         return
