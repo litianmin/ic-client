@@ -401,6 +401,8 @@
       teamLoad () {
         this.teamLoading = true
         this.$axios.post(`/game/teamList/${this.teamPage}/${this.gameID}`,{}).then((resp)=>{
+          console.log(resp.data)
+          return
           let dataBack = resp.data
 
           this.teamIsTheLast = dataBack.isTheLast
