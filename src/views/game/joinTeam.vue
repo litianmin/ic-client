@@ -160,29 +160,12 @@ export default {
         display_img: this.DisplayImg
       }).then((resp)=>{ // 0=>申请，1=>拒绝加入，2=>已加入，3=>离队, 4=>被踢, 5=>队伍过期
         console.log(resp)
-        if(resp.data.isSuccess == true) { // 如果成功
-          let joinStmt = resp.data.joinTeamStmt
-          switch(joinStmt) {
-            case 0:
-            this.$toast.message('已申请')
-            break
-            case 1:
-            this.$toast.message('队长已拒绝了你的加入')
-            break
-            case 2:
-            this.$toast.message('已加入组队')
-            break
-            case 4:
-            this.$toast.message('你已经被踢出组队')
-            break
-            case 5:
-            this.$toast.message('该队伍已经过期')
-            break
-          }
+        this.$toast.message(resp.data.msg)
+
+        if(resp.data.code == 20000) {
           this.$router.go(-1)
-        } else {
-          this.$toast.message('该组队已失效')
         }
+        
       })
     },
   }

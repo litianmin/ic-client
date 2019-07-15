@@ -211,9 +211,18 @@ export default {
 
     // 页面初始化
     this.$axios.post(`/game/teamDetail/${this.TeamID}`, {}).then((resp)=>{
+
+      if(resp.data.code != 20000) {
+        this.$toast.message('该队伍已解散')
+        // this.$router.push('/')
+        return
+      }
+
+      console.log(resp.data)
+
       let dataBack = resp.data.msg 
 
-      this.IsTheLast = dataBack.replyIsTheLast  // 聊天列表是否已经是最后一页了
+      this.IsTheLast = dataBack.chatListInfo.isTheLast  // 聊天列表是否已经是最后一页了
       
       this.ChatDetailMain.userID = dataBack.teamDetail.captain_userid
       this.ChatDetailMain.recruit_word = dataBack.teamDetail.announcement
@@ -232,29 +241,25 @@ export default {
       this.GameID = dataBack.teamDetail.g_id
 
       switch(dataBack.selfJoinStmt) { // 判断当前用户加入的状态
-        case -1:  // 没有加入的记录
+        case 0:  // 没有加入的记录
         this.JointeamStmt = 0
         this.JointeamStmtDesc = '快加入组队吧'
         break
-        case 0: // 申请中
+        case 1: // 申请中
         this.JointeamStmt = 1
         this.JointeamStmtDesc = '组队申请中。。。'
         break
-        case 1: // 拒绝加入
+        case 2: // 拒绝加入
         this.JointeamStmt = 3
         this.JointeamStmtDesc = '已被拒绝！'
         break
-        case 2: // 已加入组队
+        case 3: // 已加入组队
         this.JointeamStmt = 2
         this.JointeamStmtDesc = '已加入组队'
         break
         case 3: // 已离队
         this.JointeamStmt = 0
         this.JointeamStmtDesc = '还不快回来'
-        break
-        case 4: // 已被踢
-        this.JointeamStmt = 3
-        this.JointeamStmtDesc = '已被踢出组队'
         break
       }
        
@@ -282,9 +287,9 @@ export default {
       this.TeammateList = dataBack.teamDetail.TeammateList
 
 
-      let replyList = dataBack.replyList
+      let replyList = dataBack.chatListInfo.listInfo
       for(let i = 0; i < replyList.length; i++) {
-        replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, false)
+        replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, true)
       }
       this.ReplyList = replyList
       this.ChatListPage++
@@ -296,7 +301,12 @@ export default {
       this.Loading = true      
       let sortWay = this.IsSortup == false ? 0 : 1
       this.$axios.post(`/game/teamchatList/${this.ChatListPage}/${this.TeamID}/${sortWay}`,{}).then((resp)=>{
-        let dataBack = resp.data
+        if(resp.data.code != 20000) {
+          this.$toast.message(resp.data.msg)
+          return
+        }
+
+        let dataBack = resp.data.msg
         this.IsTheLast = dataBack.isTheLast
         let replyList = dataBack.listInfo
         for(let i = 0; i < replyList.length; i++) {
@@ -333,11 +343,13 @@ export default {
         case 1: // 申请中
         this.$toast.message("正在申请中。。。")
         break
-        case 2: // 已经加入组队
-        this.$toast.message("你已加入组队")
+        case 2: // 拒绝加入
+        this.$toast.message("拒绝加入")
         break
         case 3: // 不能加入
-        this.$toast.message("不能加入")
+        this.$toast.message("已加入")
+        case 4: // 不能加入
+        this.$toast.message("已加入")
         break
       }
 

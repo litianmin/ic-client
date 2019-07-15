@@ -402,20 +402,21 @@
         this.teamLoading = true
         this.$axios.post(`/game/teamList/${this.teamPage}/${this.gameID}`,{}).then((resp)=>{
           console.log(resp.data)
-          return
-          let dataBack = resp.data
+          
+          if(resp.data.code != 20000) {
+            this.$toast.message(resp.data.msg)
+            return
+          }
+
+          let dataBack = resp.data.msg
 
           this.teamIsTheLast = dataBack.isTheLast
-
-          if(dataBack.hadJoinTeam.length > 0) {
-            this.teamHadJoinList = dataBack.hadJoinTeam
-          }
           
-          let listInfo = dataBack.teamInfo
+          let listInfo = dataBack.listInfo
 
           for(let i = 0; i < listInfo.length; i++) {
-            listInfo[i]['hadJoin'] = listInfo[i]['TeammateList'].length
-            listInfo[i]['create_time'] = utils.getDateDiff(listInfo[i]['create_time'], false)
+            // listInfo[i]['hadJoin'] = listInfo[i]['TeammateList'].length
+            listInfo[i]['create_time'] = utils.getDateDiff(listInfo[i]['create_time'], true)
           }
 
           this.teamList = this.teamList.concat(listInfo)
