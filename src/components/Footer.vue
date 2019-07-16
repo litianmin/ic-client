@@ -57,6 +57,7 @@ export default {
         break
         case 1:
           this.navActive = 'nearby'
+          this.$router.push('/instant/list')
         break
         case 2:
           this.navActive = 'msg'

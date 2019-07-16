@@ -14,12 +14,12 @@
     <!-- 评论内容最多200个字符，最多一张图片 -->
     <div style="background:#fff;">
       <mu-container style="width:100%; height:100%; border-radius:.5rem; padding:.5rem .5rem 0 .5rem;">
-        <mu-text-field v-model="c_cont" multi-line :rows="7" :rows-max="10" full-width max-length="150" underline-color="rgba(139, 69, 19, .2)" placeholder="走起？" style="font-size:14px;">
+        <mu-text-field v-model="TeamDetail" multi-line :rows="7" :rows-max="10" full-width max-length="150" underline-color="rgba(139, 69, 19, .2)" placeholder="走起？" style="font-size:14px;">
         </mu-text-field>
       </mu-container>
     </div>
 
-      <!-- <span style="font-size:12px; color:#9e9e9e;">{{ MeetingVenueObj.name }}</span> -->
+      <!-- <span style="font-size:12px; color:#9e9e9e;">{{ VenueObj.name }}</span> -->
       <!-- <mu-icon @click="chooseMeetingVenue" value="person_pin_circle" size="20" color="#009688"></mu-icon> -->
 
     <mu-flex v-if="AddrChooseWindowIsShow == false" style="width:100%; background:#eeeeee; padding:.5rem .5rem .5rem 1rem;" align-items="center">
@@ -33,12 +33,12 @@
     <mu-divider></mu-divider>
     
     <div style="padding:.5rem;">
-      <span style="font-size:12px; color:#9e9e9e;">地点：{{ MeetingVenueObj.name }}</span>
+      <span style="font-size:12px; color:#9e9e9e;">地点：{{ VenueObj.name }}</span>
     </div>
 
     <div style="margin-top:1rem; margin-left:.5rem; padding:1rem; position:relative; width:40%; overflow-y:auto; overflow-y:hidden;">
-        <mu-icon v-show="this.c_img" @click="del_img" value="cancel" color="#e91e63" style="position:absolute; top:0; right:0;"></mu-icon>
-        <img style="max-width:100%; max-height:100%; border-radius:.3rem;" :src="c_img" alt="">
+        <mu-icon v-show="this.DisplayImg" @click="del_img" value="cancel" color="#e91e63" style="position:absolute; top:0; right:0;"></mu-icon>
+        <img style="max-width:100%; max-height:100%; border-radius:.3rem;" :src="DisplayImg" alt="">
     </div>
 
     <!-- BEGIN 地图弹出框 -->
@@ -58,11 +58,10 @@
 export default {
   data () {
     return {
-      gameID: 0,
-      c_cont: '',
-      c_img: '',  // base64图片数据
+      TeamDetail: '',
+      DisplayImg: '',  // base64图片数据
 
-      MeetingVenueObj: {
+      VenueObj: {
         name: '',
         lng: 0,
         lat: 0,
@@ -87,28 +86,28 @@ export default {
       var reader = new FileReader()
       //转base64
       reader.onload = function(e) {
-          _this.c_img = e.target.result
+          _this.DisplayImg = e.target.result
       }
       reader.readAsDataURL(file)
     },
     del_img () {
-      this.c_img = ''
+      this.DisplayImg = ''
     },
     commentSubmit () {
-      if(this.c_cont.length == 0 && this.c_img.length == 0) {
-        this.$toast.message('评论内容不能为空！')
+      if(this.TeamDetail.length == 0 && this.DisplayImg.length == 0) {
+        this.$toast.message('内容不能为空！')
         return
       }
       this.$axios.post(
-        `/game/newComment`,
+        `/instant/newTeam`,
         {
-          g_id: Number(this.gameID),
-          c_cont: this.c_cont,
-          c_img: this.c_img
+          cont: this.TeamDetail,
+          displayImg: this.DisplayImg,
+          venue: this.VenueObj
         }
       ).then((resp)=>{
         if(resp.data.code === 20000) {
-          this.$toast.success('评论成功')
+          this.$toast.success('发表成功')
           this.$router.go(-1)
         }
         // console.log(resp)
@@ -142,7 +141,7 @@ export default {
           }
           // 集合地点
           this.MeetingVenue = e.data.name
-          this.MeetingVenueObj = venueObj
+          this.VenueObj = venueObj
 
           // this.LocateAddr = e.data.name
           this.AddrChooseWindowIsShow = false
