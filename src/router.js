@@ -188,6 +188,13 @@ const router =  new Router({
       component: () => import('./views/activity/newChat.vue')
     },
 
+    // 即使模块
+    { // 新的组队
+      path: '/instant/newTeam',
+      name: 'instart-newTeam',
+      component: () => import('./views/instant/newTeam.vue')
+    }
+
   ],
 })
 

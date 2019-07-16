@@ -38,7 +38,7 @@
           <div style="text-align:center; font-size:12px; margin-top:.3rem;">旅 游</div>
         </div>
 
-        <div>
+        <div @click="linkToInstant">
           <div style="text-align:center;">
             <svg-icon icon-class="team_now" class="icon-class"></svg-icon>
           </div>
@@ -239,6 +239,9 @@ export default {
     linkToGameDetail (gameID) {
       this.$router.push(`/game/detail/${gameID}`)
     },
+    linkToInstant () {
+      this.$router.push('/instant/newTeam')
+    }
   },
   components: {
     Footer,
