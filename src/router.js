@@ -198,6 +198,11 @@ const router =  new Router({
       path: '/instant/list',
       name: 'instant-list',
       component: () => import('./views/instant/list.vue')
+    },
+    { // 队伍详情
+      path: '/instant/detail/:teamID',
+      name: 'instant-detail',
+      component: () => import('./views/instant/detail.vue')
     }
 
   ],
