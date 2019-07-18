@@ -203,6 +203,11 @@ const router =  new Router({
       path: '/instant/detail/:teamID',
       name: 'instant-detail',
       component: () => import('./views/instant/detail.vue')
+    },
+    { // 新的聊天
+      path: '/instant/newChat',
+      name: 'instant-newChat',
+      component: () => import('./views/instant/newChat.vue')
     }
 
   ],

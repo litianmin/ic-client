@@ -13,7 +13,7 @@
       <mu-menu slot="right" class="mine-menu-box">
         <mu-icon value="menu"></mu-icon>
         <mu-list slot="content" class="mine-menu-list">
-          <mu-list-item @click="leaveTeam" v-if="JointeamStmt == 0" button style="border-top:1px solid #fafafa;">
+          <mu-list-item @click="leaveTeam" v-if="JointeamStmt == 3" button style="border-top:1px solid #fafafa;">
             <mu-list-item-title class="mine-menu-item">退出队伍</mu-list-item-title>
           </mu-list-item>
         </mu-list>
@@ -21,29 +21,29 @@
     </mu-appbar>
     <!-- END 头部 -->
 
+    <!-- 队伍基本信息 -->
     <div style="padding:.5rem;">
-      <!-- BEGIN 主评论 -->
       <mu-flex align-items="center">
         <mu-avatar size="26">
-          <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2836389094,1674914749&fm=26&gp=0.jpg">
+          <img :src="TeamBaseInfo.captainAvatar">
         </mu-avatar>
         <span class="comment-item-nickname">
-          这是我的昵称
+          {{ TeamBaseInfo.captainNickname }}
         </span>
-        <span class="comment-item-time" style="margin-right:.6rem;">2分钟前</span>
+        <span class="comment-item-time" style="margin-right:.6rem;">{{ TeamBaseInfo.createTime }}</span>
       </mu-flex>
 
       <mu-row class="comment-item-text">
-        这里是我的内容，来呀，快活呀，反正又大把时光
+        {{ TeamBaseInfo.cont }}
       </mu-row>
 
       <mu-row class="comment-item-img">
-        <img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2458914123,541076108&fm=26&gp=0.jpg" alt="">
+        <img :src="TeamBaseInfo.displayImg" alt="">
       </mu-row>
 
       <mu-row style="padding:1rem .5rem;" >
         <mu-icon value="person_pin_circle" color="#4caf50" size="20"></mu-icon>
-        <span style="font-size:12px; color:#9e9e9e;">地点：我的地点 · 距离你50m</span>
+        <span style="font-size:12px; color:#9e9e9e;">地点：{{ TeamBaseInfo.site.name }} · 距离你{{ TeamBaseInfo.distance }}</span>
       </mu-row>
     </div>
 
@@ -58,7 +58,7 @@
         </span>
     </mu-flex>
     <mu-flex justify-content="center" style="padding:.3rem 0 .5rem 0; border-bottom:1px dashed #e0e0e0; background:#fff;">
-      <span style="font-size:12px; color:#9e9e9e;">-- 招募{{ TeamBaseInfo.recruitNumb }}人，还差{{ TeamBaseInfo.recruitNumb - TeamBaseInfo.hadRecruitNumb }}人 --</span>
+      <span style="font-size:12px; color:#9e9e9e;">-- 已招募{{ TeammateList.length }}人 --</span>
     </mu-flex>
     <!-- END 队长和队友列表 -->
 
@@ -76,11 +76,11 @@
           <mu-avatar size="24" :class="item.user_sex == 1 ? 'avatar-male' : 'avatar-female'">
             <img :src="item.user_avatar">
           </mu-avatar>
-          <span class="reply-nickname">
+          <span class="reply-nickname"> 
             {{ item.user_nickname }} 
           </span>
           <span class="reply-time">{{ item.create_time }}</span>
-        </mu-flex>
+        </mu-flex> 
 
         <mu-row class="reply-cont-box">
           <span style="font-size:12px; margin-left:.5rem; ">
@@ -125,42 +125,114 @@
 </template>
 
 <script>
+import utils from 'common/utils.js'
 export default {
   data () {
     return {
-      JointeamStmt: 0,
-
       InitLoading: true,
       TeamID: 0,
       IsSortup: false,
       IsTheLast: true,
       ReplyListPage: 1,
-      ReplyList: [],
+      ReplyList: [
+        {
+          chat_cont: "这里应该有内容",
+          chat_img: "",
+          create_time: "0",
+          reply_nickname: "",
+          reply_to: 0,
+          team_id: 4,
+          user_avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=549730297,3829719329&fm=26&gp=0.jpg",
+          user_id: 2,
+          user_nickname: "未闻花名",
+          user_sex: 2,
+        }
+      ],
       Loading: false,
       RecruitImgs: [],
       SwiperIsRender: false,
+
       TeamBaseInfo: {
-        partyVenue: {
-          addr: '',
-          lat: 0,
-          lng: 0,
-          name: ''
-        },
-        meetingVenue: {
-          addr: '',
-          lat: 0,
-          lng: 0,
-          name: ''
-        },
+        captainAvatar: "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2836389094,1674914749&fm=26&gp=0.jpg",
+        captainID: 0,
+        captainNickname: "朝花夕拾",
+        captainSex: 1,
+        cont: "来打球不，二中，快来人！",
+        displayImg: "image/instant/team/20190718/1563410597926781300872.jpg",
+        distance: 4872847.586036,
         recruitStatus: 0, // 0=>组队中， 1=>停止招募(招募成功或者已过期), 2=>已解散(只有组队中才能解散，停止招募后不能解散)
+        site: {
+          name: "市东下路20号B座", 
+          lng: 113.122629, 
+          lat: 23.029735, 
+          addr: "市东下路20号b座"
+        },
         hadRecruitNumb: 0,
+        createTime: ''
       },
-      TeammateList: [],
+
+      TeammateList: [
+        {
+          avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=549730297,3829719329&fm=26&gp=0.jpg",
+          joinStatus: 3,
+          jointime: 0,
+          nickname: "未闻花名",
+          sex: 2,
+          user_id: 2,
+        }
+      ],
       JointeamStmt: 0,
       IsCaptain: false,
-
     }
   },
+
+  mounted () {
+    this.TeamID = this.$route.params.teamID
+    let lng = 113.122629
+    let lat = 23.029735
+    this.$axios.get(`/instant/detail/${this.TeamID}/${lng}/${lat}`, {}).then((resp)=>{
+
+      console.log(resp.data)
+
+      if(resp.data.code != 20000) {
+        this.$toast.message(resp.data.msg)
+        return
+      }
+
+      // 处理队伍基本信息
+      let dataBack = resp.data.msg
+      
+      let teamBaseInfo = dataBack.teamBaseInfo
+      teamBaseInfo.captainAvatar = utils.imgPrefixDeal(teamBaseInfo.captainAvatar)
+      teamBaseInfo.displayImg = utils.imgPrefixDeal(teamBaseInfo.displayImg)
+      teamBaseInfo.createTime = utils.getDateDiff(teamBaseInfo.createTime, true)
+      teamBaseInfo.distance = utils.distanceFormat(teamBaseInfo.distance)
+      this.TeamBaseInfo = teamBaseInfo
+
+      // 处理对哟基本信息
+      let teammateList = dataBack.teammateList
+      for(let i = 0; i < teammateList.length; i++) {
+        teammateList[i].avatar = utils.imgPrefixDeal(teammateList[i].avatar)
+      }
+      this.TeammateList = teammateList
+
+      // 处理评论列表
+      this.IsTheLast = dataBack.chatListInfo.isTheLast
+      let chatList = dataBack.chatListInfo.chatList
+      for(let i = 0; i < chatList.length; i++) {
+        chatList[i].user_avatar = utils.imgPrefixDeal(chatList[i].user_avatar)
+        chatList[i].chat_img = utils.imgPrefixDeal(chatList[i].chat_img)
+        chatList[i].create_time = utils.getDateDiff(chatList[i].create_time)
+      }
+      this.ReplyList = chatList
+      this.ReplyListPage++
+
+      this.JointeamStmt = dataBack.joinStmt
+      this.IsCaptain = dataBack.isCaptain
+    })
+  },
+
+
   methods: {
     goBack () {
       this.$router.go(-1)
@@ -169,7 +241,7 @@ export default {
     load () {
       this.Loading = true      
       let sortWay = this.IsSortup == false ? 0 : 1
-      this.$axios.post(`/party/chatList/${this.ReplyListPage}/${this.TeamID}/${sortWay}`,{}).then((resp)=>{
+      this.$axios.post(`/instant/chatList/${this.ReplyListPage}/${this.TeamID}/${sortWay}`,{}).then((resp)=>{
         if(resp.data.code != 20000) {
           this.$toast.message(resp.data.msg)
           return
@@ -195,9 +267,7 @@ export default {
       this.IsSortup = !this.IsSortup
       this.load()
     },
-    replytoComment (isReply, replyID, replyNickname) {
-      this.$router.push({path:`/game/replytoComment`, query:{commentID:this.CommentID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
-    },
+
     joinTeam () {
       // 首先判断队伍的状态是否停止招募
       if(this.TeamBaseInfo.recruitStatus > 0) {
@@ -217,13 +287,7 @@ export default {
       // 因为party里面没有1、2、5状态， 只需要判断 0 、3、 4(暂时不做其他的)
       switch(this.JointeamStmt) {
         case 0: // 未加入
-          this.$axios.post(
-            `/party/joinTeam/${this.TeamID}`,{}
-          ).then((resp)=>{
-            let dataBack = resp.data
-            this.$toast.message(dataBack.msg)
-            // window.location.reload()
-          })
+          this.joinTeamReq()
         break
         case 1: // 申请
           // 不做处理
@@ -240,16 +304,7 @@ export default {
           }
         break
         case 4: // 已离队，重新加入
-          this.$axios.post(
-            `/party/joinTeam/${this.TeamID}`,{}
-          ).then((resp)=>{
-            let dataBack = resp.data
-            this.$toast.message(dataBack.msg)
-            if(dataBack.code == 20000) {
-              window.location.reload()
-              console.log('准备更新工作')
-            }
-          })
+          this.joinTeamReq()
         break
         case 5:
           // 不做处理
@@ -263,33 +318,42 @@ export default {
         this.$confirm('是否解散队伍？').then((resp)=>{
           if(resp.result == true) { // 确定解散队伍
             // this.$toast.message('你确定解散了队伍')
-            this.$axios.post(`/party/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
+            this.$axios.post(`/instant/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
               if(resp.data.code == 20000) {
                 this.$toast.message('已成功解散')
-                this.$router.push(`/party/list`)
+                this.$router.push(`/instant/list`)
                 return
               }
             }) 
           }
         })
       } else {
-        this.$axios.post(`/party/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
+        this.$axios.post(`/instant/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
           console.log(resp)
           if(resp.data.code == 20000) {
             this.$toast.message('已退出队伍')
-            this.$router.push(`/party/list`)
+            this.$router.push(`/instant/list`)
             return
           }
         }) 
       }
     },
     newChat (isReply, replyID, replyNickname) {
-      // 只有加入组队的人才能进行评论
-      if(this.JointeamStmt != 3) {
-        this.$toast.message('加入组队后才能聊天哦')
-        return
-      }
-      this.$router.push({path:`/party/newChat`, query:{teamID:this.TeamID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
+      this.$router.push({path:`/instant/newChat`, query:{teamID:this.TeamID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
+    },
+
+    joinTeamReq () {
+      this.$axios.get(
+        `/instant/joinTeam/${this.TeamID}`,{}
+      ).then((resp)=>{
+        console.log(resp)
+        let dataBack = resp.data
+        this.$toast.message(dataBack.msg)
+        if(dataBack.code == 20000) {
+          window.location.reload()
+          console.log('准备更新工作')
+        }
+      })
     },
 
   }
@@ -299,7 +363,7 @@ export default {
 <style scoped>
 .mine-appbar { width: 100%; height:2.5rem; }
 .mine-menu-box { margin-top:1rem; right:.5rem; }
-.mine-menu-list { background:#4dd0e1; color:white; padding:0; }
+.mine-menu-list { background:#81c784; color:white; padding:0; }
 .mine-menu-item { color:#fff; font-size:12px; }
 
 
