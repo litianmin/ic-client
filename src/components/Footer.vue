@@ -61,6 +61,7 @@ export default {
         break
         case 2:
           this.navActive = 'msg'
+          this.$router.push('/notify/category')
         break
         case 3:
           this.navActive = 'personnalMsg'

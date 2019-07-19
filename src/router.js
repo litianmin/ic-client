@@ -208,6 +208,12 @@ const router =  new Router({
       path: '/instant/newChat',
       name: 'instant-newChat',
       component: () => import('./views/instant/newChat.vue')
+    },
+
+    { // 通知模块
+      path: '/notify/category',
+      name: 'notify-category',
+      component: () => import('./views/notify/category.vue')
     }
 
   ],
