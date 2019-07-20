@@ -47,7 +47,6 @@
       </mu-row>
     </div>
 
-
     <!-- BEGIN 队长和队友列表 -->
     <mu-flex style="padding:.5rem 1rem; background:#fff;" justify-content="center" align-items="center" wrap="wrap">
         <mu-avatar v-for="(item, index) in TeammateList" :key="index" size="35" :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'" style="margin-right:.5rem;">

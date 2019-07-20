@@ -12,11 +12,11 @@
     </mu-appbar>
     <!-- END 头部 -->
 
-    <div style="padding:1rem;">
-      <mu-row style="margin-top:1rem; margin-bottom:1rem;">
+    <div style="padding:1rem; margin-bottom:2.5rem;">
+      <mu-row style="margin-top:0rem; margin-bottom:1rem;">
         <mu-col span="3">
-          <mu-flex style="width:100%; height:auto; color:#fff;" align-items="center" >
-              <div style="width:3.8rem; height:3.8rem; background:#03a9f4; color:#fff; padding:.5rem; border-radius:50%;">
+          <mu-flex style="width:100%; height:auto; color:#fff; padding:0 0 0 .5rem;" align-items="center" >
+              <div style="width:3.3rem; height:3.3rem; background:#03a9f4; color:#fff; padding:.5rem; border-radius:50%;">
                 <div style="text-align:center;">
                   <svg-icon icon-class="notify_team" class="icon-class"></svg-icon>
                 </div>
@@ -26,11 +26,11 @@
         </mu-col>
         <mu-col span="9" align-self="center">
           <mu-row>
-            <span style="font-size:18px; font-weight:700;">组队成功</span> 
+            <span style="font-size:16px; font-weight:700;">组队成功</span> 
             <span style="margin-left:auto; font-size:14px; color:#9e9e9e; margin-right:.5rem;">10分钟前</span>
           </mu-row>
           <mu-row style="margin-top:.2rem;">
-            <span style="color:#757575; font-size:16px;">这里是我的详细内容，不要问，</span>
+            <span style="color:#757575; font-size:14px;">这里是我的详细内容，不要问，</span>
           </mu-row>
         </mu-col>
       </mu-row>
@@ -39,8 +39,8 @@
 
       <mu-row style="margin-top:1rem; margin-bottom:1rem;">
         <mu-col span="3">
-          <mu-flex style="width:100%; height:auto; color:#fff;" align-items="center" >
-              <div style="width:3.8rem; height:3.8rem; background:#00bcd4; color:#fff; padding:.5rem; border-radius:50%;">
+          <mu-flex style="width:100%; height:auto; color:#fff; padding:0 0 0 .5rem;" align-items="center" >
+              <div style="width:3.3rem; height:3.3rem; background:#00bcd4; color:#fff; padding:.5rem; border-radius:50%;">
                 <div style="text-align:center;">
                   <svg-icon icon-class="notify_sms" class="icon-class"></svg-icon>
                 </div>
@@ -50,11 +50,11 @@
         </mu-col>
         <mu-col span="9" align-self="center">
           <mu-row>
-            <span style="font-size:18px; font-weight:700;">系统</span> 
+            <span style="font-size:16px; font-weight:700;">系统</span> 
             <span style="margin-left:auto; font-size:14px; color:#9e9e9e; margin-right:.5rem;">10分钟前</span>
           </mu-row>
           <mu-row style="margin-top:.2rem;">
-            <span style="color:#757575; font-size:16px;">这里是我的详细内容，不要问，</span>
+            <span style="color:#757575; font-size:14px;">这里是我的详细内容，不要问，</span>
           </mu-row>
         </mu-col>
       </mu-row>
@@ -62,8 +62,8 @@
 
       <mu-row style="margin-top:1rem; margin-bottom:1rem;">
         <mu-col span="3">
-          <mu-flex style="width:100%; height:auto; color:#fff;" align-items="center" >
-              <div style="width:3.8rem; height:3.8rem; background:#009688; color:#fff; padding:.5rem; border-radius:50%;">
+          <mu-flex style="width:100%; height:auto; color:#fff; padding:0 0 0 .5rem;" align-items="center" >
+              <div style="width:3.3rem; height:3.3rem; background:#009688; color:#fff; padding:.5rem; border-radius:50%;">
                 <div style="text-align:center;">
                   <svg-icon icon-class="notify_member" class="icon-class"></svg-icon>
                 </div>
@@ -73,11 +73,11 @@
         </mu-col>
         <mu-col span="9" align-self="center">
           <mu-row>
-            <span style="font-size:18px; font-weight:700;">组队成功</span> 
+            <span style="font-size:16px; font-weight:700;">组队成功</span> 
             <span style="margin-left:auto; font-size:14px; color:#9e9e9e; margin-right:.5rem;">10分钟前</span>
           </mu-row>
           <mu-row style="margin-top:.2rem;">
-            <span style="color:#757575; font-size:16px;">这里是我的详细内容，不要问，</span>
+            <span style="color:#757575; font-size:14px;">这里是我的详细内容，不要问，</span>
           </mu-row>
         </mu-col>
       </mu-row>
@@ -85,8 +85,8 @@
 
       <mu-row style="margin-top:1rem; margin-bottom:1rem;">
         <mu-col span="3">
-          <mu-flex style="width:100%; height:auto; color:#fff;" align-items="center" >
-              <div style="width:3.8rem; height:3.8rem; background:#4caf50; color:#fff; padding:.5rem; border-radius:50%;">
+          <mu-flex style="width:100%; height:auto; color:#fff; padding:0 0 0 .5rem;" align-items="center" >
+              <div style="width:3.3rem; height:3.3rem; background:#4caf50; color:#fff; padding:.5rem; border-radius:50%;">
                 <div style="text-align:center;">
                   <svg-icon icon-class="notify_activity" class="icon-class"></svg-icon>
                 </div>
@@ -96,11 +96,11 @@
         </mu-col>
         <mu-col span="9" align-self="center">
           <mu-row>
-            <span style="font-size:18px; font-weight:700;">组队成功</span> 
+            <span style="font-size:16px; font-weight:700;">组队成功</span> 
             <span style="margin-left:auto; font-size:14px; color:#9e9e9e; margin-right:.5rem;">10分钟前</span>
           </mu-row>
           <mu-row style="margin-top:.2rem;">
-            <span style="color:#757575; font-size:16px;">这里是我的详细内容，不要问，</span>
+            <span style="color:#757575; font-size:14px;">这里是我的详细内容，不要问，</span>
           </mu-row>
         </mu-col>
       </mu-row>
@@ -108,8 +108,8 @@
 
       <mu-row style="margin-top:1rem; margin-bottom:1rem;">
         <mu-col span="3">
-          <mu-flex style="width:100%; height:auto; color:#fff;" align-items="center" >
-              <div style="width:3.8rem; height:3.8rem; background:#673ab7; color:#fff; padding:.5rem; border-radius:50%;">
+          <mu-flex style="width:100%; height:auto; color:#fff; padding:0 0 0 .5rem;" align-items="center" >
+              <div style="width:3.3rem; height:3.3rem; background:#673ab7; color:#fff; padding:.5rem; border-radius:50%;">
                 <div style="text-align:center;">
                   <svg-icon icon-class="notify_annoucement" class="icon-class"></svg-icon>
                 </div>
@@ -119,11 +119,11 @@
         </mu-col>
         <mu-col span="9" align-self="center">
           <mu-row>
-            <span style="font-size:18px; font-weight:700;">组队成功</span> 
+            <span style="font-size:16px; font-weight:700;">组队成功</span> 
             <span style="margin-left:auto; font-size:14px; color:#9e9e9e; margin-right:.5rem;">10分钟前</span>
           </mu-row>
           <mu-row style="margin-top:.2rem;">
-            <span style="color:#757575; font-size:16px;">这里是我的详细内容，不要问，</span>
+            <span style="color:#757575; font-size:14px;">这里是我的详细内容，不要问，</span>
           </mu-row>
         </mu-col>
       </mu-row>
@@ -152,7 +152,7 @@ export default {
 
 <style scoped>
 .mine-appbar { width: 100%; height:2.5rem; }
-.icon-class {font-size:22px;}
+.icon-class {font-size:20px;}
 .footer{width:100%; position:fixed; bottom:0;}
 </style>
 
