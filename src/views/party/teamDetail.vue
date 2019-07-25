@@ -340,6 +340,7 @@ export default {
           this.$axios.post(
             `/party/joinTeam/${this.TeamID}`,{}
           ).then((resp)=>{
+            console.log(resp)
             let dataBack = resp.data
             this.$toast.message(dataBack.msg)
             // window.location.reload()
