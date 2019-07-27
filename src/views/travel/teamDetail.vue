@@ -151,23 +151,23 @@
       <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
         <mu-flex align-items="center">
           <mu-avatar size="24" :class="item.user_sex == 1 ? 'avatar-male' : 'avatar-female'">
-            <img :src="item.user_avatar">
+            <img :src="item.userAvatar">
           </mu-avatar>
           <span class="reply-nickname">
-            {{ item.user_nickname }} 
+            {{ item.userNickname }} 
           </span>
-          <span class="reply-time">{{ item.create_time }}</span>
+          <span class="reply-time">{{ item.createTime }}</span>
         </mu-flex>
 
         <mu-row class="reply-cont-box">
           <span style="font-size:12px; margin-left:.5rem; ">
-            <span v-if="item.reply_to > 0">@<span style="color:#795548;">{{ item.reply_nickname }}</span> :</span> {{ item.chat_cont }}
-            <span style="color:green; margin-left:.5rem;" @click="newChat(true, item.user_id, item.user_nickname)">回复</span>
+            <span v-if="item.replyTo > 0">@<span style="color:#795548;">{{ item.replyNickname }}</span> :</span> {{ item.cont }}
+            <span style="color:green; margin-left:.5rem;" @click="newChat(true, item.userID, item.chatID, item.userNickname)">回复</span>
           </span>
         </mu-row>
 
-        <mu-row v-if="item.chat_img" class="team-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
-          <img :src="item.chat_img">
+        <mu-row v-if="item.img" class="team-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
+          <img :src="item.img">
         </mu-row>
       </mu-container>
     </mu-load-more>
@@ -211,12 +211,26 @@ import utils from 'common/utils'
 export default {
   data () {
     return {
+      TeamType: 3,
       InitLoading: true,
       TeamID: 0,
       IsSortup: false,
       IsTheLast: true,
       ReplyListPage: 1,
-      ReplyList: [],
+      ReplyList: [
+        {
+          chatID: 0,
+          cont: '',
+          createTime: 0,
+          img: '',
+          replyNickname: "",
+          replyTo: 0,
+          userAvatar: "",
+          userID: 0,
+          userNickname: '',
+          userSex: 0,
+        }
+      ],
       Loading: false,
       TeamBaseInfo: {
         partyVenue: {
@@ -318,9 +332,9 @@ export default {
       // 评论处理
       let replyList =  dataBack.chatListInfo.chatList
       for(let i = 0; i < replyList.length; i++) {
-        replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, true)
-        replyList[i].user_avatar = utils.imgPrefixDeal(replyList[i].user_avatar)
-        replyList[i].chat_img = utils.imgPrefixDeal(replyList[i].chat_img)
+        replyList[i].createTime = utils.getDateDiff(replyList[i].createTime, true)
+        replyList[i].userAvatar = utils.imgPrefixDeal(replyList[i].userAvatar)
+        replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
       }
       this.ReplyList = this.ReplyList.concat(replyList)
 
@@ -336,19 +350,19 @@ export default {
     load () {
       this.Loading = true      
       let sortWay = this.IsSortup == false ? 0 : 1
-
-      this.$axios.post(`/travel/chatList/${this.ReplyListPage}/${this.TeamID}/${sortWay}`,{}).then((resp)=>{
+      this.$axios.post(`/party/chatList/${this.TeamType}/${this.ReplyListPage}/${this.TeamID}/${sortWay}`,{}).then((resp)=>{
         if(resp.data.code != 20000) {
-          this.$toast.message('系统繁忙')
+          this.$toast.message(resp.data.msg)
           return
         }
+
         let dataBack = resp.data.msg
-        this.IsTheLast = dataBack.isTheLast
-        let replyList = dataBack.listInfo
-        for(let i = 0; i < replyList.length; i++) {
-          replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, true)
-          replyList[i].user_avatar = utils.imgPrefixDeal(replyList[i].user_avatar)
-          replyList[i].chat_img = utils.imgPrefixDeal(replyList[i].chat_img)
+        this.IsTheLast = dataBack.length < 15 ? true : false
+        let replyList = dataBack
+        for(let i = 0; i < replyList.length; i++) { 
+          replyList[i].createTime = utils.getDateDiff(replyList[i].createTime, true)
+          replyList[i].userAvatar = utils.imgPrefixDeal(replyList[i].userAvatar)
+          replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
         }
         this.ReplyList = this.ReplyList.concat(replyList)
         this.ReplyListPage++
@@ -362,9 +376,7 @@ export default {
       this.IsSortup = !this.IsSortup
       this.load()
     },
-    replytoComment (isReply, replyID, replyNickname) {
-      this.$router.push({path:`/game/replytoComment`, query:{commentID:this.CommentID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
-    },
+
     joinTeam () {
       // 首先判断队伍的状态是否停止招募
       if(this.TeamBaseInfo.recruitStatus > 0) {
@@ -452,7 +464,7 @@ export default {
         this.$toast.message('加入组队后才能聊天哦')
         return
       }
-      this.$router.push({path:`/travel/newChat`, query:{teamID:this.TeamID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
+      this.$router.push({path:`/common/newChat`, query:{teamType:this.TeamType, teamID:this.TeamID, isReply, replyTo, replyID, replyNickname}})
     },
   },
 }

@@ -333,9 +333,7 @@ export default {
       this.IsSortup = !this.IsSortup
       this.load()
     },
-    replytoComment (isReply, replyID, replyNickname) {
-      this.$router.push({path:`/game/replytoComment`, query:{commentID:this.CommentID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
-    },
+
     joinTeam () {
       // 首先判断队伍的状态是否停止招募
       if(this.TeamBaseInfo.recruitStatus > 0) {
@@ -355,14 +353,7 @@ export default {
       // 因为party里面没有1、2、5状态， 只需要判断 0 、3、 4(暂时不做其他的)
       switch(this.JointeamStmt) {
         case 0: // 未加入
-          this.$axios.post(
-            `/party/joinTeam/${this.TeamID}`,{}
-          ).then((resp)=>{
-            console.log(resp)
-            let dataBack = resp.data
-            this.$toast.message(dataBack.msg)
-            // window.location.reload()
-          })
+          this.joinTeamReq()
         break
         case 1: // 申请
           // 不做处理
@@ -379,22 +370,26 @@ export default {
           }
         break
         case 4: // 已离队，重新加入
-          this.$axios.post(
-            `/party/joinTeam/${this.TeamID}`,{}
-          ).then((resp)=>{
-            let dataBack = resp.data
-            this.$toast.message(dataBack.msg)
-            if(dataBack.code == 20000) {
-              window.location.reload()
-              console.log('准备更新工作')
-            }
-          })
+          this.joinTeamReq()
         break
         case 5:
           // 不做处理
         break
       }
     },
+
+    joinTeamReq () {
+      this.$axios.post(
+        `/party/joinTeam/${this.TeamID}`,{}
+      ).then((resp)=>{
+        let dataBack = resp.data
+        this.$toast.message(dataBack.msg)
+        if(dataBack.code == 20000) {
+          window.location.reload()
+        }
+      })
+    },
+
     leaveTeam () {
       // 先判断是否为队长，如果是队长，提示会解散队伍
       // 并且如果是队长，只有组队中才可以解散
@@ -428,7 +423,7 @@ export default {
         this.$toast.message('加入组队后才能聊天哦')
         return
       }
-      this.$router.push({path:`/common/newChat`, query:{teamType:2, teamID:this.TeamID, isReply, replyTo, replyID, replyNickname}})
+      this.$router.push({path:`/common/newChat`, query:{teamType:this.TeamType, teamID:this.TeamID, isReply, replyTo, replyID, replyNickname}})
     },
   },
 }
