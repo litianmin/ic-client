@@ -214,6 +214,12 @@ const router =  new Router({
       path: '/notify/category',
       name: 'notify-category',
       component: () => import('./views/notify/category.vue')
+    },
+
+    {
+      path: '/common/newChat',
+      name: 'common-newchat',
+      component: () => import('./components/NewChat.vue')
     }
 
   ],
