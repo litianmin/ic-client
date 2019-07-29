@@ -379,8 +379,8 @@ export default {
     },
 
     joinTeamReq () {
-      this.$axios.post(
-        `/party/joinTeam/${this.TeamID}`,{}
+      this.$axios.get(
+        `/common/joinTeam/${this.TeamType}/${this.TeamID}`,{}
       ).then((resp)=>{
         let dataBack = resp.data
         this.$toast.message(dataBack.msg)
@@ -390,31 +390,27 @@ export default {
       })
     },
 
+    leaveTeamReq () {
+      this.$axios.get(`/common/leaveTeam/${this.TeamType}/${this.TeamID}`, {}).then((resp)=>{
+        if(resp.data.code == 20000) {
+          this.$toast.message('已成功退出组队！')
+          this.$router.push(`/party/list`)
+          return
+        }
+      }) 
+    },
+
     leaveTeam () {
       // 先判断是否为队长，如果是队长，提示会解散队伍
       // 并且如果是队长，只有组队中才可以解散
       if(this.IsCaptain == true) {
         this.$confirm('是否解散队伍？').then((resp)=>{
           if(resp.result == true) { // 确定解散队伍
-            // this.$toast.message('你确定解散了队伍')
-            this.$axios.post(`/party/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
-              if(resp.data.code == 20000) {
-                this.$toast.message('已成功解散')
-                this.$router.push(`/party/list`)
-                return
-              }
-            }) 
+            this.leaveTeamReq()
           }
         })
       } else {
-        this.$axios.post(`/party/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
-          console.log(resp)
-          if(resp.data.code == 20000) {
-            this.$toast.message('已退出队伍')
-            this.$router.push(`/party/list`)
-            return
-          }
-        }) 
+        this.leaveTeamReq()
       }
     },
     newChat (isReply, replyTo, replyID, replyNickname) {
