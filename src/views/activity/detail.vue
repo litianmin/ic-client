@@ -1,21 +1,21 @@
 <template>
   <div>
     <mu-flex style="width:100%;">
-      <img style="width:100%; height:auto;" :src="BaseInfo.displayImg" alt="">
+      <img style="width:100%; height:auto;" :src="TeamBaseInfo.displayImg" alt="">
     </mu-flex>
     <mu-flex>
-      <span style="font-size:18px; font-weight:700; padding:.5rem .8rem;">{{ BaseInfo.title }}</span>
+      <span style="font-size:18px; font-weight:700; padding:.5rem .8rem;">{{ TeamBaseInfo.title }}</span>
     </mu-flex>
 
     <!-- 文章详情 -->
-    <div style="padding:.5rem .8rem;" v-html="BaseInfo.cont"></div>
+    <div style="padding:.5rem .8rem;" v-html="TeamBaseInfo.cont"></div>
 
     <mu-flex style="width:100%; font-size:13px; padding:.5rem 1rem 1rem .5rem;" wrap="wrap" justify-content="end">
-      <div style="width:100%; text-align:right;">-- <span style="">{{ BaseInfo.beginTime }}</span> </div>
+      <div style="width:100%; text-align:right;">-- <span style="">{{ TeamBaseInfo.beginTime }}</span> </div>
       <mu-flex align-items="center">
         <!-- <span>在</span>  -->
         <!-- <mu-icon value="person_pin_circle" size="16" color="#009688"></mu-icon> -->
-        <span>在 <span style="color:#009688; font-weight:700; font-size:12px; text-decoration:underline">{{ BaseInfo.venue.name }}</span> 与你相聚</span>
+        <span>在 <span style="color:#009688; font-weight:700; font-size:12px; text-decoration:underline">{{ TeamBaseInfo.venue.name }}</span> 与你相聚</span>
       </mu-flex>
     </mu-flex>
 
@@ -25,12 +25,12 @@
         <mu-avatar v-for="(item, index) in TeammateList" :key="index" size="35" :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'" style="margin-right:.5rem;">
           <img :src="item.avatar" alt="">
         </mu-avatar>
-        <span v-if="BaseInfo.recruitStatus == 0" @click="joinTeam">
+        <span v-if="TeamBaseInfo.recruitStatus == 0" @click="joinTeam">
           <svg-icon icon-class="add_circle_outline" style="font-size:40px; color:red;"></svg-icon>
         </span>
     </mu-flex>
     <mu-flex justify-content="center" style="padding:.3rem 0 .5rem 0; border-bottom:1px dashed #e0e0e0; background:#fff;">
-      <span style="font-size:12px; color:#9e9e9e;">-- 招募{{ BaseInfo.recruitNumb }}人，还差{{ BaseInfo.recruitNumb - BaseInfo.hadRecruitNumb }}人 --</span>
+      <span style="font-size:12px; color:#9e9e9e;">-- 招募{{ TeamBaseInfo.recruitNumb }}人，还差{{ TeamBaseInfo.recruitNumb - TeamBaseInfo.hadRecruitNumb }}人 --</span>
     </mu-flex>
     <!-- END 队长和队友列表 -->
 
@@ -48,23 +48,23 @@
       <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
         <mu-flex align-items="center">
           <mu-avatar size="24" :class="item.user_sex == 1 ? 'avatar-male' : 'avatar-female'">
-            <img :src="item.user_avatar">
+            <img :src="item.userAvatar">
           </mu-avatar>
           <span class="reply-nickname">
-            {{ item.user_nickname }} 
+            {{ item.userNickname }} 
           </span>
-          <span class="reply-time">{{ item.create_time }}</span>
+          <span class="reply-time">{{ item.createTime }}</span>
         </mu-flex>
 
         <mu-row class="reply-cont-box">
           <span style="font-size:12px; margin-left:.5rem; ">
-            <span v-if="item.reply_to > 0">@<span style="color:#795548;">{{ item.reply_nickname }}</span> :</span> {{ item.chat_cont }}
-            <span style="color:green; margin-left:.5rem;" @click="newChat(true, item.user_id, item.user_nickname)">回复</span>
+            <span v-if="item.replyTo > 0">@<span style="color:#795548;">{{ item.replyNickname }}</span> :</span> {{ item.cont }}
+            <span style="color:green; margin-left:.5rem;" @click="newChat(true, item.userID, item.chatID, item.userNickname)">回复</span>
           </span>
         </mu-row>
 
-        <mu-row v-if="item.chat_img" class="team-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
-          <img :src="item.chat_img">
+        <mu-row v-if="item.img" class="team-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
+          <img :src="item.img">
         </mu-row>
       </mu-container>
     </mu-load-more>
@@ -75,7 +75,7 @@
     <!-- END 回复评论 -->
 
     <mu-flex class="reply-input-box" align-items="center">
-      <div style="width:78%;" @click="newChat(false, 0, '')">
+      <div style="width:78%;" @click="newChat(false, 0, 0, '')">
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
 
@@ -95,9 +95,10 @@ import utils from 'common/utils.js'
 export default {
   data () {
     return {
-      ActivityID: 0,
+      TeamType: 5,
+      TeamID: 0,
 
-      BaseInfo: {
+      TeamBaseInfo: {
         id: '',
         title: "最新的活动标题",
         type: 1,
@@ -138,9 +139,9 @@ export default {
     }
   },
   mounted () {
-    this.ActivityID = this.$route.params.activityID
+    this.TeamID = this.$route.params.activityID
 
-    this.$axios.get(`/activity/detail/${this.ActivityID}`, {}).then((resp)=>{
+    this.$axios.get(`/activity/detail/${this.TeamID}`, {}).then((resp)=>{
       let dataBack = resp.data.msg
 
       console.log(resp.data)
@@ -157,7 +158,7 @@ export default {
       baseInfo.displayImg = utils.imgPrefixDeal(baseInfo.displayImg)
       baseInfo.beginTime = utils.unixToDate(baseInfo.beginTime)
       baseInfo.hadRecruitNumb = dataBack.teammateList.length
-      this.BaseInfo = baseInfo
+      this.TeamBaseInfo = baseInfo
 
       let teammateList = dataBack.teammateList
       for(let i = 0; i < teammateList.length; i++) {
@@ -181,8 +182,15 @@ export default {
 
       this.JoinStatus = dataBack.joinStatus // 自己加入的状态
 
-      this.IsTheLast = dataBack.isTheLast
-      this.ReplyList = dataBack.chatList
+      this.IsTheLast = dataBack.chatList.length < 15 ? true : false
+      let replyList =  dataBack.chatList
+      for(let i = 0; i < replyList.length; i++) {
+        replyList[i].createTime = utils.getDateDiff(replyList[i].createTime, true)
+        replyList[i].userAvatar = utils.imgPrefixDeal(replyList[i].userAvatar)
+        replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
+      }
+      this.ReplyList = replyList
+
       this.ReplyListPage++
     })
 
@@ -191,18 +199,19 @@ export default {
     load () {
       this.Loading = true      
       let sortWay = this.IsSortup == false ? 0 : 1
+      this.$axios.get(`/common/chatList/${this.TeamType}/${this.TeamID}/${this.ReplyListPage}/${sortWay}`,{}).then((resp)=>{
+        if(resp.data.code != 20000) {
+          this.$toast.message(resp.data.msg)
+          return
+        }
 
-      console.log(`/activity/chatList/${this.ReplyListPage}/${this.ActivityID}/${sortWay}`)
-
-      this.$axios.get(`/activity/chatList/${this.ReplyListPage}/${this.ActivityID}/${sortWay}`,{}).then((resp)=>{
         let dataBack = resp.data.msg
-        console.log(dataBack)
-        this.IsTheLast = dataBack.isTheLast
-        let replyList = dataBack.listInfo
+        this.IsTheLast = dataBack.length < 15 ? true : false
+        let replyList = dataBack
         for(let i = 0; i < replyList.length; i++) {
-          replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, true)
-          replyList[i].user_avatar = utils.imgPrefixDeal(replyList[i].user_avatar)
-          replyList[i].chat_img = utils.imgPrefixDeal(replyList[i].chat_img)
+          replyList[i].createTime = utils.getDateDiff(replyList[i].createTime, true)
+          replyList[i].userAvatar = utils.imgPrefixDeal(replyList[i].userAvatar)
+          replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
         }
         this.ReplyList = this.ReplyList.concat(replyList)
         this.ReplyListPage++
@@ -217,24 +226,16 @@ export default {
       this.load()
     },
 
-    newChat (isReply, replyID, replyNickname) {
-      // 先判断用户是否已经加入组队
-      if(this.JoinStatus == 0) {
-        this.$toast.message('未加入组队')
-        return
-      }
-      this.$router.push({path:`/activity/newChat`, query:{teamID:this.ActivityID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
-    },
-
     joinTeam () {
+      console.log('something done')
       // 首先判断队伍的状态是否停止招募
-      if(this.BaseInfo.recruitStatus > 0) {
-        switch(this.BaseInfo.recruitStatus) {
+      if(this.TeamBaseInfo.recruitStatus > 0) {
+        switch(this.TeamBaseInfo.recruitStatus) {
           case 1:
-            this.$toast.message('该活动已停止招募，不能加入组队')
+            this.$toast.message('该队伍已停止招募，不能加入组队')
           break
           case 2:
-            this.$toast.message('该活动已解散，不能加入组队')
+            this.$toast.message('该队伍已解散，不能加入组队')
           break
         }
         return
@@ -246,24 +247,49 @@ export default {
       switch(this.JoinStatus) {
         case 0: // 未加入
           this.joinTeamReq()
-          break
-        case 1: // 加入
-          this.$toast.message('你已加入组队')
-          break
+        break
+        case 1: // 申请
+          // 不做处理
+        break
+        case 2: // 拒绝加入
+          // 不做处理
+        break
+        case 3: // 已加入
+          // 不做处理
+          if(this.IsCaptain == true) {
+            this.$toast.message('你是队长，你要邀请别人进来吗？')
+          }else{
+            this.$toast.message('你已加入组队！')
+          }
+        break
+        case 4: // 已离队，重新加入
+          this.joinTeamReq()
+        break
+        case 5:
+          // 不做处理
+        break
       }
     },
+
     joinTeamReq () {
       this.$axios.get(
-        `/activity/joinTeam/${this.ActivityID}`,{}
+        `/common/joinTeam/${this.TeamType}/${this.TeamID}`,{}
       ).then((resp)=>{
-        console.log(resp)
         let dataBack = resp.data
         this.$toast.message(dataBack.msg)
         if(dataBack.code == 20000) {
           window.location.reload()
-          console.log('准备更新工作')
         }
       })
+    },
+
+    newChat (isReply, replyTo, replyID, replyNickname) {
+      // 只有加入组队的人才能进行评论
+      if(this.JoinStatus != 3) {
+        this.$toast.message('加入组队后才能聊天哦')
+        return
+      }
+      this.$router.push({path:`/common/newChat`, query:{teamType:this.TeamType, teamID:this.TeamID, isReply, replyTo, replyID, replyNickname}})
     },
 
   },

@@ -179,7 +179,7 @@
 
     <!-- 发起评论框 -->
     <mu-flex class="reply-input-box" align-items="center">
-      <div style="width:80%;" @click="newChat(false, 0, '')">
+      <div style="width:80%;" @click="newChat(false, 0, 0, '')">
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
 
@@ -287,7 +287,6 @@ export default {
       }
 
       let dataBack = resp.data.msg
-      this.IsTheLast = dataBack.chatListInfo.isTheLast
       
       // 渲染详情页基本信息
       let teamBaseInfo = dataBack.teamBaseInfo
@@ -329,14 +328,17 @@ export default {
       this.IsCaptain = dataBack.isCaptain
       this.JointeamStmt = dataBack.joinStmt
 
+      if(dataBack.chatList.length < 15) {
+        this.IsTheLast = true
+      }
       // 评论处理
-      let replyList =  dataBack.chatListInfo.chatList
+      let replyList =  dataBack.chatList
       for(let i = 0; i < replyList.length; i++) {
         replyList[i].createTime = utils.getDateDiff(replyList[i].createTime, true)
         replyList[i].userAvatar = utils.imgPrefixDeal(replyList[i].userAvatar)
         replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
       }
-      this.ReplyList = this.ReplyList.concat(replyList)
+      this.ReplyList = replyList
 
       this.InitLoading = false
 
@@ -350,7 +352,7 @@ export default {
     load () {
       this.Loading = true      
       let sortWay = this.IsSortup == false ? 0 : 1
-      this.$axios.post(`/party/chatList/${this.TeamType}/${this.ReplyListPage}/${this.TeamID}/${sortWay}`,{}).then((resp)=>{
+      this.$axios.get(`/common/chatList/${this.TeamType}/${this.TeamID}/${this.ReplyListPage}/${sortWay}`,{}).then((resp)=>{
         if(resp.data.code != 20000) {
           this.$toast.message(resp.data.msg)
           return
@@ -359,7 +361,7 @@ export default {
         let dataBack = resp.data.msg
         this.IsTheLast = dataBack.length < 15 ? true : false
         let replyList = dataBack
-        for(let i = 0; i < replyList.length; i++) { 
+        for(let i = 0; i < replyList.length; i++) {
           replyList[i].createTime = utils.getDateDiff(replyList[i].createTime, true)
           replyList[i].userAvatar = utils.imgPrefixDeal(replyList[i].userAvatar)
           replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
@@ -421,44 +423,41 @@ export default {
       }
     },
     joinTeamReq () {
-      this.$axios.post(
-        `/travel/joinTeam/${this.TeamID}`,{}
+      this.$axios.get(
+        `/common/joinTeam/${this.TeamType}/${this.TeamID}`,{}
       ).then((resp)=>{
         let dataBack = resp.data
         this.$toast.message(dataBack.msg)
         if(dataBack.code == 20000) {
           window.location.reload()
-          console.log('准备更新工作')
         }
       })
     },
+
+    leaveTeamReq () {
+      this.$axios.get(`/common/leaveTeam/${this.TeamType}/${this.TeamID}`, {}).then((resp)=>{
+        if(resp.data.code == 20000) {
+          this.$toast.message('已成功退出组队！')
+          this.$router.push(`/party/list`)
+          return
+        }
+      }) 
+    },
+
     leaveTeam () {
       // 先判断是否为队长，如果是队长，提示会解散队伍
       // 并且如果是队长，只有组队中才可以解散
       if(this.IsCaptain == true) {
         this.$confirm('是否解散队伍？').then((resp)=>{
           if(resp.result == true) { // 确定解散队伍
-            // this.$toast.message('你确定解散了队伍')
-            this.$axios.post(`/travel/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
-              if(resp.data.code == 20000) {
-                this.$toast.message('已成功解散')
-                this.$router.push(`/travel/list`)
-                return
-              }
-            }) 
+            this.leaveTeamReq()
           }
         })
       } else {
-        this.$axios.post(`/travel/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
-          if(resp.data.code == 20000) {
-            this.$toast.message('已退出队伍')
-            this.$router.push(`/travel/list`)
-            return
-          }
-        }) 
+        this.leaveTeamReq()
       }
     },
-    newChat (isReply, replyID, replyNickname) {
+    newChat (isReply, replyTo, replyID, replyNickname) {
       // 只有加入组队的人才能进行评论
       if(this.JointeamStmt != 3) {
         this.$toast.message('加入组队后才能聊天哦')

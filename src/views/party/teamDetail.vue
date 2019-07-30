@@ -307,7 +307,7 @@ export default {
     load () {
       this.Loading = true      
       let sortWay = this.IsSortup == false ? 0 : 1
-      this.$axios.post(`/party/chatList/${this.TeamType}/${this.ReplyListPage}/${this.TeamID}/${sortWay}`,{}).then((resp)=>{
+      this.$axios.get(`/common/chatList/${this.TeamType}/${this.TeamID}/${this.ReplyListPage}/${sortWay}`,{}).then((resp)=>{
         if(resp.data.code != 20000) {
           this.$toast.message(resp.data.msg)
           return
