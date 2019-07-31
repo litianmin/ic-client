@@ -92,7 +92,7 @@
 
     <!-- 发起评论框 -->
     <mu-flex class="reply-input-box" align-items="center">
-      <div style="width:80%;" @click="newChat(false, 0, '')">
+      <div style="width:80%;" @click="newChat(false, 0, 0, '')">
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
 
@@ -175,6 +175,7 @@ import utils from 'common/utils.js'
 export default {
   data () {
     return {
+      TeamType: 1,
       Title: '队伍招募中。。。',
       TeamID: 0,
       GameID: 0,
@@ -221,8 +222,6 @@ export default {
       console.log(resp.data)
 
       let dataBack = resp.data.msg 
-
-      this.IsTheLast = dataBack.chatListInfo.isTheLast  // 聊天列表是否已经是最后一页了
       
       this.ChatDetailMain.userID = dataBack.teamDetail.captain_userid
       this.ChatDetailMain.recruit_word = dataBack.teamDetail.announcement
@@ -257,7 +256,7 @@ export default {
         this.JointeamStmt = 2
         this.JointeamStmtDesc = '已加入组队'
         break
-        case 3: // 已离队
+        case 4: // 已离队
         this.JointeamStmt = 0
         this.JointeamStmtDesc = '还不快回来'
         break
@@ -274,22 +273,25 @@ export default {
         this.Title = '招募中'
         break
         case 1:
-        this.Title = '招募完成'
+        this.Title = '已失效'
         break
         case 2:
-        this.Title = '招募失效'
+        this.Title = '已删除'
         break
         case 3:
-        this.Title = '已被删除'
+        this.Title = '组队成功'
         break
       }
 
       this.TeammateList = dataBack.teamDetail.TeammateList
 
-
-      let replyList = dataBack.chatListInfo.listInfo
+      this.IsTheLast = dataBack.chatList.length < 15 ? true : false
+      // 评论处理
+      let replyList =  dataBack.chatList
       for(let i = 0; i < replyList.length; i++) {
-        replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, true)
+        replyList[i].createTime = utils.getDateDiff(replyList[i].createTime, true)
+        replyList[i].userAvatar = utils.imgPrefixDeal(replyList[i].userAvatar)
+        replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
       }
       this.ReplyList = replyList
       this.ChatListPage++
@@ -300,20 +302,22 @@ export default {
     load () {
       this.Loading = true      
       let sortWay = this.IsSortup == false ? 0 : 1
-      this.$axios.post(`/game/teamchatList/${this.ChatListPage}/${this.TeamID}/${sortWay}`,{}).then((resp)=>{
+      this.$axios.get(`/common/chatList/${this.TeamType}/${this.TeamID}/${this.ReplyListPage}/${sortWay}`,{}).then((resp)=>{
         if(resp.data.code != 20000) {
           this.$toast.message(resp.data.msg)
           return
         }
 
         let dataBack = resp.data.msg
-        this.IsTheLast = dataBack.isTheLast
-        let replyList = dataBack.listInfo
+        this.IsTheLast = dataBack.length < 15 ? true : false
+        let replyList = dataBack
         for(let i = 0; i < replyList.length; i++) {
-          replyList[i].create_time = utils.getDateDiff(replyList[i].create_time, false)
+          replyList[i].createTime = utils.getDateDiff(replyList[i].createTime, true)
+          replyList[i].userAvatar = utils.imgPrefixDeal(replyList[i].userAvatar)
+          replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
         }
         this.ReplyList = this.ReplyList.concat(replyList)
-        this.ChatListPage++
+        this.ReplyListPage++
         this.Loading = false
       })
     },
@@ -379,13 +383,13 @@ export default {
         }) 
       }
     },
-    newChat (isReply, replyID, replyNickname) {
+    newChat (isReply, replyTo, replyID, replyNickname) {
       // 只有加入组队的人才能进行评论
-      if(this.JointeamStmt != 2) {
+      if(this.JointeamStmt != 3) {
         this.$toast.message('加入组队后才能聊天哦')
         return
       }
-      this.$router.push({path:`/game/teamchat`, query:{teamID:this.TeamID, isReply:isReply, replyID:replyID, replyNickname:replyNickname}})
+      this.$router.push({path:`/common/newChat`, query:{teamType:this.TeamType, teamID:this.TeamID, isReply, replyTo, replyID, replyNickname}})
     },
     teamListWindowToggle () {
       this.teamListWindowIsShow = !this.teamListWindowIsShow
