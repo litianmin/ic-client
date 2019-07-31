@@ -91,11 +91,6 @@ const router =  new Router({
       name: 'game-comemntdetail',
       component: () => import('./views/game/commentDetail.vue')
     },
-    { // 回复评论
-      path: '/game/replytoComment',
-      name: 'replyto-comment',
-      component: () => import('./views/game/replyToComment.vue')
-    },
     { // 游戏创建组队
       path: '/game/formteam/:gameid',
       name: 'game-formteam',
@@ -110,11 +105,6 @@ const router =  new Router({
       path: '/game/joinTeam/:teamid',
       name: 'team-join',
       component: () => import('./views/game/joinTeam.vue')
-    },
-    {
-      path: '/game/teamchat',
-      name: 'team-chat',
-      component: () => import('./views/game/teamChat.vue')
     },
 
 
@@ -134,11 +124,6 @@ const router =  new Router({
       name: 'party-teamDetail',
       component: () => import('./views/party/teamDetail.vue')
     },
-    { // 发表聊天界面
-      path: `/party/newChat`,
-      name: 'party-newChat',
-      component: () => import('./views/party/newChat.vue')
-    },
 
     // 旅游模块
     { // 旅游列表
@@ -156,11 +141,6 @@ const router =  new Router({
       name: 'travel-teamDetail',
       component: () => import('./views/travel/teamDetail.vue')
     },
-    {
-      path: '/travel/newChat',
-      name: 'travel-newChat',
-      component: () => import('./views/travel/newChat.vue')
-    },
 
 
     // 文章模块
@@ -169,11 +149,6 @@ const router =  new Router({
       name: 'article-detail',
       component: () => import('./views/article/detail.vue')
     },
-    {
-      path: '/article/newChat',
-      name: 'article-newChat',
-      component: () => import('./views/article/newChat.vue')
-    },
 
 
     // 活动模块
@@ -181,11 +156,6 @@ const router =  new Router({
       path: '/activity/detail/:activityID',
       name: 'activity-detail',
       component: () => import('./views/activity/detail.vue')
-    },
-    {
-      path: '/activity/newChat',
-      name: 'activity-newChat',
-      component: () => import('./views/activity/newChat.vue')
     },
 
     // 即时模块
@@ -203,11 +173,6 @@ const router =  new Router({
       path: '/instant/detail/:teamID',
       name: 'instant-detail',
       component: () => import('./views/instant/detail.vue')
-    },
-    { // 新的聊天
-      path: '/instant/newChat',
-      name: 'instant-newChat',
-      component: () => import('./views/instant/newChat.vue')
     },
 
     { // 通知模块

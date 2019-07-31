@@ -16,7 +16,7 @@
             <mu-list-item button @click="teamListWindowToggle">
               <mu-list-item-title class="mine-menu-item">队友列表</mu-list-item-title>
             </mu-list-item>
-            <mu-list-item @click="leaveTeam" v-if="JointeamStmt == 2" button style="border-top:1px solid #fafafa;">
+            <mu-list-item @click="leaveTeam" v-if="JointeamStmt == 3" button style="border-top:1px solid #fafafa;">
               <mu-list-item-title class="mine-menu-item">退出队伍</mu-list-item-title>
             </mu-list-item>
           </mu-list>
@@ -66,24 +66,24 @@
       <mu-load-more :loading="Loading" @load="load" :loaded-all="IsTheLast">
         <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
           <mu-flex align-items="center">
-            <mu-avatar size="24">
-              <img :src="item.user_avatar">
+            <mu-avatar size="24" :class="item.user_sex == 1 ? 'avatar-male' : 'avatar-female'">
+              <img :src="item.userAvatar">
             </mu-avatar>
             <span class="reply-nickname">
-              {{ item.user_nickname }} 
+              {{ item.userNickname }} 
             </span>
-            <span class="reply-time">{{ item.create_time }}</span>
+            <span class="reply-time">{{ item.createTime }}</span>
           </mu-flex>
 
           <mu-row class="reply-cont-box">
             <span style="font-size:12px; margin-left:.5rem; ">
-              <span v-if="item.reply_to > 0">@<span style="color:#795548;">{{ item.reply_nickname }}</span> :</span> {{ item.chat_cont }}
-              <span style="color:green; margin-left:.5rem;" @click="newChat(true, item.user_id, item.user_nickname)">回复</span>
+              <span v-if="item.replyTo > 0">@<span style="color:#795548;">{{ item.replyNickname }}</span> :</span> {{ item.cont }}
+              <span style="color:green; margin-left:.5rem;" @click="newChat(true, item.userID, item.chatID, item.userNickname)">回复</span>
             </span>
           </mu-row>
 
-          <mu-row v-if="item.chat_img" class="team-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
-            <img :src="item.chat_img">
+          <mu-row v-if="item.img" class="team-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
+            <img :src="item.img">
           </mu-row>
         </mu-container>
       </mu-load-more>
@@ -196,7 +196,7 @@ export default {
         had_join: 0,
         teammate_prefer: '',
       },
-      ChatListPage: 1,
+      ReplyListPage: 1,
       TeammateList: [],
       ReplyList: [],
       teamListWindowIsShow: false,
@@ -238,29 +238,7 @@ export default {
       this.GameDisplayImg = dataBack.gameInfo.gameDisplayImg
       this.GameName = dataBack.gameInfo.gameName
       this.GameID = dataBack.teamDetail.g_id
-
-      switch(dataBack.selfJoinStmt) { // 判断当前用户加入的状态
-        case 0:  // 没有加入的记录
-        this.JointeamStmt = 0
-        this.JointeamStmtDesc = '快加入组队吧'
-        break
-        case 1: // 申请中
-        this.JointeamStmt = 1
-        this.JointeamStmtDesc = '组队申请中。。。'
-        break
-        case 2: // 拒绝加入
-        this.JointeamStmt = 3
-        this.JointeamStmtDesc = '已被拒绝！'
-        break
-        case 3: // 已加入组队
-        this.JointeamStmt = 2
-        this.JointeamStmtDesc = '已加入组队'
-        break
-        case 4: // 已离队
-        this.JointeamStmt = 0
-        this.JointeamStmtDesc = '还不快回来'
-        break
-      }
+      this.JointeamStmt = dataBack.selfJoinStmt
        
       this.TeamStmt = dataBack.teamDetail.t_stmt
       // 判断队伍的状态，然后再去修改加入队伍的状态
@@ -294,7 +272,7 @@ export default {
         replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
       }
       this.ReplyList = replyList
-      this.ChatListPage++
+      this.ReplyListPage++
     })
 
   },
@@ -334,7 +312,7 @@ export default {
     },
     convertSort () {
       // this.IsSortup = !this.IsSortup
-      this.ChatListPage = 1
+      this.ReplyListPage = 1
       this.ReplyList = []
       this.IsSortup = !this.IsSortup
       this.load()
@@ -352,37 +330,64 @@ export default {
         break
         case 3: // 不能加入
         this.$toast.message("已加入")
+        break
         case 4: // 不能加入
         this.$toast.message("已加入")
         break
       }
 
     },
+
+
+    leaveTeamReq () {
+      this.$axios.get(`/common/leaveTeam/${this.TeamType}/${this.TeamID}`, {}).then((resp)=>{
+        if(resp.data.code == 20000) {
+          this.$toast.message('已成功退出组队！')
+          this.$router.push(`/game/detail/${this.GameID}`)
+          return
+        }
+      }) 
+    },
+
     leaveTeam () {
       // 先判断是否为队长，如果是队长，提示会解散队伍
+      // 并且如果是队长，只有组队中才可以解散
       if(this.SelfIsCamptain == true) {
         this.$confirm('是否解散队伍？').then((resp)=>{
           if(resp.result == true) { // 确定解散队伍
-            // this.$toast.message('你确定解散了队伍')
-            this.$axios.post(`/game/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
-              if(resp.data.code == 20000) {
-                this.$toast.message('已成功解散')
-                this.$router.push(`/game/detail/${this.GameID}`)
-                return
-              }
-            }) 
+            this.leaveTeamReq()
           }
         })
       } else {
-        this.$axios.post(`/game/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
-          if(resp.data.code == 20000) {
-            this.$toast.message('已退出队伍')
-            this.$router.push(`/game/detail/${this.GameID}`)
-            return
-          }
-        }) 
+        this.leaveTeamReq()
       }
     },
+
+    // leaveTeam () {
+    //   // 先判断是否为队长，如果是队长，提示会解散队伍
+    //   if(this.SelfIsCamptain == true) {
+    //     this.$confirm('是否解散队伍？').then((resp)=>{
+    //       if(resp.result == true) { // 确定解散队伍
+    //         // this.$toast.message('你确定解散了队伍')
+    //         this.$axios.post(`/game/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
+    //           if(resp.data.code == 20000) {
+    //             this.$toast.message('已成功解散')
+    //             this.$router.push(`/game/detail/${this.GameID}`)
+    //             return
+    //           }
+    //         }) 
+    //       }
+    //     })
+    //   } else {
+    //     this.$axios.post(`/game/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
+    //       if(resp.data.code == 20000) {
+    //         this.$toast.message('已退出队伍')
+    //         this.$router.push(`/game/detail/${this.GameID}`)
+    //         return
+    //       }
+    //     }) 
+    //   }
+    // },
     newChat (isReply, replyTo, replyID, replyNickname) {
       // 只有加入组队的人才能进行评论
       if(this.JointeamStmt != 3) {
