@@ -7,7 +7,7 @@
       </mu-button>
       
       <div ref="menuHide" style="font-size:14px;">
-        消息中心
+        组队消息
       </div>
     </mu-appbar>
     <!-- END 头部 -->
@@ -16,138 +16,123 @@
       <mu-row style="margin-top:1rem; margin-bottom:1rem;" @click="linkToTeamMsg">
         <mu-col span="2" align-items="center" style="">
           <mu-flex style="width:100%; height:auto; color:#fff; position:relative;" align-items="center" >
-            <div style="width:3rem; height:3rem; background:#03a9f4; color:#fff; padding:.5rem; border-radius:.5rem;">
+            <div style="width:3rem; height:3rem; background:#673ab7; color:#fff; padding:.5rem; border-radius:.5rem;">
               <div style="text-align:center;">
-                <svg-icon icon-class="notify_team" class="icon-class"></svg-icon>
+                <svg-icon icon-class="notify-game" class="icon-class"></svg-icon>
               </div>
-              <div class="icon-font">组 队</div>
+              <div class="icon-font">游 戏</div>
             </div>
             <div v-if="Team.stats" class="notify-point"></div>
           </mu-flex>
         </mu-col>
         <mu-col span="10" style="padding: .2rem 0 0 .5rem;" align-self="center">
-          <span v-if="Team.title.length == 0">暂无消息</span>
-          <div v-else>
-            <mu-row>
-              <span class="notify-title">{{ Team.title }}</span> 
-              <span class="notify-time">10分钟前</span>
-            </mu-row>
-            <mu-row style="margin-top:.2rem;">
-              <span class="notify-desc span-omit">{{ Team.briefDesc }}</span>
-            </mu-row>
-          </div>
+          <mu-row>
+            <span class="notify-title">{{ Team.title }}</span> 
+            <span class="notify-time">10分钟前</span>
+          </mu-row>
+          <mu-row style="margin-top:.2rem;">
+            <span class="notify-desc span-omit">{{ Team.briefDesc }}</span>
+          </mu-row>
         </mu-col>
       </mu-row>
       <mu-divider></mu-divider>
 
-
-      <mu-row style="margin-top:1rem; margin-bottom:1rem;">
-        <mu-col span="2">
+      <mu-row style="margin-top:1rem; margin-bottom:1rem;" @click="linkToTeamMsg">
+        <mu-col span="2" align-items="center" style="">
           <mu-flex style="width:100%; height:auto; color:#fff; position:relative;" align-items="center" >
-            <div style="width:3rem; height:3rem; background:#00bcd4; color:#fff; padding:.5rem; border-radius:.5rem;">
+            <div style="width:3rem; height:3rem; background:#e040fb; color:#fff; padding:.5rem; border-radius:.5rem;">
               <div style="text-align:center;">
-                <svg-icon icon-class="notify_sms" class="icon-class"></svg-icon>
+                <svg-icon icon-class="notify-party" class="icon-class"></svg-icon>
               </div>
-              <div class="icon-font">@ 你</div>
+              <div class="icon-font">聚 会</div>
             </div>
-            <div v-if="Comment.stats" class="notify-point"></div>
+            <div v-if="Team.stats" class="notify-point"></div>
           </mu-flex>
         </mu-col>
         <mu-col span="10" style="padding: .2rem 0 0 .5rem;" align-self="center">
-          <span v-if="Comment.title.length == 0">暂无消息</span>
-          <div v-else>
-            <mu-row>
-              <span class="notify-title">{{ Comment.title }}</span> 
-              <span class="notify-time">10分钟前</span>
-            </mu-row>
-            <mu-row style="margin-top:.2rem;">
-              <span class="notify-desc span-omit">{{ Comment.briefDesc }}</span>
-            </mu-row>
-          </div>
+          <mu-row>
+            <span class="notify-title">{{ Team.title }}</span> 
+            <span class="notify-time">10分钟前</span>
+          </mu-row>
+          <mu-row style="margin-top:.2rem;">
+            <span class="notify-desc span-omit">{{ Team.briefDesc }}</span>
+          </mu-row>
         </mu-col>
       </mu-row>
       <mu-divider></mu-divider>
 
-      <mu-row style="margin-top:1rem; margin-bottom:1rem;">
-        <mu-col span="2">
-          <mu-flex style="width:100%; height:auto; color:#fff; position:relative;" align-items="center" >
-            <div style="width:3rem; height:3rem; background:#009688; color:#fff; padding:.5rem; border-radius:.5rem;">
-              <div style="text-align:center;">
-                <svg-icon icon-class="notify_member" class="icon-class"></svg-icon>
-              </div>
-              <div class="icon-font">会 员</div>
-            </div>
-            <div v-if="Member.stats" class="notify-point"></div>
-          </mu-flex>
-        </mu-col>
-        <mu-col span="10" style="padding: .2rem 0 0 .5rem;" align-self="center">
-          <span v-if="Member.title.length == 0">暂无消息</span>
-          <div v-else>
-            <mu-row>
-              <span class="notify-title">{{ Member.title }}</span> 
-              <span class="notify-time">10分钟前</span>
-            </mu-row>
-            <mu-row style="margin-top:.2rem;">
-              <span class="notify-desc span-omit">{{ Member.briefDesc }}</span>
-            </mu-row>
-          </div>
-        </mu-col>
-      </mu-row>
-      <mu-divider></mu-divider>
-
-      <mu-row style="margin-top:1rem; margin-bottom:1rem;">
-        <mu-col span="2">
+      <mu-row style="margin-top:1rem; margin-bottom:1rem;" @click="linkToTeamMsg">
+        <mu-col span="2" align-items="center" style="">
           <mu-flex style="width:100%; height:auto; color:#fff; position:relative;" align-items="center" >
             <div style="width:3rem; height:3rem; background:#4caf50; color:#fff; padding:.5rem; border-radius:.5rem;">
               <div style="text-align:center;">
-                <svg-icon icon-class="notify_activity" class="icon-class"></svg-icon>
+                <svg-icon icon-class="notify-travel" class="icon-class"></svg-icon>
               </div>
-              <div class="icon-font">活 动</div>
-              <div v-if="Activity.stats" class="notify-point"></div>
+              <div class="icon-font">旅 游</div>
             </div>
+            <div v-if="Team.stats" class="notify-point"></div>
           </mu-flex>
         </mu-col>
         <mu-col span="10" style="padding: .2rem 0 0 .5rem;" align-self="center">
-          <span v-if="Activity.title.length == 0">暂无消息</span>
-          <div v-else>
-            <mu-row>
-              <span class="notify-title">{{ Activity.title }}</span> 
-              <span class="notify-time">10分钟前</span>
-            </mu-row>
-            <mu-row style="margin-top:.2rem;">
-              <span class="notify-desc span-omit">{{ Activity.briefDesc }}</span>
-            </mu-row>
-          </div>
+          <mu-row>
+            <span class="notify-title">{{ Team.title }}</span> 
+            <span class="notify-time">10分钟前</span>
+          </mu-row>
+          <mu-row style="margin-top:.2rem;">
+            <span class="notify-desc span-omit">{{ Team.briefDesc }}</span>
+          </mu-row>
         </mu-col>
       </mu-row>
       <mu-divider></mu-divider>
 
-      <mu-row style="margin-top:1rem; margin-bottom:1rem;">
-        <mu-col span="2">
+      <mu-row style="margin-top:1rem; margin-bottom:1rem;" @click="linkToTeamMsg">
+        <mu-col span="2" align-items="center" style="">
           <mu-flex style="width:100%; height:auto; color:#fff; position:relative;" align-items="center" >
-            <div style="width:3rem; height:3rem; background:#673ab7; color:#fff; padding:.5rem; border-radius:.5rem;">
+            <div style="width:3rem; height:3rem; background:#ff5722; color:#fff; padding:.5rem; border-radius:.5rem;">
               <div style="text-align:center;">
-                <svg-icon icon-class="notify_annoucement" class="icon-class"></svg-icon>
+                <svg-icon icon-class="notify-instant" class="icon-class"></svg-icon>
               </div>
-              <div class="icon-font">公 告</div>
-              <div v-if="Annoucement.stats" class="notify-point"></div>
+              <div class="icon-font">即 时</div>
             </div>
+            <div v-if="Team.stats" class="notify-point"></div>
           </mu-flex>
         </mu-col>
         <mu-col span="10" style="padding: .2rem 0 0 .5rem;" align-self="center">
-          <span v-if="Annoucement.title.length == 0">暂无消息</span>
-          <div v-else>
-            <mu-row>
-              <span class="notify-title">{{ Annoucement.title }}</span> 
-              <span class="notify-time">10分钟前</span>
-            </mu-row>
-            <mu-row style="margin-top:.2rem;">
-              <span class="notify-desc span-omit">{{ Annoucement.briefDesc }}</span>
-            </mu-row>
-          </div>
+          <mu-row>
+            <span class="notify-title">{{ Team.title }}</span> 
+            <span class="notify-time">10分钟前</span>
+          </mu-row>
+          <mu-row style="margin-top:.2rem;">
+            <span class="notify-desc span-omit">{{ Team.briefDesc }}</span>
+          </mu-row>
         </mu-col>
       </mu-row>
       <mu-divider></mu-divider>
+
+      <mu-row style="margin-top:1rem; margin-bottom:1rem;" @click="linkToTeamMsg">
+        <mu-col span="2" align-items="center" style="">
+          <mu-flex style="width:100%; height:auto; color:#fff; position:relative;" align-items="center" >
+            <div style="width:3rem; height:3rem; background:#795548; color:#fff; padding:.5rem; border-radius:.5rem;">
+              <div style="text-align:center;">
+                <svg-icon icon-class="notify-activity" class="icon-class"></svg-icon>
+              </div>
+              <div class="icon-font">活 动</div>
+            </div>
+            <div v-if="Team.stats" class="notify-point"></div>
+          </mu-flex>
+        </mu-col>
+        <mu-col span="10" style="padding: .2rem 0 0 .5rem;" align-self="center">
+          <mu-row>
+            <span class="notify-title">{{ Team.title }}</span> 
+            <span class="notify-time">10分钟前</span>
+          </mu-row>
+          <mu-row style="margin-top:.2rem;">
+            <span class="notify-desc span-omit">{{ Team.briefDesc }}</span>
+          </mu-row>
+        </mu-col>
+      </mu-row>
+      <mu-divider></mu-divider>
+
 
     </div>
 
@@ -223,7 +208,6 @@ export default {
     }
   },
   mounted () {
-    this.$refs.footer.linkToNav(2)
     this.$axios.post(
       '/notify/mainpage', {}
     ).then((resp)=>{
@@ -268,6 +252,7 @@ export default {
   },
   methods: {
     linkToTeamMsg () {
+      console.log('什么鬼')
       this.$router.push('/notify/teamMsg')
     }
   },

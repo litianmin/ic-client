@@ -181,6 +181,12 @@ const router =  new Router({
       component: () => import('./views/notify/category.vue')
     },
 
+    { // 组队信息通知
+      path: '/notify/teamMsg',
+      name: 'notify-teamMsg',
+      component: () => import('./views/notify/team.vue')
+    },
+
     {
       path: '/common/newChat',
       name: 'common-newchat',
