@@ -22,7 +22,7 @@
               </div>
               <div class="icon-font">组 队</div>
             </div>
-            <div v-if="Team.stats" class="notify-point"></div>
+            <div v-if="Team.stats > 0" class="notify-point"></div>
           </mu-flex>
         </mu-col>
         <mu-col span="10" style="padding: .2rem 0 0 .5rem;" align-self="center">
@@ -30,7 +30,7 @@
           <div v-else>
             <mu-row>
               <span class="notify-title">{{ Team.title }}</span> 
-              <span class="notify-time">10分钟前</span>
+              <span class="notify-time">{{ Team.createTime | parseUnixToDesc() }}</span>
             </mu-row>
             <mu-row style="margin-top:.2rem;">
               <span class="notify-desc span-omit">{{ Team.briefDesc }}</span>
@@ -41,7 +41,7 @@
       <mu-divider></mu-divider>
 
 
-      <mu-row style="margin-top:1rem; margin-bottom:1rem;">
+      <mu-row style="margin-top:1rem; margin-bottom:1rem;" @click="linkToCommentMsg">
         <mu-col span="2">
           <mu-flex style="width:100%; height:auto; color:#fff; position:relative;" align-items="center" >
             <div style="width:3rem; height:3rem; background:#00bcd4; color:#fff; padding:.5rem; border-radius:.5rem;">
@@ -58,7 +58,7 @@
           <div v-else>
             <mu-row>
               <span class="notify-title">{{ Comment.title }}</span> 
-              <span class="notify-time">10分钟前</span>
+              <span class="notify-time">{{ Comment.createTime | parseUnixToDesc() }}</span>
             </mu-row>
             <mu-row style="margin-top:.2rem;">
               <span class="notify-desc span-omit">{{ Comment.briefDesc }}</span>
@@ -85,7 +85,7 @@
           <div v-else>
             <mu-row>
               <span class="notify-title">{{ Member.title }}</span> 
-              <span class="notify-time">10分钟前</span>
+              <span class="notify-time">{{ Member.createTime | parseUnixToDesc() }}</span>
             </mu-row>
             <mu-row style="margin-top:.2rem;">
               <span class="notify-desc span-omit">{{ Member.briefDesc }}</span>
@@ -112,7 +112,7 @@
           <div v-else>
             <mu-row>
               <span class="notify-title">{{ Activity.title }}</span> 
-              <span class="notify-time">10分钟前</span>
+              <span class="notify-time">{{ Activity.createTime | parseUnixToDesc() }}</span>
             </mu-row>
             <mu-row style="margin-top:.2rem;">
               <span class="notify-desc span-omit">{{ Activity.briefDesc }}</span>
@@ -139,7 +139,7 @@
           <div v-else>
             <mu-row>
               <span class="notify-title">{{ Annoucement.title }}</span> 
-              <span class="notify-time">10分钟前</span>
+              <span class="notify-time">{{ Annoucement.createTime | parseUnixToDesc() }}</span>
             </mu-row>
             <mu-row style="margin-top:.2rem;">
               <span class="notify-desc span-omit">{{ Annoucement.briefDesc }}</span>
@@ -269,6 +269,9 @@ export default {
   methods: {
     linkToTeamMsg () {
       this.$router.push('/notify/teamMsg')
+    },
+    linkToCommentMsg () {
+      this.$router.push('/notify/commentMsg')
     }
   },
   components: {
@@ -282,7 +285,7 @@ export default {
 .icon-class {font-size:16px;}
 .icon-font {text-align:center; font-size:11px;}
 
-.notify-title {font-size:14px; color:#424242;}
+.notify-title {font-size:14px; color:#616161;}
 .notify-time {margin-left:auto; font-size:12px; color:#9e9e9e; margin-right:.5rem;}
 .notify-desc {color:#9e9e9e; font-size:13px;}
 .notify-point {position:absolute; top:-.2rem; right:.2rem; width:12px; height:12px; background:red; border:2px solid #fff; border-radius:50%;}

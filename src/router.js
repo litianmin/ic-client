@@ -187,6 +187,12 @@ const router =  new Router({
       component: () => import('./views/notify/team.vue')
     },
 
+    { // 评论信息通知
+      path: '/notify/commentMsg',
+      name: 'notify-commentMsg',
+      component: () => import('./views/notify/comment.vue')
+    },
+
     {
       path: '/common/newChat',
       name: 'common-newchat',

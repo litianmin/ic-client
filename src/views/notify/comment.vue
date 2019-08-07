@@ -2,7 +2,7 @@
   <div>
     <div style="padding:1rem 0 0 1rem; ">
       <svg-icon icon-class="msg-gray" class="icon-class"></svg-icon>
-      <span style="margin-left:.5rem; font-size:14px; font-weight:700; color:#757575;">组队消息</span>
+      <span style="margin-left:.5rem; font-size:14px; font-weight:700; color:#757575;">谁@我</span>
     </div>
 
     <div style="padding:0 1rem; margin-bottom:2.5rem;">
