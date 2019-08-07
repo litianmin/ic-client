@@ -8,6 +8,14 @@ import Toast from 'muse-ui-toast'
 import Loading from 'muse-ui-loading'
 import './registerServiceWorker'
 
+
+import * as filters from './filters'
+
+// register global utility filters
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
+
 Vue.prototype.$axios = axios
 // axios.defaults.baseURL = "/api"
 // axios.defaults.baseURL = "127.0.0.1：8888"

@@ -1,143 +1,37 @@
 <template>
   <div>
-    <!-- BEGIN 头部 -->
-    <mu-appbar class="mine-appbar" color="#00bcd4" z-depth="1">
-      <mu-button icon slot="left">
-        <svg-icon icon-class="msg" class="icon-class"></svg-icon>
-      </mu-button>
-      
-      <div ref="menuHide" style="font-size:14px;">
-        组队消息
-      </div>
-    </mu-appbar>
-    <!-- END 头部 -->
-
-    <div style="padding:0 1rem; margin-bottom:2.5rem;">
-      <mu-row style="margin-top:1rem; margin-bottom:1rem;" @click="linkToTeamMsg">
-        <mu-col span="2" align-items="center" style="">
-          <mu-flex style="width:100%; height:auto; color:#fff; position:relative;" align-items="center" >
-            <div style="width:3rem; height:3rem; background:#673ab7; color:#fff; padding:.5rem; border-radius:.5rem;">
-              <div style="text-align:center;">
-                <svg-icon icon-class="notify-game" class="icon-class"></svg-icon>
-              </div>
-              <div class="icon-font">游 戏</div>
-            </div>
-            <div v-if="Team.stats" class="notify-point"></div>
-          </mu-flex>
-        </mu-col>
-        <mu-col span="10" style="padding: .2rem 0 0 .5rem;" align-self="center">
-          <mu-row>
-            <span class="notify-title">{{ Team.title }}</span> 
-            <span class="notify-time">10分钟前</span>
-          </mu-row>
-          <mu-row style="margin-top:.2rem;">
-            <span class="notify-desc span-omit">{{ Team.briefDesc }}</span>
-          </mu-row>
-        </mu-col>
-      </mu-row>
-      <mu-divider></mu-divider>
-
-      <mu-row style="margin-top:1rem; margin-bottom:1rem;" @click="linkToTeamMsg">
-        <mu-col span="2" align-items="center" style="">
-          <mu-flex style="width:100%; height:auto; color:#fff; position:relative;" align-items="center" >
-            <div style="width:3rem; height:3rem; background:#e040fb; color:#fff; padding:.5rem; border-radius:.5rem;">
-              <div style="text-align:center;">
-                <svg-icon icon-class="notify-party" class="icon-class"></svg-icon>
-              </div>
-              <div class="icon-font">聚 会</div>
-            </div>
-            <div v-if="Team.stats" class="notify-point"></div>
-          </mu-flex>
-        </mu-col>
-        <mu-col span="10" style="padding: .2rem 0 0 .5rem;" align-self="center">
-          <mu-row>
-            <span class="notify-title">{{ Team.title }}</span> 
-            <span class="notify-time">10分钟前</span>
-          </mu-row>
-          <mu-row style="margin-top:.2rem;">
-            <span class="notify-desc span-omit">{{ Team.briefDesc }}</span>
-          </mu-row>
-        </mu-col>
-      </mu-row>
-      <mu-divider></mu-divider>
-
-      <mu-row style="margin-top:1rem; margin-bottom:1rem;" @click="linkToTeamMsg">
-        <mu-col span="2" align-items="center" style="">
-          <mu-flex style="width:100%; height:auto; color:#fff; position:relative;" align-items="center" >
-            <div style="width:3rem; height:3rem; background:#4caf50; color:#fff; padding:.5rem; border-radius:.5rem;">
-              <div style="text-align:center;">
-                <svg-icon icon-class="notify-travel" class="icon-class"></svg-icon>
-              </div>
-              <div class="icon-font">旅 游</div>
-            </div>
-            <div v-if="Team.stats" class="notify-point"></div>
-          </mu-flex>
-        </mu-col>
-        <mu-col span="10" style="padding: .2rem 0 0 .5rem;" align-self="center">
-          <mu-row>
-            <span class="notify-title">{{ Team.title }}</span> 
-            <span class="notify-time">10分钟前</span>
-          </mu-row>
-          <mu-row style="margin-top:.2rem;">
-            <span class="notify-desc span-omit">{{ Team.briefDesc }}</span>
-          </mu-row>
-        </mu-col>
-      </mu-row>
-      <mu-divider></mu-divider>
-
-      <mu-row style="margin-top:1rem; margin-bottom:1rem;" @click="linkToTeamMsg">
-        <mu-col span="2" align-items="center" style="">
-          <mu-flex style="width:100%; height:auto; color:#fff; position:relative;" align-items="center" >
-            <div style="width:3rem; height:3rem; background:#ff5722; color:#fff; padding:.5rem; border-radius:.5rem;">
-              <div style="text-align:center;">
-                <svg-icon icon-class="notify-instant" class="icon-class"></svg-icon>
-              </div>
-              <div class="icon-font">即 时</div>
-            </div>
-            <div v-if="Team.stats" class="notify-point"></div>
-          </mu-flex>
-        </mu-col>
-        <mu-col span="10" style="padding: .2rem 0 0 .5rem;" align-self="center">
-          <mu-row>
-            <span class="notify-title">{{ Team.title }}</span> 
-            <span class="notify-time">10分钟前</span>
-          </mu-row>
-          <mu-row style="margin-top:.2rem;">
-            <span class="notify-desc span-omit">{{ Team.briefDesc }}</span>
-          </mu-row>
-        </mu-col>
-      </mu-row>
-      <mu-divider></mu-divider>
-
-      <mu-row style="margin-top:1rem; margin-bottom:1rem;" @click="linkToTeamMsg">
-        <mu-col span="2" align-items="center" style="">
-          <mu-flex style="width:100%; height:auto; color:#fff; position:relative;" align-items="center" >
-            <div style="width:3rem; height:3rem; background:#795548; color:#fff; padding:.5rem; border-radius:.5rem;">
-              <div style="text-align:center;">
-                <svg-icon icon-class="notify-activity" class="icon-class"></svg-icon>
-              </div>
-              <div class="icon-font">活 动</div>
-            </div>
-            <div v-if="Team.stats" class="notify-point"></div>
-          </mu-flex>
-        </mu-col>
-        <mu-col span="10" style="padding: .2rem 0 0 .5rem;" align-self="center">
-          <mu-row>
-            <span class="notify-title">{{ Team.title }}</span> 
-            <span class="notify-time">10分钟前</span>
-          </mu-row>
-          <mu-row style="margin-top:.2rem;">
-            <span class="notify-desc span-omit">{{ Team.briefDesc }}</span>
-          </mu-row>
-        </mu-col>
-      </mu-row>
-      <mu-divider></mu-divider>
-
-
+    <div style="padding:1rem 0 .5rem 1rem;">
+      <span style="font-size:14px; font-weight:700;">- 组队消息 -</span>
     </div>
 
-    <div class="footer">
-      <Footer ref="footer"></Footer>
+    <div style="padding:0 1rem; margin-bottom:2.5rem;">
+
+      <div v-for="(item, index) in List" :key="index">
+        <mu-row style="margin-top:1rem; margin-bottom:1rem;">
+          <mu-col span="2" align-items="center" style="">
+            <mu-flex style="width:100%; height:auto; color:#fff; position:relative;" align-items="center" >
+              <div :class="item.bgcolor">
+                <div style="text-align:center;">
+                  <svg-icon :icon-class="item.modIcon" class="icon-class"></svg-icon>
+                </div>
+                <div class="icon-font">{{ item.modName }}</div>
+              </div>
+              <div v-if="item.readStatus > 0" class="notify-point"></div>
+            </mu-flex>
+          </mu-col>
+          <mu-col span="10" style="padding: .2rem 0 0 .5rem;" align-self="center">
+            <mu-row>
+              <span class="notify-title">{{ item.title }}</span> 
+              <span class="notify-time">{{ item.createTime | parseUnixToDesc() }}</span>
+            </mu-row>
+            <mu-row style="margin-top:.2rem;">
+              <span class="notify-desc span-omit">{{ item.briefDesc }}</span>
+            </mu-row>
+          </mu-col>
+        </mu-row>
+        <mu-divider></mu-divider>
+      </div>
+
     </div>
 
   </div>
@@ -148,111 +42,59 @@ import Footer from '@/components/Footer.vue'
 export default {
   data () {
     return {
-      Team: {
-        briefDesc: '',
-        category: 1,
-        createTime: 1565077882,
-        displayImg: '',
-        id: 1,
-        module: 2,
-        readStatus: 0,
-        stats: 0,
-        title: ''
-      },
-      Comment: {
-        briefDesc: '',
-        category: 1,
-        createTime: 1565077882,
-        displayImg: '',
-        id: 1,
-        module: 2,
-        readStatus: 0,
-        stats: 0,
-        title: ''
-        },
-      Member: {
-        briefDesc: '',
-        category: 1,
-        createTime: 1565077882,
-        displayImg: '',
-        id: 1,
-        module: 2,
-        readStatus: 0,
-        stats: 0,
-        title: ''
-      },
-      Activity: {
-        briefDesc: '',
-        category: 1,
-        createTime: 1565077882,
-        displayImg: '',
-        id: 1,
-        module: 2,
-        readStatus: 0,
-        stats: 0,
-        title: ''
-      },
-      Annoucement: {
-        briefDesc: '',
-        category: 1,
-        createTime: 1565077882,
-        displayImg: '',
-        id: 1,
-        module: 2,
-        readStatus: 0,
-        stats: 0,
-        title: ''
-      },
+      Page: 1,
+      List: [],
       MsgList: [],
       Status: [],
     }
   },
   mounted () {
-    this.$axios.post(
-      '/notify/mainpage', {}
-    ).then((resp)=>{
-      if(resp.data.code == 20000) {
-        let msgList = resp.data.msg.msgList
-        msgList.map(v => {
-          switch(v.category) {
-          case 1:
-            this.Team = v
-            console.log(this.Team)
-            break
-          case 2:
-            this.Comment = v
-            break
-          case 3:
-            this.Member = v
-            break
-          case 4:
-            this.Activity = v
-            break
-          case 5:
-            this.Annoucement = v
-            break
-          default:
-            break
-          }
-          if(v.category == 1) {
-            this.TeamNotify = v
-          }
-        })
-
-        let statsList = resp.data.msg.stats
-        this.Team.stats = statsList.team
-        this.Comment.stats = statsList.comment
-        this.Member.stats = statsList.member
-        this.Activity.stats = statsList.activity
-        this.Annoucement.stats = statsList.annoucement
-
-      }
-      console.log(resp)
-    })
+    this.pageInit()
   },
   methods: {
+    pageInit () {
+      this.getList()
+    },
+    getList () {
+      this.$axios.get(`/notify/teamList/${this.Page}`,{}).then((resp)=>{
+        let dataBack = resp.data
+        console.log(dataBack)
+        if(dataBack.code == 20000) {
+          let list = dataBack.msg
+          this.List = list.map(v => {
+            switch(v.module) {
+            case 1:
+              v.modIcon = 'notify-game'
+              v.modName = '游 戏'
+              v.bgcolor = 'bg-game'
+              break
+            case 2:
+              v.modIcon = 'notify-party'
+              v.modName = '聚 会'
+              v.bgcolor = 'bg-party'
+              break
+            case 3:
+              v.modIcon = 'notify-travel'
+              v.modName = '旅 游'
+              v.bgcolor = 'bg-travel'
+              break
+            case 4:
+              v.modIcon = 'notify-instant'
+              v.modName = '即 时'
+              v.bgcolor = 'bg-instant'
+              break
+            case 5:
+              v.modIcon = 'notify-activity'
+              v.modName = '活 动'
+              v.bgcolor = 'bg-activity'
+              break
+            }
+            return v
+          })
+        }
+      })
+    },
     linkToTeamMsg () {
-      console.log('什么鬼')
       this.$router.push('/notify/teamMsg')
     }
   },
@@ -281,6 +123,12 @@ export default {
   white-space:nowrap;
   word-break:keep-all;
 }
+
+.bg-game {width:3rem; height:3rem; background:#673ab7; color:#fff; padding:.5rem; border-radius:.5rem;}
+.bg-party {width:3rem; height:3rem; background:#e040fb; color:#fff; padding:.5rem; border-radius:.5rem;}
+.bg-travel {width:3rem; height:3rem; background:#4caf50; color:#fff; padding:.5rem; border-radius:.5rem;}
+.bg-instant {width:3rem; height:3rem; background:#ff5722; color:#fff; padding:.5rem; border-radius:.5rem;}
+.bg-activity {width:3rem; height:3rem; background:#795548; color:#fff; padding:.5rem; border-radius:.5rem;}
 
 </style>
 
