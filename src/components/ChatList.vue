@@ -9,6 +9,44 @@
 
     <!-- BEGIN 回复评论 -->
     <mu-load-more :loading="Loading" @load="load" :loaded-all="IsTheLast">
+
+
+      <mu-container style="padding:.5rem .5rem; ">
+        <mu-flex align-items="center">
+          <mu-avatar size="35" style="padding:.1rem; border:1px solid #03a9f4; border-radius:50%; background:white; ">
+            <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3667616433,706958275&fm=26&gp=0.jpg">
+          </mu-avatar>
+          <span style=" font-size:14px; font-weight:700; margin-left:.5rem; margin-right:.5rem; color:#424242; letter-spacing: 1px;">
+            这里是我的昵称，如果
+          </span>
+          <!-- <span style="margin-left:auto; font-size:12px; color:#9e9e9e; margin-right:.5rem; ">10分钟前</span> -->
+        </mu-flex>
+
+        <mu-row style="font-size:15px; padding:.2rem 1rem 0 2rem; color:#424242;">
+          <span style="margin-left:.5rem; letter-spacing: 1px;">
+            <span style="color:#795548;">@蝴蝶梦: </span>这里是我的内容我试下会好很多吗，先看看行不行吧
+            <!-- <span style="color:green; margin-left:.5rem;">回复</span> -->
+          </span>
+        </mu-row>
+
+        <mu-row style=" padding:.5rem .5rem .5rem 2.3rem; font-size:12px; color:#616161; ">
+          <img style="max-width:100%; max-height:10rem; border-radius:.3rem;" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1805523750,264673572&fm=26&gp=0.jpg">
+        </mu-row>
+
+        <mu-row style="background:#eeeeee; padding:.5rem; margin-right:1.5rem; margin-left:2.2rem; letter-spacing: 1px;">
+          <span><span style="color:#795548;">蝴蝶梦：</span>这里是我的内容， 做个好汉子，热血热搜多少发生</span>
+        </mu-row>
+
+        <mu-row style="padding: .5rem 0 0 2.3rem; font-size:13px; margin-bottom:1rem;">
+          <span style="color:#757575;">10分钟前 ·</span>  
+          <span style="color:green; margin-left:.3rem;"> 回复</span>
+        </mu-row>
+
+        <mu-divider></mu-divider>
+
+      </mu-container>
+
+
       <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
         <mu-flex align-items="center">
           <mu-avatar size="24" :class="item.user_sex == 1 ? 'avatar-male' : 'avatar-female'">
@@ -62,7 +100,6 @@ export default {
   },
   methods: {
     load () {
-      console.log('我出发了')
       this.Loading = true      
       let sortWay = this.IsSortup == false ? 0 : 1
       this.$axios.get(`/common/chatList/${this.TeamType}/${this.TeamID}/${this.ReplyListPage}/${sortWay}`,{}).then((resp)=>{
