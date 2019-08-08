@@ -45,7 +45,7 @@ export default {
       TeamType: 0,  // 1=>game, 2=>party, 3=>travel, 4=>instant, 5=>activity
       TeamID: 0,
       ReplyTo: 0,
-      ReplayID: 0,
+      ReplyID: 0,
       GameID: 0,
       Cont: '',
       Img: '',  // base64图片数据
