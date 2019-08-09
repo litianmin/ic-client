@@ -100,7 +100,7 @@
 
     <!-- 发起评论框 -->
     <mu-flex class="reply-input-box" align-items="center">
-      <div style="width:80%;" @click="newChat(false, 0, 0, '')">
+      <div style="width:80%;" @click="newChat(false, 0, '')">
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
 
@@ -193,7 +193,7 @@ export default {
     }
   },
   created () {
-    this.TeamID = 16
+    this.TeamID = 15
   },
 
   mounted () {
@@ -208,64 +208,64 @@ export default {
       // console.log(resp.data)
 
       // 如果队伍已经解散了，直接跳转到组队列表去
-      if(resp.data.code == 40105) {
-        this.$toast.message(resp.data.msg)
-        this.$router.push('/party/list')
-        return
-      }
+      // if(resp.data.code == 40105) {
+      //   this.$toast.message(resp.data.msg)
+      //   this.$router.push('/party/list')
+      //   return
+      // }
 
-      let dataBack = resp.data.msg
-      if(dataBack.chatList.length < 15) {
-        this.IsTheLast = true
-      }
-      // this.IsTheLast = dataBack.chatListInfo.isTheLast
+      // let dataBack = resp.data.msg
+      // if(dataBack.chatList.length < 15) {
+      //   this.IsTheLast = true
+      // }
+      // // this.IsTheLast = dataBack.chatListInfo.isTheLast
       
-      // 渲染详情页基本信息
-      // 渲染图片路径处理
-      let recruitImgs = dataBack.teamBaseInfo.recruitImg
-      for(let i = 0; i < recruitImgs.length; i++ ) {
-        recruitImgs[i] = utils.imgPrefixDeal(recruitImgs[i])
-      }
-      this.RecruitImgs = recruitImgs
-      this.SwiperIsRender = true
+      // // 渲染详情页基本信息
+      // // 渲染图片路径处理
+      // let recruitImgs = dataBack.teamBaseInfo.recruitImg
+      // for(let i = 0; i < recruitImgs.length; i++ ) {
+      //   recruitImgs[i] = utils.imgPrefixDeal(recruitImgs[i])
+      // }
+      // this.RecruitImgs = recruitImgs
+      // this.SwiperIsRender = true
 
-      let teamBaseInfo = dataBack.teamBaseInfo
-      teamBaseInfo.partyTheme = utils.getPartyThemeName(teamBaseInfo.partyTheme)
-      teamBaseInfo.partyTitle = teamBaseInfo.partyTitle == '' ? '一起来玩吧' : teamBaseInfo.partyTitle
-      teamBaseInfo.partyDetail = teamBaseInfo.partyDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : teamBaseInfo.partyDetail
-      teamBaseInfo.teammatePrefer = teamBaseInfo.teammatePrefer == '' ? '随便来！' : teamBaseInfo.teammatePrefer
-      // 先格式化活动时间  {{ item.partyBeginTime }}  ~  {{ item.partyEndTime }}
-      // 2019/1/02 02:02  ~  2019/3/02 03:04
-      teamBaseInfo.partyBeginTime = utils.unixToDate(teamBaseInfo.partyBeginTime)
-      teamBaseInfo.partyEndTime = utils.unixToDate(teamBaseInfo.partyEndTime)
-      // 距离处理
-      teamBaseInfo.distance = utils.distanceFormat(teamBaseInfo.distance)
-      // 队伍发布时间处理
-      teamBaseInfo.createTime = utils.getDateDiff(teamBaseInfo.createTime, true)
-      // 已招募人数
-      teamBaseInfo.hadRecruitNumb = dataBack.teammateList.length
+      // let teamBaseInfo = dataBack.teamBaseInfo
+      // teamBaseInfo.partyTheme = utils.getPartyThemeName(teamBaseInfo.partyTheme)
+      // teamBaseInfo.partyTitle = teamBaseInfo.partyTitle == '' ? '一起来玩吧' : teamBaseInfo.partyTitle
+      // teamBaseInfo.partyDetail = teamBaseInfo.partyDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : teamBaseInfo.partyDetail
+      // teamBaseInfo.teammatePrefer = teamBaseInfo.teammatePrefer == '' ? '随便来！' : teamBaseInfo.teammatePrefer
+      // // 先格式化活动时间  {{ item.partyBeginTime }}  ~  {{ item.partyEndTime }}
+      // // 2019/1/02 02:02  ~  2019/3/02 03:04
+      // teamBaseInfo.partyBeginTime = utils.unixToDate(teamBaseInfo.partyBeginTime)
+      // teamBaseInfo.partyEndTime = utils.unixToDate(teamBaseInfo.partyEndTime)
+      // // 距离处理
+      // teamBaseInfo.distance = utils.distanceFormat(teamBaseInfo.distance)
+      // // 队伍发布时间处理
+      // teamBaseInfo.createTime = utils.getDateDiff(teamBaseInfo.createTime, true)
+      // // 已招募人数
+      // teamBaseInfo.hadRecruitNumb = dataBack.teammateList.length
 
-      this.TeamBaseInfo = teamBaseInfo  // 赋值
-      this.TeammateList = dataBack.teammateList
-      for(let i = 0; i < this.TeammateList.length; i++) { // 队友头像处理
-        this.TeammateList[i].avatar = utils.imgPrefixDeal(this.TeammateList[i].avatar)
-      }
+      // this.TeamBaseInfo = teamBaseInfo  // 赋值
+      // this.TeammateList = dataBack.teammateList
+      // for(let i = 0; i < this.TeammateList.length; i++) { // 队友头像处理
+      //   this.TeammateList[i].avatar = utils.imgPrefixDeal(this.TeammateList[i].avatar)
+      // }
 
-      this.IsCaptain = dataBack.isCaptain
-      this.JointeamStmt = dataBack.joinStmt
+      // this.IsCaptain = dataBack.isCaptain
+      // this.JointeamStmt = dataBack.joinStmt
 
-      // 图片路径处理
-      teamBaseInfo.captainAvatar = utils.imgPrefixDeal(teamBaseInfo.captainAvatar)
+      // // 图片路径处理
+      // teamBaseInfo.captainAvatar = utils.imgPrefixDeal(teamBaseInfo.captainAvatar)
 
-      // 评论处理
-      let replyList =  dataBack.chatList
-      // console.log(replyList)
-      for(let i = 0; i < replyList.length; i++) {
-        replyList[i].createTime = utils.getDateDiff(replyList[i].createTime, true)
-        replyList[i].userAvatar = utils.imgPrefixDeal(replyList[i].userAvatar)
-        replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
-      }
-      this.ReplyList = replyList
+      // // 评论处理
+      // let replyList =  dataBack.chatList
+      // // console.log(replyList)
+      // for(let i = 0; i < replyList.length; i++) {
+      //   replyList[i].createTime = utils.getDateDiff(replyList[i].createTime, true)
+      //   replyList[i].userAvatar = utils.imgPrefixDeal(replyList[i].userAvatar)
+      //   replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
+      // }
+      // this.ReplyList = replyList
 
       this.InitLoading = false
     })
@@ -383,13 +383,13 @@ export default {
         this.leaveTeamReq()
       }
     },
-    newChat (isReply, replyTo, replyID, replyNickname) {
+    newChat (isReply, replyID, replyNickname) {
       // 只有加入组队的人才能进行评论
       if(this.JointeamStmt != 3) {
         this.$toast.message('加入组队后才能聊天哦')
         return
       }
-      this.$router.push({path:`/common/newChat`, query:{teamType:this.TeamType, teamID:this.TeamID, isReply, replyTo, replyID, replyNickname}})
+      this.$router.push({path:`/common/newChat`, query:{teamType:this.TeamType, teamID:this.TeamID, isReply, replyID, replyNickname}})
     },
   },
   components: {

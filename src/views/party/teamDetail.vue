@@ -25,47 +25,87 @@
     <mu-flex v-if="SwiperIsRender" style="position:relative;" justify-content="center">
       <swiper :options="swiperOption" style="height: auto">
         <swiper-slide v-for="(item, index) in RecruitImgs" :key="index" style="text-align:center;">
-          <img style="max-width:100%; max-height:100%;" :src="item" alt="">
+          <img style="max-width:100%; max-height:100%;" :src="item | imgPrefixDeal()" alt="">
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
     </mu-flex>
 
-    <div style="padding:.5rem 1rem 0rem .5rem;">
-      <mu-row style="margin-bottom:.3rem;">
-        <span style="color:#795548; font-size:12px;">主要活动:</span>
-        <span style="margin-left:.5rem; color:#212121; font-size:12px;">{{ TeamBaseInfo.partyTitle }}</span>
+    <div class="main-cont-div">
+      <mu-row class="cont-item-row">
+        <mu-flex style="width:20%;">
+          <span class="cont-item-title">主要活动</span>
+        </mu-flex>
+        <mu-flex style="width:80%;">
+          <span class="cont-item-detail">{{ TeamBaseInfo.partyTitle }} </span>
+        </mu-flex>
       </mu-row>
-      <mu-row style="margin-bottom:.3rem;">
-        <span style="color:#795548; font-size:12px;">活动地点:</span>
-        <span style="margin-left:.5rem; color:#212121; font-size:12px;">{{ TeamBaseInfo.partyVenue.addr }}</span>
+
+      <mu-row class="cont-item-row">
+        <mu-flex style="width:20%;">
+          <span class="cont-item-title">活动地点</span>
+        </mu-flex>
+
+        <mu-flex style="width:80%;">
+          <span class="cont-item-detail">{{ TeamBaseInfo.partyVenue.addr }}</span>
+        </mu-flex>
       </mu-row>
-      <mu-row style="margin-bottom:.3rem;">
-        <span style="color:#795548; font-size:12px;">活动时间:</span>
-        <span style="margin-left:.5rem; color:#212121; font-size:12px;">{{ TeamBaseInfo.partyBeginTime }}  ~  {{ TeamBaseInfo.partyEndTime }}</span>
+
+      <mu-row class="cont-item-row">
+        <mu-flex style="width:20%;">
+          <span class="cont-item-title">活动时间</span>
+        </mu-flex>
+
+        <mu-flex style="width:80%;">
+          <span class="cont-item-detail">{{ TeamBaseInfo.partyBeginTime | parseTime('{m}/{d} {h}:{i}') }}  ~  {{ TeamBaseInfo.partyEndTime | parseTime('{m}/{d} {h}:{i}') }}</span>
+        </mu-flex>
       </mu-row>
-      <mu-row style="margin-bottom:.3rem;">
-        <span style="color:#795548; font-size:12px;">集合地点:</span>
-        <span style="margin-left:.5rem; color:#212121; font-size:12px;">{{ TeamBaseInfo.meetingVenue.addr }}</span>
+
+      <mu-row class="cont-item-row">
+        <mu-flex style="width:20%;">
+          <span class="cont-item-title">集合地点</span>
+        </mu-flex>
+
+        <mu-flex style="width:80%;">
+          <span class="cont-item-detail">{{ TeamBaseInfo.meetingVenue.addr }}</span>
+        </mu-flex>
       </mu-row>
-      <mu-row style="margin-bottom:.3rem;">
-        <span style="color:#795548; font-size:12px;">招募人数:</span>
-        <span style="margin-left:.5rem; color:#212121; font-size:12px;">{{ TeamBaseInfo.recruitNumb }}/<span style="color:green; font-size:10px;">{{ TeamBaseInfo.hadRecruitNumb }}</span></span>
+
+      <mu-row class="cont-item-row">
+        <mu-flex style="width:20%;">
+          <span class="cont-item-title">招募人数</span>
+        </mu-flex>
+
+        <mu-flex style="width:80%;">
+          <span class="cont-item-detail">{{ TeamBaseInfo.recruitNumb }}/<span style="color:green; font-size:10px;">{{ TeamBaseInfo.hadRecruitNumb }}</span></span>
+        </mu-flex>
       </mu-row>
-      <mu-row style="margin-bottom:.3rem;">
-        <span style="color:#795548; font-size:12px;">队友偏爱:</span>
-        <span style="margin-left:.5rem; color:#212121; font-size:12px;">{{ TeamBaseInfo.teammatePrefer }}</span>
+
+      <mu-row class="cont-item-row">
+        <mu-flex style="width:20%;">
+          <span class="cont-item-title">队友偏爱</span>
+        </mu-flex>
+
+        <mu-flex style="width:80%;">
+          <span class="cont-item-detail">{{ TeamBaseInfo.teammatePrefer }}</span>
+        </mu-flex>
       </mu-row>
 
       <mu-row style="margin-top:.5rem;">
-        <span style="color:#795548; font-size:12px;">详细内容:            <span style="margin-left:.5rem; color:#212121; font-size:12px;">{{ TeamBaseInfo.partyDetail }}</span></span>
+        <mu-flex style="width:20%;">
+          <span class="cont-item-title">详细内容</span>   
+        </mu-flex>        
+
+        <mu-flex style="width:80%;">
+          <span class="cont-item-detail">{{ TeamBaseInfo.partyDetail }}</span>
+        </mu-flex>
       </mu-row>
     </div>
 
     <mu-flex style="font-size:12px; padding:.8rem 1rem 1rem .5rem; margin-top:.5rem; border-bottom:2px solid #fff;" align-items="center">
       <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
       <span style="font-size:12px;">距离你 <span style="font-size:12px;">{{ TeamBaseInfo.distance }}</span></span>
-      <span style="margin-left:auto; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.createTime }}</span>
+      <span style="margin-left:auto; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.createTime | formatTime('{y}/{m}/{d} {h}:{i}') }}</span>
     </mu-flex>
 
     <div style="padding:.5rem; border-bottom:1px dashed #eeeeee; ">
@@ -95,77 +135,7 @@
     </mu-flex>
     <!-- END 队长和队友列表 -->
 
-    <!-- BEGIN 排序条 -->
-    <mu-flex class="sort-bar" justify-content="center" align-items="center" >
-      <span style="margin-left:.3rem">回复列表 (0)</span>
-      <span @click="convertSort" class="sort-bar-svg"><svg-icon :icon-class="IsSortup == true ? 'sortup' : 'sortdown'"></svg-icon></span>
-    </mu-flex>
-    <!-- END 排序条 -->
-
-
-
-
-      <mu-container style="padding:.5rem .8rem; border-bottom:.1rem solid #ffffff; ">
-        <mu-flex align-items="center">
-          <mu-avatar size="35" style="padding:.1rem; border:1px solid #bbdefb; border-radius:50%; background:white; ">
-            <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3667616433,706958275&fm=26&gp=0.jpg">
-          </mu-avatar>
-          <span style=" font-size:14px; margin-left:.5rem; margin-right:.5rem; color:#424242; letter-spacing: 2px;">
-            这里是我的昵称，如果
-          </span>
-          <!-- <span style="margin-left:auto; font-size:12px; color:#9e9e9e; margin-right:.5rem; ">10分钟前</span> -->
-        </mu-flex>
-
-        <mu-row style="font-size:13px; padding:.2rem 1rem .5rem 2rem;">
-          <span style="font-size:13px; margin-left:.5rem; letter-spacing: 2px;">
-            <span>@<span style="color:#795548;">蝴蝶梦</span> :</span> 这里是我的内容我试下会好很多吗，先看看行不行吧
-            <!-- <span style="color:green; margin-left:.5rem;">回复</span> -->
-          </span>
-        </mu-row>
-
-        <mu-row style=" padding:.5rem .5rem .5rem 2.2rem; font-size:12px; color:#616161; ">
-          <img style="max-width:100%; max-height:10rem; border-radius:.3rem;" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1805523750,264673572&fm=26&gp=0.jpg">
-        </mu-row>
-
-        <mu-row style="padding: .5rem 0 0 2rem;">
-          <span>10分钟前 ·</span>  <span style="color:green; margin-left:.3rem;"> 回复</span>
-        </mu-row>
-      </mu-container>
-
-
-
-
-
-    <!-- BEGIN 回复评论 -->
-    <mu-load-more :loading="Loading" @load="load" :loaded-all="IsTheLast">
-      <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
-        <mu-flex align-items="center">
-          <mu-avatar size="24" :class="item.user_sex == 1 ? 'avatar-male' : 'avatar-female'">
-            <img :src="item.userAvatar">
-          </mu-avatar>
-          <span class="reply-nickname">
-            {{ item.userNickname }} 
-          </span>
-          <span class="reply-time">{{ item.createTime }}</span>
-        </mu-flex>
-
-        <mu-row class="reply-cont-box">
-          <span style="font-size:12px; margin-left:.5rem; ">
-            <span v-if="item.replyTo > 0">@<span style="color:#795548;">{{ item.replyNickname }}</span> :</span> {{ item.cont }}
-            <span style="color:green; margin-left:.5rem;" @click="newChat(true, item.userID, item.chatID, item.userNickname)">回复</span>
-          </span>
-        </mu-row>
-
-        <mu-row v-if="item.img" class="team-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
-          <img :src="item.img">
-        </mu-row>
-      </mu-container>
-    </mu-load-more>
-
-    <mu-row v-show="IsTheLast" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.3rem; margin-bottom:3rem; color:#9e9e9e;">
-      <span> 没有更多的回复 </span>
-    </mu-row>
-    <!-- END 回复评论 -->
+    <ChatList :TeamType="TeamType" :TeamID="TeamID"></ChatList>
 
     <!-- 发起评论框 -->
     <mu-flex class="reply-input-box" align-items="center">
@@ -199,30 +169,14 @@
 
 <script>
 import utils from 'common/utils'
+import ChatList from '@/components/ChatList.vue'
 export default {
   data () {
     return {
       TeamType: 2,
       InitLoading: true,
       TeamID: 0,
-      IsSortup: false,
-      IsTheLast: true,
-      ReplyListPage: 1,
-      ReplyList: [
-        {
-          chatID: 0,
-          cont: '',
-          createTime: 0,
-          img: '',
-          replyNickname: "",
-          replyTo: 0,
-          userAvatar: "",
-          userID: 0,
-          userNickname: '',
-          userSex: 0,
-        }
-      ],
-      Loading: false,
+
       RecruitImgs: [],
       SwiperIsRender: false,
       TeamBaseInfo: {
@@ -260,8 +214,10 @@ export default {
 
     }
   },
-  mounted () {
+  created () {
     this.TeamID = this.$route.params.teamID
+  },
+  mounted () {
 
     // 初始化数据
     this.$axios.post(
@@ -279,18 +235,10 @@ export default {
       }
 
       let dataBack = resp.data.msg
-      if(dataBack.chatList.length < 15) {
-        this.IsTheLast = true
-      }
-      // this.IsTheLast = dataBack.chatListInfo.isTheLast
       
       // 渲染详情页基本信息
       // 渲染图片路径处理
-      let recruitImgs = dataBack.teamBaseInfo.recruitImg
-      for(let i = 0; i < recruitImgs.length; i++ ) {
-        recruitImgs[i] = utils.imgPrefixDeal(recruitImgs[i])
-      }
-      this.RecruitImgs = recruitImgs
+      this.RecruitImgs = dataBack.teamBaseInfo.recruitImg
       this.SwiperIsRender = true
 
       let teamBaseInfo = dataBack.teamBaseInfo
@@ -298,14 +246,10 @@ export default {
       teamBaseInfo.partyTitle = teamBaseInfo.partyTitle == '' ? '一起来玩吧' : teamBaseInfo.partyTitle
       teamBaseInfo.partyDetail = teamBaseInfo.partyDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : teamBaseInfo.partyDetail
       teamBaseInfo.teammatePrefer = teamBaseInfo.teammatePrefer == '' ? '随便来！' : teamBaseInfo.teammatePrefer
-      // 先格式化活动时间  {{ item.partyBeginTime }}  ~  {{ item.partyEndTime }}
-      // 2019/1/02 02:02  ~  2019/3/02 03:04
-      teamBaseInfo.partyBeginTime = utils.unixToDate(teamBaseInfo.partyBeginTime)
-      teamBaseInfo.partyEndTime = utils.unixToDate(teamBaseInfo.partyEndTime)
+
       // 距离处理
       teamBaseInfo.distance = utils.distanceFormat(teamBaseInfo.distance)
       // 队伍发布时间处理
-      teamBaseInfo.createTime = utils.getDateDiff(teamBaseInfo.createTime, true)
       // 已招募人数
       teamBaseInfo.hadRecruitNumb = dataBack.teammateList.length
 
@@ -321,51 +265,12 @@ export default {
       // 图片路径处理
       teamBaseInfo.captainAvatar = utils.imgPrefixDeal(teamBaseInfo.captainAvatar)
 
-      // 评论处理
-      let replyList =  dataBack.chatList
-      console.log(replyList)
-      for(let i = 0; i < replyList.length; i++) {
-        replyList[i].createTime = utils.getDateDiff(replyList[i].createTime, true)
-        replyList[i].userAvatar = utils.imgPrefixDeal(replyList[i].userAvatar)
-        replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
-      }
-      this.ReplyList = replyList
-
       this.InitLoading = false
     })
   },
   methods: {
     goBack () {
       this.$router.go(-1)
-    },
-    load () {
-      this.Loading = true      
-      let sortWay = this.IsSortup == false ? 0 : 1
-      this.$axios.get(`/common/chatList/${this.TeamType}/${this.TeamID}/${this.ReplyListPage}/${sortWay}`,{}).then((resp)=>{
-        if(resp.data.code != 20000) {
-          this.$toast.message(resp.data.msg)
-          return
-        }
-
-        let dataBack = resp.data.msg
-        this.IsTheLast = dataBack.length < 15 ? true : false
-        let replyList = dataBack
-        for(let i = 0; i < replyList.length; i++) {
-          replyList[i].createTime = utils.getDateDiff(replyList[i].createTime, true)
-          replyList[i].userAvatar = utils.imgPrefixDeal(replyList[i].userAvatar)
-          replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
-        }
-        this.ReplyList = this.ReplyList.concat(replyList)
-        this.ReplyListPage++
-        this.Loading = false
-      })
-    },
-    convertSort () {
-      // 当转换排序顺序的时候，把页数重置，然后，重新加载回复评论
-      this.ReplyListPage = 1
-      this.ReplyList = []
-      this.IsSortup = !this.IsSortup
-      this.load()
     },
 
     joinTeam () {
@@ -447,6 +352,7 @@ export default {
         this.leaveTeamReq()
       }
     },
+
     newChat (isReply, replyTo, replyID, replyNickname) {
       // 只有加入组队的人才能进行评论
       if(this.JointeamStmt != 3) {
@@ -455,6 +361,9 @@ export default {
       }
       this.$router.push({path:`/common/newChat`, query:{teamType:this.TeamType, teamID:this.TeamID, isReply, replyTo, replyID, replyNickname}})
     },
+  },
+  components: {
+    ChatList,
   },
 }
 </script>
@@ -466,14 +375,10 @@ export default {
 .mine-menu-list { background:#4dd0e1; color:white; padding:0; }
 .mine-menu-item { color:#fff; font-size:12px; }
 
-.sort-bar { background:#f5f5f5; border-top:1px solid #fff; font-size:12px; padding:.4rem .5rem; margin-bottom:.5rem; }
-.sort-bar-svg { margin-left:auto; font-size:18px; margin-right:.3rem; }
-
-.reply-container { padding:.5rem .8rem; border-bottom:.1rem solid #ffffff; }
-
-.reply-nickname { font-size:12px; margin-left:.5rem; margin-right:.5rem; color:#4db6ac; }
-.reply-time { margin-left:auto; font-size:12px; color:#9e9e9e; margin-right:.5rem; }
-.reply-cont-box { font-size:12px; padding:.5rem .5rem .5rem 1rem; }
+.main-cont-div { padding:.5rem 1rem 0rem .5rem; }
+.cont-item-row { margin-bottom:.3rem; }
+.cont-item-title { color:#795548; font-weight:700; letter-spacing: 1px; font-size:14px; }
+.cont-item-detail { margin-bottom: .3rem; color:#424242; font-size:13px; letter-spacing: 1px; }
 
 .reply-input-box { position:fixed; bottom:0; width:100%; padding:.5rem; background:#ffffff; border-top:1px solid #e0e0e0; }
 .reply-input-box input { width:100%; border-radius:.3rem; padding:.3rem; background:#f5f5f5; border:0; font-size:12px; }
