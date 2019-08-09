@@ -24,7 +24,7 @@
 
         <mu-row class="reply-row">
           <span class="reply-span">
-            <span v-if="item.replyID > 0" style="color:#795548;">@{{ item.replyNickname }}: </span>
+            <span v-if="item.replyID > 0" style="color:#795548; font-size:13px;">@{{ item.replyNickname }}: </span>
             <span>{{ item.cont }}</span>
           </span>
         </mu-row>
@@ -123,7 +123,7 @@ export default {
 .img-row { padding:.5rem .5rem .5rem 2.3rem; font-size:12px; color:#616161; }
 .img-self { max-width:100%; max-height:10rem; border-radius:.3rem; }
 
-.create-time { padding: .5rem 0 0 2.3rem; font-size:13px; margin-bottom:1rem; }
+.create-time { padding: .5rem 0 0 2.5rem; font-size:13px; margin-bottom:1rem; }
 .reply-button { color:green; margin-left:.3rem; }
 
 .reply-origin-row { background:#eeeeee; padding:.5rem; margin-right:1.5rem; margin-left:2.2rem; letter-spacing: 1px; margin-bottom:1rem; }

@@ -22,6 +22,11 @@
     <!-- END 头部 -->
 
     <div style="padding:.5rem 1rem 0rem .5rem;">
+
+      <mu-row style="margin-bottom:1rem;">
+        <span style="font-size:22px; letter-spacing:1px; font-weight:600;">{{ TeamBaseInfo.travelTitle }}</span>
+      </mu-row>
+
       <mu-row style="margin-bottom:.3rem;">
         <mu-col span="2">
           <span style="color:#795548; font-size:12px;">旅游类别:</span>
@@ -32,15 +37,6 @@
             <mu-badge :content="TeamBaseInfo.pathLength" color="#00bcd4" style="margin-right:.5rem;"></mu-badge>
             <mu-badge :content="TeamBaseInfo.travelType" color="#00bcd4" style=""></mu-badge>
           </span>
-        </mu-col>
-      </mu-row>
-
-      <mu-row style="margin-bottom:.3rem;">
-        <mu-col span="2">
-          <span style="color:#795548; font-size:12px;">招募标题:</span>
-        </mu-col>
-        <mu-col span="10" style="padding: 0 0 0 .5rem;">
-          <span style="color:#212121; font-size:12px;">{{ TeamBaseInfo.travelTitle }}</span>
         </mu-col>
       </mu-row>
 
@@ -139,43 +135,8 @@
     </mu-flex>
     <!-- END 队长和队友列表 -->
 
-    <!-- BEGIN 排序条 -->
-    <mu-flex class="sort-bar" justify-content="center" align-items="center" >
-      <span style="margin-left:.3rem">回复列表 (0)</span>
-      <span @click="convertSort" class="sort-bar-svg"><svg-icon :icon-class="IsSortup == true ? 'sortup' : 'sortdown'"></svg-icon></span>
-    </mu-flex>
-    <!-- END 排序条 -->
+    <ChatList :TeamType="TeamType" :TeamID="TeamID"></ChatList>
 
-    <!-- BEGIN 回复评论 -->
-    <mu-load-more :loading="Loading" @load="load" :loaded-all="IsTheLast">
-      <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
-        <mu-flex align-items="center">
-          <mu-avatar size="24" :class="item.user_sex == 1 ? 'avatar-male' : 'avatar-female'">
-            <img :src="item.userAvatar">
-          </mu-avatar>
-          <span class="reply-nickname">
-            {{ item.userNickname }} 
-          </span>
-          <span class="reply-time">{{ item.createTime }}</span>
-        </mu-flex>
-
-        <mu-row class="reply-cont-box">
-          <span style="font-size:12px; margin-left:.5rem; ">
-            <span v-if="item.replyTo > 0">@<span style="color:#795548;">{{ item.replyNickname }}</span> :</span> {{ item.cont }}
-            <span style="color:green; margin-left:.5rem;" @click="newChat(true, item.userID, item.chatID, item.userNickname)">回复</span>
-          </span>
-        </mu-row>
-
-        <mu-row v-if="item.img" class="team-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
-          <img :src="item.img">
-        </mu-row>
-      </mu-container>
-    </mu-load-more>
-
-    <mu-row v-show="IsTheLast" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.3rem; margin-bottom:3rem; color:#9e9e9e;">
-      <span> 没有更多的回复 </span>
-    </mu-row>
-    <!-- END 回复评论 -->
 
     <!-- 发起评论框 -->
     <mu-flex class="reply-input-box" align-items="center">
@@ -208,30 +169,14 @@
 
 <script>
 import utils from 'common/utils'
+import ChatList from '@/components/ChatList.vue'
 export default {
   data () {
     return {
       TeamType: 3,
       InitLoading: true,
       TeamID: 0,
-      IsSortup: false,
-      IsTheLast: true,
-      ReplyListPage: 1,
-      ReplyList: [
-        {
-          chatID: 0,
-          cont: '',
-          createTime: 0,
-          img: '',
-          replyNickname: "",
-          replyTo: 0,
-          userAvatar: "",
-          userID: 0,
-          userNickname: '',
-          userSex: 0,
-        }
-      ],
-      Loading: false,
+
       TeamBaseInfo: {
         partyVenue: {
           addr: '',
@@ -268,10 +213,10 @@ export default {
 
     }
   },
-  mounted () {
-
+  created () {
     this.TeamID = this.$route.params.teamID
-
+  },
+  mounted () {
     // 初始化数据
     this.$axios.post(
       `/travel/teamDetail/${this.TeamID}`, 
@@ -328,18 +273,6 @@ export default {
       this.IsCaptain = dataBack.isCaptain
       this.JointeamStmt = dataBack.joinStmt
 
-      if(dataBack.chatList.length < 15) {
-        this.IsTheLast = true
-      }
-      // 评论处理
-      let replyList =  dataBack.chatList
-      for(let i = 0; i < replyList.length; i++) {
-        replyList[i].createTime = utils.getDateDiff(replyList[i].createTime, true)
-        replyList[i].userAvatar = utils.imgPrefixDeal(replyList[i].userAvatar)
-        replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
-      }
-      this.ReplyList = replyList
-
       this.InitLoading = false
 
       console.log(resp.data)
@@ -348,35 +281,6 @@ export default {
   methods: {
     goBack () {
       this.$router.go(-1)
-    },
-    load () {
-      this.Loading = true      
-      let sortWay = this.IsSortup == false ? 0 : 1
-      this.$axios.get(`/common/chatList/${this.TeamType}/${this.TeamID}/${this.ReplyListPage}/${sortWay}`,{}).then((resp)=>{
-        if(resp.data.code != 20000) {
-          this.$toast.message(resp.data.msg)
-          return
-        }
-
-        let dataBack = resp.data.msg
-        this.IsTheLast = dataBack.length < 15 ? true : false
-        let replyList = dataBack
-        for(let i = 0; i < replyList.length; i++) {
-          replyList[i].createTime = utils.getDateDiff(replyList[i].createTime, true)
-          replyList[i].userAvatar = utils.imgPrefixDeal(replyList[i].userAvatar)
-          replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
-        }
-        this.ReplyList = this.ReplyList.concat(replyList)
-        this.ReplyListPage++
-        this.Loading = false
-      })
-    },
-    convertSort () {
-      // 当转换排序顺序的时候，把页数重置，然后，重新加载回复评论
-      this.ReplyListPage = 1
-      this.ReplyList = []
-      this.IsSortup = !this.IsSortup
-      this.load()
     },
 
     joinTeam () {
@@ -465,6 +369,9 @@ export default {
       }
       this.$router.push({path:`/common/newChat`, query:{teamType:this.TeamType, teamID:this.TeamID, isReply, replyTo, replyID, replyNickname}})
     },
+  },
+  components: {
+    ChatList,
   },
 }
 </script>

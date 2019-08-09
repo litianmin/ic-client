@@ -104,8 +104,8 @@
 
     <mu-flex style="font-size:12px; padding:.8rem 1rem 1rem .5rem; margin-top:.5rem; border-bottom:2px solid #fff;" align-items="center">
       <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
-      <span style="font-size:12px;">距离你 <span style="font-size:12px;">{{ TeamBaseInfo.distance }}</span></span>
-      <span style="margin-left:auto; color:#9e9e9e; font-size:12px;">{{ TeamBaseInfo.createTime | formatTime('{y}/{m}/{d} {h}:{i}') }}</span>
+      <span style="font-size:13px;">距离你 <span style="font-size:13px;">{{ TeamBaseInfo.distance }}</span></span>
+      <span style="margin-left:auto; color:#9e9e9e; font-size:13px;">{{ TeamBaseInfo.createTime | formatTime('{y}/{m}/{d} {h}:{i}') }}</span>
     </mu-flex>
 
     <div style="padding:.5rem; border-bottom:1px dashed #eeeeee; ">
@@ -114,7 +114,7 @@
           <img :src="TeamBaseInfo.captainAvatar" alt="">
         </mu-avatar>
         <div style="margin-left:.5rem;">
-          <mu-row style="font-size:12px;">{{ TeamBaseInfo.captainNickname }}</mu-row>
+          <mu-row style="font-size:13px;">{{ TeamBaseInfo.captainNickname }}</mu-row>
           <mu-row style="margin-top:.2rem;font-size:7px; color:#43a047;">社交菜鸟Lv1</mu-row>
         </div>
         <div style="margin-left:auto; background:#4db6ac; padding:.2rem .3rem; color:#fff; border-radius:.2rem; font-size:12px; margin-right:.5rem;">Leader</div>
