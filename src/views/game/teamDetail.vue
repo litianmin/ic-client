@@ -29,7 +29,7 @@
       <mu-container class="main-team-container" style="position:relative;">
         <mu-flex align-items="center">
           <mu-avatar size="26">
-            <img :src="ChatDetailMain.captain_avatar">
+            <img :src="ChatDetailMain.captain_avatar | imgPrefixDeal()">
           </mu-avatar>
           <span class="team-item-nickname">
             {{ ChatDetailMain.captain_nickname }} <span class="character-title">( 队长 · 阿萨卡 )</span>
@@ -42,7 +42,7 @@
         </mu-row>
 
         <mu-row v-if="ChatDetailMain.recruit_img" class="team-item-img">
-          <img :src="ChatDetailMain.recruit_img" alt="">
+          <img :src="ChatDetailMain.recruit_img | imgPrefixDeal()" alt="">
         </mu-row>
 
         <svg-icon v-if="TeamStmt == 0" icon-class="recruiting" style="opacity: .5; position:absolute; right:.5rem; top:0; font-size:60px;"></svg-icon>
@@ -53,41 +53,7 @@
       </mu-container>
       <!-- END 主评论 -->
 
-      <!-- BEGIN 排序条 -->
-      <mu-flex class="sort-bar" justify-content="center" align-items="center" >
-        <span style="margin-left:.3rem">聊天列表</span>
-        <span @click="convertSort" class="sort-bar-svg">
-          <svg-icon :icon-class="IsSortup == true ? 'sortup' : 'sortdown'"></svg-icon>
-        </span>
-      </mu-flex>
-      <!-- END 排序条 -->
-
-      <!-- BEGIN 回复评论 -->
-      <mu-load-more :loading="Loading" @load="load" :loaded-all="IsTheLast">
-        <mu-container class="reply-container" v-for="(item, index) in ReplyList" :key="index">
-          <mu-flex align-items="center">
-            <mu-avatar size="24" :class="item.user_sex == 1 ? 'avatar-male' : 'avatar-female'">
-              <img :src="item.userAvatar">
-            </mu-avatar>
-            <span class="reply-nickname">
-              {{ item.userNickname }} 
-            </span>
-            <span class="reply-time">{{ item.createTime }}</span>
-          </mu-flex>
-
-          <mu-row class="reply-cont-box">
-            <span style="font-size:12px; margin-left:.5rem; ">
-              <span v-if="item.replyTo > 0">@<span style="color:#795548;">{{ item.replyNickname }}</span> :</span> {{ item.cont }}
-              <span style="color:green; margin-left:.5rem;" @click="newChat(true, item.userID, item.chatID, item.userNickname)">回复</span>
-            </span>
-          </mu-row>
-
-          <mu-row v-if="item.img" class="team-item-img" style="padding:.5rem .5rem .5rem 1rem; ">
-            <img :src="item.img">
-          </mu-row>
-        </mu-container>
-      </mu-load-more>
-      <!-- END 回复评论 -->
+      <ChatList :TeamType="TeamType" :TeamID="TeamID"></ChatList>
     </div>
 
     <!-- 发起评论框 -->
@@ -116,7 +82,7 @@
       <mu-drawer :open.sync="teamListWindowIsShow" :docked="false" :left="true" width="80%">
         <!-- 游戏基本信息 -->
         <mu-row style="position:relative;">
-          <img style="max-width:100%; max-height:100%;" :src="GameDisplayImg" alt="">
+          <img style="max-width:100%; max-height:100%;" :src="GameDisplayImg | imgPrefixDeal()" alt="">
 
           <div style="position:absolute; left:0; bottom:0; width:100%; padding:.5rem 1rem;  background:rgba(30, 30, 30, .3)">
             <div style="color:#fff;">{{ GameName }}</div>
@@ -133,7 +99,7 @@
               <mu-flex>
                 <div>
                   <mu-avatar size="28">
-                    <img :src="item.user_avatar" />
+                    <img :src="item.user_avatar | imgPrefixDeal()" />
                   </mu-avatar>
                 </div>
                 <div>
@@ -148,17 +114,9 @@
 
             <mu-col span="4" justify-content="center">
               <mu-flex justify-content="center" align-items="center" class="teammate-img-flex">
-                  <img :src="item.display_img" />
+                  <img :src="item.display_img | imgPrefixDeal()" />
               </mu-flex>
             </mu-col>
-
-            <!-- <mu-flex v-if="item.is_friend == 0" @click="applytoBeFriend(item.user_id)" justify-content="center" align-items="center" class="friendstmt-flex-one">
-              <div>加为玩友</div> <mu-icon value="add" size="12"></mu-icon>
-            </mu-flex>
-
-            <mu-flex v-if="item.is_friend == 2" justify-content="center" align-items="center" class="friendstmt-flex-two">
-              <div>已申请</div>
-            </mu-flex> -->
           </mu-row>
         </div>
         
@@ -171,7 +129,7 @@
 </template>
 
 <script>
-import utils from 'common/utils.js'
+import ChatList from '@/components/ChatList.vue'
 export default {
   data () {
     return {
@@ -179,9 +137,6 @@ export default {
       Title: '队伍招募中。。。',
       TeamID: 0,
       GameID: 0,
-      IsSortup: false,
-      IsTheLast: true,
-      Loading: false,
       SelfIsCamptain: false,
       ChatDetailMain: {
         userID: 0,
@@ -196,9 +151,7 @@ export default {
         had_join: 0,
         teammate_prefer: '',
       },
-      ReplyListPage: 1,
       TeammateList: [],
-      ReplyList: [],
       teamListWindowIsShow: false,
       JointeamStmt: 0,
       JointeamStmtDesc: '',
@@ -207,22 +160,17 @@ export default {
       GameName: '',
     }
   },
-  mounted () {
+  created () {
     this.TeamID = this.$route.params.teamid
-
+  },
+  mounted () {
     // 页面初始化
     this.$axios.post(`/game/teamDetail/${this.TeamID}`, {}).then((resp)=>{
-
       if(resp.data.code != 20000) {
         this.$toast.message('该队伍已解散')
-        // this.$router.push('/')
         return
       }
-
-      console.log(resp.data)
-
       let dataBack = resp.data.msg 
-      
       this.ChatDetailMain.userID = dataBack.teamDetail.captain_userid
       this.ChatDetailMain.recruit_word = dataBack.teamDetail.announcement
       this.ChatDetailMain.recruit_img = dataBack.teamDetail.recruit_img
@@ -260,45 +208,9 @@ export default {
         this.Title = '组队成功'
         break
       }
-
-      this.TeammateList = dataBack.teamDetail.TeammateList
-
-      this.IsTheLast = dataBack.chatList.length < 15 ? true : false
-      // 评论处理
-      let replyList =  dataBack.chatList
-      for(let i = 0; i < replyList.length; i++) {
-        replyList[i].createTime = utils.getDateDiff(replyList[i].createTime, true)
-        replyList[i].userAvatar = utils.imgPrefixDeal(replyList[i].userAvatar)
-        replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
-      }
-      this.ReplyList = replyList
-      this.ReplyListPage++
     })
-
   },
   methods: {
-    load () {
-      this.Loading = true      
-      let sortWay = this.IsSortup == false ? 0 : 1
-      this.$axios.get(`/common/chatList/${this.TeamType}/${this.TeamID}/${this.ReplyListPage}/${sortWay}`,{}).then((resp)=>{
-        if(resp.data.code != 20000) {
-          this.$toast.message(resp.data.msg)
-          return
-        }
-
-        let dataBack = resp.data.msg
-        this.IsTheLast = dataBack.length < 15 ? true : false
-        let replyList = dataBack
-        for(let i = 0; i < replyList.length; i++) {
-          replyList[i].createTime = utils.getDateDiff(replyList[i].createTime, true)
-          replyList[i].userAvatar = utils.imgPrefixDeal(replyList[i].userAvatar)
-          replyList[i].img = utils.imgPrefixDeal(replyList[i].img)
-        }
-        this.ReplyList = this.ReplyList.concat(replyList)
-        this.ReplyListPage++
-        this.Loading = false
-      })
-    },
     goBack () {
       this.$router.go(-1)
     },
@@ -309,13 +221,6 @@ export default {
     },
     convertFocus () {
       this.IsFocus = !this.IsFocus
-    },
-    convertSort () {
-      // this.IsSortup = !this.IsSortup
-      this.ReplyListPage = 1
-      this.ReplyList = []
-      this.IsSortup = !this.IsSortup
-      this.load()
     },
     joinTeam (stmt) {
       switch(stmt) {
@@ -335,10 +240,7 @@ export default {
         this.$toast.message("已加入")
         break
       }
-
     },
-
-
     leaveTeamReq () {
       this.$axios.get(`/common/leaveTeam/${this.TeamType}/${this.TeamID}`, {}).then((resp)=>{
         if(resp.data.code == 20000) {
@@ -362,32 +264,6 @@ export default {
         this.leaveTeamReq()
       }
     },
-
-    // leaveTeam () {
-    //   // 先判断是否为队长，如果是队长，提示会解散队伍
-    //   if(this.SelfIsCamptain == true) {
-    //     this.$confirm('是否解散队伍？').then((resp)=>{
-    //       if(resp.result == true) { // 确定解散队伍
-    //         // this.$toast.message('你确定解散了队伍')
-    //         this.$axios.post(`/game/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
-    //           if(resp.data.code == 20000) {
-    //             this.$toast.message('已成功解散')
-    //             this.$router.push(`/game/detail/${this.GameID}`)
-    //             return
-    //           }
-    //         }) 
-    //       }
-    //     })
-    //   } else {
-    //     this.$axios.post(`/game/leaveTeam/${this.TeamID}`, {}).then((resp)=>{
-    //       if(resp.data.code == 20000) {
-    //         this.$toast.message('已退出队伍')
-    //         this.$router.push(`/game/detail/${this.GameID}`)
-    //         return
-    //       }
-    //     }) 
-    //   }
-    // },
     newChat (isReply, replyTo, replyID, replyNickname) {
       // 只有加入组队的人才能进行评论
       if(this.JointeamStmt != 3) {
@@ -400,7 +276,10 @@ export default {
       this.teamListWindowIsShow = !this.teamListWindowIsShow
       this.$refs.menuHide.click()
     },
-  }
+  },
+  components: {
+    ChatList,
+  },
 }
 </script>
 

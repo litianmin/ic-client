@@ -55,7 +55,6 @@
 </template>
 
 <script>
-import utils from 'common/utils'
 export default {
   name: 'chat-list',
   data () {

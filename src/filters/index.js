@@ -219,3 +219,11 @@ export function formatTime(time, option) {
     )
   }
 }
+
+export function distanceFormat(distance) { // 距离格式化
+  let newDistance = parseInt(distance)
+  if(newDistance < 1000) {
+    return newDistance + 'm'
+  }
+  return newDistance = parseInt(newDistance / 100) / 10 + 'km'
+}

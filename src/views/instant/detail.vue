@@ -7,7 +7,7 @@
       </mu-button>
       
       <div ref="menuHide" style="font-size:14px;">
-        TITLE
+        即时组队
       </div>
 
       <mu-menu slot="right" class="mine-menu-box">
@@ -25,12 +25,12 @@
     <div style="padding:.5rem;">
       <mu-flex align-items="center">
         <mu-avatar size="26">
-          <img :src="TeamBaseInfo.captainAvatar">
+          <img :src="TeamBaseInfo.captainAvatar | imgPrefixDeal()">
         </mu-avatar>
         <span class="comment-item-nickname">
           {{ TeamBaseInfo.captainNickname }}
         </span>
-        <span class="comment-item-time" style="margin-right:.6rem;">{{ TeamBaseInfo.createTime }}</span>
+        <span class="comment-item-time" style="margin-right:.6rem;">{{ TeamBaseInfo.createTime | formatTime('{y}/{m}/{d} {h}:{i}') }}</span>
       </mu-flex>
 
       <mu-row class="comment-item-text">
@@ -38,19 +38,19 @@
       </mu-row>
 
       <mu-row class="comment-item-img">
-        <img :src="TeamBaseInfo.displayImg" alt="">
+        <img :src="TeamBaseInfo.displayImg | imgPrefixDeal()" alt="">
       </mu-row>
 
       <mu-row style="padding:1rem .5rem;" >
         <mu-icon value="person_pin_circle" color="#4caf50" size="20"></mu-icon>
-        <span style="font-size:12px; color:#9e9e9e;">地点：{{ TeamBaseInfo.site.name }} · 距离你{{ TeamBaseInfo.distance }}</span>
+        <span style="font-size:12px; color:#9e9e9e;">地点：{{ TeamBaseInfo.site.name }} · 距离你{{ TeamBaseInfo.distance | distanceFormat() }}</span>
       </mu-row>
     </div>
 
     <!-- BEGIN 队长和队友列表 -->
     <mu-flex style="padding:.5rem 1rem; background:#fff;" justify-content="center" align-items="center" wrap="wrap">
         <mu-avatar v-for="(item, index) in TeammateList" :key="index" size="35" :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'" style="margin-right:.5rem;">
-          <img :src="item.avatar" alt="">
+          <img :src="item.avatar | imgPrefixDeal()" alt="">
         </mu-avatar>
         <span v-if="TeamBaseInfo.recruitStatus == 0" @click="joinTeam">
           <svg-icon icon-class="add_circle_outline" style="font-size:40px; color:red;"></svg-icon>
@@ -89,7 +89,6 @@
 </template>
 
 <script>
-import utils from 'common/utils.js'
 import ChatList from '@/components/ChatList.vue'
 export default {
   data () {
@@ -149,9 +148,6 @@ export default {
     let lng = 113.122629
     let lat = 23.029735
     this.$axios.get(`/instant/detail/${this.TeamID}/${lng}/${lat}`, {}).then((resp)=>{
-
-      console.log(resp.data)
-
       if(resp.data.code != 20000) {
         this.$toast.message(resp.data.msg)
         return
@@ -159,21 +155,9 @@ export default {
 
       // 处理队伍基本信息
       let dataBack = resp.data.msg
-      
-      let teamBaseInfo = dataBack.teamBaseInfo
-      teamBaseInfo.captainAvatar = utils.imgPrefixDeal(teamBaseInfo.captainAvatar)
-      teamBaseInfo.displayImg = utils.imgPrefixDeal(teamBaseInfo.displayImg)
-      teamBaseInfo.createTime = utils.getDateDiff(teamBaseInfo.createTime, true)
-      teamBaseInfo.distance = utils.distanceFormat(teamBaseInfo.distance)
-      this.TeamBaseInfo = teamBaseInfo
-
+      this.TeamBaseInfo = dataBack.teamBaseInfo
       // 处理对哟基本信息
-      let teammateList = dataBack.teammateList
-      for(let i = 0; i < teammateList.length; i++) {
-        teammateList[i].avatar = utils.imgPrefixDeal(teammateList[i].avatar)
-      }
-      this.TeammateList = teammateList
-
+      this.TeammateList = dataBack.teammateList
       this.JointeamStmt = dataBack.joinStmt
       this.IsCaptain = dataBack.isCaptain
     })
