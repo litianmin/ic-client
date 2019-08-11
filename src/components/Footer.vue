@@ -67,6 +67,7 @@ export default {
         break
         case 3:
           this.navActive = 'personnalMsg'
+          this.$router.push('/usr/personInfo')
         break
       }
     },

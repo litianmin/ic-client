@@ -69,6 +69,12 @@ const router =  new Router({
       name: 'checkin',
       component: () => import('./views/usr/login/Checkin.vue')
     },
+    {
+      path: '/usr/personInfo',
+      name: 'user-personInfo',
+      component: () => import('./views/usr/personInfo.vue')
+    },
+
  
     // 下面是游戏界面了
     {

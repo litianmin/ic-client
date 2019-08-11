@@ -54,7 +54,7 @@ export default {
       this.getList()
     },
     getList () {
-      this.$axios.get(`/notify/teamList/${this.Page}`,{}).then((resp)=>{
+      this.$axios.get(`/notify/chatList/${this.Page}`,{}).then((resp)=>{
         let dataBack = resp.data
         console.log(dataBack)
         if(dataBack.code == 20000) {
