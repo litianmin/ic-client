@@ -190,10 +190,10 @@ const router =  new Router({
 
     { // 组队信息通知
       path: '/notify/teamMsg',
-      name: 'notify-teamMsg',
+      name: 'notify-teamMsg', 
       component: () => import('./views/notify/team.vue')
     },
-
+ 
     { // 评论信息通知
       path: '/notify/commentMsg',
       name: 'notify-commentMsg',
