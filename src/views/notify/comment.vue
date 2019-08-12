@@ -94,27 +94,9 @@ export default {
     },
     readNotify (index) {
       let notifyID = this.List[index].id
-      let teamID = this.List[index].teamID
       // 发送消息到后台
       this.$axios.get(`/notify/readSingleNotify/${notifyID}`, {}).then()
-      switch(this.List[index].module) {
-      case 1: // 游戏模块
-        this.$router.push(`/game/detail/${teamID}`)
-        break 
-      case 2: // party
-        this.$router.push(`/party/teamDetail/${teamID}`)
-        break
-      case 3: // travel
-        this.$router.push(`/travel/teamDetail/${teamID}`)
-        break
-      case 4: // instant
-        this.$router.push(`/instant/detail/${teamID}`)
-        break
-      case 5: // activity
-        this.$router.push(`/activity/detail/${teamID}`)
-        break
-      }
-      // this.$router.push('/notify/teamMsg')
+      this.$router.push(`/notify/commentDetail/${notifyID}`)
     }
   }
 }

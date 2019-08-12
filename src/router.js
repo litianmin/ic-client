@@ -181,6 +181,7 @@ const router =  new Router({
       component: () => import('./views/instant/detail.vue')
     },
 
+    // BEGIN 通知模块
     { // 通知模块
       path: '/notify/category',
       name: 'notify-category',
@@ -198,6 +199,13 @@ const router =  new Router({
       name: 'notify-commentMsg',
       component: () => import('./views/notify/comment.vue')
     },
+
+    { // 评论信息详情
+      path: '/notify/commentDetail/:notifyID',
+      name: 'notify-commentDetail',
+      component: () => import('./views/notify/commentDetail.vue')
+    },
+    // END 通知模块
 
     {
       path: '/common/newChat',

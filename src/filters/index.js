@@ -128,10 +128,11 @@ export function parseUnixToDesc(time) {
 
 
 export function imgPrefixDeal(imgURL) {  // 图片前缀处理
-  if(imgURL == '') {
+  if(!!imgURL == false) {
     return imgURL
   }
   let prefix = 'http'
+  console.log(imgURL)
   let isExist = imgURL.indexOf(prefix)
   if(isExist == -1) {
     return `https://www.icoming.top/${imgURL}`
