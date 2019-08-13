@@ -17,8 +17,8 @@
 
     <mu-container style="padding:1rem .5rem;">
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
-        <span style="font-size:12px; color:#795548; margin-right:.5rem;">活动主题：</span>
-        <select v-model="PartyTheme" name="partyTitle" id="" style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4; ">
+        <span style="font-size:13px; color:#795548; margin-right:.5rem;">活动主题：</span>
+        <select v-model="PartyTheme" name="partyTitle" id="" style="padding:.1rem .8rem; color:#424242; appearance:none; background:#fff; font-size:13px; border-radius:.2rem; border:1px solid #bdbdbd; ">
           <option value="1">普通聚会</option>
           <option value="2">节日聚会</option>
           <option value="3">健身运动</option>
@@ -31,56 +31,60 @@
         </select>
       </mu-flex>
 
-      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
-        <span style="font-size:12px; color:#795548; margin-right:.5rem;">活动标题：</span>
-        <input maxlength="15" v-model="PartyTitle" style="padding:.4rem; width:70%; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4; color:#212121;" type="text" placeholder="一起来玩吧！（不超过15个字符）">
+
+
+      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="start">
+        <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-top:.3rem;">活动标题：</span>
+
+        <textarea v-model="PartyTitle" style="width:75%; height:3.5rem; border:1px solid #bdbdbd; color:#212121; font-size:13px; padding:.4rem; border-radius:.2rem;" placeholder="一起来玩吧！（活动的详细内容）">
+        </textarea>
+
+        <!-- <input maxlength="50" v-model="PartyTitle" style="padding:.4rem; width:70%; font-size:13px; border-radius:.2rem; border:1px solid #80cbc4; color:#212121;" type="text" placeholder="一起来玩吧！（不超过50个字符）"> -->
       </mu-flex>
 
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="start">
-        <span style="font-size:12px; color:#795548; margin-right:.5rem;">详细内容：</span>
-        <textarea v-model="PartyDetail" style="width:75%; height:7rem; border:1px solid #80cbc4; color:#212121; font-size:12px; padding:.4rem; border-radius:.2rem;" placeholder="大家来这里一起玩吧，出来走走也好！（活动的详细内容）">
+        <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-top:.3rem;">详细内容：</span>
+        <textarea v-model="PartyDetail" style="width:75%; height:6rem; border:1px solid #bdbdbd; color:#212121; font-size:13px; padding:.4rem; border-radius:.2rem;" placeholder="大家来这里一起玩吧，出来走走也好！（活动的详细内容）">
         </textarea>
       </mu-flex>
 
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
-        <span style="font-size:12px; color:#795548; margin-right:.5rem;">队友偏爱：</span>
-        <input v-model="TeammatePrefer" style="padding:.4rem; width:70%; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4; color:#212121;" type="text" placeholder="随便来！ （不超过15个字符）">
+        <span style="font-size:13px; color:#795548; margin-right:.5rem;">队友偏爱：</span>
+        <input v-model="TeammatePrefer" style="padding:.4rem; width:75%; font-size:13px; border-radius:.2rem; border:1px solid #bdbdbd; color:#212121;" type="text" placeholder="随便来！ （不超过15个字符）">
       </mu-flex>
 
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
-        <span style="font-size:12px; color:#795548; margin-right:.5rem;">招募人数：</span>
-        <select v-model="RecruitNumb" name="" id="" style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4; text-align:center;">
+        <span style="font-size:13px; color:#795548; margin-right:.5rem;">招募人数：</span>
+        <select v-model="RecruitNumb" name="" id="" style="padding:.1rem .5rem; color:#424242; appearance:none; background:#fff; font-size:13px; border-radius:.2rem; border:1px solid #bdbdbd; text-align:center;">
           <option v-for="(item, index) in RecruitNumbList" :key="index" :value="item">{{ item }} 人</option>
         </select>
       </mu-flex>
 
       <mu-flex style="width:100%; margin-bottom:.5rem;" align-items="center">
-        <span style="font-size:12px; color:#795548; margin-right:.5rem;">活动地点：</span>
-        <span style="font-size:12px; color:#9e9e9e;">{{ PartyVenue }}</span>
+        <span style="font-size:13px; color:#795548; margin-right:.5rem;">活动地点：</span>
+        <span style="font-size:12px; color:#424242;">{{ PartyVenue }}</span>
         <mu-icon @click="choosePartyAddr" value="person_pin_circle" size="20" color="#009688"></mu-icon>
       </mu-flex>
 
       <mu-flex style="width:100%; margin-bottom:1rem; margin-top:1rem;" align-items="center">
-        <span style="font-size:12px; color:#795548; margin-right:.5rem;">集合地点：</span>
-        <span style="font-size:12px; color:#9e9e9e;">{{ MeetingVenue }}</span>
+        <span style="font-size:13px; color:#795548; margin-right:.5rem;">集合地点：</span>
+        <span style="font-size:12px; color:#424242;">{{ MeetingVenue }}</span>
         <mu-icon @click="chooseMeetingVenue" value="person_pin_circle" size="20" color="#009688"></mu-icon>
       </mu-flex>
 
       <mu-row>
-        <span style="font-size:12px; color:#795548; margin-right:.5rem;">活动时间：</span>
+        <span style="font-size:13px; color:#795548; margin-right:.5rem;">活动时间：</span>
       </mu-row>
-      <mu-row style="width:100%; margin-top:-1.5rem; margin-bottom:1rem; padding:.5rem 1rem 0 4rem;" align-items="end">
-        <mu-row style="padding:.2rem 0 0 0; border-radius:.2rem; border:1px solid #80cbc4;">
-          <mu-date-input v-model="BeginTime" type="dateTime"  prefix="开始时间：" style="font-size:12px;" landscape container="bottomSheet" clock-type="24hr" view-type="clock" actions icon="today"></mu-date-input>
-          <mu-date-input v-model="EndTime" type="dateTime" prefix="结束时间：" style="font-size:12px;" landscape container="bottomSheet" clock-type="24hr" view-type="clock" actions icon="today"></mu-date-input>
-        </mu-row>
+      <mu-row style="padding: 0 0 0 3.5rem;">
+        <mu-date-input v-model="BeginTime" type="dateTime"  prefix="开始时间：" style="font-size:12px;" landscape container="bottomSheet" clock-type="24hr" view-type="clock" actions icon="today"></mu-date-input>
+        <mu-date-input v-model="EndTime" type="dateTime" prefix="结束时间：" style="font-size:12px;" landscape container="bottomSheet" clock-type="24hr" view-type="clock" actions icon="today"></mu-date-input>
       </mu-row>
 
       <!-- 上传图片 -->
       <mu-flex style="width:100%; margin-bottom:.5rem;" align-items="center">
-        <span style="font-size:12px; color:#795548; margin-right:.5rem;">招募图片：（最多三张）</span>
+        <span style="font-size:13px; color:#795548; margin-right:.5rem;">招募图片：（最多三张）</span>
       </mu-flex>
-      <mu-flex align-items="center" justify-content="around" style="margin-top:1rem; border:1px solid #80cbc4; border-radius:.3rem; padding:1rem .5rem;">
+      <mu-flex align-items="center" justify-content="around" style="margin-top:1rem; border:1px solid #bdbdbd; border-radius:.3rem; padding:1rem .5rem;">
         <mu-flex v-for="(item, index) in UploadImgList" :key="index" style="width:30%; height:8rem; padding:1rem; position:relative; border:1px solid #e0e0e0; border-radius:.3rem; " justify-content="center" align-items="center">
             <mu-icon @click="delImg(index)" value="cancel" color="#f06292" style="position:absolute; top:0; right:0;"></mu-icon>
             <img style="max-width:100%; max-height:100%; border-radius:.3rem;" :src="item" alt="">
