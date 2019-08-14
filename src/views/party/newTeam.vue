@@ -1,5 +1,5 @@
 <template>
-  <div :class="AddrChooseWindowIsShow == true ? 'body-fix': ''" style="background:#ffffff;">
+  <div :class="AddrChooseWindowIsShow == true ? 'body-fix': ''" style="background:#fff;">
     <!-- 导航条 -->
     <mu-appbar class="mine-appbar" color="#00bcd4" z-depth="1">
       <mu-button icon slot="left" @click="goBack">
