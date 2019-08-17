@@ -27,6 +27,7 @@
 
 <script>
 import utils from 'common/utils.js'
+import { setToken } from 'common/cookie.js'
 export default {
   data () {
     return {
@@ -69,6 +70,8 @@ export default {
 
         if(dataBack.code == 20000) {
           this.$toast.success('登陆成功！')
+
+          setToken(dataBack.msg.token)
 
           // 保存用户基本信息
           this.$store.commit('mdeLogin/usrLogin', dataBack.msg)
