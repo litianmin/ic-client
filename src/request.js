@@ -4,7 +4,6 @@ import utils from './common/utils.js'
 import router from './router'
 import Toast from 'muse-ui-toast'
 import { getToken, setToken, removeToken } from './common/cookie.js'
-// import { async } from 'q';
 
 // 配置 axios 基本路径 
 axios.defaults.baseURL = "/api" 
@@ -12,9 +11,7 @@ axios.defaults.baseURL = "/api"
 // request拦截器(请求拦截)
 axios.interceptors.request.use(
   config => {
-    // if (store.state.mdeLogin.usrInfo.isLogin) {
     config.headers['self-token'] = getToken()
-    // }
     return config
   },
   error => {
@@ -31,7 +28,18 @@ function login() {
         
   store.state.mdeLogin.usrInfo.isLogin = false
   store.state.mdeLogin.usrInfo.authToken = ''
-  router.push('/auth/base')
+
+  let isWxBrowser = utils.isWxBrowser()
+  // 设置进来的url
+  setBeforeLoginURL(to.fullPath)
+
+  if(isWxBrowser === true) { // 如果是微信浏览器
+    next('/auth')
+  }
+
+  next('/auth/base')
+
+  // router.push('/auth/base')
 }
 
 let api = {
