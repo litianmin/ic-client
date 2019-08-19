@@ -3,7 +3,7 @@ import store from './store'
 import utils from './common/utils.js'
 import router from './router'
 import Toast from 'muse-ui-toast'
-import { getToken, setToken, removeToken } from './common/cookie.js'
+import { getToken, setToken, removeToken, setBeforeLoginURL } from './common/cookie.js'
 
 // 配置 axios 基本路径 
 axios.defaults.baseURL = "/api" 
@@ -21,26 +21,26 @@ axios.interceptors.request.use(
   }
 )
 
-function login() {
-  removeToken()
-  Toast.message('登录失效，请重新登录')
-  utils.cookieObj.setCookie("beforeLoginURL", router.history.current.path, 's1000')
+// function login() {
+//   removeToken()
+//   Toast.message('登录失效，请重新登录')
+//   utils.cookieObj.setCookie("beforeLoginURL", router.history.current.path, 's1000')
         
-  store.state.mdeLogin.usrInfo.isLogin = false
-  store.state.mdeLogin.usrInfo.authToken = ''
+//   store.state.mdeLogin.usrInfo.isLogin = false
+//   store.state.mdeLogin.usrInfo.authToken = ''
 
-  let isWxBrowser = utils.isWxBrowser()
-  // 设置进来的url
-  setBeforeLoginURL(to.fullPath)
+//   let isWxBrowser = utils.isWxBrowser()
+//   // 设置进来的url
+//   setBeforeLoginURL(to.fullPath)
 
-  if(isWxBrowser === true) { // 如果是微信浏览器
-    next('/auth')
-  }
+//   if(isWxBrowser === true) { // 如果是微信浏览器
+//     next('/auth')
+//   }
 
-  next('/auth/base')
+//   next('/auth/base')
 
-  // router.push('/auth/base')
-}
+//   // router.push('/auth/base')
+// }
 
 let api = {
   async refreshToken (response) {
@@ -61,6 +61,9 @@ axios.interceptors.response.use(
   response => {
     const res = response.data
 
+    // console.log(res)
+    // return
+
     // 40002:Token 没有token，未登录
     // 40003:Token token非法
     // 40004:Token token失效
@@ -70,8 +73,19 @@ axios.interceptors.response.use(
     }
 
     if (res.code === 40002 || res.code === 40003) {
+      removeToken()
       Toast.message('登录失效，请重新登录')
-      login()
+            
+      let isWxBrowser = utils.isWxBrowser()
+      // 设置进来的url
+      setBeforeLoginURL(router.history.current.path)
+      if(isWxBrowser === true) { // 如果是微信浏览器
+        router.push('/auth')
+      }
+    
+      router.push('/auth/base')
+
+      // login()
       return
     } 
     return response
