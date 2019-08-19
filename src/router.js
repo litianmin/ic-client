@@ -238,9 +238,11 @@ const router =  new Router({
 
       if(isWxBrowser === true) { // 如果是微信浏览器
         next('/auth')
+        return
       }
 
       next('/auth/base')
+      return
     }
 
     next()

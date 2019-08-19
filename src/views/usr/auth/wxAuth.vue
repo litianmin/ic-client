@@ -15,20 +15,21 @@
 
 <script>
 import utils from 'common/utils.js'
+import { setToken } from 'common/cookie.js'
 export default {
   methods: {
     getAuthURL () {
       // 先获取跳转过来的地址
       // 一开始只是获得code, 使用base获取code
       let reqTp = 'base'
-      this.$axios.get(`/usr/wxAuth/${reqTp}`,{}).then( (resp)=> {
+      this.$axios.get(`/user/wxLoginAuth/${reqTp}`,{}).then( (resp)=> {
         let locateURL = resp.data
         document.location.href = locateURL
       })
     },
     getUsrInfo (wxCode) {
       let wxAuthState = this.$router.currentRoute.query.state
-      this.$axios.get(`/usr/wxGetUsrInfo/${wxCode}/${wxAuthState}`, {}).then( (resp) => {
+      this.$axios.get(`/user/wxGetUserInfo/${wxCode}/${wxAuthState}`, {}).then( (resp) => {
         // 然后这里开始处理数据
         // 保存用户的信息，然后跳转回之前的路径
         let respData = resp.data
@@ -49,6 +50,9 @@ export default {
             usrID: usrInfo.user_id,
             authToken: usrAuthToken
           }
+          console.log(usrInfo)
+          return
+          setToken(usrInfo.token)
           this.$store.commit('mdeLogin/usrWxLogin', usrInfoBody)
 
           // 跳转到原地址

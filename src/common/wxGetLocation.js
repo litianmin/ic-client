@@ -6,15 +6,16 @@ export function getShopWxConfig () {
     let params = {
         url: location.href.split('#')[0]
     }
-    axios.post('', params).then(res => {
+    axios.post('/user/test', params).then(res => {
         console.log(res)
+        let info = res.data.msg
         wx.config({
             debug: true,
-            appId: res.appId,
-            nonceStr: res.nonceStr,
-            timestamp: res.timestamp,
-            url: res.url,
-            signature: res.signature,
+            appId: info.appID,
+            nonceStr: info.nonceStr,
+            timestamp: info.timeStamp,
+            url: location.href.split('#')[0],
+            signature: info.signature,
             jsApiList: [
                 'checkJsApi', 'openLocation', 'getLocation'
             ],
@@ -41,18 +42,18 @@ export function getShopWxConfig () {
                     that.point = new BMap.Point(that.pointX,that.pointY);
                     that.marker = new BMap.Marker(that.point); // 创建点
 
-                    that.getShopFjStudio()
+                    // that.getShopFjStudio()
                 },
                 cancel: function (res) {
                     alert('用户拒绝授权获取地理位置');
-                    that.getShopFjStudio()
+                    // that.getShopFjStudio()
                 }
             });
         });
 
         wx.error(function (res) {
-//                        console.log(res)
-            that.getShopFjStudio()
+                       console.log(res)
+            // that.getShopFjStudio()
         });
     }).catch(res => {
         console.log(res)

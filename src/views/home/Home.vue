@@ -116,6 +116,7 @@
 <script>
 import Footer from '@/components/Footer.vue'
 import utils from 'common/utils.js'
+import { getShopWxConfig } from 'common/wxGetLocation.js'
 export default {
   name: 'home',
   data () {
@@ -181,6 +182,7 @@ export default {
     }
   },
   mounted () {
+    getShopWxConfig()
     this.selfAvatar = this.$store.state.mdeLogin.usrInfo.avatar
     this.selfNickname = this.$store.state.mdeLogin.usrInfo.nickname
 
