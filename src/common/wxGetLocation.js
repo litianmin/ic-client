@@ -1,4 +1,5 @@
 import axios from '@/request.js'
+
 import wx from 'weixin-js-sdk'
 
 export function getShopWxConfig () {
@@ -6,8 +7,7 @@ export function getShopWxConfig () {
     let params = {
         url: location.href
     }
-    axios.get('/user/test', params).then(res => {
-        console.log(res)
+    axios.post('/user/wxConfigInit', params).then(res => {
         let info = res.data.msg
         wx.config({
             debug: true,
@@ -33,18 +33,21 @@ export function getShopWxConfig () {
             }
         });
         wx.ready(function () {
-//                wx.invoke('getLocation', 'openLocation', {}, function(res) {
-//                    //alert(res.err_msg + "唯一");
-//                });
             wx.getLocation({
                 success: function (res) {
                     console.log(res)
-//                                console.log(res)
-                    that.pointY = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                    that.pointX = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                    alert(JSON.stringify(res))
+                    let latitude = res.latitude
+                    let longitude = res.longitude
 
-                    that.point = new BMap.Point(that.pointX,that.pointY);
-                    that.marker = new BMap.Marker(that.point); // 创建点
+                    axios.get(`https://restapi.amap.com/v3/geocode/regeo?&location=${longitude},${latitude}&key=2d617a69e7365b889469daf971c3eb71`, {}).then((res) => {
+                        console.log(res)
+                    })
+                    // that.pointY = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                    // that.pointX = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+
+                    // that.point = new BMap.Point(that.pointX,that.pointY);
+                    // that.marker = new BMap.Marker(that.point); // 创建点
 
                     // that.getShopFjStudio()
                 },

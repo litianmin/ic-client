@@ -11,7 +11,10 @@ axios.defaults.baseURL = "/api"
 // request拦截器(请求拦截)
 axios.interceptors.request.use(
   config => {
-    config.headers['self-token'] = getToken()
+    console.log(config)
+    if(config.url.indexOf('http') == -1) {  // 如果是请求外链，不要加这个，要不会报错
+      config.headers['self-token'] = getToken()
+    }
     return config
   },
   error => {
