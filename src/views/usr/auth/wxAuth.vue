@@ -50,8 +50,7 @@ export default {
             usrID: usrInfo.user_id,
             authToken: usrAuthToken
           }
-          console.log(usrInfo)
-          return
+
           setToken(usrInfo.token)
           this.$store.commit('mdeLogin/usrWxLogin', usrInfoBody)
 

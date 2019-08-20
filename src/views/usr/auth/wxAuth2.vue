@@ -27,6 +27,7 @@
 
 <script>
 import utils from 'common/utils.js'
+import { setToken } from 'common/cookie.js'
 export default {
   methods: {
     getAuthURL () {
@@ -55,6 +56,7 @@ export default {
           // 先保存用户的基本信息
           let usrInfo = respData.userBaseInfo
 
+          setToken(usrInfo.token)
           this.$toast.success('登陆成功！')
 
           // 保存用户基本信息
@@ -76,10 +78,16 @@ export default {
 
     // 判断当前路径是否带有code
     let wxAuthCode = this.$router.currentRoute.query.code
+    // console.log(this.$router)
+    // return
+    // console.log(wxAuthCode)
+
     if(!!wxAuthCode == false) {
       // 不存在code
       this.getAuthURL()
     }else{
+      console.log('我来到了这里')
+      console.log(wxAuthCode)
       // 存在code
       this.getUsrInfo(wxAuthCode)
     }

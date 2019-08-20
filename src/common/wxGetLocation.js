@@ -1,12 +1,12 @@
 import axios from '@/request.js'
-
+import wx from 'weixin-js-sdk'
 
 export function getShopWxConfig () {
     let that = this;
     let params = {
-        url: location.href.split('#')[0]
+        url: location.href
     }
-    axios.post('/user/test', params).then(res => {
+    axios.get('/user/test', params).then(res => {
         console.log(res)
         let info = res.data.msg
         wx.config({
@@ -14,19 +14,22 @@ export function getShopWxConfig () {
             appId: info.appID,
             nonceStr: info.nonceStr,
             timestamp: info.timeStamp,
-            url: location.href.split('#')[0],
+            url: location.href,
             signature: info.signature,
             jsApiList: [
-                'checkJsApi', 'openLocation', 'getLocation'
+                'checkJsApi', 'translateVoice', 'openLocation', 'getLocation'
             ],
         })
         wx.checkJsApi({
             jsApiList: ['getLocation'],
             success: function (res) {
                 if (res.checkResult.getLocation == false) {
-                    alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
+                    alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！')
                     return;
                 }
+            },
+            error (resp) {
+                console.log(resp)
             }
         });
         wx.ready(function () {
@@ -35,6 +38,7 @@ export function getShopWxConfig () {
 //                });
             wx.getLocation({
                 success: function (res) {
+                    console.log(res)
 //                                console.log(res)
                     that.pointY = res.latitude; // 纬度，浮点数，范围为90 ~ -90
                     that.pointX = res.longitude; // 经度，浮点数，范围为180 ~ -180。
