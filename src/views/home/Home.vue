@@ -8,7 +8,7 @@
         <span style="margin-left:.5rem;">{{ selfNickname }}</span>
       </mu-flex>
       <mu-flex style="margin-left:auto;" align-items="center">
-          <span>吴川市</span>
+          <span>{{ LocateDistrict }}</span>
           <mu-icon color="#fff" size="18" value="person_pin_circle"></mu-icon>
       </mu-flex>
     </mu-flex>
@@ -123,6 +123,7 @@ export default {
     return {
       selfAvatar: '',
       selfNickname: '',
+      LocateDistrict: '',
       CarsoucelIsShow: false,
       ArticleList: [
         {
@@ -185,6 +186,7 @@ export default {
     getShopWxConfig()
     this.selfAvatar = this.$store.state.mdeLogin.usrInfo.avatar
     this.selfNickname = this.$store.state.mdeLogin.usrInfo.nickname
+    this.LocateDistrict = this.$store.state.mdeUserInfo.userAddrInfo.district
 
     let lng = 113.207
     let lat = 22.9058
@@ -220,6 +222,11 @@ export default {
       this.CarsoucelIsShow = true
     })
 
+  },
+  computed: {
+    LocateDistrict () {
+      return this.$store.state.mdeUserInfo.userAddrInfo.district
+    }
   },
   methods:{
     linkToGameList () {

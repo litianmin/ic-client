@@ -72,6 +72,7 @@ const MdeLogin = {
       lng: 113.122629,
       lat: 23.029735,
       addr: '市东下路20号b座',
+      district: ''
     }
   },
   mutations: {
@@ -99,14 +100,44 @@ const MdeLogin = {
       state.beforeLoginURL = bURL
     },
 
+    locationUpdate (state, payload) { // 刷新用户地址信息
+      state.userAddrInfo.lng = payload.lng
+      state.userAddrInfo.lat = payload.lat
+      state.userAddrInfo.district = payload.district
+    }
+
   }
 }
 
+const MdeUserInfo = {
+  namespaced: true,   // 命名空间
+
+  state: {
+    userAddrInfo: {
+      name: '市东下路20号B座',
+      lng: 113.122629,
+      lat: 23.029735,
+      addr: '市东下路20号b座',
+      district: ''
+    }
+  },
+  mutations: {
+
+    locationUpdate (state, payload) { // 刷新用户地址信息
+      state.userAddrInfo.lng = payload.lng
+      state.userAddrInfo.lat = payload.lat
+      state.userAddrInfo.district = payload.district
+    }
+
+  }
+
+}
 
 export default new Vuex.Store({
   plugins: [createPersistedState()],
   modules: {
     mdeGlobal: MdeGlobal,
-    mdeLogin: MdeLogin
+    mdeLogin: MdeLogin,
+    mdeUserInfo: MdeUserInfo
   }
 })
