@@ -183,44 +183,47 @@ export default {
     }
   },
   mounted () {
-    getShopWxConfig()
-    this.selfAvatar = this.$store.state.mdeLogin.usrInfo.avatar
-    this.selfNickname = this.$store.state.mdeLogin.usrInfo.nickname
-    this.LocateDistrict = this.$store.state.mdeUserInfo.userAddrInfo.district
-
-    let lng = 113.207
-    let lat = 22.9058
-    // 获取首页内容
-    this.$axios.get(
-      `/user/homePage/${lng}/${lat}`, {}
-    ).then((resp)=>{
-      // 开始处理返回的数据
-      let data = resp.data.msg
-      console.log(data)
-
-      let activityList = data.activityList  // 活动列表
-      for(let i = 0; i < activityList.length; i++) {
-        activityList[i].beginTime = utils.unixToDate(activityList[i].beginTime)
-        activityList[i].displayImg = utils.imgPrefixDeal(activityList[i].displayImg)
-        activityList[i].distance = utils.distanceFormat(activityList[i].distance)
-      }
-      this.ActivityList = activityList
-
-      let articleList = data.articleList  // 文章列表(轮播图)
-      for(let i = 0; i < articleList.length; i++) {
-        articleList[i].displayImg = utils.imgPrefixDeal(articleList[i].displayImg)
-      }
-      this.ArticleList = articleList
-
-      let gameList = data.gameList  // 游戏列表
-      for(let i = 0; i < gameList.length; i++) {
-        gameList[i].logo = utils.imgPrefixDeal(gameList[i].logo)
-      }
-      this.GameList = gameList
-
-
-      this.CarsoucelIsShow = true
+    getShopWxConfig().then(() => {
+      this.pageInit()
     })
+    
+    // this.selfAvatar = this.$store.state.mdeLogin.usrInfo.avatar
+    // this.selfNickname = this.$store.state.mdeLogin.usrInfo.nickname
+    // this.LocateDistrict = this.$store.state.mdeUserInfo.userAddrInfo.district
+
+    // let lng = 113.207
+    // let lat = 22.9058
+    // // 获取首页内容
+    // this.$axios.get(
+    //   `/user/homePage/${lng}/${lat}`, {}
+    // ).then((resp)=>{
+    //   // 开始处理返回的数据
+    //   let data = resp.data.msg
+    //   console.log(data)
+
+    //   let activityList = data.activityList  // 活动列表
+    //   for(let i = 0; i < activityList.length; i++) {
+    //     activityList[i].beginTime = utils.unixToDate(activityList[i].beginTime)
+    //     activityList[i].displayImg = utils.imgPrefixDeal(activityList[i].displayImg)
+    //     activityList[i].distance = utils.distanceFormat(activityList[i].distance)
+    //   }
+    //   this.ActivityList = activityList
+
+    //   let articleList = data.articleList  // 文章列表(轮播图)
+    //   for(let i = 0; i < articleList.length; i++) {
+    //     articleList[i].displayImg = utils.imgPrefixDeal(articleList[i].displayImg)
+    //   }
+    //   this.ArticleList = articleList
+
+    //   let gameList = data.gameList  // 游戏列表
+    //   for(let i = 0; i < gameList.length; i++) {
+    //     gameList[i].logo = utils.imgPrefixDeal(gameList[i].logo)
+    //   }
+    //   this.GameList = gameList
+
+
+    //   this.CarsoucelIsShow = true
+    // })
 
   },
   computed: {
@@ -229,6 +232,47 @@ export default {
     }
   },
   methods:{
+    pageInit () {
+      this.selfAvatar = this.$store.state.mdeLogin.usrInfo.avatar
+      this.selfNickname = this.$store.state.mdeLogin.usrInfo.nickname
+      this.LocateDistrict = this.$store.state.mdeUserInfo.userAddrInfo.district
+      console.log(this.$store.state.mdeUserInfo.userAddrInfo)
+
+      let lng = 113.207
+      let lat = 22.9058
+      console.log('到我')
+      // 获取首页内容
+      this.$axios.get(
+        `/user/homePage/${lng}/${lat}`, {}
+      ).then((resp)=>{
+        // 开始处理返回的数据
+        let data = resp.data.msg
+        console.log(data)
+
+        let activityList = data.activityList  // 活动列表
+        for(let i = 0; i < activityList.length; i++) {
+          activityList[i].beginTime = utils.unixToDate(activityList[i].beginTime)
+          activityList[i].displayImg = utils.imgPrefixDeal(activityList[i].displayImg)
+          activityList[i].distance = utils.distanceFormat(activityList[i].distance)
+        }
+        this.ActivityList = activityList
+
+        let articleList = data.articleList  // 文章列表(轮播图)
+        for(let i = 0; i < articleList.length; i++) {
+          articleList[i].displayImg = utils.imgPrefixDeal(articleList[i].displayImg)
+        }
+        this.ArticleList = articleList
+
+        let gameList = data.gameList  // 游戏列表
+        for(let i = 0; i < gameList.length; i++) {
+          gameList[i].logo = utils.imgPrefixDeal(gameList[i].logo)
+        }
+        this.GameList = gameList
+
+
+        this.CarsoucelIsShow = true
+      })
+    },
     linkToGameList () {
       this.$router.push('/game/list')
     },
@@ -273,4 +317,3 @@ export default {
 .footer{width:100%; position:fixed; bottom:0;}
 
 </style>
-
