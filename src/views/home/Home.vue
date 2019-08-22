@@ -116,7 +116,8 @@
 <script>
 import Footer from '@/components/Footer.vue'
 import utils from 'common/utils.js'
-import { getShopWxConfig } from 'common/wxGetLocation.js'
+import { getWeConfig, getWxLocate } from 'common/wxInit.js'
+import wx from 'weixin-js-sdk'
 export default {
   name: 'home',
   data () {
@@ -183,46 +184,91 @@ export default {
     }
   },
   mounted () {
-    getShopWxConfig().then(() => {
-      this.pageInit()
+    console.log('刷新应该也会执行的吧')
+    let _that = this
+    let params = {
+      url: location.href
+    }
+    this.$axios.post('/user/wxConfigInit', params).then((configInfo) => {
+      let info = configInfo.data.msg
+      wx.config({
+          debug: true,
+          appId: info.appID,
+          nonceStr: info.nonceStr,
+          timestamp: info.timeStamp,
+          url: location.href,
+          signature: info.signature,
+          jsApiList: ['checkJsApi', 'translateVoice', 'openLocation', 'getLocation']
+      })
+      
+      wx.ready(() => {
+        console.log('我觉得刷新是因为没有在这里什么了')
+        wx.getLocation({
+          success: function (resp) {
+            let lat = resp.latitude
+            let lng = resp.longitude
+
+            _that.$axios.get(`https://restapi.amap.com/v3/geocode/regeo?&location=${lng},${lat}&key=2d617a69e7365b889469daf971c3eb71`, {}).then((resp2) => {
+              if(resp2.data.status == '1') {
+                let locateAddr = resp2.data.regeocode.addressComponent.district
+                let payload = {
+                  lng,
+                  lat,
+                  district: locateAddr  
+                }
+                _that.$store.commit('mdeUserInfo/locationUpdate', payload)
+                _that.pageInit()
+              }
+            })
+
+          }, 
+          error: function (resp) {
+            console.log(resp)
+          }
+        })
+      })
     })
-    
-    // this.selfAvatar = this.$store.state.mdeLogin.usrInfo.avatar
-    // this.selfNickname = this.$store.state.mdeLogin.usrInfo.nickname
-    // this.LocateDistrict = this.$store.state.mdeUserInfo.userAddrInfo.district
-
-    // let lng = 113.207
-    // let lat = 22.9058
-    // // 获取首页内容
-    // this.$axios.get(
-    //   `/user/homePage/${lng}/${lat}`, {}
-    // ).then((resp)=>{
-    //   // 开始处理返回的数据
-    //   let data = resp.data.msg
-    //   console.log(data)
-
-    //   let activityList = data.activityList  // 活动列表
-    //   for(let i = 0; i < activityList.length; i++) {
-    //     activityList[i].beginTime = utils.unixToDate(activityList[i].beginTime)
-    //     activityList[i].displayImg = utils.imgPrefixDeal(activityList[i].displayImg)
-    //     activityList[i].distance = utils.distanceFormat(activityList[i].distance)
-    //   }
-    //   this.ActivityList = activityList
-
-    //   let articleList = data.articleList  // 文章列表(轮播图)
-    //   for(let i = 0; i < articleList.length; i++) {
-    //     articleList[i].displayImg = utils.imgPrefixDeal(articleList[i].displayImg)
-    //   }
-    //   this.ArticleList = articleList
-
-    //   let gameList = data.gameList  // 游戏列表
-    //   for(let i = 0; i < gameList.length; i++) {
-    //     gameList[i].logo = utils.imgPrefixDeal(gameList[i].logo)
-    //   }
-    //   this.GameList = gameList
 
 
-    //   this.CarsoucelIsShow = true
+    // getWxLocate().then(() => {
+      
+
+    // })
+
+    // let _that = this
+    // getWeConfig().then((resp) => {
+    //   wx.getLocation({
+    //     success (res) {
+    //       _that.$axios.get(`https://restapi.amap.com/v3/geocode/regeo?&location=${res.longitude},${res.latitude}&key=2d617a69e7365b889469daf971c3eb71`, {}).then((resp) => {
+    //         if(resp.data.status == '1') {
+    //           let locateAddr = resp.data.regeocode.addressComponent.district
+    //           let payload = {
+    //             lng: res.longitude,
+    //             lat: res.latitude,
+    //             district: locateAddr  
+    //           }
+    //           _that.$store.commit('mdeUserInfo/locationUpdate', payload)
+    //           console.log('初始化成功')
+    //           _that.pageInit()
+    //         }
+    //       })
+    //     },
+    //     cancel (res) {
+    //       console.log('我不准你获取我的地址')
+    //     }
+    //   })
+    // })
+
+    // // 真的觉得好烦啊，微信风向，我镇的是日了
+
+    // wx.updateAppMessageShareData({ 
+    //     title: this.LocateDistrict, // 分享标题
+    //     desc: '测试分享', // 分享描述
+    //     link: document.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+    //     imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1820523987,3798556096&fm=26&gp=0.jpg', // 分享图标
+    //     success: function () {
+    //       // 设置成功
+    //     }
     // })
 
   },
@@ -240,7 +286,6 @@ export default {
 
       let lng = 113.207
       let lat = 22.9058
-      console.log('到我')
       // 获取首页内容
       this.$axios.get(
         `/user/homePage/${lng}/${lat}`, {}

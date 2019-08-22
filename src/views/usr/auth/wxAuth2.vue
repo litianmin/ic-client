@@ -36,7 +36,6 @@ export default {
       // let reqTp = 'base'
       this.$axios.get(`/user/wxLoginAuth`,{}).then( (resp)=> {
         let locateURL = resp.data.url
-        console.log(locateURL)
         // return
         document.location.href = locateURL
       })
@@ -86,8 +85,6 @@ export default {
       // 不存在code
       this.getAuthURL()
     }else{
-      console.log('我来到了这里')
-      console.log(wxAuthCode)
       // 存在code
       this.getUsrInfo(wxAuthCode)
     }
