@@ -116,7 +116,6 @@
 <script>
 import Footer from '@/components/Footer.vue'
 import utils from 'common/utils.js'
-import { getWeConfig, getWxLocate } from 'common/wxInit.js'
 import wx from 'weixin-js-sdk'
 export default {
   name: 'home',
@@ -184,7 +183,12 @@ export default {
     }
   },
   mounted () {
-    console.log('刷新应该也会执行的吧')
+
+    // 先判断地理位置是否需要更新了
+    let forceFresh = utils.getLocateFreshTime()
+    console.log('这里是刷新时间' + forceFresh)
+    return
+
     let _that = this
     let params = {
       url: location.href
@@ -202,8 +206,7 @@ export default {
       })
       
       wx.ready(() => {
-        console.log('我觉得刷新是因为没有在这里什么了')
-        wx.getLocation({
+       wx.getLocation({
           success: function (resp) {
             let lat = resp.latitude
             let lng = resp.longitude

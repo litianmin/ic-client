@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
+import { now2Unix } from '@/common/utils.js'
 
 Vue.use(Vuex)
 
@@ -118,15 +119,20 @@ const MdeUserInfo = {
       lng: 113.122629,
       lat: 23.029735,
       addr: '市东下路20号b座',
-      district: ''
+      district: '',
+      forceFresh: 0 // 时间到期了强制更新
     }
   },
   mutations: {
 
     locationUpdate (state, payload) { // 刷新用户地址信息
+      // 设置强制刷新时间为30分钟
+      let forceFresh = now2Unix() + 30 * 60
+
       state.userAddrInfo.lng = payload.lng
       state.userAddrInfo.lat = payload.lat
       state.userAddrInfo.district = payload.district
+      state.userAddrInfo.forceFresh = forceFresh
     }
 
   }

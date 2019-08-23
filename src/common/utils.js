@@ -1,3 +1,5 @@
+import store from '@/store'
+
 export default{
   TravelDefaultDisplayImg: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1559386791000&di=b883951b4a21c41643c0e62f02827f57&imgtype=0&src=http%3A%2F%2Fpic30.nipic.com%2F20130612%2F12724384_085414541114_2.jpg',
 
@@ -267,4 +269,14 @@ export default{
     }
     return imgURL
   },
+
+  now2Unix () { // 获取现在的时间戳
+    return (new Date()).getTime() / 1000
+  },
+
+
+  getLocateFreshTime () {
+    return store.state.mdeUserInfo.userAddrInfo.forceFresh
+  }
+
 }
