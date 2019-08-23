@@ -1,43 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-import { now2Unix } from '@/common/utils.js'
+import utils from '@/common/utils.js'
 
 Vue.use(Vuex)
-
-// export default new Vuex.Store({
-//   state: {
-//     usrWindowIsShow: false,
-//     usrInfo: {
-//       isLogin: false,
-//       usrAvatar: '',
-//       usrNickName: '',
-//       authToken: ''
-//     },
-//     beforeLoginURL: '',
-//     wxAuthTp: 'base',
-//   },
-//   mutations: {
-//     usrWindowToggle (state) {
-//       return state.usrWindowIsShow = !state.usrWindowIsShow
-//     },
-//     usrWxLogin (state, payload) {
-//       // 微信登陆，改变全局状态
-//       state.usrInfo.isLogin = true
-//       state.usrInfo.usrAvatar = payload.usrAvatar
-//       state.usrInfo.usrNickName = payload.usrNickName
-//       state.usrInfo.authToken = payload.wxAuthToken
-//       return
-//     },
-//     logBeforeLoginURL (state, bURL) {
-//       // 记录登陆之前进来的URL
-//       state.beforeLoginURL = bURL
-//     }
-//   },
-//   actions: {
-
-//   }
-// })
 
 // 全局模块
 const MdeGlobal = {
@@ -120,19 +86,19 @@ const MdeUserInfo = {
       lat: 23.029735,
       addr: '市东下路20号b座',
       district: '',
-      forceFresh: 0 // 时间到期了强制更新
+      forceRefresh: 0 // 时间到期了强制更新
     }
   },
   mutations: {
 
     locationUpdate (state, payload) { // 刷新用户地址信息
       // 设置强制刷新时间为30分钟
-      let forceFresh = now2Unix() + 30 * 60
+      let forceRefresh = utils.now2Unix() + 30 * 60
 
       state.userAddrInfo.lng = payload.lng
       state.userAddrInfo.lat = payload.lat
       state.userAddrInfo.district = payload.district
-      state.userAddrInfo.forceFresh = forceFresh
+      state.userAddrInfo.forceRefresh = forceRefresh
     }
 
   }

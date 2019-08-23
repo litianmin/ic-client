@@ -274,9 +274,21 @@ export default{
     return (new Date()).getTime() / 1000
   },
 
+  isNeedRefreshLocation () {  // 是否需要刷新地理位置
+    return this.now2Unix() > store.state.mdeUserInfo.userAddrInfo.forceRefresh 
+  },
 
-  getLocateFreshTime () {
-    return store.state.mdeUserInfo.userAddrInfo.forceFresh
+  // @return     
+  // obj {  
+  //   name: '市东下路20号B座',
+  //   lng: 113.122629,
+  //   lat: 23.029735,
+  //   addr: '市东下路20号b座',
+  //   district: '',
+  //   forceRefresh: 0 // 时间到期了强制更新
+  // }
+  getLocationInfo () {  // 获取地理位置
+    return store.state.mdeUserInfo.userAddrInfo
   }
 
 }
