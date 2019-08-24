@@ -105,11 +105,26 @@ const MdeUserInfo = {
 
 }
 
+const MdeInterface = {  // 界面显示
+  namespaced: true,
+
+  state: {
+    UnreadMsg: 0
+  },
+  
+  mutations: {
+    unreadMsgUpdate (state, num) {
+      state.UnreadMsg = num
+    }
+  }
+}
+
 export default new Vuex.Store({
   plugins: [createPersistedState()],
   modules: {
     mdeGlobal: MdeGlobal,
     mdeLogin: MdeLogin,
-    mdeUserInfo: MdeUserInfo
+    mdeUserInfo: MdeUserInfo,
+    mdeInterface: MdeInterface
   }
 })

@@ -2,9 +2,9 @@
   <div class="home">
 
     <!-- BEGIN 头部 -->
-    <mu-flex align-items="center" style="background:#26c6da; padding:.5rem .3rem .5rem .5rem; color:#ffffff;">
+    <mu-flex align-items="center" style="background:#26c6da; padding:.5rem .3rem .5rem .5rem; color:#ffffff; box-shadow: 0 0 1px #26c6da;">
       <mu-flex align-items="center">
-        <mu-avatar size="30"><img :src="selfAvatar" alt=""></mu-avatar>
+        <mu-avatar size="30"><img :src="selfAvatar | imgPrefixDeal()" alt=""></mu-avatar>
         <span style="margin-left:.5rem;">{{ selfNickname }}</span>
       </mu-flex>
       <mu-flex style="margin-left:auto;" align-items="center">
@@ -53,7 +53,7 @@
         <swiper :options="swiperOption">
           <swiper-slide v-for="(item, index) in ArticleList" :key="index">
             <mu-flex style="position:relative; " wrap="wrap" @click="linkToArticleDetail(item.articleID)">
-              <img class="swiper-img" :src="item.displayImg" alt="">
+              <img class="swiper-img" :src="item.displayImg | imgPrefixDeal()" alt="">
               <mu-flex style="width:100%; position:absolute; bottom:0;  left:0; padding:.6rem .5rem; background:rgba(0, 0, 0, .5); color:#fff; border-bottom-left-radius:.3rem; border-bottom-right-radius:.3rem;" justify-content="start">{{ item.title }} </mu-flex>
             </mu-flex>
             <!-- <mu-flex style="width:100%; background:#fff; padding:.7rem .5rem; border:1px solid #e0e0e0; border-top:0; border-bottom-left-radius:.3rem; border-bottom-right-radius:.3rem;">
@@ -73,7 +73,7 @@
     <!-- 这里就显示官方活动或者商家活动 -->
     <mu-flex style="padding:.3rem .5rem;" wrap="wrap">
       <div v-for="(item, index) in GameList" :key="index" @click="linkToGameDetail(item.gID)" style="padding:0 .5rem; min-width:30%; max-width:33%; margin-bottom:1rem;">    
-        <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" :src="item.logo" alt="">
+        <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" :src="item.logo | imgPrefixDeal()" alt="">
         <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">{{ item.gName }}</div>
       </div>
     </mu-flex>
@@ -90,18 +90,18 @@
   
       <mu-flex v-for="(item, index) in ActivityList" :key="index" @click="linkToActivityDetail(item.activityID)" style="box-shadow:0 0 1px gray; border-radius:.3rem; margin-bottom:2rem;" wrap="wrap">
         <mu-flex style="position:relative;">
-          <img style="max-width:100%; max-height:100%; border-top-left-radius:.3rem; border-top-right-radius:.3rem;" :src="item.displayImg" alt="">
+          <img style="max-width:100%; max-height:100%; border-top-left-radius:.3rem; border-top-right-radius:.3rem;" :src="item.displayImg | imgPrefixDeal()" alt="">
         </mu-flex>
         <mu-flex style="padding:.8rem .5rem;">
           <span style="font-weight:700;">{{ item.title }}</span>
         </mu-flex>
         <mu-flex style="width:100%; font-size:13px; padding:.2rem .5rem .5rem .5rem;" wrap="wrap">
-          <div style="width:100%;">于 <span style="color:#795548;">{{ item.beginTime }}</span> </div>
+          <div style="width:100%;">于 <span style="color:#795548;">{{ item.beginTime | formatTime('{m}/{d} {h}:{i}') }}</span> </div>
           <div>在 <span style="color:#795548">{{ item.venue.name }}</span> 与你相聚</div>
         </mu-flex>
         <mu-flex style="width:100%; padding:0 .1rem .5rem .2rem; margin-top:.5rem;" align-items="center">
           <mu-icon value="person_pin_circle" size="20" color="#009688"></mu-icon>
-          <span style="font-size:12px;">距离你{{ item.distance }}</span>
+          <span style="font-size:12px;">距离你{{ item.distance | distanceFormat() }}</span>
           <span style="font-size:12px; color:#00bcd4; margin-left:auto;">去看看！</span>
         </mu-flex>
       </mu-flex>
@@ -117,7 +117,6 @@
 import Footer from '@/components/Footer.vue'
 import utils from 'common/utils.js'
 import wx from 'weixin-js-sdk'
-// import { wx } from 'common/wxInit.js'
 export default {
   name: 'home',
   data () {
@@ -258,13 +257,14 @@ export default {
     }
     
   },
-  computed: {
-    LocateDistrict () {
-      return this.$store.state.mdeUserInfo.userAddrInfo.district
-    }
-  },
+  // computed: {
+  //   LocateDistrict () {
+  //     return this.$store.state.mdeUserInfo.userAddrInfo.district
+  //   }
+  // },
   methods:{
     pageInit () {
+
       this.selfAvatar = this.$store.state.mdeLogin.usrInfo.avatar
       this.selfNickname = this.$store.state.mdeLogin.usrInfo.nickname
       this.LocateDistrict = this.$store.state.mdeUserInfo.userAddrInfo.district
@@ -278,28 +278,15 @@ export default {
         let data = resp.data.msg
         console.log(data)
 
-        let activityList = data.activityList  // 活动列表
-        for(let i = 0; i < activityList.length; i++) {
-          activityList[i].beginTime = utils.unixToDate(activityList[i].beginTime)
-          activityList[i].displayImg = utils.imgPrefixDeal(activityList[i].displayImg)
-          activityList[i].distance = utils.distanceFormat(activityList[i].distance)
-        }
-        this.ActivityList = activityList
+        this.ActivityList = data.activityList // 活动列表
 
-        let articleList = data.articleList  // 文章列表(轮播图)
-        for(let i = 0; i < articleList.length; i++) {
-          articleList[i].displayImg = utils.imgPrefixDeal(articleList[i].displayImg)
-        }
-        this.ArticleList = articleList
+        this.ArticleList = data.articleList // 文章列表(轮播图)
 
-        let gameList = data.gameList  // 游戏列表
-        for(let i = 0; i < gameList.length; i++) {
-          gameList[i].logo = utils.imgPrefixDeal(gameList[i].logo)
-        }
-        this.GameList = gameList
-
+        this.GameList = data.gameList  // 游戏列表
 
         this.CarsoucelIsShow = true
+
+        this.$store.commit('mdeInterface/unreadMsgUpdate', data.unReadMsg)
       })
     },
     linkToGameList () {
