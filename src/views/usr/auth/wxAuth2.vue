@@ -27,7 +27,7 @@
 
 <script>
 import utils from 'common/utils.js'
-import { setToken } from 'common/cookie.js'
+import { setToken, getBeforeLoginURL } from 'common/cookie.js'
 export default {
   methods: {
     getAuthURL () {
@@ -62,8 +62,9 @@ export default {
           this.$store.commit('mdeLogin/usrLogin', usrInfo)
 
           // 跳转到原地址
-          let beforeLoginURL = utils.cookieObj.getCookie('beforeLoginURL')
-          this.$router.push(beforeLoginURL)
+          let beforeLoginURL = getBeforeLoginURL()
+          console.log(beforeLoginURL)
+          this.$router.push(getBeforeLoginURL())
         }
 
       } )

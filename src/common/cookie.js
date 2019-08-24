@@ -17,6 +17,11 @@ export function removeToken() {
 
 // 设置登录之前的url
 export function setBeforeLoginURL(url) {
-  let expires = new Date(new Date().getTime() + 1 * 60 * 1000);
-  Cookies.set(BeforeLoginURL, url, {expires})
+  let expires = new Date(new Date().getTime() + 1 * 60 * 1000)
+  Cookies.set(BeforeLoginURL, url, { expires })
+}
+
+// 获取进来的URL
+export function getBeforeLoginURL() {
+  return Cookies.get(BeforeLoginURL)
 }

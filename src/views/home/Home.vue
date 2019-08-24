@@ -117,6 +117,7 @@
 import Footer from '@/components/Footer.vue'
 import utils from 'common/utils.js'
 import wx from 'weixin-js-sdk'
+// import { wx } from 'common/wxInit.js'
 export default {
   name: 'home',
   data () {
@@ -184,31 +185,33 @@ export default {
   },
   mounted () {
 
-    // 先判断地理位置是否需要更新了
-    if( utils.isNeedRefreshLocation() == false ) { // 如果不需要刷新，直接请求数据了
+    if(utils.isWxBrowser) { // 判断是否为微信浏览器
       this.pageInit()
-    }
+    } else {
+      // 先判断地理位置是否需要更新了
+      if( utils.isNeedRefreshLocation() == false ) { // 如果不需要刷新，直接请求数据了
+        this.pageInit()
+      }
 
-
-    let _that = this
-    let params = {
-      url: location.href
-    }
-    this.$axios.post('/user/wxConfigInit', params).then((configInfo) => {
-      let info = configInfo.data.msg
-      wx.config({
-          debug: true,
-          appId: info.appID,
-          nonceStr: info.nonceStr,
-          timestamp: info.timeStamp,
-          url: location.href,
-          signature: info.signature,
-          jsApiList: ['checkJsApi', 'translateVoice', 'openLocation', 'getLocation']
-      })
-      
-      wx.ready(() => {
-        if( utils.isNeedRefreshLocation() ) {
-          wx.getLocation({
+      let _that = this
+      let params = {
+        url: location.href
+      }
+      this.$axios.post('/user/wxConfigInit', params).then((configInfo) => {
+        let info = configInfo.data.msg
+        wx.config({
+            debug: true,
+            appId: info.appID,
+            nonceStr: info.nonceStr,
+            timestamp: info.timeStamp,
+            url: location.href,
+            signature: info.signature,
+            jsApiList: ['checkJsApi', 'translateVoice', 'openLocation', 'getLocation', 'updateAppMessageShareData']
+        })
+        
+        wx.ready(() => {
+          if( utils.isNeedRefreshLocation() ) {
+            wx.getLocation({
               success: function (resp) {
                 let lat = resp.latitude
                 let lng = resp.longitude
@@ -232,21 +235,28 @@ export default {
                 console.log(resp)
               }
             })
-        }
+
+            // 分享
+            wx.updateAppMessageShareData({ 
+                title: '这里是我的分线内容', // 分享标题
+                desc: '测试分享', // 分享描述
+                link: document.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1820523987,3798556096&fm=26&gp=0.jpg', // 分享图标
+                success: function (res) {
+                  alert('分享成功')
+                  // 设置成功
+                },
+                error: function (res) {
+                  alert(res)
+                }
+            })
+
+          }
+        })
+        
       })
-    })
-
-    // 分享
-    wx.updateAppMessageShareData({ 
-        title: this.LocateDistrict, // 分享标题
-        desc: '测试分享', // 分享描述
-        link: document.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1820523987,3798556096&fm=26&gp=0.jpg', // 分享图标
-        success: function () {
-          // 设置成功
-        }
-    })
-
+    }
+    
   },
   computed: {
     LocateDistrict () {
