@@ -184,7 +184,7 @@ export default {
   },
   mounted () {
 
-    if(!utils.isWxBrowser) { // 判断是否为微信浏览器
+    if(!utils.isWxBrowser()) { // 判断是否为微信浏览器
       this.pageInit()
     } else {
       // 先判断地理位置是否需要更新了
@@ -199,7 +199,7 @@ export default {
       this.$axios.post('/user/wxConfigInit', params).then((configInfo) => {
         let info = configInfo.data.msg
         wx.config({
-            debug: true,
+            debug: false,
             appId: info.appID,
             nonceStr: info.nonceStr,
             timestamp: info.timeStamp,
@@ -253,23 +253,24 @@ export default {
 
           // 分享给朋友
           wx.onMenuShareAppMessage({
-            title: _that.selfNickname, // 分享标题
-            desc: '测试分享', // 分享描述
+            title: '一起来组队，走近你我！', // 分享标题
+            desc: _that.selfNickname + '为您推荐一个交友组队平台！玩游戏没人？来这里。想出去走走？来这里。', // 分享描述
             link: document.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: '', // 分享图标
+            imgUrl: 'https://www.icoming.top/image/logo/zhuzhu-logo.png', // 分享图标
             type: 'link', // 分享类型,music、video或link，不填默认为link
             dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
             success: function () {
             // 用户点击了分享后执行的回调函数
-            console.log('初始化成功')
+            // console.log('初始化成功')
             }
           })
 
 
           wx.onMenuShareTimeline({
-              title: '这里是我的分线内容', // 分享标题
+              title: '一起来组队，走近你我！',  // 分享标题
+              desc: _that.selfNickname + '为您推荐一个交友组队平台！玩游戏没人？来这里。想出去走走？来这里。',
               link: 'document.href', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl: '', // 分享图标
+              imgUrl: 'https://www.icoming.top/image/logo/zhuzhu-logo.png', // 分享图标
               success: function () {
               // 用户点击了分享后执行的回调函数
               }
