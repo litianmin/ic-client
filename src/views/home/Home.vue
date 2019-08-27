@@ -184,7 +184,7 @@ export default {
   },
   mounted () {
 
-    if(utils.isWxBrowser) { // 判断是否为微信浏览器
+    if(!utils.isWxBrowser) { // 判断是否为微信浏览器
       this.pageInit()
     } else {
       // 先判断地理位置是否需要更新了
@@ -205,7 +205,7 @@ export default {
             timestamp: info.timeStamp,
             url: location.href,
             signature: info.signature,
-            jsApiList: ['checkJsApi', 'translateVoice', 'openLocation', 'getLocation', 'updateAppMessageShareData']
+            jsApiList: ['checkJsApi', 'translateVoice', 'openLocation', 'getLocation', 'onMenuShareAppMessage', 'onMenuShareTimeline']
         })
         
         wx.ready(() => {
@@ -225,7 +225,6 @@ export default {
                     }
                     _that.$store.commit('mdeUserInfo/locationUpdate', payload)
                     _that.pageInit()
-                    console.log('刷新成功')
                   }
                 })
 
@@ -234,28 +233,56 @@ export default {
                 console.log(resp)
               }
             })
-
-            // 分享
-            wx.updateAppMessageShareData({ 
-                title: '这里是我的分线内容', // 分享标题
-                desc: '测试分享', // 分享描述
-                link: document.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1820523987,3798556096&fm=26&gp=0.jpg', // 分享图标
-                success: function (res) {
-                  alert('分享成功')
-                  // 设置成功
-                },
-                error: function (res) {
-                  alert(res)
-                }
-            })
-
           }
+
+
+          // 分享(新分享接口)
+          // wx.updateAppMessageShareData({ 
+          //     title: '这里是我的分线内容', // 分享标题
+          //     desc: '测试分享', // 分享描述
+          //     link: document.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          //     imgUrl: '', // 分享图标
+          //     success: function (res) {
+          //       alert('分享成功')
+          //       // 设置成功
+          //     },
+          //     error: function (res) {
+          //       alert(res)
+          //     }
+          // }),
+
+          // 分享给朋友
+          wx.onMenuShareAppMessage({
+            title: _that.selfNickname, // 分享标题
+            desc: '测试分享', // 分享描述
+            link: document.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: '', // 分享图标
+            type: 'link', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+            // 用户点击了分享后执行的回调函数
+            console.log('初始化成功')
+            }
+          })
+
+
+          wx.onMenuShareTimeline({
+              title: '这里是我的分线内容', // 分享标题
+              link: 'document.href', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+              imgUrl: '', // 分享图标
+              success: function () {
+              // 用户点击了分享后执行的回调函数
+              }
+          })
+
         })
         
       })
+
+
+
     }
-    
+
   },
   // computed: {
   //   LocateDistrict () {
