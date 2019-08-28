@@ -1,18 +1,28 @@
 <template>
   <div>
-    <mu-flex style="width:100%;">
-      <img style="width:100%; height:auto;" :src="BaseInfo.displayImg | imgPrefixDeal()" alt="">
-    </mu-flex>
+
     <mu-flex>
-      <span style="font-size:18px; font-weight:600; padding:.5rem .8rem; letter-spacing:1px;">{{ BaseInfo.title }}</span>
-    </mu-flex>
-    <mu-flex style="padding: 0 1rem;" align-items="center" justify-content="end">
-      <span style="color:#009688; margin-right:.5rem; font-weight:600; letter-spacing:1px;">-- {{ BaseInfo.type == 1 ? '话题' : '美文' }}</span>
-      
+      <span style="font-size:18px; font-weight:700; padding:1rem .8rem .5rem .8rem; letter-spacing:1px;">{{ BaseInfo.title }}</span>
     </mu-flex>
 
+
+    <span style="font-size:12px; margin-left:.8rem; color:#9e9e9e">发布于 {{ BaseInfo.beginTime | parseTime('{y}/{m}/{d}') }}  </span>
+
+    <span style="font-size:12px; color:#009688; margin-right:.5rem; font-weight:600; letter-spacing:1px;"> · {{ BaseInfo.type == 1 ? '话题' : '美文' }}</span>
+
+    <!-- <mu-flex style="padding: 0 1rem;" align-items="center" justify-content="end">
+      <span style="color:#009688; margin-right:.5rem; font-weight:600; letter-spacing:1px;">-- {{ BaseInfo.type == 1 ? '话题' : '美文' }}</span>
+      
+    </mu-flex> -->
+
+    <mu-flex style="width:100%; padding:1rem .5rem 0 .5rem;">
+      <img style="width:100%; height:auto; border-radius:.3rem;" :src="BaseInfo.displayImg | imgPrefixDeal()" alt="">
+    </mu-flex>
+
+
+
     <!-- 文章详情 -->
-    <div style="padding:1rem .5rem;" v-html="BaseInfo.cont"></div>
+    <div style="padding:.5rem .8rem;" v-html="BaseInfo.cont"></div>
 
     <ChatList :TeamType="TeamType" :TeamID="TeamID"></ChatList>
 
