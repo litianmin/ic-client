@@ -4,24 +4,29 @@
       <img style="width:100%; height:auto;" :src="TeamBaseInfo.displayImg" alt="">
     </mu-flex>
     <mu-flex>
-      <span style="font-size:18px; font-weight:700; padding:.5rem .8rem;">{{ TeamBaseInfo.title }}</span>
+      <span style="font-size:18px; font-weight:700; padding:.5rem .8rem; letter-spacing:1px;">{{ TeamBaseInfo.title }}</span>
     </mu-flex>
 
-    <!-- 文章详情 -->
-    <div style="padding:.5rem .8rem;" v-html="TeamBaseInfo.cont"></div>
-
-    <mu-flex style="width:100%; font-size:13px; padding:.5rem 1rem 1rem .5rem;" wrap="wrap" justify-content="end">
-      <div style="width:100%; text-align:right;">-- <span style="">{{ TeamBaseInfo.beginTime | parseTime('{m}/{d} {h}:{i}') }}</span> </div>
+    <mu-flex style="width:100%; font-size:13px; padding:.3rem 1rem 1rem .8rem;" wrap="wrap" justify-content="start">
+      <div style="width:100%;"><span style="">于 {{ TeamBaseInfo.beginTime | parseTime('{m}/{d} {h}:{i}') }}</span> </div>
       <mu-flex align-items="center">
-        <!-- <span>在</span>  -->
-        <!-- <mu-icon value="person_pin_circle" size="16" color="#009688"></mu-icon> -->
         <span>在 <span style="color:#009688; font-weight:700; font-size:12px; text-decoration:underline">{{ TeamBaseInfo.venue.name }}</span> 与你相聚</span>
       </mu-flex>
     </mu-flex>
 
+    <!-- 文章详情 -->
+    <div style="padding:0 .8rem .5rem .8rem;" v-html="TeamBaseInfo.cont"></div>
+
+    <!-- <mu-flex style="width:100%; font-size:13px; padding:.5rem 1rem 1rem .5rem;" wrap="wrap" justify-content="end">
+      <div style="width:100%; text-align:right;"><span style="">{{ TeamBaseInfo.beginTime | parseTime('{m}/{d} {h}:{i}') }}</span> </div>
+      <mu-flex align-items="center">
+        <span>在 <span style="color:#009688; font-weight:700; font-size:12px; text-decoration:underline">{{ TeamBaseInfo.venue.name }}</span> 与你相聚</span>
+      </mu-flex>
+    </mu-flex> -->
+
 
     <!-- BEGIN 队长和队友列表 -->
-    <mu-flex style="padding:.5rem 1rem; background:#fff;" justify-content="center" align-items="center" wrap="wrap">
+    <mu-flex style="padding: .8rem 1rem .5rem 1rem; background:#fff; border-top:1px solid #eeeeee" justify-content="center" align-items="center" wrap="wrap">
         <mu-avatar v-for="(item, index) in TeammateList" :key="index" size="35" :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'" style="margin-right:.5rem;">
           <img :src="item.avatar | imgPrefixDeal()" alt="">
         </mu-avatar>
@@ -29,7 +34,7 @@
           <svg-icon icon-class="add_circle_outline" style="font-size:40px; color:red;"></svg-icon>
         </span>
     </mu-flex>
-    <mu-flex justify-content="center" style="padding:.3rem 0 .5rem 0; border-bottom:1px dashed #e0e0e0; background:#fff;">
+    <mu-flex justify-content="center" style="padding:.3rem 0 .5rem 0; background:#fff;">
       <span style="font-size:12px; color:#9e9e9e;">-- 招募{{ TeamBaseInfo.recruitNumb }}人，还差{{ TeamBaseInfo.recruitNumb - TeamBaseInfo.hadRecruitNumb }}人 --</span>
     </mu-flex>
     <!-- END 队长和队友列表 -->
@@ -54,6 +59,7 @@
 
 <script>
 import ChatList from '@/components/ChatList.vue'
+import { wxInit } from '@/common/wxInit.js'
 export default {
   data () {
     return {
@@ -104,41 +110,125 @@ export default {
     this.TeamID = this.$route.params.activityID
   },
   mounted () {
-    this.$axios.get(`/activity/detail/${this.TeamID}`, {}).then((resp)=>{
-      let dataBack = resp.data.msg
+    wxInit(this)
+    // if(!utils.isWxBrowser()) { // 判断是否为微信浏览器
+    //   this.pageInit()
+    // } else {
+    //   // 先判断地理位置是否需要更新了
+    //   if( utils.isNeedRefreshLocation() == false ) { // 如果不需要刷新，直接请求数据了
+    //     this.pageInit()
+    //   }
 
-      if(resp.data.code != 20000) {
-        this.$toast.message(dataBack)
-        if(resp.data.code == 40301) {
-          this.$router.push('/')
-        }
-      }
+    //   let _that = this
+    //   let params = {
+    //     url: location.href
+    //   }
+    //   this.$axios.post('/user/wxConfigInit', params).then((configInfo) => {
+    //     let info = configInfo.data.msg
+    //     wx.config({
+    //         debug: false,
+    //         appId: info.appID,
+    //         nonceStr: info.nonceStr,
+    //         timestamp: info.timeStamp,
+    //         url: location.href,
+    //         signature: info.signature,
+    //         jsApiList: ['checkJsApi', 'openLocation', 'getLocation', 'onMenuShareAppMessage', 'onMenuShareTimeline']
+    //     })
+        
+    //     wx.ready(() => {
+    //       if( utils.isNeedRefreshLocation() ) {
+    //         wx.getLocation({
+    //           success: function (resp) {
+    //             let lat = resp.latitude
+    //             let lng = resp.longitude
 
-      // 现在开始处理数据
-      let baseInfo = dataBack.baseInfo
-      baseInfo.hadRecruitNumb = dataBack.teammateList.length
-      this.TeamBaseInfo = baseInfo
-      this.TeammateList = dataBack.teammateList
+    //             _that.$axios.get(`https://restapi.amap.com/v3/geocode/regeo?&location=${lng},${lat}&key=2d617a69e7365b889469daf971c3eb71`, {}).then((resp2) => {
+    //               if(resp2.data.status == '1') {
+    //                 let locateAddr = resp2.data.regeocode.addressComponent.district
+    //                 let payload = {
+    //                   lng,
+    //                   lat,
+    //                   district: locateAddr  
+    //                 }
+    //                 _that.$store.commit('mdeUserInfo/locationUpdate', payload)
+    //                 _that.pageInit()
+    //               }
+    //             })
 
-      // 判断赋值 JoinStatusSvg , 首先判断队伍的招募状态，再去判断个人的加入状态
-      switch(baseInfo.recruitStatus) {
-        case 0: // 招募中
-          this.JoinStatusSvg = dataBack.joinStatus == 0 ? 'jointeam' : 'hadjointeam'
-          break
-        case 1: // 停止招募, 拒绝加入
-          this.JoinStatusSvg = 'jointeam_refuse'
-          break
-        case 2: // 已删除
-          this.$toast.message('该活动已删除')
-          this.$router.push('/')
-          break
-      }
+    //           }, 
+    //           error: function (resp) {
+    //             console.log(resp)
+    //           }
+    //         })
+    //       }
 
-      this.JoinStatus = dataBack.joinStatus // 自己加入的状态
-    })
+    //       // 分享给朋友
+    //       wx.onMenuShareAppMessage({
+    //         title: '一起来组队，走近你我！', // 分享标题
+    //         desc: _that.selfNickname + '为您推荐一个交友组队平台！玩游戏没人？来这里。想出去走走？来这里。', // 分享描述
+    //         link: document.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+    //         imgUrl: 'https://www.icoming.top/image/logo/zhuzhu-logo.png', // 分享图标
+    //         type: 'link', // 分享类型,music、video或link，不填默认为link
+    //         dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+    //         success: function () {
+    //         // 用户点击了分享后执行的回调函数
+    //         // console.log('初始化成功')
+    //         }
+    //       })
+
+
+    //       wx.onMenuShareTimeline({
+    //           title: '一起来组队，走近你我！',  // 分享标题
+    //           desc: _that.selfNickname + '为您推荐一个交友组队平台！玩游戏没人？来这里。想出去走走？来这里。',
+    //           link: 'document.href', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+    //           imgUrl: 'https://www.icoming.top/image/logo/zhuzhu-logo.png', // 分享图标
+    //           success: function () {
+    //           // 用户点击了分享后执行的回调函数
+    //           }
+    //       })
+
+    //     })
+        
+    //   })
+    // }
 
   },
   methods: {
+
+    pageInit () {
+      this.$axios.get(`/activity/detail/${this.TeamID}`, {}).then((resp)=>{
+        let dataBack = resp.data.msg
+
+        if(resp.data.code != 20000) {
+          this.$toast.message(dataBack)
+          if(resp.data.code == 40301) {
+            this.$router.push('/')
+          }
+        }
+
+        // 现在开始处理数据
+        let baseInfo = dataBack.baseInfo
+        baseInfo.hadRecruitNumb = dataBack.teammateList.length
+        this.TeamBaseInfo = baseInfo
+        this.TeammateList = dataBack.teammateList
+
+        // 判断赋值 JoinStatusSvg , 首先判断队伍的招募状态，再去判断个人的加入状态
+        switch(baseInfo.recruitStatus) {
+          case 0: // 招募中
+            this.JoinStatusSvg = dataBack.joinStatus == 0 ? 'jointeam' : 'hadjointeam'
+            break
+          case 1: // 停止招募, 拒绝加入
+            this.JoinStatusSvg = 'jointeam_refuse'
+            break
+          case 2: // 已删除
+            this.$toast.message('该活动已删除')
+            this.$router.push('/')
+            break
+        }
+
+        this.JoinStatus = dataBack.joinStatus // 自己加入的状态
+      })
+    },
 
     joinTeam () {
       // 首先判断队伍的状态是否停止招募

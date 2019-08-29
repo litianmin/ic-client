@@ -15,9 +15,9 @@
       
     </mu-flex> -->
 
-    <mu-flex style="width:100%; padding:1rem .5rem 0 .5rem;">
+    <!-- <mu-flex style="width:100%; padding:1rem .5rem 0 .5rem;">
       <img style="width:100%; height:auto; border-radius:.3rem;" :src="BaseInfo.displayImg | imgPrefixDeal()" alt="">
-    </mu-flex>
+    </mu-flex> -->
 
 
 
