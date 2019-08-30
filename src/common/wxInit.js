@@ -1,8 +1,13 @@
 import axios from '@/request.js'
 
 import wx from 'weixin-js-sdk'
+import utils from '@/common/utils.js'
 
-export function wxInit(pointer) {
+/** 微信初始化
+ *  @param {*} pointer =>  this
+ *  @param {bool} needLocate  是否需要定位
+ */
+export function wxInit(pointer, needLocate) {
   let _this = pointer
   if(!utils.isWxBrowser()) { // 判断是否为微信浏览器
     _this.pageInit()
@@ -29,7 +34,7 @@ export function wxInit(pointer) {
       })
       
       wx.ready(() => {
-        if( utils.isNeedRefreshLocation() ) {
+        if( needLocate && utils.isNeedRefreshLocation() ) {
           wx.getLocation({
             success: function (resp) {
               let lat = resp.latitude
@@ -57,8 +62,8 @@ export function wxInit(pointer) {
 
         // 分享给朋友
         wx.onMenuShareAppMessage({
-          title: '一起来组队，走近你我！', // 分享标题
-          desc: _that.selfNickname + '为您推荐一个交友组队平台！玩游戏没人？来这里。想出去走走？来这里。', // 分享描述
+          title: _that.ShareTitle, // 分享标题
+          desc: _that.ShareDesc, // 分享描述
           link: document.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: 'https://www.icoming.top/image/logo/zhuzhu-logo.png', // 分享图标
           type: 'link', // 分享类型,music、video或link，不填默认为link
@@ -71,9 +76,9 @@ export function wxInit(pointer) {
 
 
         wx.onMenuShareTimeline({
-            title: '一起来组队，走近你我！',  // 分享标题
-            desc: _that.selfNickname + '为您推荐一个交友组队平台！玩游戏没人？来这里。想出去走走？来这里。',
-            link: 'document.href', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            title: _that.ShareTitle,  // 分享标题
+            desc: _that.ShareDesc,
+            link: document.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: 'https://www.icoming.top/image/logo/zhuzhu-logo.png', // 分享图标
             success: function () {
             // 用户点击了分享后执行的回调函数

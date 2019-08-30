@@ -116,11 +116,15 @@
 <script>
 import Footer from '@/components/Footer.vue'
 import utils from 'common/utils.js'
-import wx from 'weixin-js-sdk'
+import { wxInit } from '@/common/wxInit.js'
 export default {
   name: 'home',
   data () {
     return {
+      ShareTitle: '', // 分享title
+      ShareDesc: '',  // 分享描述
+      ShareImgUrl: '',  // 分享图片
+
       selfAvatar: '',
       selfNickname: '',
       LocateDistrict: '',
@@ -183,113 +187,8 @@ export default {
     }
   },
   mounted () {
-
-    if(!utils.isWxBrowser()) { // 判断是否为微信浏览器
-      this.pageInit()
-    } else {
-      // 先判断地理位置是否需要更新了
-      if( utils.isNeedRefreshLocation() == false ) { // 如果不需要刷新，直接请求数据了
-        this.pageInit()
-      }
-
-      let _that = this
-      let params = {
-        url: location.href
-      }
-      this.$axios.post('/user/wxConfigInit', params).then((configInfo) => {
-        let info = configInfo.data.msg
-        wx.config({
-            debug: false,
-            appId: info.appID,
-            nonceStr: info.nonceStr,
-            timestamp: info.timeStamp,
-            url: location.href,
-            signature: info.signature,
-            jsApiList: ['checkJsApi', 'translateVoice', 'openLocation', 'getLocation', 'onMenuShareAppMessage', 'onMenuShareTimeline']
-        })
-        
-        wx.ready(() => {
-          if( utils.isNeedRefreshLocation() ) {
-            wx.getLocation({
-              success: function (resp) {
-                let lat = resp.latitude
-                let lng = resp.longitude
-
-                _that.$axios.get(`https://restapi.amap.com/v3/geocode/regeo?&location=${lng},${lat}&key=2d617a69e7365b889469daf971c3eb71`, {}).then((resp2) => {
-                  if(resp2.data.status == '1') {
-                    let locateAddr = resp2.data.regeocode.addressComponent.district
-                    let payload = {
-                      lng,
-                      lat,
-                      district: locateAddr  
-                    }
-                    _that.$store.commit('mdeUserInfo/locationUpdate', payload)
-                    _that.pageInit()
-                  }
-                })
-
-              }, 
-              error: function (resp) {
-                console.log(resp)
-              }
-            })
-          }
-
-
-          // 分享(新分享接口)
-          // wx.updateAppMessageShareData({ 
-          //     title: '这里是我的分线内容', // 分享标题
-          //     desc: '测试分享', // 分享描述
-          //     link: document.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          //     imgUrl: '', // 分享图标
-          //     success: function (res) {
-          //       alert('分享成功')
-          //       // 设置成功
-          //     },
-          //     error: function (res) {
-          //       alert(res)
-          //     }
-          // }),
-
-          // 分享给朋友
-          wx.onMenuShareAppMessage({
-            title: '一起来组队，走近你我！', // 分享标题
-            desc: _that.selfNickname + '为您推荐一个交友组队平台！玩游戏没人？来这里。想出去走走？来这里。', // 分享描述
-            link: document.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: 'https://www.icoming.top/image/logo/zhuzhu-logo.png', // 分享图标
-            type: 'link', // 分享类型,music、video或link，不填默认为link
-            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-            success: function () {
-            // 用户点击了分享后执行的回调函数
-            // console.log('初始化成功')
-            }
-          })
-
-
-          wx.onMenuShareTimeline({
-              title: '一起来组队，走近你我！',  // 分享标题
-              desc: _that.selfNickname + '为您推荐一个交友组队平台！玩游戏没人？来这里。想出去走走？来这里。',
-              link: 'document.href', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl: 'https://www.icoming.top/image/logo/zhuzhu-logo.png', // 分享图标
-              success: function () {
-              // 用户点击了分享后执行的回调函数
-              }
-          })
-
-        })
-        
-      })
-
-
-
-    }
-
+    wxInit(this, true)
   },
-  // computed: {
-  //   LocateDistrict () {
-  //     return this.$store.state.mdeUserInfo.userAddrInfo.district
-  //   }
-  // },
   methods:{
     pageInit () {
 
@@ -315,6 +214,11 @@ export default {
         this.CarsoucelIsShow = true
 
         this.$store.commit('mdeInterface/unreadMsgUpdate', data.unReadMsg)
+
+        this.ShareTitle = '一起来组队，走近你我！'    // 分享title
+        this.ShareDesc = this.selfNickname + '为您推荐一个交友组队平台！玩游戏没人？来这里。想出去走走？来这里。'  // 分享描述
+        this.ShareImgUrl = 'https://www.icoming.top/image/logo/zhuzhu-logo.png'  // 分享图片
+
       })
     },
     linkToGameList () {

@@ -10,17 +10,6 @@
 
     <span style="font-size:12px; color:#009688; margin-right:.5rem; font-weight:600; letter-spacing:1px;"> · {{ BaseInfo.type == 1 ? '话题' : '美文' }}</span>
 
-    <!-- <mu-flex style="padding: 0 1rem;" align-items="center" justify-content="end">
-      <span style="color:#009688; margin-right:.5rem; font-weight:600; letter-spacing:1px;">-- {{ BaseInfo.type == 1 ? '话题' : '美文' }}</span>
-      
-    </mu-flex> -->
-
-    <!-- <mu-flex style="width:100%; padding:1rem .5rem 0 .5rem;">
-      <img style="width:100%; height:auto; border-radius:.3rem;" :src="BaseInfo.displayImg | imgPrefixDeal()" alt="">
-    </mu-flex> -->
-
-
-
     <!-- 文章详情 -->
     <div style="padding:.5rem .8rem;" v-html="BaseInfo.cont"></div>
 
@@ -38,9 +27,14 @@
 
 <script>
 import ChatList from '@/components/ChatList.vue'
+import { wxInit } from '@/common/wxInit.js'
 export default {
   data () {
     return {
+      ShareTitle: '', // 分享title
+      ShareDesc: '',  // 分享描述
+      ShareImgUrl: '',  // 分享图片
+
       TeamType: 6,
       TeamID: 0,
       ArticleID: 0,
@@ -63,23 +57,27 @@ export default {
     this.TeamID = this.ArticleID
   },
   mounted () {
-    // 去获取文章的详细内容
-    this.$axios.get(
-      `/article/detail/${this.ArticleID}`, {}
-    ).then((resp)=>{
-
-      if(resp.data.code != 20000) {
-        this.$toast.message(resp.data.msg)
-        this.$router.push('/')
-        return
-      }
-
-      // 开始处理数据
-      this.BaseInfo = resp.data.msg.baseInfo
-
-    })
+    wxInit(this, true)
   },
   methods: {
+    pageInit () {
+      // 去获取文章的详细内容
+      this.$axios.get(
+        `/article/detail/${this.ArticleID}`, {}
+      ).then((resp)=>{
+
+        if(resp.data.code != 20000) {
+          this.$toast.message(resp.data.msg)
+          this.$router.push('/')
+          return
+        }
+
+        // 开始处理数据
+        this.ShareTitle = this.BaseInfo.type == 1 ? '助助社交，精彩话题等你来聊！' : '助助社交，精彩美文分享予你！'    // 分享title
+        this.ShareDesc = this.BaseInfo.title  // 分享描述
+      })
+    },
+
     newChat (isReply, replyTo, replyID, replyNickname) {
       this.$router.push({path:`/common/newChat`, query:{teamType:this.TeamType, teamID:this.TeamID, isReply, replyTo, replyID, replyNickname}})
     },
