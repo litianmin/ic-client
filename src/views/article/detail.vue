@@ -59,6 +59,7 @@ export default {
   mounted () {
     wxInit(this, true)
   },
+  
   methods: {
     pageInit () {
       // 去获取文章的详细内容
