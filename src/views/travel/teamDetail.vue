@@ -170,9 +170,14 @@
 <script>
 import utils from 'common/utils'
 import ChatList from '@/components/ChatList.vue'
+import { wxInit } from '@/common/wxInit.js'
 export default {
   data () {
     return {
+      ShareTitle: '', // 分享title
+      ShareDesc: '',  // 分享描述
+      ShareImgUrl: '',  // 分享图片
+
       TeamType: 3,
       InitLoading: true,
       TeamID: 0,
@@ -217,68 +222,76 @@ export default {
     this.TeamID = this.$route.params.teamID
   },
   mounted () {
-    // 初始化数据
-    this.$axios.post(
-      `/travel/teamDetail/${this.TeamID}`, 
-      {}
-    ).then((resp)=>{
-      console.log(resp)
-
-      // 如果队伍已经解散了，直接跳转到组队列表去
-      if(resp.data.code == 40105) {
-        this.$toast.message(resp.data.msg)
-        this.$router.push('/party/list')
-        return
-      }
-
-      let dataBack = resp.data.msg
-      
-      // 渲染详情页基本信息
-      let teamBaseInfo = dataBack.teamBaseInfo
-      teamBaseInfo.travelTheme = utils.getTravelThemeName(teamBaseInfo.travelTheme)
-      teamBaseInfo.pathLength = utils.getTravelPathLengthName(teamBaseInfo.pathLength)
-      teamBaseInfo.travelType = utils.getTravelTypeName(teamBaseInfo.travelType)
-
-      teamBaseInfo.travelTitle = teamBaseInfo.travelTitle == '' ? '一起来玩吧' : teamBaseInfo.travelTitle
-      teamBaseInfo.travelDetail = teamBaseInfo.travelDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : teamBaseInfo.travelDetail
-      // 处理招募图片
-      teamBaseInfo.recruitImg = teamBaseInfo.recruitImg == '' ? utils.TravelDefaultDisplayImg : utils.imgPrefixDeal(teamBaseInfo.recruitImg)
-      // 先格式化活动时间  {{ item.partyBeginTime }}  ~  {{ item.partyEndTime }}
-      // 2019/1/02 02:02  ~  2019/3/02 03:04
-      teamBaseInfo.meetingTime = utils.unixToDate(teamBaseInfo.meetingTime)
-      // 距离处理
-      teamBaseInfo.distance = utils.distanceFormat(teamBaseInfo.distance)
-      // 队伍发布时间处理
-      teamBaseInfo.createTime = utils.getDateDiff(teamBaseInfo.createTime, true)
-
-      // 处理步骤
-      for(let i = 0; i < teamBaseInfo.stepList.length; i++) {
-        teamBaseInfo.stepList[i].beginTime = utils.unixToDate(teamBaseInfo.stepList[i].beginTime)
-        teamBaseInfo.stepList[i].endTime = utils.unixToDate(teamBaseInfo.stepList[i].endTime)
-        teamBaseInfo.stepList[i].descImg = utils.imgPrefixDeal(teamBaseInfo.stepList[i].descImg)
-      }
-
-      // 已招募人数
-      teamBaseInfo.hadRecruitNumb = dataBack.teammateList.length
-
-
-      this.TeamBaseInfo = teamBaseInfo  // 赋值
-      
-      // 处理队友的头像
-      for(let i = 0; i < dataBack.teammateList.length; i++) {
-        dataBack.teammateList[i].avatar = utils.imgPrefixDeal(dataBack.teammateList[i].avatar)
-      }
-      this.TeammateList = dataBack.teammateList
-
-      this.IsCaptain = dataBack.isCaptain
-      this.JointeamStmt = dataBack.joinStmt
-
-      this.InitLoading = false
-
-      console.log(resp.data)
-    })
+    wxInit(this, true)
   },
   methods: {
+    pageInit () {
+      // 初始化数据
+      this.$axios.post(
+        `/travel/teamDetail/${this.TeamID}`, 
+        {}
+      ).then((resp)=>{
+        console.log(resp)
+
+        // 如果队伍已经解散了，直接跳转到组队列表去
+        if(resp.data.code == 40105) {
+          this.$toast.message(resp.data.msg)
+          this.$router.push('/party/list')
+          return
+        }
+
+        let dataBack = resp.data.msg
+        
+        // 渲染详情页基本信息
+        let teamBaseInfo = dataBack.teamBaseInfo
+        teamBaseInfo.travelTheme = utils.getTravelThemeName(teamBaseInfo.travelTheme)
+        teamBaseInfo.pathLength = utils.getTravelPathLengthName(teamBaseInfo.pathLength)
+        teamBaseInfo.travelType = utils.getTravelTypeName(teamBaseInfo.travelType)
+
+        teamBaseInfo.travelTitle = teamBaseInfo.travelTitle == '' ? '一起来玩吧' : teamBaseInfo.travelTitle
+        teamBaseInfo.travelDetail = teamBaseInfo.travelDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : teamBaseInfo.travelDetail
+        // 处理招募图片
+        teamBaseInfo.recruitImg = teamBaseInfo.recruitImg == '' ? utils.TravelDefaultDisplayImg : utils.imgPrefixDeal(teamBaseInfo.recruitImg)
+        // 先格式化活动时间  {{ item.partyBeginTime }}  ~  {{ item.partyEndTime }}
+        // 2019/1/02 02:02  ~  2019/3/02 03:04
+        teamBaseInfo.meetingTime = utils.unixToDate(teamBaseInfo.meetingTime)
+        // 距离处理
+        teamBaseInfo.distance = utils.distanceFormat(teamBaseInfo.distance)
+        // 队伍发布时间处理
+        teamBaseInfo.createTime = utils.getDateDiff(teamBaseInfo.createTime, true)
+
+        // 处理步骤
+        for(let i = 0; i < teamBaseInfo.stepList.length; i++) {
+          teamBaseInfo.stepList[i].beginTime = utils.unixToDate(teamBaseInfo.stepList[i].beginTime)
+          teamBaseInfo.stepList[i].endTime = utils.unixToDate(teamBaseInfo.stepList[i].endTime)
+          teamBaseInfo.stepList[i].descImg = utils.imgPrefixDeal(teamBaseInfo.stepList[i].descImg)
+        }
+
+        // 已招募人数
+        teamBaseInfo.hadRecruitNumb = dataBack.teammateList.length
+
+
+        this.TeamBaseInfo = teamBaseInfo  // 赋值
+        
+        // 处理队友的头像
+        for(let i = 0; i < dataBack.teammateList.length; i++) {
+          dataBack.teammateList[i].avatar = utils.imgPrefixDeal(dataBack.teammateList[i].avatar)
+        }
+        this.TeammateList = dataBack.teammateList
+
+        this.IsCaptain = dataBack.isCaptain
+        this.JointeamStmt = dataBack.joinStmt
+
+        this.InitLoading = false
+
+        this.ShareTitle = '助助社交，旅游伴你寻觅心灵的自由！' // 分享title
+        this.ShareDesc = teamBaseInfo.travelTitle  // 分享描述
+        this.ShareImgUrl = ''  // 分享图片
+
+        console.log(resp.data)
+      })
+    },
+
     goBack () {
       this.$router.go(-1)
     },

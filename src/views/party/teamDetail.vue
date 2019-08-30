@@ -170,9 +170,14 @@
 <script>
 import utils from 'common/utils'
 import ChatList from '@/components/ChatList.vue'
+import { wxInit } from '@/common/wxInit.js'
 export default {
   data () {
     return {
+      ShareTitle: '', // 分享title
+      ShareDesc: '',  // 分享描述
+      ShareImgUrl: '',  // 分享图片
+
       TeamType: 2,
       InitLoading: true,
       TeamID: 0,
@@ -218,57 +223,64 @@ export default {
     this.TeamID = this.$route.params.teamID
   },
   mounted () {
-
+    wxInit(this, true)
     // 初始化数据
-    this.$axios.post(
-      `/party/teamDetail/${this.TeamID}`, 
-      {}
-    ).then((resp)=>{
-
-      console.log(resp.data)
-
-      // 如果队伍已经解散了，直接跳转到组队列表去
-      if(resp.data.code == 40105) {
-        this.$toast.message(resp.data.msg)
-        this.$router.push('/party/list')
-        return
-      }
-
-      let dataBack = resp.data.msg
-      
-      // 渲染详情页基本信息
-      // 渲染图片路径处理
-      this.RecruitImgs = dataBack.teamBaseInfo.recruitImg
-      this.SwiperIsRender = true
-
-      let teamBaseInfo = dataBack.teamBaseInfo
-      teamBaseInfo.partyTheme = utils.getPartyThemeName(teamBaseInfo.partyTheme)
-      teamBaseInfo.partyTitle = teamBaseInfo.partyTitle == '' ? '一起来玩吧' : teamBaseInfo.partyTitle
-      teamBaseInfo.partyDetail = teamBaseInfo.partyDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : teamBaseInfo.partyDetail
-      teamBaseInfo.teammatePrefer = teamBaseInfo.teammatePrefer == '' ? '随便来！' : teamBaseInfo.teammatePrefer
-
-      // 距离处理
-      teamBaseInfo.distance = utils.distanceFormat(teamBaseInfo.distance)
-      // 队伍发布时间处理
-      // 已招募人数
-      teamBaseInfo.hadRecruitNumb = dataBack.teammateList.length
-
-      this.TeamBaseInfo = teamBaseInfo  // 赋值
-      this.TeammateList = dataBack.teammateList
-      for(let i = 0; i < this.TeammateList.length; i++) { // 队友头像处理
-        this.TeammateList[i].avatar = utils.imgPrefixDeal(this.TeammateList[i].avatar)
-      }
-
-      this.IsCaptain = dataBack.isCaptain
-      this.JointeamStmt = dataBack.joinStmt
-
-      // 图片路径处理
-      teamBaseInfo.captainAvatar = utils.imgPrefixDeal(teamBaseInfo.captainAvatar)
-
-      this.InitLoading = false
-    })
   },
   methods: {
+    pageInit () {
+      this.$axios.post(
+        `/party/teamDetail/${this.TeamID}`, 
+        {}
+      ).then((resp)=>{
+
+        console.log(resp.data)
+
+        // 如果队伍已经解散了，直接跳转到组队列表去
+        if(resp.data.code == 40105) {
+          this.$toast.message(resp.data.msg)
+          this.$router.push('/party/list')
+          return
+        }
+
+        let dataBack = resp.data.msg
+        
+        // 渲染详情页基本信息
+        // 渲染图片路径处理
+        this.RecruitImgs = dataBack.teamBaseInfo.recruitImg
+        this.SwiperIsRender = true
+
+        let teamBaseInfo = dataBack.teamBaseInfo
+        teamBaseInfo.partyTheme = utils.getPartyThemeName(teamBaseInfo.partyTheme)
+        teamBaseInfo.partyTitle = teamBaseInfo.partyTitle == '' ? '一起来玩吧' : teamBaseInfo.partyTitle
+        teamBaseInfo.partyDetail = teamBaseInfo.partyDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : teamBaseInfo.partyDetail
+        teamBaseInfo.teammatePrefer = teamBaseInfo.teammatePrefer == '' ? '随便来！' : teamBaseInfo.teammatePrefer
+
+        // 距离处理
+        teamBaseInfo.distance = utils.distanceFormat(teamBaseInfo.distance)
+        // 队伍发布时间处理
+        // 已招募人数
+        teamBaseInfo.hadRecruitNumb = dataBack.teammateList.length
+
+        this.TeamBaseInfo = teamBaseInfo  // 赋值
+        this.TeammateList = dataBack.teammateList
+        for(let i = 0; i < this.TeammateList.length; i++) { // 队友头像处理
+          this.TeammateList[i].avatar = utils.imgPrefixDeal(this.TeammateList[i].avatar)
+        }
+
+        this.IsCaptain = dataBack.isCaptain
+        this.JointeamStmt = dataBack.joinStmt
+
+        // 图片路径处理
+        teamBaseInfo.captainAvatar = utils.imgPrefixDeal(teamBaseInfo.captainAvatar)
+
+        this.ShareTitle = '助助社交，更多好玩的party聚会等着你，一起来吧！', // 分享title
+        this.ShareDesc = teamBaseInfo.partyTitle,  // 分享描述
+        this.ShareImgUrl = '',  // 分享图片
+
+        this.InitLoading = false
+      })
+    },
+
     goBack () {
       this.$router.go(-1)
     },
