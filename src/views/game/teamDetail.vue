@@ -127,12 +127,16 @@
 
   </div>
 </template>
-
+import { wxInit } from '@/common/wxInit.js'
 <script>
 import ChatList from '@/components/ChatList.vue'
 export default {
   data () {
     return {
+      ShareTitle: '', // 分享title
+      ShareDesc: '',  // 分享描述
+      ShareImgUrl: '',  // 分享图片
+
       TeamType: 1,
       Title: '队伍招募中。。。',
       TeamID: 0,
@@ -164,53 +168,61 @@ export default {
     this.TeamID = this.$route.params.teamid
   },
   mounted () {
-    // 页面初始化
-    this.$axios.post(`/game/teamDetail/${this.TeamID}`, {}).then((resp)=>{
-      if(resp.data.code != 20000) {
-        this.$toast.message('该队伍已解散')
-        return
-      }
-      let dataBack = resp.data.msg 
-      this.ChatDetailMain.userID = dataBack.teamDetail.captain_userid
-      this.ChatDetailMain.recruit_word = dataBack.teamDetail.announcement
-      this.ChatDetailMain.recruit_img = dataBack.teamDetail.recruit_img
-      this.ChatDetailMain.recruit_way = dataBack.teamDetail.recruit_way
-      this.ChatDetailMain.captain_avatar = dataBack.teamDetail.captain_avatar
-      this.ChatDetailMain.captain_nickname = dataBack.teamDetail.captain_nickname
-      this.ChatDetailMain.captain_sex = dataBack.teamDetail.captain_sex
-      this.ChatDetailMain.server_name = dataBack.teamDetail.server_name
-      this.ChatDetailMain.recruit_num = dataBack.teamDetail.recruit_num
-      this.ChatDetailMain.had_join = dataBack.teamDetail.TeammateList.length
-      this.ChatDetailMain.teammate_prefer = dataBack.teamDetail.teanmate_prefer
-      this.SelfIsCamptain = dataBack.teamDetail.self_iscaptain == 0 ? false : true
-      this.GameDisplayImg = dataBack.gameInfo.gameDisplayImg
-      this.GameName = dataBack.gameInfo.gameName
-      this.GameID = dataBack.teamDetail.g_id
-      this.JointeamStmt = dataBack.selfJoinStmt
-       
-      this.TeamStmt = dataBack.teamDetail.t_stmt
-      // 判断队伍的状态，然后再去修改加入队伍的状态
-      if(this.TeamStmt > 0) { // 只有队伍有效的时候，才显示加入，申请中，加入成功的按钮
-        this.JointeamStmt = 3
-      }
-      // 组队状态, 0=>组队中， 1=>成功， 2=>失效, 3=>删除
-      switch(this.TeamStmt) {
-        case 0:
-        this.Title = '招募中'
-        break
-        case 1:
-        this.Title = '已失效'
-        break
-        case 2:
-        this.Title = '已删除'
-        break
-        case 3:
-        this.Title = '组队成功'
-        break
-      }
-    })
+    wxInit(this, false)
   },
   methods: {
+    pageInit () {
+      // 页面初始化
+      this.$axios.post(`/game/teamDetail/${this.TeamID}`, {}).then((resp)=>{
+        if(resp.data.code != 20000) {
+          this.$toast.message('该队伍已解散')
+          return
+        }
+        let dataBack = resp.data.msg 
+        this.ChatDetailMain.userID = dataBack.teamDetail.captain_userid
+        this.ChatDetailMain.recruit_word = dataBack.teamDetail.announcement
+        this.ChatDetailMain.recruit_img = dataBack.teamDetail.recruit_img
+        this.ChatDetailMain.recruit_way = dataBack.teamDetail.recruit_way
+        this.ChatDetailMain.captain_avatar = dataBack.teamDetail.captain_avatar
+        this.ChatDetailMain.captain_nickname = dataBack.teamDetail.captain_nickname
+        this.ChatDetailMain.captain_sex = dataBack.teamDetail.captain_sex
+        this.ChatDetailMain.server_name = dataBack.teamDetail.server_name
+        this.ChatDetailMain.recruit_num = dataBack.teamDetail.recruit_num
+        this.ChatDetailMain.had_join = dataBack.teamDetail.TeammateList.length
+        this.ChatDetailMain.teammate_prefer = dataBack.teamDetail.teanmate_prefer
+        this.SelfIsCamptain = dataBack.teamDetail.self_iscaptain == 0 ? false : true
+        this.GameDisplayImg = dataBack.gameInfo.gameDisplayImg
+        this.GameName = dataBack.gameInfo.gameName
+        this.GameID = dataBack.teamDetail.g_id
+        this.JointeamStmt = dataBack.selfJoinStmt
+        
+        this.TeamStmt = dataBack.teamDetail.t_stmt
+        // 判断队伍的状态，然后再去修改加入队伍的状态
+        if(this.TeamStmt > 0) { // 只有队伍有效的时候，才显示加入，申请中，加入成功的按钮
+          this.JointeamStmt = 3
+        }
+        // 组队状态, 0=>组队中， 1=>成功， 2=>失效, 3=>删除
+        switch(this.TeamStmt) {
+          case 0:
+          this.Title = '招募中'
+          break
+          case 1:
+          this.Title = '已失效'
+          break
+          case 2:
+          this.Title = '已删除'
+          break
+          case 3:
+          this.Title = '组队成功'
+          break
+        }
+
+        // 微信分享
+        this.ShareTitle = `${this.GameName}, 有人玩没！`   // 分享title
+        this.ShareDesc = this.ChatDetailMain.recruit_word   // 分享描述
+
+      })
+    },
     goBack () {
       this.$router.go(-1)
     },

@@ -90,9 +90,15 @@
 
 <script>
 import ChatList from '@/components/ChatList.vue'
+import { wxInit } from '@/common/wxInit.js'
+import { getNickname } from '@/common/mStore.js'
 export default {
   data () {
     return {
+      ShareTitle: '', // 分享title
+      ShareDesc: '',  // 分享描述
+      ShareImgUrl: '',  // 分享图片
+
       TeamType: 4,
       InitLoading: true,
       TeamID: 0,
@@ -144,27 +150,32 @@ export default {
   },
 
   mounted () {
-    
-    let lng = 113.122629
-    let lat = 23.029735
-    this.$axios.get(`/instant/detail/${this.TeamID}/${lng}/${lat}`, {}).then((resp)=>{
-      if(resp.data.code != 20000) {
-        this.$toast.message(resp.data.msg)
-        return
-      }
-
-      // 处理队伍基本信息
-      let dataBack = resp.data.msg
-      this.TeamBaseInfo = dataBack.teamBaseInfo
-      // 处理对哟基本信息
-      this.TeammateList = dataBack.teammateList
-      this.JointeamStmt = dataBack.joinStmt
-      this.IsCaptain = dataBack.isCaptain
-    })
+    wxInit(this, true)
   },
 
 
   methods: {
+    pageInit () {
+      let lng = 113.122629
+      let lat = 23.029735
+      this.$axios.get(`/instant/detail/${this.TeamID}/${lng}/${lat}`, {}).then((resp)=>{
+        if(resp.data.code != 20000) {
+          this.$toast.message(resp.data.msg)
+          return
+        }
+
+        // 处理队伍基本信息
+        let dataBack = resp.data.msg
+        this.TeamBaseInfo = dataBack.teamBaseInfo
+        // 处理对哟基本信息
+        this.TeammateList = dataBack.teammateList
+        this.JointeamStmt = dataBack.joinStmt
+        this.IsCaptain = dataBack.isCaptain
+
+        this.ShareTitle = `${getNickname()}：我在这里等你！`   // 分享title
+        this.ShareDesc = this.TeamBaseInfo.cont  // 分享描述
+      })
+    },
     goBack () {
       this.$router.go(-1)
     },

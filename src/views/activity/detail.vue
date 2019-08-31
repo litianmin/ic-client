@@ -60,6 +60,7 @@
 <script>
 import ChatList from '@/components/ChatList.vue'
 import { wxInit } from '@/common/wxInit.js'
+import { getNickname } from '@/common/mStore.js'
 export default {
   data () {
     return {
@@ -151,7 +152,7 @@ export default {
 
         this.JoinStatus = dataBack.joinStatus // 自己加入的状态
 
-        this.ShareTitle = '精彩活动等着你，来加入啦'    // 分享title
+        this.ShareTitle = getNickname() + '邀请您来加入，精彩活动等着您！'    // 分享title
         this.ShareDesc = baseInfo.title  // 分享描述
         this.ShareImgUrl = baseInfo.displayImg  // 分享图片
 

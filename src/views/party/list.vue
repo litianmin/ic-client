@@ -132,10 +132,15 @@
 
 <script>
 import utils from 'common/utils.js'
+import { wxInit } from '@/common/wxInit.js'
 export default {
   
   data () {
     return {
+      ShareTitle: '', // 分享title
+      ShareDesc: '',  // 分享描述
+      ShareImgUrl: '',  // 分享图片
+
       date: undefined,
       LocateAddr: '',
       AddrChooseWindowIsShow: false,
@@ -154,9 +159,15 @@ export default {
     }
   },
   mounted () {
-    this.loadTeamList()
+    wxInit(this, true)
   },
   methods: {
+    pageInit () {
+      this.loadTeamList()
+
+      this.ShareTitle = `有什么好玩的聚会party，来这里找找呗！`   // 分享title
+      this.ShareDesc = '更多的聚会party在助助社交。。。'  // 分享描述
+    },
     goBack () {
       this.$router.go(-1)
     },

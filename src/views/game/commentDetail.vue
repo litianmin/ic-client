@@ -53,9 +53,15 @@
 
 <script>
 import ChatList from '@/components/ChatList.vue'
+import { wxInit } from '@/common/wxInit.js'
+import { getNickname } from '@/common/mStore.js'
 export default {
   data () {
     return {
+      ShareTitle: '', // 分享title
+      ShareDesc: '',  // 分享描述
+      ShareImgUrl: '',  // 分享图片
+
       TeamType: 7,
       CommentID: 0,
       TeamID: 0,
@@ -86,33 +92,38 @@ export default {
     this.TeamID = this.$route.params.commentid
   },
   mounted () {
-    // 页面初始化
-    this.$axios.post(`/game/commentDetail/${this.CommentID}`, {}).then((resp)=>{
-      if(resp.data.code != 20000) {
-        this.$toast.message(resp.data.msg)
-        return
-      }
-
-      let dataBack = resp.data.msg 
-      let cmtDetailMain = dataBack.cmtDetailMain
-      this.CmtDetailMain.userID = cmtDetailMain.user_id
-      this.CmtDetailMain.c_cont = cmtDetailMain.c_cont
-      this.CmtDetailMain.c_img = cmtDetailMain.c_img
-      this.CmtDetailMain.likeNumb = cmtDetailMain.like_num
-      this.CmtDetailMain.dislikeNum = cmtDetailMain.dislike_num
-      this.CmtDetailMain.replyNum = cmtDetailMain.reply_num
-      this.CmtDetailMain.createTime = cmtDetailMain.create_time
-      this.CmtDetailMain.nickname = cmtDetailMain.nickname
-      this.CmtDetailMain.avatar = cmtDetailMain.avatar
-      this.CmtDetailMain.sex = cmtDetailMain.sex
-
-      // 渲染相关状态
-      this.IsFocus = dataBack.relativeStmt.collectStmt == 0 ? false : true
-      this.IsThumbup = dataBack.relativeStmt.thumbupStmt == 0 ? false : true
-    })
-
+    wxInit(this, false)
   },
   methods: {
+    pageInit () {
+      this.$axios.post(`/game/commentDetail/${this.CommentID}`, {}).then((resp)=>{
+        if(resp.data.code != 20000) {
+          this.$toast.message(resp.data.msg)
+          return
+        }
+
+        let dataBack = resp.data.msg 
+        let cmtDetailMain = dataBack.cmtDetailMain
+        this.CmtDetailMain.userID = cmtDetailMain.user_id
+        this.CmtDetailMain.c_cont = cmtDetailMain.c_cont
+        this.CmtDetailMain.c_img = cmtDetailMain.c_img
+        this.CmtDetailMain.likeNumb = cmtDetailMain.like_num
+        this.CmtDetailMain.dislikeNum = cmtDetailMain.dislike_num
+        this.CmtDetailMain.replyNum = cmtDetailMain.reply_num
+        this.CmtDetailMain.createTime = cmtDetailMain.create_time
+        this.CmtDetailMain.nickname = cmtDetailMain.nickname
+        this.CmtDetailMain.avatar = cmtDetailMain.avatar
+        this.CmtDetailMain.sex = cmtDetailMain.sex
+
+        // 渲染相关状态
+        this.IsFocus = dataBack.relativeStmt.collectStmt == 0 ? false : true
+        this.IsThumbup = dataBack.relativeStmt.thumbupStmt == 0 ? false : true
+
+        // 微信分享
+        this.ShareTitle = getNickname() + '邀请你指点江山一番！'   // 分享title
+        this.ShareDesc = cmtDetailMain.c_cont  // 分享描述
+      })
+    },
     goBack () {
       this.$router.go(-1)
     },

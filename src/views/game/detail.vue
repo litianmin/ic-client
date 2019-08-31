@@ -89,7 +89,7 @@
             </mu-row>
 
             <mu-row  style="padding:.7rem .5rem;">
-                <span style="margin-left:1.5rem; font-size:12px; color:#9e9e9e;">{{ item.c_create_time }}</span>
+                <span style="margin-left:1.5rem; font-size:12px; color:#9e9e9e;">{{ item.c_create_time | formatTime() }}</span>
 
                 <mu-flex align-items="center" style="margin-left:auto;">
                   <mu-icon value="thumb_up" size="12" color="#9e9e9e"></mu-icon>
@@ -186,7 +186,7 @@
               <!-- 额外内容 -->
               <mu-flex style="margin-top:.5rem;">
                 <div style="margin-left:auto;">
-                  <span class="team-extracont-time">{{ item.create_time }}</span>
+                  <span class="team-extracont-time">{{ item.create_time | formatTime() }}</span>
                   <span class="team-extracont-operate" @click.stop="joinTeam(item.t_id)">查看详情</span>
                 </div>
               </mu-flex>
@@ -253,64 +253,82 @@
 
 
 <script>
-  import utils from 'common/utils.js'
-  export default {
-    data() {
-      return {
-        swiperOptionTop: {
-          spaceBetween: 10,
-          loop: true,
-          loopedSlides: 5, //looped slides should be the same
-          autoplay: true, // 是否自动播放
-          delay: 5000,  // 5s切换一次
-          speed: 2000,  // 切换所用的时间
-          navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev' 
-          }
-        },
-        swiperOptionThumbs: {
-          spaceBetween: 10,
-          slidesPerView: 4,
-          touchRatio: 0.2,
-          loop: true,
-          loopedSlides: 5, //looped slides should be the same
-          slideToClickedSlide: true,
-        },
+import utils from 'common/utils.js'
+import { wxInit } from '@/common/wxInit.js'
+export default {
+  data() {
+    return {
+      ShareTitle: '', // 分享title
+      ShareDesc: '',  // 分享描述
+      ShareImgUrl: '',  // 分享图片
+
+      swiperOptionTop: {
+        spaceBetween: 10,
+        loop: true,
+        loopedSlides: 5, //looped slides should be the same
+        autoplay: true, // 是否自动播放
+        delay: 5000,  // 5s切换一次
+        speed: 2000,  // 切换所用的时间
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev' 
+        }
+      },
+      swiperOptionThumbs: {
+        spaceBetween: 10,
+        slidesPerView: 4,
+        touchRatio: 0.2,
+        loop: true,
+        loopedSlides: 5, //looped slides should be the same
+        slideToClickedSlide: true,
+      },
 
 
-        active: 0,  // 导航条切换
-        panel: '',  // 组队信息展开
+      active: 0,  // 导航条切换
+      panel: '',  // 组队信息展开
 
-        gameID: 0,  // 游戏id
-        gameName: '', // 游戏名称
-        gameTp: '', // 游戏类型
-        gameBriefDesc: '', // 游戏简介
-        isRender: false,  // 轮播图是否渲染问题，如果一开始就渲染会出现bug,而且图片必须大于4张，否则会出现bug
-        displayImgList: [],  // 轮播图展示图片
-        tabList: [],  // 标签列表
+      gameID: 0,  // 游戏id
+      gameName: '', // 游戏名称
+      gameTp: '', // 游戏类型
+      gameBriefDesc: '', // 游戏简介
+      isRender: false,  // 轮播图是否渲染问题，如果一开始就渲染会出现bug,而且图片必须大于4张，否则会出现bug
+      displayImgList: [],  // 轮播图展示图片
+      tabList: [],  // 标签列表
 
-        commentPage: 1, 
-        commentIsTheLast: true,
-        commentLoading: false,
-        commentList: [],
+      commentPage: 1, 
+      commentIsTheLast: true,
+      commentLoading: false,
+      commentList: [],
 
-        teamPage: 1,
-        teamListIsInit: false,
-        teamIsTheLast: true,
-        teamLoading: false,
-        teamList: [],
-        teamListOperate: '没有更多内容',
-        teamHadJoinList: []
-      } 
+      teamPage: 1,
+      teamListIsInit: false,
+      teamIsTheLast: true,
+      teamLoading: false,
+      teamList: [],
+      teamListOperate: '没有更多内容',
+      teamHadJoinList: []
+    } 
+  },
+
+  mounted () {
+    // 赋值 gameID, gameName (这里要注意，$router 和 $route 是不同的两个对象， 一个是全局，一个是局部)
+    this.gameID = this.$route.params.gameid
+
+    wxInit(this, false)
+  },
+
+  watch: {
+    active (newVal) {
+
+      if(newVal == 1 && this.teamListIsInit === false) {
+        this.teamListIsInit = true
+        this.teamLoad()
+      }
     },
+  },
 
-    mounted () {
-
-      // 赋值 gameID, gameName (这里要注意，$router 和 $route 是不同的两个对象， 一个是全局，一个是局部)
-      this.gameID = this.$route.params.gameid
-      // this.gameName = this.$route.query.gamename
-
+  methods: {
+    pageInit () {
       // 获取游戏的基本信息，评论基本信息，组队基本信息
       this.$axios.post(
         `/game/detail/${this.gameID}`,{}
@@ -333,7 +351,7 @@
         this.gameName = baseInfo.g_name
         // 轮播图数据渲染问题
         this.isRender =true
-         // 轮播图处理
+        // 轮播图处理
         this.$nextTick(() => {
           const swiperTop = this.$refs.swiperTop.swiper
           const swiperThumbs = this.$refs.swiperThumbs.swiper
@@ -343,92 +361,73 @@
 
         // 游戏评论处理
         let cmtList = dataBack.commentInfo.listInfo
-        for(let i = 0; i < cmtList.length; i++) {
-          cmtList[i].c_create_time = utils.getDateDiff(cmtList[i].c_create_time, true)
-        }
         this.commentList = this.commentList.concat(cmtList)
         this.commentIsTheLast = dataBack.commentInfo.isTheLast
         this.commentPage++
 
+        // 微信分享
+        this.ShareTitle = `快来招募心仪的队友陪你一起玩<${this.gameName}>！`   // 分享title
+        this.ShareDesc = this.gameBriefDesc  // 分享描述
+
       })
     },
 
-    watch: {
-      active (newVal) {
+    toggle (panel) {
+      this.panel = panel === this.panel ? '' : panel
+    },
+    newComment () {
+      this.$router.push(`/game/newcomment/${this.gameID}`)
+    },
+    formTeam () {
+      this.$router.push(`/game/formteam/${this.gameID}`)
+    },
+    goBack () {
+      this.$router.go(-1)
+    },
+    commentLoad () { // 加载数据
+      this.commentLoading = true
 
-        if(newVal == 1 && this.teamListIsInit === false) {
-          this.teamListIsInit = true
-          this.teamLoad()
+      this.$axios.post(`/game/commentList/${this.commentPage}/${this.gameID}`,{}).then((resp)=>{
+        if(resp.data.code != 20000) {
+          this.$toast.message(resp.data.msg)
+          return
         }
-      },
+        let dataBack = resp.data.msg
+        this.commentIsTheLast = dataBack.isTheLast
+        let cmtList = dataBack.listInfo
+        this.commentList = this.commentList.concat(cmtList)
+        this.commentPage++  // 页数+1
+        this.commentLoading = false // 关闭转圈圈
+      })
     },
-
-    methods: {
-      toggle (panel) {
-        this.panel = panel === this.panel ? '' : panel
-      },
-      newComment () {
-        this.$router.push(`/game/newcomment/${this.gameID}`)
-      },
-      formTeam () {
-        this.$router.push(`/game/formteam/${this.gameID}`)
-      },
-      goBack () {
-        this.$router.go(-1)
-      },
-      commentLoad () { // 加载数据
-        this.commentLoading = true
-
-        this.$axios.post(`/game/commentList/${this.commentPage}/${this.gameID}`,{}).then((resp)=>{
-          if(resp.data.code != 20000) {
-            this.$toast.message(resp.data.msg)
-            return
-          }
-          let dataBack = resp.data.msg
-          this.commentIsTheLast = dataBack.isTheLast
-          let cmtList = dataBack.listInfo
-          for(let i = 0; i < cmtList.length; i++) {
-            cmtList[i].c_create_time = utils.getDateDiff(cmtList[i].c_create_time, true)
-          }
-          this.commentList = this.commentList.concat(cmtList)
-          this.commentPage++  // 页数+1
-          this.commentLoading = false // 关闭转圈圈
-        })
-      },
-      linkToCommentDetail (commentID) {
-        this.$router.push(`/game/commentDetail/${commentID}`)
-      },
-      teamLoad () {
-        this.teamLoading = true
-        this.$axios.post(`/game/teamList/${this.teamPage}/${this.gameID}`,{}).then((resp)=>{
-          console.log(resp.data)
-          
-          if(resp.data.code != 20000) {
-            this.$toast.message(resp.data.msg)
-            return
-          }
-
-          let dataBack = resp.data.msg
-
-          this.teamIsTheLast = dataBack.isTheLast
-          
-          let listInfo = dataBack.listInfo
-
-          for(let i = 0; i < listInfo.length; i++) {
-            // listInfo[i]['hadJoin'] = listInfo[i]['TeammateList'].length
-            listInfo[i]['create_time'] = utils.getDateDiff(listInfo[i]['create_time'], true)
-          }
-
-          this.teamList = this.teamList.concat(listInfo)
-          this.teamPage++  // 页数+1
-          this.teamLoading = false // 关闭转圈圈
-        })
-      },
-      joinTeam (teamID) {
-        this.$router.push(`/game/teamDetail/${teamID}`)
-      }
+    linkToCommentDetail (commentID) {
+      this.$router.push(`/game/commentDetail/${commentID}`)
     },
-  }
+    teamLoad () {
+      this.teamLoading = true
+      this.$axios.post(`/game/teamList/${this.teamPage}/${this.gameID}`,{}).then((resp)=>{
+        console.log(resp.data)
+        
+        if(resp.data.code != 20000) {
+          this.$toast.message(resp.data.msg)
+          return
+        }
+
+        let dataBack = resp.data.msg
+
+        this.teamIsTheLast = dataBack.isTheLast
+        
+        let listInfo = dataBack.listInfo
+        this.teamList = this.teamList.concat(listInfo)
+        this.teamPage++  // 页数+1
+        this.teamLoading = false // 关闭转圈圈
+      })
+    },
+    joinTeam (teamID) {
+      this.$router.push(`/game/teamDetail/${teamID}`)
+    }
+  },
+}
 </script>
 
 <style>

@@ -142,9 +142,14 @@
 
 <script>
 import utils from 'common/utils.js'
+import { wxInit } from '@/common/wxInit.js'
 export default {
   data () {
     return {
+      ShareTitle: '', // 分享title
+      ShareDesc: '',  // 分享描述
+      ShareImgUrl: '',  // 分享图片
+
       TravelTheme: 0,
       PathLength: 0,
       TravelType: 0,
@@ -164,10 +169,15 @@ export default {
     }
   },
   mounted () {
-    this.loadTeamList()
-    console.log(document.domain)
+    wxInit(this, true)
   },
   methods: {
+    pageInit () {
+      this.loadTeamList()
+
+      this.ShareTitle = '助助社交，旅游伴你寻觅心灵的自由！' // 分享title
+      this.ShareDesc = '更多的旅游组队在助助社交，进来看看呗！'  // 分享描述
+    },
     goBack () {
       this.$router.go(-1)
     },

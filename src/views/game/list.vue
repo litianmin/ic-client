@@ -85,9 +85,14 @@
 </template>
 
 <script>
+import { wxInit } from '@/common/wxInit.js'
 export default {
   data () {
     return {
+      ShareTitle: '', // 分享title
+      ShareDesc: '',  // 分享描述
+      ShareImgUrl: '',  // 分享图片
+
       SearchCont: '',
       hotGameListIsShow: true,
       hotGameList: [],
@@ -98,31 +103,38 @@ export default {
     }
   },
   mounted () {
-    // 初始化，获取热门游戏列表和普通游戏列表
-    this.$axios.post(`/game/mainpage`).then((resp)=>{
-      
-      if(resp.data.code != 20000) {
-        this.$toast.message(dataBack.msg)
-        return
-      }
-      
-      let dataBack = resp.data.msg
-
-      if(dataBack.hotGame.length == 0) { 
-        // 没有热门游戏，那么隐藏热门游戏列表
-        this.hotGameListIsShow = false
-      }else{
-        this.hotGameList = dataBack.hotGame
-      }
-
-      this.gameList = dataBack.gameInfo.listInfo
-
-      // 是否为最后一页了
-      this.isTheLast = dataBack.gameInfo.isTheLast
-
-    })
+    wxInit(this, false)
   },
   methods: {
+    pageInit () {
+      // 初始化，获取热门游戏列表和普通游戏列表
+      this.$axios.post(`/game/mainpage`).then((resp)=>{
+        
+        if(resp.data.code != 20000) {
+          this.$toast.message(dataBack.msg)
+          return
+        }
+        
+        let dataBack = resp.data.msg
+
+        if(dataBack.hotGame.length == 0) { 
+          // 没有热门游戏，那么隐藏热门游戏列表
+          this.hotGameListIsShow = false
+        }else{
+          this.hotGameList = dataBack.hotGame
+        }
+
+        this.gameList = dataBack.gameInfo.listInfo
+
+        // 是否为最后一页了
+        this.isTheLast = dataBack.gameInfo.isTheLast
+
+        // 微信分享
+        this.ShareTitle = `玩游戏总是单机？快来助助社交招募伙伴陪你一起玩吧！`   // 分享title
+        this.ShareDesc = '助助社交游戏组队功能可以让你找寻心仪的队友，从此告别单人游戏！'  // 分享描述
+
+      })
+    },
     load () {
       this.loading = true
       if(this.isTheLast == true) {

@@ -41,9 +41,14 @@
 
 <script>
 import utils from 'common/utils.js'
+import { wxInit } from '@/common/wxInit.js'
 export default {
   data () {
     return {
+      ShareTitle: '', // 分享title
+      ShareDesc: '',  // 分享描述
+      ShareImgUrl: '',  // 分享图片
+
       TeamList: [
         {
           teamID: 1,
@@ -64,9 +69,16 @@ export default {
     }
   },
   mounted () {
-    this.loadTeamList()
+    wxInit(this, true)
+
+    this.ShareTitle = `助助社交，更多即时组队等你来！`   // 分享title
+    this.ShareDesc = '有没有随心而动想去的地方？有没有嘴馋就想去吃的美食？一个人不想去？来这里找些小伙伴一起吧！'  // 分享描述
   },
   methods: {
+    pageInit () {
+      this.loadTeamList()
+
+    },
     goBack () {
       this.$router.go(-1)
     },
