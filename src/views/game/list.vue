@@ -1,22 +1,18 @@
 <template>
   <div>
-
     <!-- BEGIN 头部搜索框 -->
-    <mu-appbar class="mine-appbar" color="#009688">
-      <mu-button icon slot="left" @click="goBack">
-        <mu-icon value="navigate_before"></mu-icon>
-      </mu-button>
-      
-      <div style="padding: 0 0 .4rem 0;">
+    <mu-flex style="padding:.6rem .8rem; background:#4dd0e1;" align-items="center" justify-content="between">
+      <mu-flex align-items="center" @click="goBack">
+        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+      </mu-flex>
+      <mu-flex style="width:80%;" align-items="center">
         <input type="text" v-model="SearchCont" placeholder=" 搜 索 游 戏" class="search-input">
-      </div>
-
-      <mu-button flat slot="right" @click="searchGame">
-        <mu-icon value="search"></mu-icon>
-      </mu-button>
-    </mu-appbar>
+      </mu-flex>
+      <mu-flex align-items="center" @click="searchGame">
+        <svg-icon icon-class="search" style="font-size:20px; color:red;"></svg-icon>
+      </mu-flex>
+    </mu-flex>
     <!-- END 头部搜索框 -->
-
 
     <!-- BEGIN 列表显示内容 -->
     <mu-paper :z-depth="1" class="demo-list-wrap">
@@ -203,7 +199,7 @@ export default {
 <style scoped>
 
 .mine-appbar {width: 100%; height:2.5rem;}
-.search-input {font-size:14px; width:100%; height:1.7rem; border-radius:.2rem; border:0; text-align:center;}
+.search-input {font-size:14px; width:100%; height:1.7rem; border-radius:.2rem; border:0; padding: 0 .5rem; letter-spacing: 1px;}
 
 .list-item-div {width:3.5rem; height:3.5rem;}
 .list-item-div img {max-width:100%; max-height:100%; border-radius:.5rem;}

@@ -1,5 +1,3 @@
-import axios from '@/request.js'
-
 import wx from 'weixin-js-sdk'
 import utils from '@/common/utils.js'
 

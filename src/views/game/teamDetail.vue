@@ -127,8 +127,9 @@
 
   </div>
 </template>
-import { wxInit } from '@/common/wxInit.js'
+
 <script>
+import { wxInit } from '@/common/wxInit.js'
 import ChatList from '@/components/ChatList.vue'
 export default {
   data () {

@@ -2,7 +2,7 @@
   <div class="home">
 
     <!-- BEGIN 头部 -->
-    <mu-flex align-items="center" style="background:#26c6da; padding:.5rem .3rem .5rem .5rem; color:#ffffff; box-shadow: 0 0 1px #26c6da;">
+    <mu-flex align-items="center" style="background:#4dd0e1; padding:.5rem .3rem .5rem .5rem; color:#ffffff; box-shadow: 0 0 1px #26c6da;">
       <mu-flex align-items="center">
         <mu-avatar size="30"><img :src="selfAvatar | imgPrefixDeal()" alt=""></mu-avatar>
         <span style="margin-left:.5rem;">{{ selfNickname }}</span>
@@ -15,7 +15,7 @@
     <!-- END 头部 -->
 
     <!-- BEGIN 导航栏 -->
-    <div style="padding:1.2rem 0 1rem 0; background:rgba(240, 240, 240, .1); border-bottom:1px solid #eeeeee;">
+    <div style="padding:1.2rem 0 1rem 0; background:#fff; border-bottom:1px solid #eeeeee;">
       <mu-flex justify-content="around">
         <div @click="linkToGameList">
           <div style="text-align:center;">
@@ -27,7 +27,7 @@
         <div @click="linkToPartyList">
           <div style="text-align:center;">
             <svg-icon icon-class="party" class="icon-class"></svg-icon>
-            </div>
+          </div>
           <div style="text-align:center; font-size:12px; margin-top:.3rem;">聚 会</div>
         </div>
 
@@ -49,7 +49,7 @@
     <!-- END 导航栏 -->
 
     <!-- BEGIN 头部话题、美文轮播图 -->
-    <div v-if="CarsoucelIsShow" style="margin-top:1rem; margin-bottom:1rem; ">
+    <div v-if="CarsoucelIsShow" style="margin-top:1rem; margin-bottom:1rem;">
         <swiper :options="swiperOption">
           <swiper-slide v-for="(item, index) in ArticleList" :key="index">
             <mu-flex style="position:relative; " wrap="wrap" @click="linkToArticleDetail(item.articleID)">
@@ -64,7 +64,7 @@
     </div> 
     <!-- END 头部话题、 美文轮播图 -->
 
-    <mu-row style=" border-top:3px solid #ffffff;"></mu-row>
+    <mu-row style=" border-top:2px solid #f5f5f5;"></mu-row>
     <!-- <mu-divider></mu-divider> -->
     <mu-sub-header>
       <span style="font-size:14px; font-weight:600; color:#00bcd4;">- 游戏 . 热门组队 -</span>
@@ -78,7 +78,7 @@
       </div>
     </mu-flex>
 
-    <mu-row style=" border-top:3px solid #ffffff;"></mu-row>
+    <mu-row style=" border-top:2px solid #f5f5f5;"></mu-row>
 
     <!-- 官方推荐组队 -->
     <mu-sub-header>
@@ -251,7 +251,7 @@ export default {
 </script>
 
 <style scoped>
-.home { width:100%; position: relative; float:left; background:#fafafa;}
+.home { width:100%; position: relative; float:left; background:#fff;}
 .swiper-inner { width: 100%; height: auto; padding-top: 50px; padding-bottom: 50px; }
 .swiper-slide { background-position: center; background-size: cover; width: 85%; height: auto; }
 .swiper-img { max-width:100%; height:auto; border-radius:.3rem; }
