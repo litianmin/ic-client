@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="background:#fff;">
     <!-- BEGIN 排序条 -->
     <mu-flex class="sort-bar" justify-content="center" align-items="center" >
       <span style="margin-left:.3rem">回复列表</span>
@@ -42,7 +42,10 @@
           <span><span style="color:#795548;">{{ item.replyNickname }}：</span>{{ item.replyCont }}</span>
         </mu-row>
 
-        <mu-divider></mu-divider>
+        <mu-row style="padding: 0 .1rem;">
+          <div style="border-top:1px solid #eeeeee; height:1px; width:100%;"></div>
+        </mu-row>
+        <!-- <mu-divider></mu-divider> -->
 
       </mu-container>
     </mu-load-more>
@@ -111,12 +114,12 @@ export default {
 .sort-bar { background:#f5f5f5; border-top:1px solid #fff; font-size:12px; padding:.4rem .5rem; margin-bottom:.5rem; }
 .sort-bar-svg { margin-left:auto; font-size:18px; margin-right:.3rem; }
 
-.chat-container { padding:.5rem .5rem; }
+.chat-container { padding:.5rem .5rem; background:#fff;}
 .avatar-male { padding:.1rem; border:1px solid #03a9f4; border-radius:50%; background:white; }
 .avatar-female { padding:.1rem; border:1px solid #e91e63; border-radius:50%; background:white; }
-.nickname { font-size:14px; font-weight:700; margin-left:.5rem; margin-right:.5rem; color:#424242; letter-spacing: 1px; }
+.nickname { font-size:14px; margin-left:.5rem; margin-right:.5rem; color:#424242; letter-spacing: 1px; }
 
-.reply-row { font-size:15px; padding:.2rem 1rem 0 2rem; color:#424242; }
+.reply-row { font-size:14px; padding:.2rem 1rem 0 2rem; color:#424242; }
 .reply-span { margin-left:.5rem; letter-spacing: 1px; }
 
 .img-row { padding:.5rem .5rem .5rem 2.3rem; font-size:12px; color:#616161; }
@@ -125,7 +128,7 @@ export default {
 .create-time { padding: .5rem 0 0 2.5rem; font-size:13px; margin-bottom:1rem; }
 .reply-button { color:green; margin-left:.3rem; }
 
-.reply-origin-row { background:#eeeeee; padding:.5rem; margin-right:1.5rem; margin-left:2.2rem; letter-spacing: 1px; margin-bottom:1rem; }
+.reply-origin-row { background:#f5f5f5; color:#616161; font-size:13px; padding:.5rem; margin-right:1.5rem; margin-left:2.2rem; letter-spacing: 1px; margin-bottom:1rem; }
 
 .no-more-reply { padding:.5rem .5rem .3rem .5rem; margin-top:.3rem; margin-bottom:3rem; color:#9e9e9e; }
 

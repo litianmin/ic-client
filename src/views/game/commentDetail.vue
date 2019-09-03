@@ -1,28 +1,29 @@
 <template>
   <div>
     <!-- BEGIN 头部 -->
-    <mu-appbar class="mine-appbar" color="#009688">
-        <mu-button icon slot="left" @click="goBack">
-          <mu-icon value="navigate_before"></mu-icon>
-        </mu-button>
-        
-        <div style="font-size:14px;">
-          评论详情
-        </div>
-    </mu-appbar>
+    <mu-flex style="padding:.6rem .8rem; background:#4dd0e1; box-shadow: 0 0 1px #26c6da;" align-items="center">
+      <mu-flex align-items="center" @click="goBack">
+        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+      </mu-flex>
+      <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
+        <span style="color:#fff;">评论详情</span>
+      </mu-flex>
+    </mu-flex>
     <!-- END 头部 -->
 
     <div style="margin-bottom:3rem;">  
       <!-- BEGIN 主评论 -->
       <mu-container class="main-comment-container">
+
         <mu-flex align-items="center">
-          <mu-avatar size="26">
+          <mu-avatar size="35">
             <img :src="CmtDetailMain.avatar | imgPrefixDeal()">
           </mu-avatar>
-          <span class="comment-item-nickname">
+          <span class="nickname">
             {{ CmtDetailMain.nickname }} (楼主)
           </span>
           <span class="comment-item-time" style="margin-right:.6rem;">{{ CmtDetailMain.createTime | formatTime('{y}/{m}/{d} {h}:{i}') }}</span>
+
         </mu-flex>
 
         <mu-row class="comment-item-text">
@@ -177,6 +178,10 @@ export default {
 <style scoped>
 .mine-appbar { width: 100%; height:2.5rem; }
 
+.avatar-male { padding:.1rem; border:1px solid #03a9f4; border-radius:50%; background:white; }
+.avatar-female { padding:.1rem; border:1px solid #e91e63; border-radius:50%; background:white; }
+.nickname { font-size:14px; margin-left:.5rem; margin-right:.5rem; color:#424242; letter-spacing: 1px; }
+
 .main-comment-container { background:#ffffff; padding:1rem .5rem 1.5rem .5rem;  }
 .sort-bar { background:#eeeeee; font-size:12px; padding:.3rem .5rem; margin-bottom:.5rem;  }
 .sort-bar-svg { margin-left:auto; font-size:18px; margin-right:.3rem; }
@@ -195,8 +200,8 @@ export default {
 .comment-box { padding:.5rem 1rem; }
 .comment-item-nickname { margin-left:.5rem; font-size:12px; color:#4db6ac; }
 .comment-item-time { margin-left: auto; margin-right:.3rem; font-size:12px; color:#9e9e9e; }
-.comment-item-text { padding:.5rem 0 .5rem 1.5rem; font-size:12px; }
-.comment-item-img { padding:.5rem .5rem 0 1rem; font-size:12px; color:#616161; }
+.comment-item-text { padding:.5rem 0 .5rem 2.5rem; font-size:14px; letter-spacing: 1px; }
+.comment-item-img { padding:.5rem .5rem 0 2rem; font-size:12px; color:#616161; }
 .comment-item-img img { max-width:100%; max-height:100%; border-radius:.3rem; }
 .comment-item-thumbup-count { font-size:12px; margin-left:.2rem; color:#9e9e9e; }
 .comment-item-comment-count { font-size:12px; margin-left:.2rem; color:#9e9e9e; }

@@ -1,20 +1,14 @@
 <template>
   <div>
     <!-- BEGIN 头部 -->
-    <mu-appbar class="mine-appbar" color="#009688">
-        <mu-button icon slot="left" @click="goBack">
-          <mu-icon value="navigate_before"></mu-icon>
-        </mu-button>
-        
-        <div style="font-size:14px;">
-          创建队伍
-        </div>
-
-        <mu-flex slot="right" style="font-size:12px; color:#fff; margin-right:1rem;" align-items="center">
-          <span>导入记录</span> <mu-icon value="launch" size="18"></mu-icon>
-        </mu-flex>
-
-    </mu-appbar>
+    <mu-flex style="padding:.6rem .8rem; background:#4dd0e1; box-shadow: 0 0 1px #26c6da;" align-items="center">
+      <mu-flex align-items="center" @click="goBack">
+        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+      </mu-flex>
+      <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
+        <span style="color:#fff;">创建队伍</span>
+      </mu-flex>
+    </mu-flex>
     <!-- END 头部 -->
 
     <!-- BEGIN 填写内容 -->

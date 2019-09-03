@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- BEGIN 头部搜索框 -->
-    <mu-flex style="padding:.6rem .8rem; background:#4dd0e1;" align-items="center" justify-content="between">
+    <mu-flex style="padding:.6rem .8rem; background:#4dd0e1; box-shadow: 0 0 1px #26c6da;" align-items="center" justify-content="between">
       <mu-flex align-items="center" @click="goBack">
         <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
       </mu-flex>
@@ -15,7 +15,7 @@
     <!-- END 头部搜索框 -->
 
     <!-- BEGIN 列表显示内容 -->
-    <mu-paper :z-depth="1" class="demo-list-wrap">
+    <mu-paper :z-depth="0" class="demo-list-wrap">
       <!-- BEGIN 热门游戏列表 -->
       <mu-list textline="three-line" v-if="hotGameListIsShow">
         <mu-sub-header style="color:#00bcd4;">--热门游戏--</mu-sub-header>
@@ -48,22 +48,22 @@
         <mu-list textline="three-line">
           <mu-sub-header style="color:#4caf50;">--全部游戏--</mu-sub-header>
           
-            <div v-for="item in gameList" :key="item.g_id">
-              <mu-list-item avatar :ripple="false" button @click="linkToDetail(item.g_id, item.g_name)">
-                <mu-list-item-action>
-                  <div class="list-item-div">
-                    <img :src="item.g_logo">
-                  </div>
-                </mu-list-item-action>
-                <mu-list-item-content>
-                  <mu-list-item-title>{{ item.g_name }}</mu-list-item-title>
-                  <mu-list-item-sub-title>
-                    {{ item.brief_desc }}
-                  </mu-list-item-sub-title>
-                </mu-list-item-content>
-              </mu-list-item>
-              <mu-divider></mu-divider>
-            </div>
+          <div v-for="item in gameList" :key="item.g_id">
+            <mu-list-item avatar :ripple="false" button @click="linkToDetail(item.g_id, item.g_name)">
+              <mu-list-item-action>
+                <div class="list-item-div">
+                  <img :src="item.g_logo">
+                </div>
+              </mu-list-item-action>
+              <mu-list-item-content>
+                <mu-list-item-title>{{ item.g_name }}</mu-list-item-title>
+                <mu-list-item-sub-title>
+                  {{ item.brief_desc }}
+                </mu-list-item-sub-title>
+              </mu-list-item-content>
+            </mu-list-item>
+            <mu-divider></mu-divider>
+          </div>
           
           <mu-row v-show="isTheLast" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.3rem; color:#9e9e9e;">
             <span style="">没有更多的内容</span>

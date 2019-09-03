@@ -1,15 +1,14 @@
 <template>
   <div>
     <!-- BEGIN 头部 -->
-    <mu-appbar class="mine-appbar" color="#009688">
-      <mu-button icon slot="left" @click="goBack">
-        <mu-icon value="navigate_before"></mu-icon>
-      </mu-button>
-      
-      <div style="font-size:14px;">
-        {{ gameName }}
-      </div>
-    </mu-appbar>
+    <mu-flex style="padding:.6rem .8rem; background:#4dd0e1; box-shadow: 0 0 1px #26c6da;" align-items="center">
+      <mu-flex align-items="center" @click="goBack">
+        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+      </mu-flex>
+      <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
+        <span style="color:#fff;">{{ gameName }}</span>
+      </mu-flex>
+    </mu-flex>
     <!-- END 头部 -->
  
     <!-- BEGIN 轮播图 -->
@@ -72,7 +71,7 @@
           <div style="margin-top:1rem;" v-for="(item, index) in commentList" :key="index" @click="linkToCommentDetail(item.c_id)">
             <mu-flex align-items="center">
               <mu-avatar size="28">
-                <img :src="item.u_avatar">
+                <img :src="item.u_avatar | imgPrefixDeal()">
               </mu-avatar>
               <span class="comment-item-nickname">
                 {{ item.u_nickname }} 
@@ -85,11 +84,11 @@
             </mu-row>
 
             <mu-row class="comment-item-img" v-if="item.c_img">
-              <img :src="item.c_img" alt="">
+              <img :src="item.c_img | imgPrefixDeal()" alt="">
             </mu-row>
 
             <mu-row  style="padding:.7rem .5rem;">
-                <span style="margin-left:1.5rem; font-size:12px; color:#9e9e9e;">{{ item.c_create_time | formatTime() }}</span>
+                <span style="margin-left:1.7rem; font-size:12px; color:#9e9e9e;">{{ item.c_create_time | formatTime() }}</span>
 
                 <mu-flex align-items="center" style="margin-left:auto;">
                   <mu-icon value="thumb_up" size="12" color="#9e9e9e"></mu-icon>
@@ -136,7 +135,7 @@
                 <mu-col col="6" style="padding:.5rem 0 0 .5rem;">
                   <mu-flex align-items="center" class="team-avatar-flex">
                     <mu-avatar size="25">
-                      <img :src="item.captain_avatar" />
+                      <img :src="item.captain_avatar | imgPrefixDeal()" />
                     </mu-avatar>
                     <span class="team-leader-nickname">{{ item.captain_nickname }}</span>
                   </mu-flex>
@@ -170,7 +169,7 @@
                 <!-- 右边图片展示 -->
                 <mu-col col="6" justify-content="center" align-items="center">
                   <mu-flex justify-content="center" align-items="center" class="team-leaderinfo-img-flex">
-                    <img :src="item.recruit_img" />
+                    <img :src="item.recruit_img | imgPrefixDeal()" />
                   </mu-flex>
                 </mu-col>
               </mu-row>
@@ -435,7 +434,7 @@ export default {
 
 .swiper-container { background-color: #ffffff; }
 .swiper-slide { background-size: cover; background-position: center; }
-.swiper-img { max-width:100%; height:auto; border-bottom-left-radius:3px; border-bottom-right-radius:5px; }
+.swiper-img { max-width:100%; height:auto; }
 
 .gallery-top { height: 80%!important; width: 100%; margin-top:1px; }
 .gallery-thumbs { height: 20%!important; box-sizing: border-box; padding: 1px 0; }
@@ -445,17 +444,17 @@ export default {
 .game-brief-desc { margin-top:.5rem; padding:0 .5rem; margin-bottom:.5rem; }
 .game-badge { margin-top:.5rem; padding:0 .5rem; }
 
-.comment-box { padding:.5rem 1rem; }
+.comment-box { padding:.5rem 1rem; background:#fff; }
 .comment-create-btn { width:100%; padding:.5rem; text-align:center; color:white; background:#4dd0e1; border-radius:.3rem; border:0; }
 .comment-item-nickname { margin-left:.5rem; font-size:13px; color:#4db6ac; }
 .comment-item-detail { margin-left: auto; font-size:12px; color:#4db6ac; margin-right:.5rem; }
-.comment-item-text { padding:.5rem 0 0 2rem; font-size:12px; color:#616161; }
+.comment-item-text { padding:.5rem 0 0 2.2rem; font-size:12px; color:#616161; }
 .comment-item-img { padding:.5rem .5rem 0 2rem; font-size:12px; color:#616161; }
 .comment-item-img img { max-width:100%; max-height:100%; border-radius:.3rem; }
 .comment-item-thumbup-count { font-size:12px; margin-left:.2rem; color:#9e9e9e; }
 .comment-item-comment-count { font-size:12px; margin-left:.2rem; color:#9e9e9e; }
 
-.team-box { padding:.5rem 1rem; }
+.team-box { padding:.5rem 1rem;  background:#fff;}
 .team-panel { margin-bottom:1rem; border-radius:.5rem; }
 .team-create-btn { width:100%; padding:.5rem; text-align:center; color:white; background:#4dd0e1; border-radius:.3rem; border:0; }
 .team-header { padding:.5rem 0 .5rem 0; }
