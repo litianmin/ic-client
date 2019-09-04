@@ -9,91 +9,63 @@
         <span style="color:#fff;">创建队伍</span>
       </mu-flex>
     </mu-flex>
+
     <!-- END 头部 -->
 
     <!-- BEGIN 填写内容 -->
     <mu-container v-show="!isPreview" style="padding:.5rem;">
 
-      <!-- 角色 -->
-      <mu-row>
-        <mu-flex class="mu-flex-one" align-items="center" justify-content="center">
-          <span>职 业</span>
-        </mu-flex>
-        <mu-flex class="mu-flex-two">
-          <input v-model="teamInfo.role" type="text" placeholder="职业，例如：刺客" maxlength="15">
-        </mu-flex>
-      </mu-row>
+      <!-- 职业 -->
+      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
+        <span style="font-size:13px; color:#795548; margin-right:.5rem;">角色职业：</span>
+        <input v-model="teamInfo.role" style="padding:.4rem; width:75%; font-size:13px; border-radius:.2rem; border:1px solid #bdbdbd; color:#212121;" type="text" placeholder="职业，例如：刺客">
+      </mu-flex>
+
 
       <!-- 昵称 -->
-      <mu-row style="margin-top:.5rem;">
-        <mu-flex class="mu-flex-one" align-items="center" justify-content="center">
-          <span>昵 称</span>
-        </mu-flex>
-        <mu-flex class="mu-flex-two">
-          <input v-model="teamInfo.roleName" type="text" placeholder="游戏中的昵称" maxlength="15">
-        </mu-flex>
-      </mu-row>
+      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
+        <span style="font-size:13px; color:#795548; margin-right:.5rem;">角色昵称：</span>
+        <input v-model="teamInfo.roleName" style="padding:.4rem; width:75%; font-size:13px; border-radius:.2rem; border:1px solid #bdbdbd; color:#212121;" type="text" placeholder="游戏角色的昵称">
+      </mu-flex>
+
 
       <!-- 区服 -->
-      <mu-row style="margin-top:.5rem;">
-        <mu-flex class="mu-flex-one" align-items="center" justify-content="center">
-          <span>区 服</span>
-        </mu-flex>
-        <mu-flex class="mu-flex-two">
-          <input v-model="teamInfo.serverName" type="text" placeholder="游戏角色所在区服" maxlength="15">
-        </mu-flex>
-      </mu-row>
+      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
+        <span style="font-size:13px; color:#795548; margin-right:.5rem;">游戏区服：</span>
+        <input v-model="teamInfo.serverName" style="padding:.4rem; width:75%; font-size:13px; border-radius:.2rem; border:1px solid #bdbdbd; color:#212121;" type="text" placeholder="游戏角色所在区服">
+      </mu-flex>
+
+
 
       <!-- 等级/段位 -->
-      <mu-row style="margin-top:.5rem;">
-        <mu-flex class="mu-flex-one" align-items="center" justify-content="center">
-          <span>等级/段位</span>
-        </mu-flex>
-        <mu-flex class="mu-flex-two">
-          <input v-model="teamInfo.roleRank" type="text" placeholder="游戏角色的等级或者段位" maxlength="15">
-        </mu-flex>
-      </mu-row>
+      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
+        <span style="font-size:13px; color:#795548; margin-right:.5rem;">等级段位：</span>
+        <input v-model="teamInfo.roleRank" style="padding:.4rem; width:75%; font-size:13px; border-radius:.2rem; border:1px solid #bdbdbd; color:#212121;" type="text" placeholder="游戏角色的等级或者段位">
+      </mu-flex>
+
 
       <!-- 队友偏爱 -->
-      <mu-row style="margin-top:.5rem; padding:.5rem .5rem 0 .5rem;">
-        <mu-col span="12">
-          <mu-select label="队友偏爱" multiple chips v-model="teamatePrefer" full-width style="color:#795548;">
-            <template slot="selection" slot-scope="scope">
-              <mu-chip :selected="scope.selected" color="teal" small>
-                {{scope.label}}
-              </mu-chip>
-            </template>
-            <mu-option v-for="(item,index) in perferList" :key="index" :label="item" :value="item"></mu-option>
-          </mu-select>
-        </mu-col>
-      </mu-row>
+      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
+        <span style="font-size:13px; color:#795548; margin-right:.5rem;">队友偏爱：</span>
+        <input v-model="teamatePreferStr" style="padding:.4rem; width:75%; font-size:13px; border-radius:.2rem; border:1px solid #bdbdbd; color:#212121;" type="text" placeholder="随便来！ （不超过15个字符）">
+      </mu-flex>
+
 
       <!-- 招募人数 -->
-      <mu-row>
-        <mu-flex class="mu-flex-three" align-items="center" justify-content="center">
-          <span>招募人数 (已选 {{ teamInfo.recruitNumb }} 人)</span>
-        </mu-flex>
-      </mu-row>
-      <mu-row style="margin-top:.5rem;">
-        <mu-flex style="width:100%; height:2rem; font-size:12px; padding: 0 .5rem 0 .5rem;">
-          <mu-slider class="demo-slider" track-color="#e0e0e0" v-model="teamInfo.recruitNumb" :max="10" :min="2" :step="1" color="#00bcd4"></mu-slider>
-        </mu-flex>
-      </mu-row> 
+      <mu-flex style="width:100%; margin-bottom:1rem; margin-top:1rem;" align-items="start">
+        <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-top:.3rem;">招募人数：</span>
+        <select v-model="teamInfo.recruitNumb" name="" id="" style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #eeeeee; text-align:center;">
+          <option v-for="(item, index) in RecruitNumbList" :key="index" :value="item">{{ item }} 人</option>
+        </select>
+      </mu-flex>
 
-      <!-- 是否需要申请入队伍 -->
-      <mu-row style="margin-bottom:1.5rem; margin-top:1rem;">
-        <mu-flex class="mu-flex-three" align-items="center" justify-content="center">
-          <span style="margin-right:1rem;">招募方式:</span>
-          <mu-radio v-model="teamInfo.recruitWay" value="0" label="无限制" style="margin-right:1rem;"></mu-radio>
-          <mu-radio v-model="teamInfo.recruitWay" value="1" label="需要申请"></mu-radio>
-        </mu-flex>
-      </mu-row>
 
       <!-- 招募宣言 -->
-      <mu-row class="mu-container-one">
-        <mu-text-field v-model="teamInfo.announcement" multi-line :rows="5" :rows-max="7" full-width :max-length="120" underline-color="rgba(139, 69, 19, .2)" placeholder="招募宣言：" style="font-size:14px;">
-        </mu-text-field>
-      </mu-row>
+      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="start">
+        <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-top:.3rem;">招募宣言：</span>
+        <textarea v-model="teamInfo.announcement" style="width:75%; height:3.5rem; border:1px solid #bdbdbd; color:#212121; font-size:13px; padding:.4rem; border-radius:.2rem;" placeholder="一起来玩吧！（活动的详细内容）">
+        </textarea>
+      </mu-flex>
 
       <!-- 上传招募图片 -->
       <mu-row style="margin-top:1rem; margin-bottom:.5rem;">
@@ -215,7 +187,7 @@ export default {
         serverName: '',
         roleRank: '',
         recruitNumb: 2,
-        recruitWay: 0,
+        recruitWay: '0',
         displayImg: '',
         announcement: '',
         roleImg: '',
@@ -225,12 +197,16 @@ export default {
 
       isPreview: false, // 是否预览
       isPreviewCont: '预 览',
-      perferList: ['男生', '女生', '菜鸟', '大神', '萌妹子', '抠脚大叔']
+      perferList: ['男生', '女生', '菜鸟', '大神', '萌妹子', '抠脚大叔'],
+      RecruitNumbList: []
 
     }
   },
   mounted () {
     this.teamInfo.gameID = this.$route.params.gameid
+    for(let i = 1; i < 30; i++) {
+      this.RecruitNumbList.push(i)
+    }
   },
   watch: {
     teamatePrefer (curVal) {
@@ -356,7 +332,7 @@ export default {
 .paper-container { border-radius:.5rem; }
 
 /* 队伍详细信息内容 */
-.mu-flex-one { width:25%; height:2rem; background:#00bcd4; color:#fff; font-size:12px; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem; }
+.mu-flex-one { width:25%; height:2rem; background:#4dd0e1; color:#fff; font-size:12px; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem; }
 .mu-flex-two { width:75%; height:2rem; background:yellow; font-size:12px; }
 .mu-flex-two input { width:100%; height:100%; padding: 0 0 0 .5rem; }
 .mu-flex-three { height:2rem; font-size:12px; color:#795548; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem; padding:0 .5rem; }
@@ -376,7 +352,7 @@ export default {
 .team-extracont-operate { font-size:12px; color:#009688; }
 .operate-edit-span { font-size:12px; color:green; }
 
-input { border: 1px solid #00bcd4 }
+input { border: 1px solid #4dd0e1 }
 input:focus { border: 1px solid #4caf50; }
 
 .mu-radio-label { color: rgba(0,0,0,.5); white-space: nowrap; font-size: 12px; }
