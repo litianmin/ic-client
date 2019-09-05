@@ -1,131 +1,82 @@
 <template>
-  <div>
-    <h1>这里是我的图片剪切</h1>
-    <div>
 
-      <button @click="addImg">点击上传图片</button>
-
-      <input @change="uploadImg($event, 1)" ref="imgUpload" type="file" style="display:none;" accept="image/*"/>
-
-      <div style="width:100%; height:20rem;">
-        <vueCropper
-          ref="cropper"
-          :img="option.img"
-          :outputSize="option.size"
-          :outputType="option.outputType"
-          :info="true"
-          :full="option.full"
-          :canMove="option.canMove"
-          :canMoveBox="option.canMoveBox"
-          :original="option.original"
-          :autoCrop="option.autoCrop"
-          :autoCropWidth="option.autoCropWidth"
-          :autoCropHeight="option.autoCropHeight"
-          :fixedBox="option.fixedBox"
-        ></vueCropper>
-      </div>
-
+  <div id="app">
+    <h2 style="margin: 0;">Vue CropperJS</h2>
+    <hr/>
+    <input type="file" name="image" accept="image/*"
+           style="font-size: 1.2em; padding: 10px 0;"
+           @change="setImage" />
+    <br/>
+    <div style="width: 400px; height:300px; border: 1px solid gray; display: inline-block;">
+      <vue-cropper
+          ref='cropper'
+          :guides="true"
+          :view-mode="2"
+          drag-mode="crop"
+          :auto-crop-area="0.5"
+          :min-container-width="250"
+          :min-container-height="180"
+          :background="true"
+          :rotatable="true"
+          :src="imgSrc"
+          alt="Source Image"
+          :img-style="{ 'width': '400px', 'height': '300px' }">
+      </vue-cropper>
     </div>
+    <img :src="cropImg" style="width: 200px; height: 150px; border: 1px solid gray" alt="Cropped Image" />
+    <br/>
+    <br />
+
+    <button @click="cropImage" v-if="imgSrc != ''" style="margin-right: 40px;">Crop</button>
+    <button @click="rotate" v-if="imgSrc != ''">Rotate</button>
   </div>
+
 </template>
 
 <script>
-import { VueCropper } from 'vue-cropper'
-export default {
-  data () {
-    return {
-      imgFile: '',
-      fileName: '',
-      option: {
-        img: '',
-        outputSize: 1, //剪切后的图片质量（0.1-1）
-        full: false, //输出原图比例截图 props名full
-        outputType: 'png',
-        canMove: true, 
-        original: false, 
-        canMoveBox: true, 
-        autoCrop: true, 
-        autoCropWidth: 150, 
-        autoCropHeight: 150, 
-        fixedBox: true 
-      }, 
-      example2: {
-        img: ''
-      }
-    }
-  },
-
-  methods: {
-    addImg () {
-      this.$refs.imgUpload.click()
+  import VueCropper from 'vue-cropperjs';
+  import 'cropperjs/dist/cropper.css';
+  export default {
+    components: {
+      VueCropper,
     },
-    getDisplayImg () {
-      
+    data() {
+      return {
+        imgSrc: '',
+        cropImg: '',
+      };
     },
-
-    uploadImg(e, num) { 
-
-      let _this = this
-      var event = event || window.event
-      var file = event.target.files[0]
-      console.log(file)
-      // this.option.img = file
-      // 先判断file的大小
-      // if(file.size > 1024 * 1024 * 2) {
-      //   this.$toast.message('图片上传最大为2M！')
-      //   return
-      // }
-
-      var reader = new FileReader()
-      //转base64
-      reader.onload = function(e) {
-        _this.option.img = e.target.result
-        console.log('初始化慢了')
-      }
-      reader.readAsDataURL(file)
-
-      // var _this = this
-      // //上传图片 
-      // var file = e.target.files[0] // 首先获取到这个文件
-      // _this.fileName = file.name
-
-      // if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) { 
-      //   this.$toast.message('图片类型必须是.gif,jpeg,jpg,png,bmp中的一种') 
-      //   return false 
-      // } 
-      // var reader = new FileReader() 
-      // reader.onload = (e) => { 
-      //   let data
-      //   if (typeof e.target.result === 'object') { 
-      //     // 把Array Buffer转化为blob 如果是base64不需要 
-      //     data = window.URL.createObjectURL(new Blob([e.target.result])) 
-      //   } 
-      //   else { 
-      //     data = e.target.result 
-      //   }
-
-      //   if (num === 1) { 
-      //     _this.option.img = data 
-      //   } else if (num === 2) { 
-      //     _this.example2.img = data 
-      //   } 
-      // } 
-      // // 转化为base64 
-      // reader.readAsDataURL(file) 
-      // 转化为blob 
-      // reader.readAsArrayBuffer(file)
-      
-    }, 
-
-  },
-
-  components: { 
-    VueCropper 
-  }, 
-}
+    methods: {
+      setImage(e) {
+        const file = e.target.files[0];
+        if (!file.type.includes('image/')) {
+          alert('Please select an image file');
+          return;
+        }
+        if (typeof FileReader === 'function') {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            this.imgSrc = event.target.result;
+            // rebuild cropperjs with the updated source
+            this.$refs.cropper.replace(event.target.result);
+          };
+          reader.readAsDataURL(file);
+        } else {
+          alert('Sorry, FileReader API not supported');
+        }
+      },
+      cropImage() {
+        // get image data for post processing, e.g. upload or setting image src
+        this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL();
+      },
+      rotate() {
+        // guess what this does :)
+        this.$refs.cropper.rotate(90);
+      },
+    },
+  };
 </script>
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>
-
