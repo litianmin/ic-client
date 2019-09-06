@@ -65,11 +65,11 @@
         viewMode: 0,
         aspectRatio: 1.77,  // 长宽比
         highlight: true,
-        zoomOnWheel: false,//是否允许通过鼠标滚轮来缩放图片
+        // zoomOnWheel: false,//是否允许通过鼠标滚轮来缩放图片
         background: true,//是否在容器上显示网格背景
         rotatable: true,//是否允许旋转图片
         cropBoxResizable: false,  // 切割框能否改变大小
-        minCropBoxWidth: 100,
+        minCropBoxWidth: 250,
         movable: true,
         ready: function () {
           self.croppable = true
@@ -93,8 +93,8 @@
       //旋转
       rotate(){
         //alert(this.cropper.image)
-        this.current = (this.current+90)%360;
-        this.cropper.rotate(this.current);
+        // this.current = this.current + 30
+        this.cropper.rotate(45);
       },
       //缩放
       zoom(num){
