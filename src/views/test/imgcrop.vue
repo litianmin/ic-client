@@ -65,16 +65,17 @@
         viewMode: 0,
         aspectRatio: 1.77,  // 长宽比
         highlight: true,
-        zoomOnWheel:false,//是否允许通过鼠标滚轮来缩放图片
-        background:true,//是否在容器上显示网格背景
-        rotatable:true,//是否允许旋转图片
+        zoomOnWheel: false,//是否允许通过鼠标滚轮来缩放图片
+        background: true,//是否在容器上显示网格背景
+        rotatable: true,//是否允许旋转图片
         cropBoxResizable: false,  // 切割框能否改变大小
+        minCropBoxWidth: 100,
         movable: true,
         ready: function () {
           self.croppable = true
         }
       })
-    },
+    }, 
     methods: {
       addClassload(){
         this. color="#1b95e0"
