@@ -31,17 +31,23 @@
         </div>
       </div>
     </div>
+
+
+  <ImgCropper ImgWidth="100px" ImgHeight="100px" BorderColor="#e0e0e0"></ImgCropper>
+
   </div>
  
+
+
 </template>
  
  
 <script>
-  // import {test} from '@/api/psych'
+  import ImgCropper from '@/components/ImgCropper'
   import Cropper from 'cropperjs'
   export default {
     components: {
- 
+      ImgCropper
     },
     data () {
       return {
@@ -53,7 +59,6 @@
         url:'',
         color:"#d9d9d9",
         current:0,
- 
       }
     },
     mounted () {
