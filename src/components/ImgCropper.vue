@@ -24,11 +24,11 @@
         <mu-flex style="padding:1rem; width:100%;" wrap="wrap">
           <mu-flex style="margin-bottom:.5rem; width:100%;" justify-content="around">
             <mu-button  @click="zoom(-0.5)" style="margin-right:.5rem;" color="success" :ripple="false" :round="true" fab small>
-              <svg-icon icon-class="cropper-bigger" style="font-size:25px;"></svg-icon>
+              <svg-icon icon-class="cropper-smaller" style="font-size:25px;"></svg-icon>
             </mu-button>
 
             <mu-button  @click="zoom(0.5)" style="margin-right:.5rem;" color="success" :ripple="false" :round="true" fab small>
-              <svg-icon icon-class="cropper-smaller" style="font-size:25px;"></svg-icon>
+              <svg-icon icon-class="cropper-bigger" style="font-size:25px;"></svg-icon>
             </mu-button>
 
             <mu-button  @click="rotate(45)" style="margin-right:.5rem;" color="success" :ripple="false" :round="true" fab small>
@@ -140,6 +140,7 @@ export default {
 
       this.ImgShowBase64 = croppedCanvas.toDataURL('image/jpeg', 1)  // 这里可以改变它的比例
       this.Panel = false
+      this.$emit('pushImgBase64', this.ImgShowBase64)
     },
 
     //缩放

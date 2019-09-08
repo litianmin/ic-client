@@ -33,7 +33,11 @@
     </div>
 
 
-  <ImgCropper ImgWidth="100px" ImgHeight="100px" BorderColor="#e0e0e0"></ImgCropper>
+  <ImgCropper 
+    @pushImgBase64="getImgBase64" 
+    ImgWidth="100px" 
+    ImgHeight="100px" 
+    BorderColor="#e0e0e0"></ImgCropper>
 
   </div>
  
@@ -79,6 +83,9 @@
       });
     },
     methods: {
+      getImgBase64 (msg) {
+        console.log(msg)
+      },
       addClassload(){
         this. color="#1b95e0"
       },
