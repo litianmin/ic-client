@@ -175,10 +175,7 @@ export default {
         // console.log(resp)
         if(resp.data.code == 20000) {
           this.Panel = false
-          this.$emit('pushImgBase64', {
-            imgBase64: this.ImgShowBase64,
-            imgURL: resp.data.msg
-          })
+          this.$emit('pushImgBase64', resp.data.msg)
           return
         }
         this.$toast.message(resp.data.msg)
@@ -221,11 +218,28 @@ export default {
     }
 
   },
-  props: [
-    'ImgWidth',
-    'ImgHeight',
-    'BorderColor',
-  ]
+  props: {
+    ImgWidth: { // 显示框的宽度
+      type: String,
+      default: '100px'
+    }, 
+    ImgHeight: {  // 显示框的高度
+      type: String,
+      default: '100px'
+    },  
+    BorderColor: {  // 显示框的
+      type: String, 
+      default: '#eeeeee'
+    },  
+    CropImgWidth: { // 剪切的图片的宽度
+      type: Number,
+      default: 750
+    }, 
+    CropImgHeight: {  // 剪切的图片的高度
+      type: Number,
+      default: 420
+    } 
+  }
 }
 </script>
 
