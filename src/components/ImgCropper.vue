@@ -39,13 +39,42 @@
               <svg-icon icon-class="cropper-anticlockwise" style="font-size:25px;"></svg-icon>
             </mu-button>
 
+            <!-- <mu-button  @click="reset" style="margin-right:.5rem;" color="success" :ripple="false" :round="true" fab small>
+              <svg-icon icon-class="cropper-reset" style="font-size:25px;"></svg-icon>
+            </mu-button> -->
+
+          </mu-flex>
+
+          <mu-flex style="margin-bottom:.5rem; width:100%; margin-top:.5rem;" justify-content="around">
+            <mu-button  @click="moveLeft" style="margin-right:.5rem;" color="success" :ripple="false" :round="true" fab small>
+              <svg-icon icon-class="cropper-move-left" style="font-size:25px;"></svg-icon>
+            </mu-button>
+
+            <mu-button  @click="moveRight" style="margin-right:.5rem;" color="success" :ripple="false" :round="true" fab small>
+              <svg-icon icon-class="cropper-move-right" style="font-size:25px;"></svg-icon>
+            </mu-button>
+
+            <mu-button  @click="moveUp" style="margin-right:.5rem;" color="success" :ripple="false" :round="true" fab small>
+              <svg-icon icon-class="cropper-move-up" style="font-size:25px;"></svg-icon>
+            </mu-button>
+
+            <mu-button  @click="moveDown" style="margin-right:.5rem;" color="success" :ripple="false" :round="true" fab small>
+              <svg-icon icon-class="cropper-move-down" style="font-size:25px;"></svg-icon>
+            </mu-button>
+
           </mu-flex>
 
           <mu-flex style="margin-top:2rem; width:100%;" wrap="wrap" justify-content="center">
-            <mu-button  @click="confirmCrop" style="margin-right:.5rem; width:95%;" color="#00bcd4">
+            <mu-button  @click="confirmCrop" style="margin-right:.5rem; width:45%;" color="#00bcd4">
               <svg-icon icon-class="cropper-crop" style="font-size:20px; margin-right:.5rem;"></svg-icon>
               <span>剪 切</span>
             </mu-button>
+
+            <mu-button  @click="reset" style="margin-right:.5rem; width:45%;" color="#00bcd4">
+              <svg-icon icon-class="cropper-reset" style="font-size:20px; margin-right:.5rem;"></svg-icon>
+              <span>重 置</span>
+            </mu-button>
+
             <mu-button  @click="Panel=false" style="margin-right:.5rem; width:95%; margin-top:1.5rem;" color="#9e9e9e">返 回</mu-button>
           </mu-flex>
 
@@ -55,8 +84,6 @@
 
         </mu-flex>
       </div>
-
-
 
     </div>
 
@@ -83,7 +110,6 @@ export default {
     let self = this
     let image = this.$refs.img_cropper
     this.Cropper = new Cropper(image, {
-      aspectRatio: 0,
       viewMode: 0,
       aspectRatio: 1.77,  // 长宽比，黄金比例
       highlight: true,
@@ -114,7 +140,7 @@ export default {
       return url 
     },
 
-    imgHadChoose (e) {
+    imgHadChoose (e) {  // 选择了图片之后
       let files = e.target.files || e.dataTransfer.files
       if (!files.length) {
         return
@@ -126,9 +152,11 @@ export default {
       if(this.Cropper){
         this.Cropper.replace(this.ImgURL)
       }
+      console.log(this.$refs.upload_input)
+      this.$refs.upload_input.value = ''  // 清空input值，要不重新选择图片之后不能选择
     },
 
-    confirmCrop () {
+    confirmCrop () {  // 确认剪切
       if (!this.CropperInit) {
         return
       }
@@ -139,8 +167,26 @@ export default {
       })
 
       this.ImgShowBase64 = croppedCanvas.toDataURL('image/jpeg', 1)  // 这里可以改变它的比例
-      this.Panel = false
-      this.$emit('pushImgBase64', this.ImgShowBase64)
+
+      this.$axios.post('/base64ImgUpload', {  // 上传图片
+        imgStr: this.ImgShowBase64,
+        type: 'game'
+      }).then((resp) => {
+        // console.log(resp)
+        if(resp.data.code == 20000) {
+          this.Panel = false
+          this.$emit('pushImgBase64', {
+            imgBase64: this.ImgShowBase64,
+            imgURL: resp.data.msg
+          })
+          return
+        }
+        this.$toast.message(resp.data.msg)
+      })
+
+
+      // this.Panel = false
+      // this.$emit('pushImgBase64', this.ImgShowBase64)
     },
 
     //缩放
@@ -154,11 +200,31 @@ export default {
       this.Cropper.rotate(angle)
     },
 
+    moveLeft () { // 向左移
+      this.Cropper.move(-10, 0)
+    },
+
+    moveRight () {  // 向右移
+      this.Cropper.move(10, 0)
+    },
+
+    moveUp () { // 向上移
+      this.Cropper.move(0, -10)
+    },
+
+    moveDown () { // 向下移
+      this.Cropper.move(0, 10)
+    },
+
+    reset () {  // 重置
+      this.Cropper.reset()
+    }
+
   },
   props: [
     'ImgWidth',
     'ImgHeight',
-    'BorderColor'
+    'BorderColor',
   ]
 }
 </script>
