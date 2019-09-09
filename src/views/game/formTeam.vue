@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="max-width:100%;">
     <!-- BEGIN 头部 -->
     <mu-flex style="padding:.6rem .8rem; background:#4dd0e1; box-shadow: 0 0 1px #26c6da;" align-items="center">
       <mu-flex align-items="center" @click="goBack">
@@ -9,11 +9,11 @@
         <span style="color:#fff;">创建队伍</span>
       </mu-flex>
     </mu-flex>
-
     <!-- END 头部 -->
 
+
     <!-- BEGIN 填写内容 -->
-    <mu-container v-show="!isPreview" style="padding:.5rem;">
+    <mu-container v-show="!isPreview" style="padding:.5rem; width:100%;">
 
       <!-- 职业 -->
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
@@ -66,6 +66,28 @@
         <textarea v-model="teamInfo.announcement" style="width:75%; height:3.5rem; border:1px solid #bdbdbd; color:#212121; font-size:13px; padding:.4rem; border-radius:.2rem;" placeholder="一起来玩吧！（活动的详细内容）">
         </textarea>
       </mu-flex>
+
+      <!-- 招募图片 -->
+      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="start">
+        <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-top:.3rem;">招募图片：</span>
+        <ImgCropper 
+          @pushImgBase64="getImgBase64" 
+          ImgWidth="177px" 
+          ImgHeight="100px" 
+          BorderColor="#e0e0e0"></ImgCropper>
+      </mu-flex>
+
+      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="start">
+        <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-top:.3rem;">橘色图片：</span>
+        <ImgCropper 
+          @pushImgBase64="getImgBase64" 
+          ImgWidth="120px" 
+          ImgHeight="150px" 
+          :CropImgWidth="750"
+          :CropperBoxRatio="0.8"
+          BorderColor="#e0e0e0"></ImgCropper>
+      </mu-flex>
+
 
       <!-- 上传招募图片 -->
       <mu-row style="margin-top:1rem; margin-bottom:.5rem;">
@@ -177,7 +199,11 @@
 </template>
 
 <script>
+import ImgCropper from '@/components/ImgCropper'
 export default {
+  components: {
+    ImgCropper
+  },
   data () {
     return {
       teamInfo: {
@@ -323,11 +349,17 @@ export default {
         }
       })
     },
-  }
+    getImgBase64 (data) {
+      console.log(data)
+    }
+  },
 }
 </script>
 
 <style>
+
+
+
 .mine-appbar { width: 100%; height:2.5rem; }
 .paper-container { border-radius:.5rem; }
 

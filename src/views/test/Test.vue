@@ -35,7 +35,7 @@
 
   <ImgCropper 
     @pushImgBase64="getImgBase64" 
-    ImgWidth="100px" 
+    ImgWidth="177px" 
     ImgHeight="100px" 
     BorderColor="#e0e0e0"></ImgCropper>
 

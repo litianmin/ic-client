@@ -1,6 +1,5 @@
 <template>
-  <div style="padding:1rem; width:100%;">
-    <span>什么鬼啊</span>
+  <div>
     <!-- 上传图片共同样式 -->
     <mu-flex 
       @click="imgChoose"
@@ -38,10 +37,6 @@
             <mu-button  @click="rotate(-45)" style="margin-right:.5rem;" color="success" :ripple="false" :round="true" fab small>
               <svg-icon icon-class="cropper-anticlockwise" style="font-size:25px;"></svg-icon>
             </mu-button>
-
-            <!-- <mu-button  @click="reset" style="margin-right:.5rem;" color="success" :ripple="false" :round="true" fab small>
-              <svg-icon icon-class="cropper-reset" style="font-size:25px;"></svg-icon>
-            </mu-button> -->
 
           </mu-flex>
 
@@ -103,15 +98,43 @@ export default {
       Panel: false,           // 剪切页面
       ImgVal: '',             // 图片的值
       ImgURL: '',
-      ImgShowBase64: ''
+      ImgShowBase64: '',
     }
   },
+
+  props: {
+    ImgWidth: { // 显示框的宽度
+      type: String,
+      default: '177px'
+    }, 
+    ImgHeight: {  // 显示框的高度
+      type: String,
+      default: '100px'
+    },  
+    BorderColor: {  // 显示框的
+      type: String, 
+      default: '#e0e0e0'
+    },  
+    CropImgWidth: { // 剪切的图片的宽度
+      type: Number,
+      default: 750
+    }, 
+    // CropImgHeight: {  // 剪切的图片的高度
+    //   type: Number,
+    //   default: 420
+    // },
+    CropperBoxRatio: {
+      type: Number,
+      default: 1.77
+    }
+  },
+
   mounted () {
     let self = this
     let image = this.$refs.img_cropper
     this.Cropper = new Cropper(image, {
       viewMode: 0,
-      aspectRatio: 1.77,  // 长宽比，黄金比例
+      aspectRatio: this.CropperBoxRatio,  // 长宽比，黄金比例
       highlight: true,
       background: true,//是否在容器上显示网格背景
       rotatable: true,//是否允许旋转图片
@@ -152,7 +175,6 @@ export default {
       if(this.Cropper){
         this.Cropper.replace(this.ImgURL)
       }
-      console.log(this.$refs.upload_input)
       this.$refs.upload_input.value = ''  // 清空input值，要不重新选择图片之后不能选择
     },
 
@@ -160,10 +182,11 @@ export default {
       if (!this.CropperInit) {
         return
       }
-
+      
+      let cropImgHeight = parseInt(this.CropImgWidth / this.CropperBoxRatio)
       let croppedCanvas = this.Cropper.getCroppedCanvas({
-        width: 750,
-        height: 420
+        width: this.CropImgWidth,
+        height: cropImgHeight
       })
 
       this.ImgShowBase64 = croppedCanvas.toDataURL('image/jpeg', 1)  // 这里可以改变它的比例
@@ -218,32 +241,270 @@ export default {
     }
 
   },
-  props: {
-    ImgWidth: { // 显示框的宽度
-      type: String,
-      default: '100px'
-    }, 
-    ImgHeight: {  // 显示框的高度
-      type: String,
-      default: '100px'
-    },  
-    BorderColor: {  // 显示框的
-      type: String, 
-      default: '#eeeeee'
-    },  
-    CropImgWidth: { // 剪切的图片的宽度
-      type: Number,
-      default: 750
-    }, 
-    CropImgHeight: {  // 剪切的图片的高度
-      type: Number,
-      default: 420
-    } 
-  }
+
 }
 </script>
 
- <style scoped>
-.mine-cropper-container{ background-color: #ffffff; position: fixed; left:0px; top:0px; width:100%; height:100%; z-index: 33; }
+ <style>
+.mine-cropper-container{ background-color: #ffffff; position: fixed; left:0px; top:0px; width:100%; height:100%; z-index: 1000; }
 .edit-container { z-index: 99; height: 50%; width: 100%; position: fixed; left: 0; top: 0; background-color: #ffffff; }
+
+.cropper-container {
+    font-size: 0;
+    line-height: 0;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    direction: ltr;
+    -ms-touch-action: none;
+    touch-action: none
+  }
+ 
+  .cropper-container img {
+    /* Avoid margin top issue (Occur only when margin-top <= -height) */
+    display: block;
+    min-width: 0 !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    width: 100%;
+    height: 100%;
+    image-orientation: 0deg
+  }
+  .cropper-wrap-box,
+  .cropper-canvas,
+  .cropper-drag-box,
+  .cropper-crop-box,
+  .cropper-modal {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  .cropper-wrap-box {
+    overflow: hidden;
+  }
+  .cropper-drag-box {
+    opacity: 0;
+    background-color: #fff;
+  }
+  .cropper-modal {
+    opacity: .5;
+    background-color: #000;
+  }
+  .cropper-view-box {
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    outline: 1px solid #39f;
+    outline-color: rgba(51, 153, 255, 0.75);
+  }
+ 
+  .cropper-dashed {
+    position: absolute;
+    display: block;
+    opacity: .5;
+    border: 0 dashed #eee
+  }
+  .cropper-dashed.dashed-h {
+    top: 33.33333%;
+    left: 0;
+    width: 100%;
+    height: 33.33333%;
+    border-top-width: 1px;
+    border-bottom-width: 1px
+  }
+  .cropper-dashed.dashed-v {
+    top: 0;
+    left: 33.33333%;
+    width: 33.33333%;
+    height: 100%;
+    border-right-width: 1px;
+    border-left-width: 1px
+  }
+  .cropper-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 0;
+    height: 0;
+    opacity: .75
+  }
+  .cropper-center:before,
+  .cropper-center:after {
+    position: absolute;
+    display: block;
+    content: ' ';
+    background-color: #eee
+  }
+  .cropper-center:before {
+    top: 0;
+    left: -3px;
+    width: 7px;
+    height: 1px
+  }
+  .cropper-center:after {
+    top: -3px;
+    left: 0;
+    width: 1px;
+    height: 7px
+  }
+  .cropper-face,
+  .cropper-line,
+  .cropper-point {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    opacity: .1;
+  }
+  .cropper-face {
+    top: 0;
+    left: 0;
+    background-color: #fff;
+  }
+  .cropper-line {
+    background-color: #39f
+  }
+  .cropper-line.line-e {
+    top: 0;
+    right: -3px;
+    width: 5px;
+    cursor: e-resize
+  }
+  .cropper-line.line-n {
+    top: -3px;
+    left: 0;
+    height: 5px;
+    cursor: n-resize
+  }
+  .cropper-line.line-w {
+    top: 0;
+    left: -3px;
+    width: 5px;
+    cursor: w-resize
+  }
+  .cropper-line.line-s {
+    bottom: -3px;
+    left: 0;
+    height: 5px;
+    cursor: s-resize
+  }
+  .cropper-point {
+    width: 5px;
+    height: 5px;
+ 
+    opacity: .75;
+    background-color: #39f
+  }
+  .cropper-point.point-e {
+    top: 50%;
+    right: -3px;
+    margin-top: -3px;
+    cursor: e-resize
+  }
+  .cropper-point.point-n {
+    top: -3px;
+    left: 50%;
+    margin-left: -3px;
+    cursor: n-resize
+  }
+  .cropper-point.point-w {
+    top: 50%;
+    left: -3px;
+    margin-top: -3px;
+    cursor: w-resize
+  }
+  .cropper-point.point-s {
+    bottom: -3px;
+    left: 50%;
+    margin-left: -3px;
+    cursor: s-resize
+  }
+  .cropper-point.point-ne {
+    top: -3px;
+    right: -3px;
+    cursor: ne-resize
+  }
+  .cropper-point.point-nw {
+    top: -3px;
+    left: -3px;
+    cursor: nw-resize
+  }
+  .cropper-point.point-sw {
+    bottom: -3px;
+    left: -3px;
+    cursor: sw-resize
+  }
+  .cropper-point.point-se {
+    right: -3px;
+    bottom: -3px;
+    width: 20px;
+    height: 20px;
+    cursor: se-resize;
+    opacity: 1
+  }
+  @media (min-width: 768px) {
+    .cropper-point.point-se {
+      width: 15px;
+      height: 15px
+    }
+  }
+  @media (min-width: 992px) {
+    .cropper-point.point-se {
+      width: 10px;
+      height: 10px
+    }
+  }
+  @media (min-width: 1200px) {
+    .cropper-point.point-se {
+      width: 5px;
+      height: 5px;
+      opacity: .75
+    }
+  }
+  .cropper-point.point-se:before {
+    position: absolute;
+    right: -50%;
+    bottom: -50%;
+    display: block;
+    width: 200%;
+    height: 200%;
+    content: ' ';
+    opacity: 0;
+    background-color: #39f
+  }
+  .cropper-invisible {
+    opacity: 0;
+  }
+  .cropper-bg {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC');
+  }
+  .cropper-hide {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+  }
+  .cropper-hidden {
+    display: none !important;
+  }
+  .cropper-move {
+    cursor: move;
+  }
+  .cropper-crop {
+    cursor: crosshair;
+  }
+  .cropper-disabled .cropper-drag-box,
+  .cropper-disabled .cropper-face,
+  .cropper-disabled .cropper-line,
+  .cropper-disabled .cropper-point {
+    cursor: not-allowed;
+  }
+
 </style>
