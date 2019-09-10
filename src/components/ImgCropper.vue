@@ -5,7 +5,13 @@
       @click="imgChoose"
       align-items="center"
       justify-content="center"
-      :style="'width:'+ ImgWidth + '; height: ' + ImgHeight + '; border-radius:.5rem; border: 1px dashed ' + BorderColor + ';'">
+      :style="'width:'+ ImgWidth + '; height: ' + ImgHeight + '; border-radius:.5rem; border: 1px dashed ' + BorderColor + '; position:relative;'">
+      <div 
+        @click="delImg"
+        v-if="ImgShowBase64"
+        style="width:1rem; height:1rem; position:absolute; right:-.2rem; top:-.5rem;">
+        <svg-icon icon-class="delete-gray" style="font-size:20px;"></svg-icon>
+      </div>
       <img 
         style="width:100%; height:100%; border-radius:.5rem;"
         v-if="ImgShowBase64" 
@@ -198,7 +204,7 @@ export default {
         // console.log(resp)
         if(resp.data.code == 20000) {
           this.Panel = false
-          this.$emit('pushImgBase64', resp.data.msg)
+          this.$emit('getImgURL', resp.data.msg)
           return
         }
         this.$toast.message(resp.data.msg)
@@ -207,6 +213,11 @@ export default {
 
       // this.Panel = false
       // this.$emit('pushImgBase64', this.ImgShowBase64)
+    },
+
+    delImg () {
+      this.ImgShowBase64 = ''
+      this.$emit('delImg')
     },
 
     //缩放

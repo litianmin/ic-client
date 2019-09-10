@@ -71,16 +71,18 @@
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="start">
         <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-top:.3rem;">招募图片：</span>
         <ImgCropper 
-          @pushImgBase64="getImgBase64" 
+          @getImgURL="getRecruitImg($event)" 
+          @delImg="delRecruitImg"
           ImgWidth="177px" 
           ImgHeight="100px" 
           BorderColor="#e0e0e0"></ImgCropper>
       </mu-flex>
 
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="start">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-top:.3rem;">橘色图片：</span>
+        <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-top:.3rem;">角色图片：</span>
         <ImgCropper 
-          @pushImgBase64="getImgBase64" 
+          @getImgURL="getRoleImg" 
+          @delImg="delRoleImg"
           ImgWidth="120px" 
           ImgHeight="150px" 
           :CropImgWidth="750"
@@ -90,24 +92,24 @@
 
 
       <!-- 上传招募图片 -->
-      <mu-row style="margin-top:1rem; margin-bottom:.5rem;">
+      <!-- <mu-row style="margin-top:1rem; margin-bottom:.5rem;">
         <mu-flex style="position:relative; width:100%; height:10rem; background:#eeeeee; border-radius:.5rem;" justify-content="center" align-items="center">
           <span @click="addImg" v-show="!teamInfo.displayImg" style="color:#4caf50;">点击上传招募图片</span>
           <mu-icon v-show="teamInfo.displayImg" @click="delImg" value="cancel" color="#e91e63" style="position:absolute; top:0; right:0;"></mu-icon>
           <img style="max-width:100%; max-height:9rem; border-radius:.3rem;" :src="teamInfo.displayImg" />
         </mu-flex>
         <input @change="getDisplayImg" ref="imgUpload" type="file" style="display:none;" accept="image/*"/>
-      </mu-row>
+      </mu-row> -->
 
       <!-- 上传角色图片 -->
-      <mu-row style="margin-top:1rem; margin-bottom:3rem;">
+      <!-- <mu-row style="margin-top:1rem; margin-bottom:3rem;">
         <mu-flex style="position:relative; width:100%; height:10rem; background:#eeeeee; border-radius:.5rem;" justify-content="center" align-items="center">
           <span @click="addImg2" v-show="!teamInfo.roleImg" style="color:#4caf50;">点击上传角色图片</span>
           <mu-icon v-show="teamInfo.roleImg" @click="delImg2" value="cancel" color="#e91e63" style="position:absolute; top:0; right:0;"></mu-icon>
           <img style="max-width:100%; max-height:9rem; border-radius:.3rem;" :src="teamInfo.roleImg" />
         </mu-flex>
         <input @change="getRoleImg" ref="imgUpload2" type="file" style="display:none;" accept="image/*"/>
-      </mu-row>
+      </mu-row> -->
 
     </mu-container>
     <!-- END 填写内容 -->
@@ -247,48 +249,67 @@ export default {
     goBack () {
       this.$router.go(-1)
     },
+
+    getRecruitImg (imgURL) {  // 获取招募图片
+      console.log(imgURL)
+      console.log(index)
+      this.teamInfo.displayImg = imgURL
+    },
+
+    getRoleImg (imgURL) { // 获取角色图片
+      this.teamInfo.roleImg = imgURL
+    },
+
+    delRecruitImg () {  // 删除招募图片
+
+    },
+
+    delRoleImg () { // 删除角色图片
+
+    },
+
     delImg () {
       this.teamInfo.displayImg = ''
     },
     addImg () {
       this.$refs.imgUpload.click()
     },
-    getDisplayImg () {  // 获取评论图片
-      var _this = this
-      var event = event || window.event
-      var file = event.target.files[0]
+    // getDisplayImg () {  // 获取评论图片
+    //   var _this = this
+    //   var event = event || window.event
+    //   var file = event.target.files[0]
 
-      // 先判断file的大小
-      if(file.size > 1024 * 1024 * 2) {
-        this.$toast.message('图片上传最大为2M！')
-        return
-      }
+    //   // 先判断file的大小
+    //   if(file.size > 1024 * 1024 * 2) {
+    //     this.$toast.message('图片上传最大为2M！')
+    //     return
+    //   }
 
-      var reader = new FileReader()
-      //转base64
-      reader.onload = function(e) {
-        _this.teamInfo.displayImg = e.target.result
-      }
-      reader.readAsDataURL(file)
-    },
-    getRoleImg () {  // 获取评论图片
-      var _this = this
-      var event = event || window.event
-      var file = event.target.files[0]
+    //   var reader = new FileReader()
+    //   //转base64
+    //   reader.onload = function(e) {
+    //     _this.teamInfo.displayImg = e.target.result
+    //   }
+    //   reader.readAsDataURL(file)
+    // },
+    // getRoleImg () {  // 获取评论图片
+    //   var _this = this
+    //   var event = event || window.event
+    //   var file = event.target.files[0]
 
-      // 先判断file的大小
-      if(file.size > 1024 * 1024 * 2) {
-        this.$toast.message('图片上传最大为2M！')
-        return
-      }
+    //   // 先判断file的大小
+    //   if(file.size > 1024 * 1024 * 2) {
+    //     this.$toast.message('图片上传最大为2M！')
+    //     return
+    //   }
 
-      var reader = new FileReader()
-      //转base64
-      reader.onload = function(e) {
-        _this.teamInfo.roleImg = e.target.result
-      }
-      reader.readAsDataURL(file)
-    },
+    //   var reader = new FileReader()
+    //   //转base64
+    //   reader.onload = function(e) {
+    //     _this.teamInfo.roleImg = e.target.result
+    //   }
+    //   reader.readAsDataURL(file)
+    // },
     delImg2 () {
       this.teamInfo.roleImg = ''
     },
