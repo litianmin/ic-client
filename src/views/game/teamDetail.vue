@@ -1,17 +1,17 @@
 <template>
   <div>
     <!-- BEGIN 头部 -->
-    <mu-appbar class="mine-appbar" color="#009688">
+    <mu-appbar class="mine-appbar" style="background: linear-gradient(to right, #4dd0e1 , #80cbc4);">
         <mu-button icon slot="left" @click="goBack">
-          <mu-icon value="navigate_before"></mu-icon>
+          <mu-icon value="navigate_before" color="#fff"></mu-icon>
         </mu-button>
         
-        <div ref="menuHide" style="font-size:14px;">
-          {{ JointeamStmtDesc }}
+        <div ref="menuHide" style="font-size:14px; color:#fff;">
+          {{ ChatDetailMain.captain_nickname }} 的队伍
         </div>
 
         <mu-menu slot="right" class="mine-menu-box">
-          <mu-icon value="menu"></mu-icon>
+          <mu-icon value="menu" color="#fff"></mu-icon>
           <mu-list slot="content" class="mine-menu-list">
             <mu-list-item button @click="teamListWindowToggle">
               <mu-list-item-title class="mine-menu-item">队友列表</mu-list-item-title>
@@ -28,11 +28,11 @@
       <!-- BEGIN 主评论 -->
       <mu-container class="main-team-container" style="position:relative;">
         <mu-flex align-items="center">
-          <mu-avatar size="26">
+          <mu-avatar size="30">
             <img :src="ChatDetailMain.captain_avatar | imgPrefixDeal()">
           </mu-avatar>
           <span class="team-item-nickname">
-            {{ ChatDetailMain.captain_nickname }} <span class="character-title">( 队长 · 阿萨卡 )</span>
+            {{ ChatDetailMain.captain_nickname }} <span class="character-title">( 队长 )</span>
           </span>
           <!-- <span class="reply-time">10小时前</span> -->
         </mu-flex>
@@ -301,8 +301,8 @@ export default {
 .mine-appbar { width: 100%; height:2.5rem; position:flex; }
 
 .mine-menu-box { margin-top:1rem; right:.5rem; }
-.mine-menu-list { background:#26a69a; color:white; padding:0; }
-.mine-menu-item { color:#fff; font-size:12px; }
+.mine-menu-list { background: linear-gradient(to right, #4dd0e1 , #80cbc4); color:white; padding:0; }
+.mine-menu-item { color:#fff; font-size:12px;  }
 
 .character-title { margin-left:1rem; font-size:12px; color:#795548; }
 
@@ -321,8 +321,8 @@ export default {
 .reply-input-box-span { margin-left:auto; font-size:18px; margin-right:.3rem; }
 .reply-input-box-icon { margin-left:auto; margin-right:.5rem; }
 
-.team-item-nickname { margin-left:.5rem; font-size:13px; font-weight:600; color:#4db6ac; }
-.team-item-text { padding:.5rem 0 .5rem 1.5rem; font-size:12px; }
+.team-item-nickname { margin-left:.5rem; font-size:14px; font-weight:600; color:#4db6ac; }
+.team-item-text { padding:.5rem 0 .5rem 1.5rem; font-size:14px; }
 .team-item-img { padding:.5rem .5rem 0 1rem; font-size:12px; color:#616161; }
 .team-item-img img { max-width:100%; max-height:100%; border-radius:.3rem; }
 

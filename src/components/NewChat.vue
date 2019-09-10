@@ -1,15 +1,16 @@
 <template>
   <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:#f5f5f5;">
     <!-- BEGIN 头部 -->
-    <mu-appbar class="mine-appbar" color="#009688">
-        <mu-button icon slot="left" @click="goBack">
-          <mu-icon value="navigate_before"></mu-icon>
-        </mu-button>
-        
-        <div style="font-size:14px;">
-          {{ this.Title }}
-        </div>
-    </mu-appbar>
+    <mu-flex 
+      style="padding:.6rem .8rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); box-shadow: 0 0 1px #26c6da;" 
+      align-items="center">
+      <mu-flex align-items="center" @click="goBack">
+        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+      </mu-flex>
+      <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
+        <span style="color:#fff;">{{ this.Title }}</span>
+      </mu-flex>
+    </mu-flex>
     <!-- END 头部 -->
 
 
@@ -38,6 +39,7 @@
 </template>
 
 <script>
+import { imgCompress } from '@/common/imgDeal.js'
 export default {
   data () {
     return {
@@ -69,16 +71,7 @@ export default {
       var _this = this
       var event = event || window.event
       var file = event.target.files[0]
-      if(file.size > 1024 * 1024 * 2) {
-        this.$toast.message('图片上传最大为2M')
-        return
-      }
-      var reader = new FileReader()
-      //转base64
-      reader.onload = function(e) {
-          _this.Img = e.target.result
-      }
-      reader.readAsDataURL(file)
+      imgCompress(file, this.chatImgHadChoose, 1) // 图片处理
     },
     del_img () {
       this.Img = ''
@@ -112,6 +105,11 @@ export default {
     goBack () {
       this.$router.go(-1)
     },
+
+    chatImgHadChoose (res, index) {
+      this.Img = res
+    },
+
   },
 }
 </script>

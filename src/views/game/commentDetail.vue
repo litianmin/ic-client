@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- BEGIN 头部 -->
-    <mu-flex style="padding:.6rem .8rem; background:#4dd0e1; box-shadow: 0 0 1px #26c6da;" align-items="center">
+    <mu-flex style="padding:.6rem .8rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); box-shadow: 0 0 1px #26c6da;" align-items="center">
       <mu-flex align-items="center" @click="goBack">
         <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
       </mu-flex>
