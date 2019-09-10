@@ -1,7 +1,7 @@
 <template>
   <div style="max-width:100%;">
     <!-- BEGIN 头部 -->
-    <mu-flex style="padding:.6rem .8rem; background:#4dd0e1; box-shadow: 0 0 1px #26c6da;" align-items="center">
+    <mu-flex style="padding:.6rem .8rem; background:#4dd0e1; box-shadow: 0 0 1px #26c6da; background: linear-gradient(to right, #4dd0e1 , #80cbc4);" align-items="center">
       <mu-flex align-items="center" @click="goBack">
         <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
       </mu-flex>
@@ -13,7 +13,7 @@
 
 
     <!-- BEGIN 填写内容 -->
-    <mu-container v-show="!isPreview" style="padding:.5rem; width:100%;">
+    <mu-container style="padding:.5rem; width:100%; margin-bottom:3rem;">
 
       <!-- 职业 -->
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
@@ -90,110 +90,13 @@
           BorderColor="#e0e0e0"></ImgCropper>
       </mu-flex>
 
-
-      <!-- 上传招募图片 -->
-      <!-- <mu-row style="margin-top:1rem; margin-bottom:.5rem;">
-        <mu-flex style="position:relative; width:100%; height:10rem; background:#eeeeee; border-radius:.5rem;" justify-content="center" align-items="center">
-          <span @click="addImg" v-show="!teamInfo.displayImg" style="color:#4caf50;">点击上传招募图片</span>
-          <mu-icon v-show="teamInfo.displayImg" @click="delImg" value="cancel" color="#e91e63" style="position:absolute; top:0; right:0;"></mu-icon>
-          <img style="max-width:100%; max-height:9rem; border-radius:.3rem;" :src="teamInfo.displayImg" />
-        </mu-flex>
-        <input @change="getDisplayImg" ref="imgUpload" type="file" style="display:none;" accept="image/*"/>
-      </mu-row> -->
-
-      <!-- 上传角色图片 -->
-      <!-- <mu-row style="margin-top:1rem; margin-bottom:3rem;">
-        <mu-flex style="position:relative; width:100%; height:10rem; background:#eeeeee; border-radius:.5rem;" justify-content="center" align-items="center">
-          <span @click="addImg2" v-show="!teamInfo.roleImg" style="color:#4caf50;">点击上传角色图片</span>
-          <mu-icon v-show="teamInfo.roleImg" @click="delImg2" value="cancel" color="#e91e63" style="position:absolute; top:0; right:0;"></mu-icon>
-          <img style="max-width:100%; max-height:9rem; border-radius:.3rem;" :src="teamInfo.roleImg" />
-        </mu-flex>
-        <input @change="getRoleImg" ref="imgUpload2" type="file" style="display:none;" accept="image/*"/>
-      </mu-row> -->
-
     </mu-container>
     <!-- END 填写内容 -->
 
-    <!-- BEGIN 展示预览 -->
-    <mu-container v-show="isPreview" style="margin-top:2rem;">
-      <mu-paper class="paper-container" :z-depth="3">
-        <div style="padding:1.5rem;">
-          <!-- 队长基本信息(包括图片) -->
-          <mu-row style="margin-top:.2rem;" gutter>
-            <!-- 左边内容 -->
-            <mu-col col="6" style="padding:.5rem 0 0 .5rem;">
-              <mu-flex align-items="center" class="team-avatar-flex">
-                <mu-avatar size="25">
-                  <img src="http://img4.imgtn.bdimg.com/it/u=406799163,4023058385&fm=11&gp=0.jpg" />
-                </mu-avatar>
-                <span class="team-leader-nickname">风吹裤裆</span>
-              </mu-flex>
-
-              <div class="team-leaderinfo-item">
-                  <span class="team-leaderinfo-title">职业：</span>
-                  <span class="team-leaderinfo-cont">
-                    {{ teamInfo.role }}               
-                  </span>
-              </div>
-              <div class="team-leaderinfo-item">
-                <span class="team-leaderinfo-title">昵称：</span>
-                <span class="team-leaderinfo-cont">
-                  {{ teamInfo.roleName }}
-                </span>
-              </div>
-              <div class="team-leaderinfo-item">
-                <span class="team-leaderinfo-title">区服：</span>
-                <span class="team-leaderinfo-cont">
-                  {{ teamInfo.serverName }}
-                </span>
-              </div>
-              <div class="team-leaderinfo-item">
-                <span class="team-leaderinfo-title">等级/段位：</span>
-                <span class="team-leaderinfo-cont">
-                  {{ teamInfo.roleRank }}
-                </span>
-              </div>
-              <div class="team-leaderinfo-item">
-                <span class="team-leaderinfo-title">招募人数：</span>
-                <span class="team-leaderinfo-cont">
-                  <span>{{ teamInfo.recruitNumb }}</span>
-                </span>
-              </div>
-              <div class="team-leaderinfo-item">
-                <span class="team-leaderinfo-title">队友偏爱：</span>
-                <span class="team-leaderinfo-cont">
-                  {{ teamatePreferStr }}
-                </span>
-              </div>
-            </mu-col>  
-
-            <!-- 右边图片展示 -->
-            <mu-col col="6" justify-content="center" align-items="center">
-              <mu-flex justify-content="center" align-items="center" class="team-leaderinfo-img-flex">
-                <img v-show="teamInfo.displayImg" :src="teamInfo.displayImg" />
-              </mu-flex>
-            </mu-col>
-          </mu-row>
-
-          <!-- 招募宣言 -->
-          <mu-row style="margin-top:.5rem;" gutter>
-            <mu-col col="12" style="font-size:12px;">
-              <span style="color:#795548;">招募宣言：</span> 
-              <span style="color:#9e9e9e;">{{ teamInfo.announcement }}</span>
-            </mu-col>
-          </mu-row>
-        </div>
-      </mu-paper>
-    </mu-container>
-    <!-- END 展示预览 -->
-
-    <mu-flex class="mu-flex-four" justify-content="between">
-      <mu-button @click="previewPage" style="width:34%" color="#00bcd4">
-        {{ isPreviewCont }}
+    <mu-flex class="mu-flex-four" justify-content="center">
+      <mu-button @click="submit" style="width:95%;" color="#42a5f5">
         <mu-icon value="touch_app" size="14"></mu-icon>
-      </mu-button>
-      <mu-button @click="submit" style="width:65%;" color="#42a5f5">
-        发起招募
+        <span style="margin-left:.5rem;">发起招募</span>
       </mu-button>
     </mu-flex>
 
@@ -220,12 +123,8 @@ export default {
         announcement: '',
         roleImg: '',
       },
-      teamatePrefer: [],
       teamatePreferStr: '',
 
-      isPreview: false, // 是否预览
-      isPreviewCont: '预 览',
-      perferList: ['男生', '女生', '菜鸟', '大神', '萌妹子', '抠脚大叔'],
       RecruitNumbList: []
 
     }
@@ -236,23 +135,12 @@ export default {
       this.RecruitNumbList.push(i)
     }
   },
-  watch: {
-    teamatePrefer (curVal) {
-      this.teamatePreferStr = ''
-      for(let i = 0; i < curVal.length; i++) {
-        this.teamatePreferStr += curVal[i] + "/" 
-      }
-      this.teamatePreferStr = this.teamatePreferStr.substring(0, this.teamatePreferStr.length - 1)
-    }
-  },
   methods: {
     goBack () {
       this.$router.go(-1)
     },
 
     getRecruitImg (imgURL) {  // 获取招募图片
-      console.log(imgURL)
-      console.log(index)
       this.teamInfo.displayImg = imgURL
     },
 
@@ -261,65 +149,13 @@ export default {
     },
 
     delRecruitImg () {  // 删除招募图片
-
+      this.teamInfo.displayImg = ''
     },
 
     delRoleImg () { // 删除角色图片
-
-    },
-
-    delImg () {
-      this.teamInfo.displayImg = ''
-    },
-    addImg () {
-      this.$refs.imgUpload.click()
-    },
-    // getDisplayImg () {  // 获取评论图片
-    //   var _this = this
-    //   var event = event || window.event
-    //   var file = event.target.files[0]
-
-    //   // 先判断file的大小
-    //   if(file.size > 1024 * 1024 * 2) {
-    //     this.$toast.message('图片上传最大为2M！')
-    //     return
-    //   }
-
-    //   var reader = new FileReader()
-    //   //转base64
-    //   reader.onload = function(e) {
-    //     _this.teamInfo.displayImg = e.target.result
-    //   }
-    //   reader.readAsDataURL(file)
-    // },
-    // getRoleImg () {  // 获取评论图片
-    //   var _this = this
-    //   var event = event || window.event
-    //   var file = event.target.files[0]
-
-    //   // 先判断file的大小
-    //   if(file.size > 1024 * 1024 * 2) {
-    //     this.$toast.message('图片上传最大为2M！')
-    //     return
-    //   }
-
-    //   var reader = new FileReader()
-    //   //转base64
-    //   reader.onload = function(e) {
-    //     _this.teamInfo.roleImg = e.target.result
-    //   }
-    //   reader.readAsDataURL(file)
-    // },
-    delImg2 () {
       this.teamInfo.roleImg = ''
     },
-    addImg2 () {
-      this.$refs.imgUpload2.click()
-    },
-    previewPage () {
-      this.isPreview = !this.isPreview
-      this.isPreviewCont = this.isPreview === false ? '预 览' : '返 回'
-    },
+
     submit () {
 
       if(this.teamInfo.role.length == 0) {
@@ -349,17 +185,17 @@ export default {
 
       this.$axios.post(
         '/game/formATeam', {
-          g_id: Number(this.teamInfo.gameID),
+          gameID: Number(this.teamInfo.gameID),
           role: this.teamInfo.role,
-          role_name: this.teamInfo.roleName,
-          server_name: this.teamInfo.serverName,
-          role_rank: this.teamInfo.roleRank,
-          recruit_numb: this.teamInfo.recruitNumb,
-          recruit_way: Number(this.teamInfo.recruitWay),
-          teammate_prefer: this.teamatePreferStr,
+          roleName: this.teamInfo.roleName,
+          serverName: this.teamInfo.serverName,
+          roleRank: this.teamInfo.roleRank,
+          recruitNumb: this.teamInfo.recruitNumb,
+          recruitWay: Number(this.teamInfo.recruitWay),
+          teammatePrefer: this.teamatePreferStr,
           announcement: this.teamInfo.announcement,
-          display_img: this.teamInfo.displayImg,
-          role_img: this.teamInfo.roleImg
+          displayImg: this.teamInfo.displayImg,
+          roleImg: this.teamInfo.roleImg
         }
       ).then((resp)=>{
         console.log(resp)
@@ -389,7 +225,7 @@ export default {
 .mu-flex-two { width:75%; height:2rem; background:yellow; font-size:12px; }
 .mu-flex-two input { width:100%; height:100%; padding: 0 0 0 .5rem; }
 .mu-flex-three { height:2rem; font-size:12px; color:#795548; border-top-left-radius:.3rem;  border-bottom-left-radius:.3rem; padding:0 .5rem; }
-.mu-flex-four { position:fixed; width:100%; bottom:0; left:0; padding:0 .1rem; background:#e0e0e0; padding:.5rem .1rem; z-index:999 }
+.mu-flex-four { position:fixed; width:100%; bottom:0; left:0; background:#f5f5f5; padding:.5rem .1rem; z-index:999; border-top:1px solid #eeeeee; }
 
 .mu-container-one { margin-top:.5rem; width:100%; height:100%; border-radius:.5rem; padding:.5rem .5rem 0 .5rem; background:#eeeeee; }
 
