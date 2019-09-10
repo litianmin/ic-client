@@ -1,7 +1,7 @@
 <template>
   <div style="max-width:100%;">
     <!-- BEGIN 头部 -->
-    <mu-flex style="padding:.6rem .8rem; background:#4dd0e1; box-shadow: 0 0 1px #26c6da; background: linear-gradient(to right, #4dd0e1 , #80cbc4);" align-items="center">
+    <mu-flex style="padding:.6rem .8rem; box-shadow: 0 0 1px #26c6da; background: linear-gradient(to right, #4dd0e1 , #80cbc4);" align-items="center">
       <mu-flex align-items="center" @click="goBack">
         <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
       </mu-flex>
@@ -10,7 +10,6 @@
       </mu-flex>
     </mu-flex>
     <!-- END 头部 -->
-
 
     <!-- BEGIN 填写内容 -->
     <mu-container style="padding:.5rem; width:100%; margin-bottom:3rem;">
@@ -156,7 +155,7 @@ export default {
       this.teamInfo.roleImg = ''
     },
 
-    submit () {
+    submit () { // 提交内容
 
       if(this.teamInfo.role.length == 0) {
         this.$toast.message('职业不能为空，如果没有请填：无')
@@ -198,7 +197,6 @@ export default {
           roleImg: this.teamInfo.roleImg
         }
       ).then((resp)=>{
-        console.log(resp)
         if(resp.data.code === 20000) {
           this.$toast.message('创建队伍成功')
           // TODO 跳转到组队详细页面(此页面可进行分享，加入组队)
@@ -206,9 +204,6 @@ export default {
         }
       })
     },
-    getImgBase64 (data) {
-      console.log(data)
-    }
   },
 }
 </script>
