@@ -193,7 +193,7 @@
             </mu-row>
 
             <!-- 招募宣言 -->
-            <mu-flex style="margin-top:-1.3rem;" wrap="wrap">
+            <mu-flex style="margin-top:-1rem;" wrap="wrap">
               <mu-flex style="font-size:12px; width:100%;">
                 <span style="color:#795548;">队友偏向：</span> 
                 <span style="color:#9e9e9e;">{{ item.teanmate_prefer }}</span>
