@@ -45,7 +45,7 @@
 
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="start">
         <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-top:.3rem;">详细内容：</span>
-        <textarea v-model="PartyDetail" style="width:75%; height:6rem; border:1px solid #bdbdbd; color:#212121; font-size:13px; padding:.4rem; border-radius:.2rem;" placeholder="大家来这里一起玩吧，出来走走也好！（活动的详细内容）">
+        <textarea v-model="PartyDetail" style="width:75%; height:5rem; border:1px solid #bdbdbd; color:#212121; font-size:13px; padding:.4rem; border-radius:.2rem;" placeholder="大家来这里一起玩吧，出来走走也好！（活动的详细内容）">
         </textarea>
       </mu-flex>
 
@@ -81,11 +81,24 @@
         <mu-date-input v-model="EndTime" type="dateTime" prefix="结束时间：" style="font-size:12px;" landscape container="bottomSheet" clock-type="24hr" view-type="clock" actions icon="today"></mu-date-input>
       </mu-row>
 
-      <!-- 上传图片 -->
-      <mu-flex style="width:100%; margin-bottom:.5rem;" align-items="center">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem;">招募图片：（最多三张）</span>
+      <!-- 招募图片 -->
+      <mu-flex style="width:100%; margin-bottom:.5rem;" align-items="start">
+        <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-top:.3rem;">招募图片：</span>
+        <ImgCropper 
+          @getImgURL="getRecruitImg" 
+          @delImg="delRecruitImg"
+          ImgWidth="177px" 
+          ImgHeight="100px" 
+          BorderColor="#e0e0e0"></ImgCropper>
       </mu-flex>
-      <mu-flex align-items="center" justify-content="around" style="margin-top:1rem; border:1px solid #bdbdbd; border-radius:.3rem; padding:1rem .5rem;">
+
+
+      <!-- 上传展示图片 -->
+      <mu-flex style="width:100%; margin-bottom:.5rem;" align-items="center">
+        <span style="font-size:13px; color:#795548; margin-right:.5rem;">展示图片：（最多三张）</span>
+      </mu-flex>
+
+      <mu-flex align-items="center" justify-content="around" style="margin-top:1rem; border:1px solid #eeeeee; border-radius:.3rem; padding:1rem .5rem;">
         <mu-flex v-for="(item, index) in UploadImgList" :key="index" style="width:30%; height:8rem; padding:1rem; position:relative; border:1px solid #e0e0e0; border-radius:.3rem; " justify-content="center" align-items="center">
             <mu-icon @click="delImg(index)" value="cancel" color="#f06292" style="position:absolute; top:0; right:0;"></mu-icon>
             <img style="max-width:100%; max-height:100%; border-radius:.3rem;" :src="item" alt="">
@@ -121,7 +134,12 @@
 </template>
 
 <script>
+import ImgCropper from '@/components/ImgCropper'
+import { imgCompress } from '@/common/imgDeal.js'
 export default {
+  components: {
+    ImgCropper
+  },
   data () {
     return {
       PartyTheme: 1,  // 聚会的主题
@@ -138,8 +156,10 @@ export default {
       AddrChooseOperate: 0, // 0=>聚会地点， 1=>集合地点
       BeginTime: new Date, // 活动开始时间
       EndTime: undefined, // 活动结束时间
-      UploadImgList: [],  // 招募图片
+      UploadImgList: [],  // 展示图片
+      UploadImgURLList: [], // 展示图片的URL
       CouldAddImg: true,  // 判断是否可以继续添加图片
+      RecruitImg: ''  // 招募图片
     }
   },
   mounted () {
@@ -213,32 +233,38 @@ export default {
     shutdownWindow () { // 关闭地图窗口
       this.AddrChooseWindowIsShow = false
     },
+
+    getRecruitImg (imgURL) {  // 获取招募图片
+      this.RecruitImg = imgURL
+    },
+
+    delRecruitImg () {  // 删除招募图片
+      this.RecruitImg = ''
+    },
+
     addImg () {
       this.$refs.imgUpload.click()
     },
     getImgList () {  // 获取评论图片
-      var _this = this
-      var event = event || window.event
+      let _this = this
+      let event = event || window.event
 
-      for(let i = 0; i < event.target.files.length; i++) {
-        var file = event.target.files[i]
-        if(file.size > 1024 * 1024 * 3) {
-          this.$toast.message('图片上传最大为2M')
-          continue
-        }
-        var reader = new FileReader()
-        //转base64
-        reader.onload = function(e) {
-          if(_this.UploadImgList.length < 3) {
-            _this.UploadImgList.push(e.target.result)
-            // reader.readAsDataURL(file)
-          }
-        }
-        reader.readAsDataURL(file)
+      for( let i = 0; i < event.target.files.length; i++ ) {
+        let file = event.target.files[i]
+
+        imgCompress(file, this.imgHadChoose, 'party', i) // 图片处理
       }
+      this.$refs.imgUpload.value = ''
     },
+
+    imgHadChoose (res, index, imgURL) {
+      this.UploadImgList.push(res)
+      this.UploadImgURLList.push(imgURL)
+    },
+
     delImg (index) {
       this.UploadImgList.splice(index, 1)
+      this.UploadImgURLList.splice(index, 1)
     },
     submit () {
       let partyTheme = Number(this.PartyTheme)  // 主题
@@ -250,7 +276,8 @@ export default {
       let meetingVenue = this.MeetingVenueObj  // 集合地点
       let partyBeginTime = 0 // 活动开始时间
       let partyEndTime = 0 // 活动结束时间
-      let uploadImgList = this.UploadImgList  // 招募图片列表
+      let recruitImg = this.RecruitImg
+      let uploadImgList = this.UploadImgURLList  // 招募图片列表
 
       if(!!this.EndTime === true) {
         partyEndTime = Date.parse(this.EndTime.toString()) / 1000
@@ -271,6 +298,7 @@ export default {
           meetingVenue,
           partyBeginTime,
           partyEndTime,
+          recruitImg,
           uploadImgList,
         }
       ).then((resp)=>{

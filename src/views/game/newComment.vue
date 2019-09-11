@@ -35,7 +35,6 @@
         <img style="max-width:100%; max-height:100%; border-radius:.3rem;" :src="c_img" alt="">
     </div>
 
-
   </div>
 </template>
 
@@ -58,7 +57,6 @@ export default {
       this.$refs.imgUpload.click()
     },
     getCommentImg () {  // 获取评论图片
-      let _this = this
       let event = event || window.event
       let file = event.target.files[0]
 

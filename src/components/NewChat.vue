@@ -69,7 +69,6 @@ export default {
       this.$refs.imgUpload.click()
     },
     getChatImg () {  // 获取评论图片
-      let _this = this
       let event = event || window.event
       let file = event.target.files[0]
       let mod = ''
