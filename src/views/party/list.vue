@@ -50,7 +50,7 @@
           <div style="padding:.5rem; border-bottom:1px solid #eeeeee; ">
             <mu-flex align-items="center">
               <mu-avatar size="35" :class="item.captainSex == 1 ? 'avatar-male' : 'avatar-female'">
-                <img :src="item.captainAvatar" alt="">
+                <img :src="item.captainAvatar | imgPrefixDeal()" alt="">
               </mu-avatar>
               <div style="margin-left:1rem;">
                 <mu-row style="font-size:12px;">{{ item.captainNickname }}</mu-row>
@@ -62,7 +62,7 @@
 
           <!-- 展示图片 -->
           <mu-flex style="position:relative;" justify-content="center">
-            <img style="max-width:100%; max-height:30rem;" :src="item.recruitImg" alt="">
+            <img style="max-width:100%; max-height:30rem;" :src="item.recruitImg | imgPrefixDeal()" alt="">
 
             <mu-flex style="width:100%; position:absolute; bottom:0; padding:0 .2rem; background:rgba(0, 0, 0, .5); padding:1rem;" align-items="center">
               <span style="color:#fff;">{{ item.partyTheme }} - {{ item.partySiteName }}</span>
@@ -80,7 +80,7 @@
             </mu-row>
             <mu-row style="margin-bottom:.3rem;">
               <span style="color:#795548; font-size:12px;">活动时间:</span>
-              <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyBeginTime }}  ~  {{ item.partyEndTime }}</span>
+              <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyBeginTime | formatTime('{y}/{m}/{d} {h}:{i}') }}  ~  {{ item.partyEndTime | formatTime('{y}/{m}/{d} {h}:{i}') }}</span>
             </mu-row>
             <mu-row style="margin-bottom:.3rem;">
               <span style="color:#795548; font-size:12px;">集合地点:</span>
@@ -102,8 +102,8 @@
 
           <mu-flex style="font-size:12px; padding:.8rem 1rem 1rem .5rem; margin-top:.5rem;" align-items="center">
             <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
-            <span style="font-size:12px;">距离你 <span style="font-size:12px;">{{ item.distance }}</span></span>
-            <span style="margin-left:auto; color:#9e9e9e; font-size:12px;">{{ item.createTime }}· <span @click="linkToTeamDetail(item.teamID)" style="color:#00bcd4;"> 查看详情</span></span>
+            <span style="font-size:12px;">距离你 <span style="font-size:12px;">{{ item.distance | distanceFormat() }}</span></span>
+            <span style="margin-left:auto; color:#9e9e9e; font-size:12px;">{{ item.createTime | formatTime() }}· <span @click="linkToTeamDetail(item.teamID)" style="color:#00bcd4;"> 查看详情</span></span>
           </mu-flex>
 
         </div>
@@ -176,10 +176,11 @@ export default {
     },
     loadTeamList () { // 加载组队
       this.Loading = true
+      let userAddrInfo = utils.getLocationInfo()
       this.$axios.post('/party/teamList', {
         page: this.Page,
-        lng: this.Lng,
-        lat: this.Lat,
+        lng: userAddrInfo.lng,
+        lat: userAddrInfo.lat,
         theme: this.Theme
       }).then((resp)=>{
 
@@ -191,26 +192,7 @@ export default {
         for(let i = 0; i < listInfo.length; i++) {
           // 处理主题
           listInfo[i].partyTheme = utils.getPartyThemeName(listInfo[i].partyTheme)
-
-          listInfo[i].partyTitle = listInfo[i].partyTitle == '' ? '一起来玩吧' : listInfo[i].partyTitle
-          listInfo[i].partyDetail = listInfo[i].partyDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : listInfo[i].partyDetail
-          listInfo[i].teammatePrefer = listInfo[i].teammatePrefer == '' ? '随便来！' : listInfo[i].teammatePrefer
-
-          // 图片路径处理
-          listInfo[i].recruitImg = listInfo[i].recruitImg == '' ? utils.PartyDefaultDisplayImg : utils.imgPrefixDeal(listInfo[i].recruitImg)
-          listInfo[i].captainAvatar = utils.imgPrefixDeal(listInfo[i].captainAvatar)
-          // 先格式化活动时间  {{ item.partyBeginTime }}  ~  {{ item.partyEndTime }}
-          // 2019/1/02 02:02  ~  2019/3/02 03:04
-          listInfo[i].partyBeginTime = utils.unixToDate(listInfo[i].partyBeginTime)
-          listInfo[i].partyEndTime = utils.unixToDate(listInfo[i].partyEndTime)
-          // 距离处理
-          listInfo[i].distance = utils.distanceFormat(listInfo[i].distance)
-          // 队伍发布时间处理
-          listInfo[i].createTime = utils.getDateDiff(listInfo[i].createTime, true)
-
         }
-
-
         this.TeamList = this.TeamList.concat(dataBack.listInfo)
         this.Page++
         this.Loading = false

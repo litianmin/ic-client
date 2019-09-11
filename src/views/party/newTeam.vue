@@ -98,7 +98,7 @@
         <span style="font-size:13px; color:#795548; margin-right:.5rem;">展示图片：（最多三张）</span>
       </mu-flex>
 
-      <mu-flex align-items="center" justify-content="around" style="margin-top:1rem; border:1px solid #eeeeee; border-radius:.3rem; padding:1rem .5rem;">
+      <mu-flex align-items="center" justify-content="around" style="margin-top:1rem; margin-bottom:3rem; border:1px solid #eeeeee; border-radius:.3rem; padding:1rem .5rem;">
         <mu-flex v-for="(item, index) in UploadImgList" :key="index" style="width:30%; height:8rem; padding:1rem; position:relative; border:1px solid #e0e0e0; border-radius:.3rem; " justify-content="center" align-items="center">
             <mu-icon @click="delImg(index)" value="cancel" color="#f06292" style="position:absolute; top:0; right:0;"></mu-icon>
             <img style="max-width:100%; max-height:100%; border-radius:.3rem;" :src="item" alt="">
@@ -110,9 +110,16 @@
       </mu-flex>
 
       <!-- 提交按钮 -->
-      <mu-flex align-items="center" justify-content="center" style=" width:100%; margin-top:1.5rem;">
+      <!-- <mu-flex align-items="center" justify-content="center" style=" width:100%; margin-top:1.5rem;">
         <mu-button @click="submit" style="width:100%;" color="#00bcd4">
           发起组队
+        </mu-button>
+      </mu-flex> -->
+
+      <mu-flex style="position:fixed; width:100%; bottom:0; left:0; background:#f5f5f5; padding:.5rem .1rem; z-index:999; border-top:1px solid #eeeeee;" justify-content="center">
+        <mu-button @click="submit" style="width:95%;" color="#00bcd4">
+          <mu-icon value="touch_app" size="14"></mu-icon>
+          <span style="margin-left:.5rem;">发起组队</span>
         </mu-button>
       </mu-flex>
 

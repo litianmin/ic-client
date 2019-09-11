@@ -93,7 +93,7 @@
     <!-- END 填写内容 -->
 
     <mu-flex class="mu-flex-four" justify-content="center">
-      <mu-button @click="submit" style="width:95%;" color="#42a5f5">
+      <mu-button @click="submit" style="width:95%;" color="#00bcd4">
         <mu-icon value="touch_app" size="14"></mu-icon>
         <span style="margin-left:.5rem;">发起招募</span>
       </mu-button>

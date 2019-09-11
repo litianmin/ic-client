@@ -104,14 +104,14 @@
 
     <mu-flex style="font-size:12px; padding:.8rem 1rem 1rem .5rem; margin-top:.5rem; border-bottom:2px solid #fff;" align-items="center">
       <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
-      <span style="font-size:13px;">距离你 <span style="font-size:13px;">{{ TeamBaseInfo.distance }}</span></span>
+      <span style="font-size:13px;">距离你 <span style="font-size:13px;">{{ TeamBaseInfo.distance | distanceFormat() }}</span></span>
       <span style="margin-left:auto; color:#9e9e9e; font-size:13px;">{{ TeamBaseInfo.createTime | formatTime('{y}/{m}/{d} {h}:{i}') }}</span>
     </mu-flex>
 
     <div style="padding:.5rem; border-bottom:1px dashed #eeeeee; ">
       <mu-flex align-items="center">
         <mu-avatar size="38" :class="TeamBaseInfo.captainSex == 1 ? 'avatar-male' : 'avatar-female'">
-          <img :src="TeamBaseInfo.captainAvatar" alt="">
+          <img :src="TeamBaseInfo.captainAvatar | imgPrefixDeal()" alt="">
         </mu-avatar>
         <div style="margin-left:.5rem;">
           <mu-row style="font-size:13px;">{{ TeamBaseInfo.captainNickname }}</mu-row>
@@ -124,7 +124,7 @@
     <!-- BEGIN 队长和队友列表 -->
     <mu-flex style="padding:.5rem 1rem; background:#fff;" justify-content="center" align-items="center" wrap="wrap">
         <mu-avatar v-for="(item, index) in TeammateList" :key="index" size="35" :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'" style="margin-right:.5rem;">
-          <img :src="item.avatar" alt="">
+          <img :src="item.avatar | imgPrefixDeal()" alt="">
         </mu-avatar>
         <span v-if="TeamBaseInfo.recruitStatus == 0" @click="joinTeam">
           <svg-icon icon-class="add_circle_outline" style="font-size:40px; color:red;"></svg-icon>
@@ -248,30 +248,14 @@ export default {
         // 渲染图片路径处理
         this.RecruitImgs = dataBack.teamBaseInfo.recruitImg
         this.SwiperIsRender = true
-
         let teamBaseInfo = dataBack.teamBaseInfo
         teamBaseInfo.partyTheme = utils.getPartyThemeName(teamBaseInfo.partyTheme)
-        teamBaseInfo.partyTitle = teamBaseInfo.partyTitle == '' ? '一起来玩吧' : teamBaseInfo.partyTitle
-        teamBaseInfo.partyDetail = teamBaseInfo.partyDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : teamBaseInfo.partyDetail
-        teamBaseInfo.teammatePrefer = teamBaseInfo.teammatePrefer == '' ? '随便来！' : teamBaseInfo.teammatePrefer
-
-        // 距离处理
-        teamBaseInfo.distance = utils.distanceFormat(teamBaseInfo.distance)
-        // 队伍发布时间处理
         // 已招募人数
         teamBaseInfo.hadRecruitNumb = dataBack.teammateList.length
-
         this.TeamBaseInfo = teamBaseInfo  // 赋值
         this.TeammateList = dataBack.teammateList
-        for(let i = 0; i < this.TeammateList.length; i++) { // 队友头像处理
-          this.TeammateList[i].avatar = utils.imgPrefixDeal(this.TeammateList[i].avatar)
-        }
-
         this.IsCaptain = dataBack.isCaptain
         this.JointeamStmt = dataBack.joinStmt
-
-        // 图片路径处理
-        teamBaseInfo.captainAvatar = utils.imgPrefixDeal(teamBaseInfo.captainAvatar)
 
         this.ShareTitle = '助助社交，更多好玩的party聚会等着你，一起来吧！', // 分享title
         this.ShareDesc = teamBaseInfo.partyTitle,  // 分享描述
@@ -381,10 +365,10 @@ export default {
 </script>
 
 <style scoped>
-.mine-appbar { width: 100%; height:2.5rem; }
+.mine-appbar { width: 100%; height:2.5rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); }
 
 .mine-menu-box { margin-top:1rem; right:.5rem; }
-.mine-menu-list { background:#4dd0e1; color:white; padding:0; }
+.mine-menu-list { background:#4dd0e1; color:white; padding:0; background: linear-gradient(to right, #4dd0e1 , #80cbc4); }
 .mine-menu-item { color:#fff; font-size:12px; }
 
 .main-cont-div { padding:.5rem 1rem 0rem .5rem; }
