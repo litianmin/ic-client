@@ -1,15 +1,17 @@
 <template>
   <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:#f5f5f5;">
     <!-- BEGIN 头部 -->
-    <mu-appbar class="mine-appbar" color="#009688">
-        <mu-button icon slot="left" @click="goBack">
-          <mu-icon value="navigate_before"></mu-icon>
-        </mu-button>
-        
-        <div style="font-size:14px;">
-          创建评论
-        </div>
-    </mu-appbar>
+
+    <mu-flex 
+      style="padding:.6rem .8rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); box-shadow: 0 0 1px #26c6da;" 
+      align-items="center">
+      <mu-flex align-items="center" @click="goBack">
+        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+      </mu-flex>
+      <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
+        <span style="color:#fff;">创建评论</span>
+      </mu-flex>
+    </mu-flex>
     <!-- END 头部 -->
 
 
@@ -38,12 +40,14 @@
 </template>
 
 <script>
+import { imgCompress } from '@/common/imgDeal.js'
 export default {
   data () {
     return {
       gameID: 0,
       c_cont: '',
       c_img: '',  // base64图片数据
+      imgURL: ''  // 图片的url
     }
   },
   mounted () {
@@ -54,22 +58,22 @@ export default {
       this.$refs.imgUpload.click()
     },
     getCommentImg () {  // 获取评论图片
-      var _this = this
-      var event = event || window.event
-      var file = event.target.files[0]
-      if(file.size > 1024 * 1024 * 2) {
-        this.$toast.message('图片上传最大为2M')
-        return
-      }
-      var reader = new FileReader()
-      //转base64
-      reader.onload = function(e) {
-          _this.c_img = e.target.result
-      }
-      reader.readAsDataURL(file)
+      let _this = this
+      let event = event || window.event
+      let file = event.target.files[0]
+
+      imgCompress(file, this.chatImgHadChoose, 'game', 0) // 图片处理
+      this.$refs.imgUpload.value = ''
     },
+
+    chatImgHadChoose (res, index, imgURL) {
+      this.c_img = res
+      this.ImgURL = imgURL
+    },
+
     del_img () {
       this.c_img = ''
+      this.imgURL = ''
     },
     commentSubmit () {
       if(this.c_cont.length == 0 && this.c_img.length == 0) {
@@ -81,14 +85,13 @@ export default {
         {
           g_id: Number(this.gameID),
           c_cont: this.c_cont,
-          c_img: this.c_img
+          c_img: this.imgURL
         }
       ).then((resp)=>{
         if(resp.data.code === 20000) {
           this.$toast.success('评论成功')
           this.$router.go(-1)
         }
-        // console.log(resp)
       })
     },
     goBack () {

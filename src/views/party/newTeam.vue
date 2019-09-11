@@ -1,16 +1,17 @@
 <template>
   <div :class="AddrChooseWindowIsShow == true ? 'body-fix': ''" style="background:#fff;">
     <!-- 导航条 -->
-    <mu-appbar class="mine-appbar" color="#00bcd4" z-depth="1">
-      <mu-button icon slot="left" @click="goBack">
-        <mu-icon value="navigate_before"></mu-icon>
-      </mu-button>
-      
-      <div ref="menuHide" style="font-size:14px;">
-        创建party组队
-      </div>
-    </mu-appbar>
 
+    <mu-flex 
+      style="padding:.6rem .8rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); box-shadow: 0 0 1px #26c6da;" 
+      align-items="center">
+      <mu-flex align-items="center" @click="goBack">
+        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+      </mu-flex>
+      <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
+        <span style="color:#fff;">创建party组队</span>
+      </mu-flex>
+    </mu-flex>
     <!-- 内容：招募图片，最多三张， -->
     <!-- 招募图片（最多三张）、主题、 活动主要内容、
     活动地点、集合地点、活动时间、招募人数、队友偏爱、招募宣言、 -->

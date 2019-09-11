@@ -51,10 +51,11 @@ export default {
       GameID: 0,
       Cont: '',
       Img: '',  // base64图片数据
+      ImgURL: '', // 图片的url
     }
   },
   mounted () {
-    this.TeamType = this.$route.query.teamType
+    this.TeamType = Number(this.$route.query.teamType)
     this.TeamID = this.$route.query.teamID
     this.ReplyTo = this.$route.query.replyTo
     this.ReplyID = this.$route.query.replyID
@@ -68,13 +69,36 @@ export default {
       this.$refs.imgUpload.click()
     },
     getChatImg () {  // 获取评论图片
-      var _this = this
-      var event = event || window.event
-      var file = event.target.files[0]
-      imgCompress(file, this.chatImgHadChoose, '', 1) // 图片处理
+      let _this = this
+      let event = event || window.event
+      let file = event.target.files[0]
+      let mod = ''
+      switch(this.TeamType) {
+        case 1:
+          mod = 'game'
+          break
+        case 2:
+          mod = 'party'
+          break
+        case 3:
+          mod = 'travel'
+          break
+        case 4:
+          mod = 'instant'
+          break
+        case 5:
+          mod = 'activity'
+          break
+        default:
+          mod = ''
+          break
+      }
+      imgCompress(file, this.chatImgHadChoose, mod, 0) // 图片处理
+      this.$refs.imgUpload.value = ''
     },
     del_img () {
       this.Img = ''
+      this.ImgURL = ''
     },
     commentSubmit () {
       if(this.Cont.length == 0 && this.Img.length == 0) {
@@ -88,7 +112,7 @@ export default {
           teamType: Number(this.TeamType),
           teamID: Number(this.TeamID),
           cont: this.Cont,
-          img: this.Img,
+          img: this.ImgURL,
           replyTo: Number(this.ReplyTo),
           replyID: Number(this.ReplyID)
         }
@@ -108,6 +132,7 @@ export default {
 
     chatImgHadChoose (res, index, imgURL) {
       this.Img = res
+      this.ImgURL = imgURL
     },
 
   },

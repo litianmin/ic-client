@@ -65,7 +65,6 @@ export function imgCompress(file, callBack, mod, index) {
         newCallBack(base64, newIndex, imgURL)
       })
       // 回调函数返回base64的值
-      // console.log(base64)
       
     }
 

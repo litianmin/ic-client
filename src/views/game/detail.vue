@@ -322,7 +322,6 @@ export default {
       this.$axios.post(
         `/game/detail/${this.gameID}`,{}
       ).then((resp)=>{
-        console.log(resp)
 
         if(resp.data.code != 20000) {
           this.$toast.message('系统繁忙')
@@ -395,7 +394,6 @@ export default {
     teamLoad () {
       this.teamLoading = true
       this.$axios.post(`/game/teamList/${this.teamPage}/${this.gameID}`,{}).then((resp)=>{
-        console.log(resp.data)
         
         if(resp.data.code != 20000) {
           this.$toast.message(resp.data.msg)

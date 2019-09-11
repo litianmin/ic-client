@@ -1,17 +1,20 @@
 <template>
   <div :class="AddrChooseWindowIsShow == true ? 'body-fix': ''" style="background:#fff;">
     <!-- BEGIN 头部 -->
-    <mu-appbar class="mine-appbar" color="#00bcd4" z-depth="1">
-      <mu-button icon slot="left" @click="goBack">
-        <mu-icon value="navigate_before"></mu-icon>
-      </mu-button>
-      
-      <div ref="menuHide" style="font-size:14px;">
-        聚会party
-      </div>
+    <mu-flex 
+      style="padding:.6rem .8rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); box-shadow: 0 0 1px #26c6da;" 
+      align-items="center">
+      <mu-flex align-items="center" @click="goBack">
+        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+      </mu-flex>
+      <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
+        <span style="color:#fff;">聚会party</span>
+      </mu-flex>
 
-      <span @click="newTeam" style="color:#fff; font-size:12px; padding:0 .5rem;" slot="right">创建组队</span>
-    </mu-appbar>
+      <mu-flex style="margin-left:auto;">
+        <span @click="newTeam" style="color:#fff; font-size:12px; padding:0 .5rem;" slot="right">创建组队</span>
+      </mu-flex>
+    </mu-flex>
     <!-- END 头部 -->
 
     <!-- BEGIN 主题和地址选择 -->
