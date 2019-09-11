@@ -1,10 +1,12 @@
+import axios from '@/request.js'
+
 /** 图片压缩
- *  @param {*} pointer 
  *  @param {func} callBack  回调函数
  *  @param {obj} file 文件
+ *  @param {string} mod 属于哪个模块
  *  @param {numb} index 下标
  *  */ 
-export function imgCompress(file, callBack, index) {
+export function imgCompress(file, callBack, mod, index) {
   var ready = new FileReader()
   /*开始读取指定的Blob对象或File对象中的内容. 当读取操作完成时,readyState属性的值会成为DONE,如果设置了onloadend事件处理程序,则调用之.同时,result属性中将包含一个data: URL格式的字符串以表示所读取文件的内容.*/
   ready.readAsDataURL(file)
@@ -21,6 +23,7 @@ export function imgCompress(file, callBack, index) {
     img.src = e.target.result
     let newCallBack = callBack
     let newIndex = index
+    let newMod = mod
     img.onload = function (e) {
       let that = this
       // 默认按比例压缩
@@ -54,44 +57,17 @@ export function imgCompress(file, callBack, index) {
       ctx.drawImage(that, 0, 0, w, h)
       // quality值越小，所绘制出的图像越模糊
       let base64 = canvas.toDataURL('image/jpeg', 1)
+      axios.post('/base64ImgUpload', {  // 上传图片
+        imgStr: base64,
+        type: newMod
+      }).then((resp) => {
+        let imgURL = resp.data.msg
+        newCallBack(base64, newIndex, imgURL)
+      })
       // 回调函数返回base64的值
       // console.log(base64)
-      newCallBack(base64, newIndex)
+      
     }
 
   }
 }
-
-// canvasDataURL (path, obj, callback) {
-//   let img = new Image()
-//   img.src = path
-//   img.onload = function(){
-//     let that = this
-//     // 默认按比例压缩
-//     let w = that.width,
-//         h = that.height,
-//         scale = w / h
-//     w = obj.width || w
-//     h = obj.height || (w / scale)
-//     let quality = 0.7  // 默认图片质量为0.7
-//     //生成canvas
-//     let canvas = document.createElement('canvas')
-//     let ctx = canvas.getContext('2d')
-//     // 创建属性节点
-//     let anw = document.createAttribute("width")
-//     anw.nodeValue = 750
-//     let anh = document.createAttribute("height")
-//     anh.nodeValue = 420
-//     canvas.setAttributeNode(anw)
-//     canvas.setAttributeNode(anh)
-//     ctx.drawImage(that, 0, 0, 750, 420)
-//     // 图像质量
-//     if(obj.quality && obj.quality <= 1 && obj.quality > 0){
-//         quality = obj.quality
-//     }
-//     // quality值越小，所绘制出的图像越模糊
-//     let base64 = canvas.toDataURL('image/jpeg', 1)
-//     // 回调函数返回base64的值
-//     callback(base64)
-//   }
-// },

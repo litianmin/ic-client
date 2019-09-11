@@ -71,7 +71,7 @@ export default {
       var _this = this
       var event = event || window.event
       var file = event.target.files[0]
-      imgCompress(file, this.chatImgHadChoose, 1) // 图片处理
+      imgCompress(file, this.chatImgHadChoose, '', 1) // 图片处理
     },
     del_img () {
       this.Img = ''
@@ -106,7 +106,7 @@ export default {
       this.$router.go(-1)
     },
 
-    chatImgHadChoose (res, index) {
+    chatImgHadChoose (res, index, imgURL) {
       this.Img = res
     },
 
