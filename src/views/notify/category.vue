@@ -1,15 +1,16 @@
 <template>
   <div>
     <!-- BEGIN 头部 -->
-    <mu-appbar class="mine-appbar" color="#00bcd4" z-depth="1">
-      <mu-button icon slot="left">
+    <mu-flex 
+      style="padding:.6rem .8rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); box-shadow: 0 0 1px #26c6da; margin-bottom:.5rem;" 
+      align-items="center">
+      <mu-flex align-items="center">
         <svg-icon icon-class="msg" class="icon-class"></svg-icon>
-      </mu-button>
-      
-      <div ref="menuHide" style="font-size:14px;">
-        消息中心
-      </div>
-    </mu-appbar>
+      </mu-flex>
+      <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
+        <span style="color:#fff;">消息中心</span>
+      </mu-flex>
+    </mu-flex>
     <!-- END 头部 -->
 
     <div style="padding:0 1rem; margin-bottom:2.5rem;">

@@ -311,6 +311,7 @@ export default {
       let meetingVenue = this.MeetingVenueObj // 集合地点
       let meetingTime = Date.parse(this.MeetingTime.toString()) / 1000  // 见面的时间
       let travelDetail = this.TravelDetail // 详细说明
+      let recruitImg = this.RecruitImg
       let stepList = this.StepList // 路线活动地点
 
       // 现在来进行数据的验证
@@ -357,6 +358,7 @@ export default {
           meetingVenue,
           meetingTime,
           travelDetail,
+          recruitImg,
           stepList,
         }
       ).then((resp)=>{

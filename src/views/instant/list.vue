@@ -1,32 +1,33 @@
 <template>
   <div>
     <!-- BEGIN 头部 -->
-    <mu-appbar class="mine-appbar" color="#4caf50" z-depth="1">
-      <mu-button icon slot="left" @click="goBack">
-        <mu-icon value="navigate_before"></mu-icon>
-      </mu-button>
-      
-      <div ref="menuHide" style="font-size:14px;">
-        即时组队
-      </div>
-    </mu-appbar>
+    <mu-flex 
+      style="padding:.6rem .8rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); box-shadow: 0 0 1px #26c6da; margin-bottom:.5rem;" 
+      align-items="center">
+      <mu-flex align-items="center" @click="goBack">
+        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+      </mu-flex>
+      <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
+        <span style="color:#fff;">即时组队</span>
+      </mu-flex>
+    </mu-flex>
     <!-- END 头部 -->
     <mu-load-more :loading="Loading" @load="loadTeamList" :loaded-all="IsTheLast">
       <div style="width:100%; padding:.5rem;">
         <mu-row v-for="(item, index) in TeamList" :key="index" @click="linkToDetail(item.teamID)" style="width:100%; padding:.5rem; margin-bottom:.8rem; border-radius:.3rem; background:#fff; border:1px solid #e0e0e0;">
           <mu-flex style="width:100%;" align-items="center">
-            <mu-avatar>
-              <img :src="item.avatar" alt="">
+            <mu-avatar size="30">
+              <img :src="item.avatar | imgPrefixDeal()" alt="">
             </mu-avatar>
-            <span style="font-weight:700; margin-left:.2rem;">{{ item.nickname }}</span>
-            <span style="margin-left:auto; font-size:12px; color:#9e9e9e;">{{ item.createTime }}</span>
+            <span style="font-weight:700; margin-left:.5rem;">{{ item.nickname }}</span>
+            <span style="margin-left:auto; font-size:12px; color:#9e9e9e;">{{ item.createTime | formatTime() }}</span>
           </mu-flex>
-          <mu-row style="padding:.5rem .5rem .5rem 1rem; font-size:13px;">
+          <mu-row style="padding:.7rem .5rem .3rem 1rem; font-size:13px;">
             {{ item.cont }}
           </mu-row>
           <mu-flex style="width:100%; padding:.5rem" align-items="center">
             <mu-icon value="person_pin_circle" color="#4caf50" size="20"></mu-icon>
-            <span style="font-size:12px; color:#9e9e9e;">地点：{{ item.siteName }} · 距离你{{ item.distance }}</span>
+            <span style="font-size:12px; color:#9e9e9e;">地点：{{ item.siteName }} · 距离你{{ item.distance | distanceFormat() }}</span>
           </mu-flex>
         </mu-row>
       </div>
@@ -100,11 +101,6 @@ export default {
         this.IsTheLast = dataBack.isTheLast
         let listInfo = dataBack.listInfo
 
-        for(let i = 0; i < listInfo.length; i++) {
-          listInfo[i].createTime = utils.getDateDiff(listInfo[i].createTime, true)
-          listInfo[i].distance = utils.distanceFormat(listInfo[i].distance)
-          listInfo[i].avatar = utils.imgPrefixDeal(listInfo[i].avatar)
-        }
         if(this.Page == 1) {
           this.TeamList = listInfo
         }else{

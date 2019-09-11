@@ -1,15 +1,16 @@
 <template>
   <div :class="AddrChooseWindowIsShow == true ? 'body-fix': ''" style="">
     <!-- 导航条 -->
-    <mu-appbar class="mine-appbar" color="#4caf50" z-depth="1">
-      <mu-button icon slot="left" @click="goBack">
-        <mu-icon value="navigate_before"></mu-icon>
-      </mu-button>
-      
-      <div ref="menuHide" style="font-size:14px;">
-        创建即时组队
-      </div>
-    </mu-appbar>
+    <mu-flex 
+      style="padding:.6rem .8rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); box-shadow: 0 0 1px #26c6da;" 
+      align-items="center">
+      <mu-flex align-items="center" @click="goBack">
+        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+      </mu-flex>
+      <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
+        <span style="color:#fff;">创建即时组队</span>
+      </mu-flex>
+    </mu-flex>
 
     <!-- 评论内容最多200个字符，最多一张图片 -->
     <div style="background:#fff;">
@@ -19,27 +20,30 @@
       </mu-container>
     </div>
 
-      <!-- <span style="font-size:12px; color:#9e9e9e;">{{ VenueObj.name }}</span> -->
-      <!-- <mu-icon @click="chooseMeetingVenue" value="person_pin_circle" size="20" color="#009688"></mu-icon> -->
-
-    <mu-flex v-if="AddrChooseWindowIsShow == false" style="width:100%; background:#eeeeee; padding:.5rem .5rem .5rem 1rem;" align-items="center">
-      <mu-icon value="wallpaper" @click="addImg()"></mu-icon>
-
-      <mu-icon @click="chooseMeetingVenue" value="person_pin_circle" size="23" style="margin-left:1rem;"></mu-icon>
-
-      <mu-button @click="commentSubmit" small color="#00bcd4" style="margin-left:auto;">发表</mu-button>
-      <input @change="getCommentImg" ref="imgUpload" type="file" style="display:none;" accept="image/*"/>
+    <mu-flex style="padding:.5rem;" align-items="center">
+      <span style="font-size:13px; color:#795548; margin-right:.5rem;">相约地点：</span>
+      <span style="font-size:13px; color:#9e9e9e;">{{ VenueObj.name }}</span>
+      <mu-icon @click="chooseMeetingVenue" value="person_pin_circle" size="20" color="#009688"></mu-icon>
     </mu-flex>
-    <mu-divider></mu-divider>
-    
-    <div style="padding:.5rem;">
-      <span style="font-size:12px; color:#9e9e9e;">地点：{{ VenueObj.name }}</span>
-    </div>
 
-    <div style="margin-top:1rem; margin-left:.5rem; padding:1rem; position:relative; width:40%; overflow-y:auto; overflow-y:hidden;">
-        <mu-icon v-show="this.DisplayImg" @click="del_img" value="cancel" color="#e91e63" style="position:absolute; top:0; right:0;"></mu-icon>
-        <img style="max-width:100%; max-height:100%; border-radius:.3rem;" :src="DisplayImg" alt="">
-    </div>
+    <!-- 招募图片 -->
+    <mu-flex style="padding:.5rem; width:100%; margin-bottom:1rem;" align-items="start">
+      <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-top:.3rem;">招募图片：</span>
+      <ImgCropper 
+        @getImgURL="getRecruitImg($event)" 
+        @delImg="delRecruitImg"
+        ImgWidth="250px" 
+        ImgHeight="140px" 
+        BorderColor="#e0e0e0"></ImgCropper>
+    </mu-flex>
+
+
+    <mu-flex v-if="AddrChooseWindowIsShow == false" style="position:fixed; width:100%; bottom:0; left:0; background:#f5f5f5; padding:.5rem .1rem; border-top:1px solid #eeeeee; " justify-content="center">
+      <mu-button @click="submit" style="width:95%;" color="#00bcd4">
+        <mu-icon value="touch_app" size="14"></mu-icon>
+        <span style="margin-left:.5rem;">发起招募</span>
+      </mu-button>
+    </mu-flex>
 
     <!-- BEGIN 地图弹出框 -->
     <div v-show="AddrChooseWindowIsShow" id="iframe" style="position:fixed; top:0; width:100%; height:100%; z-index:9999;">
@@ -55,7 +59,11 @@
 </template>
 
 <script>
+import ImgCropper from '@/components/ImgCropper'
 export default {
+  components: {
+    ImgCropper
+  },
   data () {
     return {
       TeamDetail: '',
@@ -72,6 +80,14 @@ export default {
     }
   },
   methods: {
+    getRecruitImg (imgURL) {  // 获取招募图片
+      this.DisplayImg = imgURL
+    },
+
+    delRecruitImg () {  // 删除招募图片
+      this.DisplayImg = ''
+    },
+
     addImg () {
       this.$refs.imgUpload.click()
     },
@@ -93,7 +109,7 @@ export default {
     del_img () {
       this.DisplayImg = ''
     },
-    commentSubmit () {
+    submit () {
       if(this.TeamDetail.length == 0 && this.DisplayImg.length == 0) {
         this.$toast.message('内容不能为空！')
         return

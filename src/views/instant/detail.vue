@@ -276,9 +276,9 @@ export default {
 </script>
 
 <style scoped>
-.mine-appbar { width: 100%; height:2.5rem; }
+.mine-appbar { width: 100%; height:2.5rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); }
 .mine-menu-box { margin-top:1rem; right:.5rem; }
-.mine-menu-list { background:#81c784; color:white; padding:0; }
+.mine-menu-list { background:#81c784; color:white; padding:0; background: linear-gradient(to right, #4dd0e1 , #80cbc4); }
 .mine-menu-item { color:#fff; font-size:12px; }
 
 

@@ -3,10 +3,10 @@
 
     <mu-flex 
       align-items="center" 
-      style="width:100%; height:8rem; background:#00bcd4; box-shadow: 0px 0px 1px #888888; postion:relative;" 
+      style="width:100%; height:auto; padding:2rem 0; background: linear-gradient(to right, #4dd0e1 , #80cbc4); box-shadow: 0px 0px 1px #888888; postion:relative;" 
       wrap="wrap">
 
-      <mu-flex align-items="center" style="padding:0 1.5rem;">
+      <mu-flex align-items="center" style="padding:0 1rem;">
         <mu-flex style="width:3.8rem; height:3.8rem; border:2px solid #fff; border-radius:50%;">
           <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3949404775,3912381594&fm=26&gp=0.jpg" alt="" style="max-width:100%; max-height:100%; border-radius:50%;">
         </mu-flex>
@@ -22,8 +22,8 @@
         </div>
       </mu-flex>
 
-      <div style="position:absolute; right:1.5rem; top:1rem;">
-        <svg-icon icon-class="config" class="icon-class" style="font-size:30px;"></svg-icon>
+      <div style="position:absolute; right:1rem; top:1rem;">
+        <svg-icon icon-class="config" class="icon-class" style="font-size:28px;"></svg-icon>
       </div>
 
     </mu-flex>
@@ -33,7 +33,7 @@
     <mu-row style="padding:1rem 2rem; background:#fff;" justify-content="between">
       <div style="border-radius:50%;">
         <div style="text-align:center;">
-          <span style="font-size:25px; color:#ff9800;">0</span>
+          <span style="font-size:25px; color:#4dd0e1;">0</span>
           <span>个</span>
         </div>
         <div>
@@ -44,7 +44,7 @@
       <!-- 收藏：文章， 游戏 -->
       <div style="border-radius:50%;">
         <div style="text-align:center;">
-          <span style="font-size:25px; color:#ff9800;">0</span>
+          <span style="font-size:25px; color:#4dd0e1;">0</span>
           <span>个</span>
         </div>
         <div>
@@ -54,7 +54,7 @@
 
       <div style="border-radius:50%;">
         <div style="text-align:center;">
-          <span style="font-size:25px; color:#ff9800;">0</span>
+          <span style="font-size:25px; color:#4dd0e1;">0</span>
           <span>个</span>
         </div>
         <div>
@@ -100,6 +100,9 @@
 <script>
 import Footer from '@/components/Footer.vue'
 export default {
+  mounted () {
+    this.$refs.footer.linkToNav(3)
+  },
   data () {
     return {
 
