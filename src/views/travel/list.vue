@@ -67,7 +67,7 @@
       <div style="padding:.5rem; margin-bottom:1.5rem;" v-for="(item, index) in TeamList" :key="index">
         <div style="box-shadow: 1px 1px 1px #9e9e9e; border-top-left-radius:.5rem; border-top-right-radius:.5rem; border-left:1px solid #e0e0e0;">
           <mu-flex style="position:relative;" justify-content="center">
-            <img style="max-width:100%; max-height:30rem; border-top-left-radius:.5rem; border-top-right-radius:.5rem;" :src="item.recruitImg" alt="">
+            <img style="max-width:100%; max-height:30rem; border-top-left-radius:.5rem; border-top-right-radius:.5rem;" :src="item.recruitImg | imgPrefixDeal()" alt="">
 
               <span style="font-size:14px; font-weight:700; margin-left:auto; color:gray; position:absolute; top:1rem; right:1.5rem; color:#fff;"> {{ item.recruitNumb }}/<span style="font-size:9px;">{{ item.hadRecruitNumb }}</span></span>
 
@@ -75,7 +75,7 @@
               <mu-flex align-items="center">
                 <div>
                   <mu-avatar size="25">
-                    <img :src="item.captainAvatar" alt="">
+                    <img :src="item.captainAvatar | imgPrefixDeal()" alt="">
                   </mu-avatar>
                 </div>
                 <div style="margin-left:.8rem;">
@@ -102,11 +102,11 @@
 
             <mu-flex style="width:100%; font-size:12px; padding:.8rem .3rem; border-bottom:1px solid #eeeeee;" align-items="center" wrap="wrap" >
               <div style="width:100%; margin-bottom:.2rem; text-align:right;">
-                <span style="font-size:12px;  color:gray; margin-left:auto;"> {{ item.meetingTime }} </span>
+                <span style="font-size:12px;  color:gray; margin-left:auto;"> {{ item.meetingTime | parseTime('{m}/{d} {h}:{i}') }} </span>
               </div>
 
               <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
-              <span style="font-size:12px; color:gray;">距离你 <span style="font-size:12px;">{{ item.distance }}</span></span>
+              <span style="font-size:12px; color:gray;">距离你 <span style="font-size:12px;">{{ item.distance | distanceFormat() }}</span></span>
               <span style="font-size:12px;  color:gray; margin-left:auto;"> 于 {{ item.meetingVenue.name }} 集合</span>
             </mu-flex>
 
@@ -230,29 +230,10 @@ export default {
           listInfo[i].travelDetail = listInfo[i].travelDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : listInfo[i].travelDetail
           // 处理招募图片
           listInfo[i].recruitImg = listInfo[i].recruitImg == '' ? utils.TravelDefaultDisplayImg : utils.imgPrefixDeal(listInfo[i].recruitImg)
-          // 先格式化活动时间  {{ item.partyBeginTime }}  ~  {{ item.partyEndTime }}
-          // 2019/1/02 02:02  ~  2019/3/02 03:04
-          listInfo[i].meetingTime = utils.unixToDate(listInfo[i].meetingTime)
-          // listInfo[i].partyEndTime = utils.unixToDate(listInfo[i].partyEndTime)
-          // 距离处理
-          listInfo[i].distance = utils.distanceFormat(listInfo[i].distance)
-          // 队伍发布时间处理
-          listInfo[i].createTime = utils.getDateDiff(listInfo[i].createTime, true)
-
-          // 处理头像和图片
-          listInfo[i].captainAvatar = utils.imgPrefixDeal(listInfo[i].captainAvatar)
 
           // 处理步骤
           let stepList = listInfo[i].stepListStr
-
           stepList = stepList.replace('|', ' -> ')
-
-          // for(let j = 0; j < listInfo[i].stepList.length; j++) {
-          //   stepList += listInfo[i].stepList[j].addrOrProgram + ' -> '
-          // }
-          // if(stepList.length > 4) {
-          //   stepList = stepList.substring(0, stepList.length - 4)
-          // }
           listInfo[i].stepListStr = stepList
         }
 

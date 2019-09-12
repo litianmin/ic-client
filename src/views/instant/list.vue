@@ -41,7 +41,6 @@
 </template>
 
 <script>
-import utils from 'common/utils.js'
 import { wxInit } from '@/common/wxInit.js'
 export default {
   data () {
