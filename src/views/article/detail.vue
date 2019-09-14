@@ -66,13 +66,13 @@ export default {
       this.$axios.get(
         `/article/detail/${this.ArticleID}`, {}
       ).then((resp)=>{
-
+        console.log(resp)
         if(resp.data.code != 20000) {
           this.$toast.message(resp.data.msg)
           this.$router.push('/')
           return
         }
-
+        this.BaseInfo = resp.data.msg.baseInfo
         // 开始处理数据
         this.ShareTitle = this.BaseInfo.type == 1 ? '助助社交，精彩话题等你来聊！' : '助助社交，精彩美文分享予你！'    // 分享title
         this.ShareDesc = this.BaseInfo.title  // 分享描述
