@@ -88,6 +88,12 @@ export default {
         case 5:
           mod = 'activity'
           break
+        case 6:
+          mod = 'article'
+          break
+        case 7:
+          mod = 'gameComment' 
+          break
         default:
           mod = ''
           break
