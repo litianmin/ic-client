@@ -12,10 +12,10 @@ export function imgCompress(file, callBack, mod, index) {
   ready.readAsDataURL(file)
   ready.onload = function (e) {
     // 这里需要判断文件的大小
-    if(file.size < 1024 * 1024 * 1) {
-      callBack(e.target.result, index)
-      return
-    }
+    // if(file.size < 1024 * 1024 * 1) {
+    //   callBack(e.target.result, index)
+    //   return
+    // }
 
     // let re = this.result
     // that.canvasDataURL(re,{quality: 0.2},that.mytest)

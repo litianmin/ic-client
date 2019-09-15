@@ -65,8 +65,9 @@ export default {
     },
 
     chatImgHadChoose (res, index, imgURL) {
+      console.log(imgURL)
       this.c_img = res
-      this.ImgURL = imgURL
+      this.imgURL = imgURL
     },
 
     del_img () {
@@ -78,6 +79,7 @@ export default {
         this.$toast.message('评论内容不能为空！')
         return
       }
+
       this.$axios.post(
         `/game/newComment`,
         {
