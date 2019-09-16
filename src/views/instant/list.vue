@@ -37,12 +37,21 @@
       </mu-row>
     </mu-load-more>
 
+    <div class="footer">
+      <Footer/>
+    </div>
+
   </div>
 </template>
 
 <script>
+import Footer from '@/components/Footer.vue'
 import { wxInit } from '@/common/wxInit.js'
+import utils from 'common/utils.js'
 export default {
+  components: {
+    Footer,
+  },
   data () {
     return {
       ShareTitle: '', // 分享title
@@ -57,15 +66,15 @@ export default {
           distance: 1803071.22271581,
           nickname: "朝花夕拾",
           sex: 1,
-          avatar: "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2836389094,1674914749&fm=26&gp=0.jpg",
+          avatar: "",
           siteName: ''
         }
       ],
-      IsTheLast: false,
-      Loading: false,
+      IsTheLast: true,
+      Loading: true,
       Page: 1,
-      Lng: 113.122629,
-      Lat: 23.029735,
+      Lng: 0,
+      Lat: 0,
     }
   },
   mounted () {
@@ -76,8 +85,10 @@ export default {
   },
   methods: {
     pageInit () {
+      let locateInfo = utils.getLocationInfo()
+      this.Lng = locateDistrict.lng
+      this.Lat = locateDistrict.lat
       this.loadTeamList()
-
     },
     goBack () {
       this.$router.go(-1)
@@ -119,6 +130,7 @@ export default {
 
 <style scoped>
 .mine-appbar { width: 100%; height:2.5rem; }
+.footer{width:100%; position:fixed; bottom:0;}
 </style>
 
 

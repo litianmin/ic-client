@@ -94,8 +94,8 @@ export default {
       hotGameList: [],
       gameList: [],
       page: 1,
-      isTheLast: false,
-      loading: false,
+      isTheLast: true,
+      loading: true,
     }
   },
   mounted () {

@@ -49,7 +49,7 @@
     <!-- END 导航栏 -->
 
     <!-- BEGIN 头部话题、美文轮播图 -->
-    <div v-if="CarsoucelIsShow" style="margin-top:1rem; margin-bottom:1rem;">
+    <div v-if="CarouselIsShow" style="margin-top:1rem; margin-bottom:1rem;">
         <swiper :options="swiperOption">
           <swiper-slide v-for="(item, index) in ArticleList" :key="index">
             <mu-flex style="position:relative; " wrap="wrap" @click="linkToArticleDetail(item.articleID)">
@@ -119,6 +119,9 @@ import utils from 'common/utils.js'
 import { wxInit } from '@/common/wxInit.js'
 export default {
   name: 'home',
+  components: {
+    Footer,
+  },
   data () {
     return {
       ShareTitle: '', // 分享title
@@ -128,7 +131,7 @@ export default {
       selfAvatar: '',
       selfNickname: '',
       LocateDistrict: '',
-      CarsoucelIsShow: false,
+      CarouselIsShow: false,
       ArticleList: [
         {
           articleID: 1,
@@ -136,7 +139,7 @@ export default {
           type: 1,
           beginTime: 1561737600,
           endTime: 1563897600,
-          displayImg: "http://img2.imgtn.bdimg.com/it/u=150877727,2930125005&fm=26&gp=0.jpg"
+          displayImg: ""
         },
       ],
       ActivityList: [
@@ -152,7 +155,7 @@ export default {
               lat: 23.035872,
               addr: "夏平西路石龙北路路口附近"
           },
-          displayImg: "http://img2.imgtn.bdimg.com/it/u=150877727,2930125005&fm=26&gp=0.jpg",
+          displayImg: "",
           recruitNumb: 30,
           distance: 12235652.41335938,
           recruitStatus: 0
@@ -162,7 +165,7 @@ export default {
         {
           gID: 5,
           teamNumb: 2,
-          logo: "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=150895625,2917525328&fm=26&gp=0.jpg",
+          logo: "",
           gName: "洛奇英雄传"
         },
       ],
@@ -203,7 +206,6 @@ export default {
       ).then((resp)=>{
         // 开始处理返回的数据
         let data = resp.data.msg
-        console.log(data)
 
         this.ActivityList = data.activityList // 活动列表
 
@@ -211,7 +213,7 @@ export default {
 
         this.GameList = data.gameList  // 游戏列表
 
-        this.CarsoucelIsShow = true
+        this.CarouselIsShow = true
 
         this.$store.commit('mdeInterface/unreadMsgUpdate', data.unReadMsg)
 
@@ -244,9 +246,7 @@ export default {
       this.$router.push('/instant/newTeam')
     }
   },
-  components: {
-    Footer,
-  }
+
 }
 </script>
 

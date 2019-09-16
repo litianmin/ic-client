@@ -24,7 +24,7 @@ export function imgCompress(file, callBack, mod, index) {
     let newCallBack = callBack
     let newIndex = index
     let newMod = mod
-    img.onload = function (e) {
+    img.onload = function () {
       let that = this
       // 默认按比例压缩
       let w = that.width,
