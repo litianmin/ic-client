@@ -31,8 +31,8 @@ import { wxInit } from '@/common/wxInit.js'
 export default {
   data () {
     return {
-      ShareTitle: '', // 分享title
-      ShareDesc: '',  // 分享描述
+      ShareTitle: '测试分享标题', // 分享title
+      ShareDesc: '测试分享描述',  // 分享描述
       ShareImgUrl: '',  // 分享图片
 
       TeamType: 6,
