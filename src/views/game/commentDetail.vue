@@ -42,10 +42,10 @@
     </div>
 
     <mu-flex class="reply-input-box" align-items="center">
-      <div style="width:80%;" @click="newChat(false, 0, 0, '')">
+      <div style="width:90%;" @click="newChat(false, 0, 0, '')">
       <input type="text" placeholder="评论一下吧" disabled>
       </div>
-      <span @click="convertFocus" class="reply-input-box-span"><svg-icon :icon-class="IsFocus == false ? 'focus' : 'had_focus'"></svg-icon></span>
+      <!-- <span @click="convertFocus" class="reply-input-box-span"><svg-icon :icon-class="IsFocus == false ? 'focus' : 'had_focus'"></svg-icon></span> -->
       <span @click="convertThumbup" class="reply-input-box-span" style="font-size:17px;"><svg-icon :icon-class="IsThumbup == false ? 'thumb_up_empty' : 'thumb_up'"></svg-icon></span>
     </mu-flex>
 

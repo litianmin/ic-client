@@ -176,6 +176,10 @@ export default {
   },
   methods: {
     pageInit () {
+      let userAddrInfo = utils.getLocationInfo()
+      this.Lng = Number(userAddrInfo.lng)
+      this.Lat = Number(userAddrInfo.lat)
+
       this.loadTeamList()
 
       this.ShareTitle = '助助社交，旅游伴你寻觅心灵的自由！' // 分享title

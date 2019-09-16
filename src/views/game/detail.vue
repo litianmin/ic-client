@@ -174,9 +174,13 @@
                   <span class="team-leaderinfo-title">等级/段位：</span>
                   <span class="team-leaderinfo-cont">{{ item.role_rank }}</span>
                 </div>
-                <div class="team-leaderinfo-item">
+                <!-- <div class="team-leaderinfo-item">
                   <span class="team-leaderinfo-title">招募人数：</span>
                   <span class="team-leaderinfo-cont">{{ item.recruit_num }}/<span style="font-size:8px;">{{ item.hadJoin }}</span></span>
+                </div> -->
+                <div class="team-leaderinfo-item">
+                  <span class="team-leaderinfo-title">招募人数：</span>
+                  <span class="team-leaderinfo-cont">{{ item.recruit_num }}</span>
                 </div>
                 <!-- <div class="team-leaderinfo-item">
                   <span class="team-leaderinfo-title">队友偏向：</span>
@@ -286,13 +290,13 @@ export default {
 
       commentPage: 1, 
       commentIsTheLast: true,
-      commentLoading: false,
+      commentLoading: true,
       commentList: [],
 
       teamPage: 1,
       teamListIsInit: false,
       teamIsTheLast: true,
-      teamLoading: false,
+      teamLoading: true,
       teamList: [],
       teamListOperate: '没有更多内容',
       teamHadJoinList: []

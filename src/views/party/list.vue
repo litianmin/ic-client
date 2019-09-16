@@ -153,8 +153,8 @@ export default {
         address: '',
       },
       TeamList: [],
-      IsTheLast: false,
-      Loading: false,
+      IsTheLast: true,
+      Loading: true,
       Page: 1,
       Lng: 113.122629,
       Lat: 23.029735,
@@ -179,13 +179,12 @@ export default {
       let userAddrInfo = utils.getLocationInfo()
       this.$axios.post('/party/teamList', {
         page: this.Page,
-        lng: userAddrInfo.lng,
-        lat: userAddrInfo.lat,
+        lng: Number(userAddrInfo.lng),
+        lat: Number(userAddrInfo.lat),
         theme: this.Theme
       }).then((resp)=>{
 
         let dataBack = resp.data.msg
-
         this.IsTheLast = dataBack.isTheLast
 
         let listInfo = dataBack.listInfo

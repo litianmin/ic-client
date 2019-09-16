@@ -258,7 +258,7 @@ export default {
 
  <style>
 .mine-cropper-container{ background-color: #ffffff; position: fixed; left:0px; top:0px; width:100%; height:100%; z-index: 1000; }
-.edit-container { z-index: 99; height: 50%; width: 100%; position: fixed; left: 0; top: 0; background-color: #ffffff; }
+.edit-container { z-index: 999; height: 50%; width: 100%; position: fixed; left: 0; top: 0; background-color: #ffffff; }
 
 .cropper-container {
     font-size: 0;

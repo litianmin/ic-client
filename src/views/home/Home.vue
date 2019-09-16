@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-
     <!-- BEGIN 头部 -->
     <mu-flex align-items="center" style="background: linear-gradient(to right, #4dd0e1 , #80cbc4); padding:.5rem .3rem .5rem .5rem; color:#ffffff; box-shadow: 0 0 1px #26c6da;">
       <mu-flex align-items="center">
