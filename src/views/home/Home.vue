@@ -107,9 +107,7 @@
       </mu-flex>
     </div>
 
-    <div class="footer">
-      <Footer/>
-    </div>
+    <Footer navActive="mainPage" />
   </div>
 </template>
 
@@ -261,7 +259,4 @@ export default {
 .icon-class {font-size:30px;}
 
 .card-panel-icon{ width:2rem; height:2rem;  }
-
-.footer{width:100%; position:fixed; bottom:0;}
-
 </style>

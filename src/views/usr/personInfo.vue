@@ -91,31 +91,25 @@
       <svg-icon icon-class="arrow" class="icon-class" style="margin-left:auto;"></svg-icon>
     </mu-row>
 
-    <div class="footer">
-      <Footer ref="footer"></Footer>
-    </div>
+    <Footer navActive="personnalMsg"></Footer>
   </div>
 </template>
 
 <script>
 import Footer from '@/components/Footer.vue'
 export default {
-  mounted () {
-    this.$refs.footer.linkToNav(3)
+  components: {
+    Footer
   },
   data () {
     return {
 
     }
   },
-  components: {
-    Footer
-  }
 }
 </script>
 
 <style scoped>
-.footer{width:100%; position:fixed; bottom:0;}
 .icon-class {font-size:24px;}
 </style>
 

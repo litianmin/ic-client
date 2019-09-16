@@ -37,9 +37,7 @@
       </mu-row>
     </mu-load-more>
 
-    <div class="footer">
-      <Footer/>
-    </div>
+    <Footer navActive="nearby" />
 
   </div>
 </template>
@@ -86,8 +84,8 @@ export default {
   methods: {
     pageInit () {
       let locateInfo = utils.getLocationInfo()
-      this.Lng = locateDistrict.lng
-      this.Lat = locateDistrict.lat
+      this.Lng = locateInfo.lng
+      this.Lat = locateInfo.lat
       this.loadTeamList()
     },
     goBack () {
@@ -102,7 +100,6 @@ export default {
           lat: 25.888,
         }
       ).then((resp)=>{
-        console.log(resp.data)
         if(resp.data.code != 20000) {
           this.$toast.message(resp.data.msg)
           return
@@ -130,7 +127,6 @@ export default {
 
 <style scoped>
 .mine-appbar { width: 100%; height:2.5rem; }
-.footer{width:100%; position:fixed; bottom:0;}
 </style>
 
 

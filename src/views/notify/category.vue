@@ -152,9 +152,7 @@
 
     </div>
 
-    <div class="footer">
-      <Footer ref="footer"></Footer>
-    </div>
+    <Footer navActive="msg"></Footer>
 
   </div>
 </template>
@@ -162,6 +160,9 @@
 <script>
 import Footer from '@/components/Footer.vue'
 export default {
+  components: {
+    Footer,
+  },
   data () {
     return {
       Team: {
@@ -224,7 +225,6 @@ export default {
     }
   },
   mounted () {
-    this.$refs.footer.linkToNav(2)
     this.$axios.post(
       '/notify/mainpage', {}
     ).then((resp)=>{
@@ -275,9 +275,7 @@ export default {
       this.$router.push('/notify/commentMsg')
     }
   },
-  components: {
-    Footer,
-  },
+
 }
 </script>
 
@@ -290,8 +288,6 @@ export default {
 .notify-time {margin-left:auto; font-size:12px; color:#9e9e9e; margin-right:.5rem;}
 .notify-desc {color:#9e9e9e; font-size:13px;}
 .notify-point {position:absolute; top:-.2rem; right:.2rem; width:12px; height:12px; background:red; border:2px solid #fff; border-radius:50%;}
-
-.footer{width:100%; position:fixed; bottom:0;}
 
 .span-omit{
   width:100%;
