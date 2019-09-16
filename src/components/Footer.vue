@@ -58,7 +58,7 @@ export default {
     },
   },
   computed: {
-    UnreadMsg (val) {
+    UnreadMsg () {
       return this.$store.state.mdeInterface.UnreadMsg
     }
   }

@@ -92,9 +92,7 @@ export default {
       this.$router.go(-1)
     },
     loadTeamList () {
-      this.$axios.post(
-        "/instant/list", 
-        {
+      this.$axios.post( "/instant/list", {
           page: this.Page,
           lng: 130.645,
           lat: 25.888,
