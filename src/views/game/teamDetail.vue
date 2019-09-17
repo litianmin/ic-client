@@ -175,6 +175,7 @@ export default {
     pageInit () {
       // 页面初始化
       this.$axios.post(`/game/teamDetail/${this.TeamID}`, {}).then((resp)=>{
+        console.log(resp)
         if(resp.data.code != 20000) {
           this.$toast.message('该队伍已解散')
           return
@@ -196,6 +197,8 @@ export default {
         this.GameName = dataBack.gameInfo.gameName
         this.GameID = dataBack.teamDetail.g_id
         this.JointeamStmt = dataBack.selfJoinStmt
+
+        this.TeammateList = dataBack.teamDetail.TeammateList
         
         this.TeamStmt = dataBack.teamDetail.t_stmt
         // 判断队伍的状态，然后再去修改加入队伍的状态

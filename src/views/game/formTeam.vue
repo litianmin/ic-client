@@ -84,7 +84,7 @@
           @delImg="delRoleImg"
           ImgWidth="120px" 
           ImgHeight="150px" 
-          :CropImgWidth="750"
+          :CropImgWidth="600"
           :CropperBoxRatio="0.8"
           BorderColor="#e0e0e0"></ImgCropper>
       </mu-flex>

@@ -326,7 +326,6 @@ export default {
       this.$axios.post(
         `/game/detail/${this.gameID}`,{}
       ).then((resp)=>{
-
         if(resp.data.code != 20000) {
           this.$toast.message('系统繁忙')
           return
