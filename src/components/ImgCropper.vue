@@ -8,6 +8,7 @@
       :style="'width:'+ ImgWidth + '; height: ' + ImgHeight + '; border-radius:.5rem; border: 1px dashed ' + BorderColor + '; position:relative;'">
       <div 
         @click="delImg"
+        @click.stop
         v-if="ImgShowBase64"
         style="width:1rem; height:1rem; position:absolute; right:-.2rem; top:-.5rem;">
         <svg-icon icon-class="delete-gray" style="font-size:20px;"></svg-icon>

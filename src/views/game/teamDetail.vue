@@ -175,7 +175,6 @@ export default {
     pageInit () {
       // 页面初始化
       this.$axios.post(`/game/teamDetail/${this.TeamID}`, {}).then((resp)=>{
-        console.log(resp)
         if(resp.data.code != 20000) {
           this.$toast.message('该队伍已解散')
           return
@@ -208,17 +207,17 @@ export default {
         // 组队状态, 0=>组队中， 1=>成功， 2=>失效, 3=>删除
         switch(this.TeamStmt) {
           case 0:
-          this.Title = '招募中'
-          break
+            this.Title = '招募中'
+            break
           case 1:
-          this.Title = '已失效'
-          break
+            this.Title = '已失效'
+            break
           case 2:
-          this.Title = '已删除'
-          break
+            this.Title = '已删除'
+            break
           case 3:
-          this.Title = '组队成功'
-          break
+            this.Title = '组队成功'
+            break
         }
 
         // 微信分享
@@ -241,20 +240,20 @@ export default {
     joinTeam (stmt) {
       switch(stmt) {
         case 0: // 可申请
-        this.$router.push(`/game/joinTeam/${this.TeamID}`)
-        break
+          this.$router.push(`/game/joinTeam/${this.TeamID}`)
+          break
         case 1: // 申请中
-        this.$toast.message("正在申请中。。。")
-        break
+          this.$toast.message("正在申请中。。。")
+          break
         case 2: // 拒绝加入
-        this.$toast.message("拒绝加入")
-        break
+          this.$toast.message("拒绝加入")
+          break
         case 3: // 不能加入
-        this.$toast.message("已加入")
-        break
+          this.$toast.message("已加入")
+          break
         case 4: // 不能加入
-        this.$toast.message("已加入")
-        break
+          this.$toast.message("已加入")
+          break
       }
     },
     leaveTeamReq () {
