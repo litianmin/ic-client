@@ -95,8 +95,8 @@ const MdeUserInfo = {
       // 设置强制刷新时间为30分钟
       let forceRefresh = utils.now2Unix() + 30 * 60
 
-      state.userAddrInfo.lng = payload.lng
-      state.userAddrInfo.lat = payload.lat
+      state.userAddrInfo.lng = Number(payload.lng)
+      state.userAddrInfo.lat = Number(payload.lat)
       state.userAddrInfo.district = payload.district
       state.userAddrInfo.forceRefresh = forceRefresh
     }

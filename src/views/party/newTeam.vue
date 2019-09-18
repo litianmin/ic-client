@@ -130,7 +130,12 @@
       <mu-flex @click="shutdownWindow" style="width:10%; height:2.8rem; z-index:9999; position:fixed; top:0; left:0; background:#F8F8F8; text-align:center; padding: 0 0 0 .5rem;" align-items="center" justify-content="center">
         <mu-icon value="navigate_before"></mu-icon>
       </mu-flex>
-      <iframe class="map-item"  id="getAddress" @load="loadiframe" src="https://m.amap.com/picker/?key=8906f77f66bcbd2b82a57d844e270fe7" style="width:100%; height:100%; position: absolute; border:0;">
+      <iframe 
+        class="map-item"  
+        id="getAddress" 
+        @load="loadiframe" 
+        :src="'https://m.amap.com/picker/?key=8906f77f66bcbd2b82a57d844e270fe7&center='+Lng+','+Lat" 
+        style="width:100%; height:100%; position: absolute; border:0;">
       </iframe>
     </div>
     <!-- END 地图弹出框 -->
@@ -141,6 +146,7 @@
 </template>
 
 <script>
+import utils from '@/common/utils.js'
 import ImgCropper from '@/components/ImgCropper'
 import { imgCompress } from '@/common/imgDeal.js'
 export default {
@@ -166,18 +172,34 @@ export default {
       UploadImgList: [],  // 展示图片
       UploadImgURLList: [], // 展示图片的URL
       CouldAddImg: true,  // 判断是否可以继续添加图片
-      RecruitImg: ''  // 招募图片
+      RecruitImg: '',  // 招募图片
+      Lng: 0,
+      Lat: 0,
     }
   },
   mounted () {
+    let userAddrInfo = utils.getLocationInfo()
+    this.Lng = userAddrInfo.lng
+    this.Lat = userAddrInfo.lat
+
     for(let i = 1; i < 30; i++) {
       this.RecruitNumbList.push(i)
     }
     // 渲染聚会地点和集合地点
-    this.PartyVenue = this.$store.state.mdeLogin.userAddrInfo.name
-    this.PartyVenueObj = this.$store.state.mdeLogin.userAddrInfo
-    this.MeetingVenue = this.$store.state.mdeLogin.userAddrInfo.name
-    this.MeetingVenueObj = this.$store.state.mdeLogin.userAddrInfo
+    this.PartyVenue = userAddrInfo.name
+    this.PartyVenueObj = {
+      name: userAddrInfo.name,
+      lng: userAddrInfo.lng,
+      lat: userAddrInfo.lat,
+      addr: userAddrInfo.addr,
+    }
+    this.MeetingVenue = userAddrInfo.name
+    this.MeetingVenueObj = {
+      name: userAddrInfo.name,
+      lng: userAddrInfo.lng,
+      lat: userAddrInfo.lat,
+      addr: userAddrInfo.addr,
+    }
   },
   watch: {
     UploadImgList: {
@@ -203,7 +225,6 @@ export default {
           if(!!e.data.location === false) {
             return
           }
-          console.log(e.data.location)
           let locationStrArr = e.data.location.split(',')
           let venueObj = {
             name: e.data.name,

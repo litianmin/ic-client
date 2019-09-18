@@ -50,7 +50,12 @@
       <mu-flex @click="shutdownWindow" style="width:10%; height:2.8rem; z-index:9999; position:fixed; top:0; left:0; background:#F8F8F8; text-align:center; padding: 0 0 0 .5rem;" align-items="center" justify-content="center">
         <mu-icon value="navigate_before"></mu-icon>
       </mu-flex>
-      <iframe class="map-item"  id="getAddress" @load="loadiframe" src="https://m.amap.com/picker/?key=8906f77f66bcbd2b82a57d844e270fe7" style="width:100%; height:100%; position: absolute; border:0;">
+      <iframe 
+        class="map-item"  
+        id="getAddress" 
+        @load="loadiframe" 
+        :src="'https://m.amap.com/picker/?key=8906f77f66bcbd2b82a57d844e270fe7&center='+Lng+','+Lat" 
+        style="width:100%; height:100%; position: absolute; border:0;">
       </iframe>
     </div>
     <!-- END 地图弹出框 -->
@@ -59,6 +64,7 @@
 </template>
 
 <script>
+import utils from '@/common/utils.js'
 import ImgCropper from '@/components/ImgCropper'
 export default {
   components: {
@@ -75,9 +81,14 @@ export default {
         lat: 0,
         addr: '',
       },
-
+      Lng: 0,
+      Lat: 0,
       AddrChooseWindowIsShow: false,  // 选择地址的窗口是否打开
     }
+  },
+  mounted () {
+    this.Lng = userAddrInfo.lng
+    this.Lat = userAddrInfo.lat
   },
   methods: {
     getRecruitImg (imgURL) {  // 获取招募图片

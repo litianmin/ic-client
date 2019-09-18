@@ -22,33 +22,42 @@
     <mu-flex style="widht:100%; padding:.5rem .2rem .5rem 0rem;" align-items="center">
       <span style="font-size:12px; color:#795548; margin-left:1rem;">条件筛选：</span>
       <div style="margin-right:.8rem;">
-        <select v-model="TravelTheme" name="" id="" style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4;">
-          <option value="0">选择主题</option>
-          <option value="1">心 灵</option>
-          <option value="2">漂 流</option>
-          <option value="3">摄 影</option>
-          <option value="4">踏 青</option>
-          <option value="5">美 食</option>
-          <option value="6">亲 子</option>
-          <option value="7">沙 滩</option>
-          <option value="8">滑 雪</option>
-          <option value="9">朝 圣</option>
+        <select 
+          v-model="TravelTheme" 
+          :change="pageReload"
+          style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4;">
+          <option :value="0">选择主题</option>
+          <option :value="1">心 灵</option>
+          <option :value="2">漂 流</option>
+          <option :value="3">摄 影</option>
+          <option :value="4">踏 青</option>
+          <option :value="5">美 食</option>
+          <option :value="6">亲 子</option>
+          <option :value="7">沙 滩</option>
+          <option :value="8">滑 雪</option>
+          <option :value="9">朝 圣</option>
         </select>
       </div>
 
       <div style="margin-right:.8rem;">
-        <select v-model="PathLength" name="" id="" style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4;">
-          <option value="0">选择路程</option>
-          <option value="1">周 边 游</option>
-          <option value="2">长途旅行</option>
+        <select 
+          v-model="PathLength"
+          :change="pageReload"
+          style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4;">
+          <option :value="0">选择路程</option>
+          <option :value="1">周 边 游</option>
+          <option :value="2">长途旅行</option>
         </select>
       </div>
 
       <div>
-        <select v-model="TravelType" name="" id="" style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4;">
-          <option value="0">选择形式</option>
-          <option value="1">自 由 行</option>
-          <option value="2">跟 团 游</option>
+        <select 
+          v-model="TravelType"
+          :change="pageReload"
+          style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4;">
+          <option :value="0">选择形式</option>
+          <option :value="1">自 由 行</option>
+          <option :value="2">跟 团 游</option>
         </select>
       </div>
     </mu-flex>
@@ -135,9 +144,14 @@
       <mu-flex @click="shutdownWindow" style="width:10%; height:2.8rem; z-index:9999; position:fixed; top:0; left:0; background:#F8F8F8; text-align:center; padding: 0 0 0 .5rem;" align-items="center" justify-content="center">
         <mu-icon value="navigate_before"></mu-icon>
       </mu-flex>
-      <iframe class="map-item"  id="getAddress" @load="loadiframe" src="https://m.amap.com/picker/?key=8906f77f66bcbd2b82a57d844e270fe7" style="width:100%; height:100%; position: absolute; border:0;">
+      <iframe 
+        class="map-item"  
+        id="getAddress" 
+        @load="loadiframe" 
+        :src="'https://m.amap.com/picker/?key=8906f77f66bcbd2b82a57d844e270fe7&center='+Lng+','+Lat" 
+        style="width:100%; height:100%; position: absolute; border:0;">
       </iframe>
-    </div>
+    </div>  
     <!-- EBD 地址选择弹出框 -->
 
   </div>
@@ -157,15 +171,15 @@ export default {
       PathLength: 0,
       TravelType: 0,
       LocateAddr: '',
-      Lng: 113.122629,
-      Lat: 23.029735,
+      Lng: 0,
+      Lat: 0,
       AddrChooseWindowIsShow: false,
       ChooseAddrInfo: {
         name: '',
         location: '',
         address: '',
       },
-      Loading: false,
+      Loading: true,
       IsTheLast: true,
       Page: 1,
       TeamList: [],
@@ -177,13 +191,18 @@ export default {
   methods: {
     pageInit () {
       let userAddrInfo = utils.getLocationInfo()
-      this.Lng = Number(userAddrInfo.lng)
-      this.Lat = Number(userAddrInfo.lat)
+      this.Lng = userAddrInfo.lng
+      this.Lat = userAddrInfo.lat
+      this.LocateAddr = userAddrInfo.addr
 
       this.loadTeamList()
 
       this.ShareTitle = '助助社交，旅游伴你寻觅心灵的自由！' // 分享title
       this.ShareDesc = '更多的旅游组队在助助社交，进来看看呗！'  // 分享描述
+    },
+    pageReload () { // 重新加载数据
+      this.TeamList = []
+      this.loadTeamList()
     },
     goBack () {
       this.$router.go(-1)
@@ -198,7 +217,11 @@ export default {
         if (e.data.command != "COMMAND_GET_TITLE") {
           this.ChooseAddrInfo = e.data
           this.LocateAddr = e.data.name
+          let location = e.data.location.split(',')
+          this.Lng = location[0]
+          this.Lat = location[1]
           this.AddrChooseWindowIsShow = false  
+          this.pageReload()
         }
 
       }.bind(this), false)
