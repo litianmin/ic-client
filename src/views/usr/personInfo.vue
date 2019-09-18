@@ -8,11 +8,11 @@
 
       <mu-flex align-items="center" style="padding:0 1rem;">
         <mu-flex style="width:3.8rem; height:3.8rem; border:2px solid #fff; border-radius:50%;">
-          <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3949404775,3912381594&fm=26&gp=0.jpg" alt="" style="max-width:100%; max-height:100%; border-radius:50%;">
+          <img :src="$store.state.mdeLogin.usrInfo.avatar" alt="" style="max-width:100%; max-height:100%; border-radius:50%;">
         </mu-flex>
         <div wrap align-items="center" justify-content="center">
           <div>
-            <span style="font-size:18px; font-weight:700; letter-spacing:1px; margin-left:1rem; color:#fff;">这里是我的昵称</span>
+            <span style="font-size:18px; font-weight:700; letter-spacing:1px; margin-left:1rem; color:#fff;">{{ $store.state.mdeLogin.usrInfo.nickname }}</span>
           </div>
 
           <div style="margin-top:.5rem;">
@@ -33,7 +33,7 @@
     <mu-row style="padding:1rem 2rem; background:#fff;" justify-content="between">
       <div style="border-radius:50%;">
         <div style="text-align:center;">
-          <span style="font-size:25px; color:#4dd0e1;">0</span>
+          <span style="font-size:25px; color:#4dd0e1;">{{ TeamRecruiting }}</span>
           <span>个</span>
         </div>
         <div>
@@ -44,7 +44,7 @@
       <!-- 收藏：文章， 游戏 -->
       <div style="border-radius:50%;">
         <div style="text-align:center;">
-          <span style="font-size:25px; color:#4dd0e1;">0</span>
+          <span style="font-size:25px; color:#4dd0e1;">{{ TeamSuccess }}</span>
           <span>个</span>
         </div>
         <div>
@@ -54,7 +54,7 @@
 
       <div style="border-radius:50%;">
         <div style="text-align:center;">
-          <span style="font-size:25px; color:#4dd0e1;">0</span>
+          <span style="font-size:25px; color:#4dd0e1;">{{ TeamFinished }}</span>
           <span>个</span>
         </div>
         <div>
@@ -103,9 +103,28 @@ export default {
   },
   data () {
     return {
-
+      TeamRecruiting: 0,
+      TeamFinished: 0,
+      TeamSuccess: 0,
     }
   },
+  mounted () {
+    this.pageInit()
+  },
+  methods: {
+    pageInit () {
+      this.$axios.get("/user/personalpage", {}).then((resp) => {
+        if(resp.data.code != 20000) {
+          this.$toast.message(resp.msg)
+          return
+        }
+        let data = resp.data.msg
+        this.TeamRecruiting = data.teamRecruiting
+        this.TeamFinished = data.teamFinished
+        this.TeamSuccess = data.teamSuccess
+      })
+    }
+  }
 }
 </script>
 

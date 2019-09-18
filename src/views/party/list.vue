@@ -193,7 +193,6 @@ export default {
     },
     loadTeamList () { // 加载组队
       this.Loading = true
-      let userAddrInfo = utils.getLocationInfo()
       this.$axios.post('/party/teamList', {
         page: this.Page,
         lng: this.lng,
