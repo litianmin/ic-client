@@ -86,6 +86,16 @@ export default {
               v.modName = '活 动'
               v.bgcolor = 'bg-activity'
               break
+            case 6:
+              v.modIcon = 'notify-article'
+              v.modName = '文 章'
+              v.bgcolor = 'bg-article'
+              break
+            case 7:
+              v.modIcon = 'notify-game-comment'
+              v.modName = '游 戏'
+              v.bgcolor = 'bg-gamecomment'
+              break
             }
             return v
           })
@@ -122,11 +132,13 @@ export default {
   word-break:keep-all;
 }
 
-.bg-game {width:3rem; height:3rem; background:#673ab7; color:#fff; padding:.5rem; border-radius:.5rem;}
+.bg-game {width:3rem; height:3rem; background:#7e57c2; color:#fff; padding:.5rem; border-radius:.5rem;}
 .bg-party {width:3rem; height:3rem; background:#e040fb; color:#fff; padding:.5rem; border-radius:.5rem;}
 .bg-travel {width:3rem; height:3rem; background:#4caf50; color:#fff; padding:.5rem; border-radius:.5rem;}
 .bg-instant {width:3rem; height:3rem; background:#ff5722; color:#fff; padding:.5rem; border-radius:.5rem;}
 .bg-activity {width:3rem; height:3rem; background:#795548; color:#fff; padding:.5rem; border-radius:.5rem;}
+.bg-article {width:3rem; height:3rem; background:#29b6f6; color:#fff; padding:.5rem; border-radius:.5rem;}
+.bg-gamecomment {width:3rem; height:3rem; background:#5c6bc0; color:#fff; padding:.5rem; border-radius:.5rem;}
 
 </style>
 

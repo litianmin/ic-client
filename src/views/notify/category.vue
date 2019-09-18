@@ -234,7 +234,7 @@ export default {
           switch(v.category) {
           case 1:
             this.Team = v
-            console.log(this.Team)
+            // console.log(this.Team)
             break
           case 2:
             this.Comment = v

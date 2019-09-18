@@ -87,8 +87,9 @@ export default {
     }
   },
   mounted () {
-    this.Lng = userAddrInfo.lng
-    this.Lat = userAddrInfo.lat
+    let locateInfo = utils.getLocationInfo()
+    this.Lng = locateInfo.lng
+    this.Lat = locateInfo.lat
   },
   methods: {
     getRecruitImg (imgURL) {  // 获取招募图片
