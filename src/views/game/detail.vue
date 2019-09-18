@@ -121,7 +121,6 @@
           </div>
           <!-- END 评论样式 -->
 
-
           <mu-row v-show="commentIsTheLast" justify-content="center" style="padding:.5rem; margin-top:.5rem; color:#9e9e9e;">
             <span style="">没有更多的内容</span>
           </mu-row>
@@ -141,101 +140,94 @@
 
           <!-- BEGIN 组队样式 -->
           <!-- TODO 这个还是手动加载吧， 好像加了这个会很卡 -->
-          <!-- <mu-load-more :loading="teamLoading" @load="teamLoad" :loaded-all="teamIsTheLast"> -->
-          <mu-paper 
-            v-for="(item, index) in teamList" 
-            :key="index" 
-            :z-depth="1"
-            class="team-header">
-            <!-- 队长基本信息(包括图片) -->
-            <mu-row style="margin-top:.2rem;" gutter>
-              <!-- 左边内容 -->
-              <mu-col col="6" style="padding:.5rem 0 0 .5rem;">
-                <mu-flex align-items="center" class="team-avatar-flex">
-                  <mu-avatar size="25">
-                    <img :src="item.captain_avatar | imgPrefixDeal()" />
-                  </mu-avatar>
-                  <span class="team-leader-nickname">{{ item.captain_nickname }}</span>
+          <mu-load-more :loading="teamLoading" @load="teamLoad" :loaded-all="teamIsTheLast" style="padding:.1rem;">
+            <div 
+              v-for="(item, index) in teamList" 
+              :key="index" 
+              @click="joinTeam(item.t_id)"
+              style="width:100%; padding:1rem; box-shadow:0 0 1px gray; border-radius:.3rem; margin-bottom:2rem;">
+              <!-- 队长基本信息(包括图片) -->
+              <mu-row gutter>
+                <!-- 左边内容 -->
+                <mu-col col="6" style="padding:.5rem 0 0 .5rem;">
+                  <mu-flex align-items="center" class="team-avatar-flex">
+                    <mu-avatar size="30">
+                      <img :src="item.captain_avatar | imgPrefixDeal()" />
+                    </mu-avatar>
+                    <span class="team-leader-nickname">{{ item.captain_nickname }}</span>
+                  </mu-flex>
+
+                  <div class="team-leaderinfo-item">
+                    <span class="team-leaderinfo-title">职业：</span>
+                    <span class="team-leaderinfo-cont">{{ item.role }}</span>
+                  </div>
+
+                  <div class="team-leaderinfo-item">
+                    <span class="team-leaderinfo-title">角色：</span>
+                    <span class="team-leaderinfo-cont">{{ item.role_name }}</span>
+                  </div>
+
+                  <div class="team-leaderinfo-item">
+                    <span class="team-leaderinfo-title">区服：</span>
+                    <span class="team-leaderinfo-cont">{{ item.server_name }}</span>
+                  </div>
+
+                  <div class="team-leaderinfo-item">
+                    <span class="team-leaderinfo-title">等级/段位：</span>
+                    <span class="team-leaderinfo-cont">{{ item.role_rank }}</span>
+                  </div>
+
+                  <div class="team-leaderinfo-item">
+                    <span class="team-leaderinfo-title">招募人数：</span>
+                    <span class="team-leaderinfo-cont">{{ item.recruit_num }}</span>
+                  </div>
+
+                </mu-col>  
+
+                <!-- 右边图片展示 -->
+                <mu-col col="6" justify-content="center" align-items="center">
+                  <mu-flex justify-content="center" align-items="center" class="team-leaderinfo-img-flex">
+                    <img :src="item.recruit_img | imgPrefixDeal()" />
+                  </mu-flex>
+                </mu-col>
+              </mu-row>
+
+              <!-- 招募宣言 -->
+              <mu-flex style="margin-top:-.5rem;" wrap="wrap">
+                <mu-flex style="font-size:12px; width:100%;">
+                  <span style="color:#795548;">队友偏向：</span> 
+                  <span style="color:#9e9e9e;">{{ item.teanmate_prefer }}</span>
                 </mu-flex>
 
-                <div class="team-leaderinfo-item">
-                  <span class="team-leaderinfo-title">职业：</span>
-                  <span class="team-leaderinfo-cont">{{ item.role }}</span>
-                </div>
-                <div class="team-leaderinfo-item">
-                  <span class="team-leaderinfo-title">角色：</span>
-                  <span class="team-leaderinfo-cont">{{ item.role_name }}</span>
-                </div>
-                <div class="team-leaderinfo-item">
-                  <span class="team-leaderinfo-title">区服：</span>
-                  <span class="team-leaderinfo-cont">{{ item.server_name }}</span>
-                </div>
-                <div class="team-leaderinfo-item">
-                  <span class="team-leaderinfo-title">等级/段位：</span>
-                  <span class="team-leaderinfo-cont">{{ item.role_rank }}</span>
-                </div>
-                <!-- <div class="team-leaderinfo-item">
-                  <span class="team-leaderinfo-title">招募人数：</span>
-                  <span class="team-leaderinfo-cont">{{ item.recruit_num }}/<span style="font-size:8px;">{{ item.hadJoin }}</span></span>
-                </div> -->
-                <div class="team-leaderinfo-item">
-                  <span class="team-leaderinfo-title">招募人数：</span>
-                  <span class="team-leaderinfo-cont">{{ item.recruit_num }}</span>
-                </div>
-                <!-- <div class="team-leaderinfo-item">
-                  <span class="team-leaderinfo-title">队友偏向：</span>
-                  <span class="team-leaderinfo-cont">{{ item.teanmate_prefer }}</span>
-                </div> -->
-              </mu-col>  
-
-              <!-- 右边图片展示 -->
-              <mu-col col="6" justify-content="center" align-items="center">
-                <mu-flex justify-content="center" align-items="center" class="team-leaderinfo-img-flex">
-                  <img :src="item.recruit_img | imgPrefixDeal()" />
+                <mu-flex style="font-size:12px; width:100%; margin-top:.2rem;">
+                  <span style="color:#795548;">招募宣言：</span> 
+                  <span style="color:#9e9e9e;">{{ item.announcement }}</span>
                 </mu-flex>
-              </mu-col>
-            </mu-row>
-
-            <!-- 招募宣言 -->
-            <mu-flex style="margin-top:-.5rem;" wrap="wrap">
-              <mu-flex style="font-size:12px; width:100%;">
-                <span style="color:#795548;">队友偏向：</span> 
-                <span style="color:#9e9e9e;">{{ item.teanmate_prefer }}</span>
               </mu-flex>
 
-              <mu-flex style="font-size:12px; width:100%; margin-top:.2rem;">
-                <span style="color:#795548;">招募宣言：</span> 
-                <span style="color:#9e9e9e;">{{ item.announcement }}</span>
+              <!-- 额外内容 -->
+              <mu-flex style="margin-top:.5rem;">
+                <div style="margin-left:auto;">
+                  <span class="team-extracont-time">{{ item.create_time | formatTime() }}</span>
+                  <span class="team-extracont-operate">查看详情</span>
+                </div>
               </mu-flex>
-            </mu-flex>
+            </div>
 
-            <!-- 额外内容 -->
-            <mu-flex style="margin-top:.5rem;">
-              <div style="margin-left:auto;">
-                <span class="team-extracont-time">{{ item.create_time | formatTime() }}</span>
-                <span class="team-extracont-operate" @click.stop="joinTeam(item.t_id)">查看详情</span>
-              </div>
-            </mu-flex>
-
-          </mu-paper>
-
-
-          <mu-row v-show="teamIsTheLast" justify-content="center" style="padding:.5rem; margin-top:.5rem; color:#9e9e9e;">
-            <span style="">没有更多的内容</span>
-          </mu-row>
-          <div v-show="!teamIsTheLast">
-            <mu-row v-show="!teamLoading" justify-content="center" style="padding:.5rem; margin-top:.5rem;" @click="teamLoad">
-              <span style="color:green;">点击加载更多</span>
+            <mu-row v-show="teamIsTheLast" justify-content="center" style="padding:.5rem; margin-top:.5rem; color:#9e9e9e;">
+              <span style="">没有更多的内容</span>
             </mu-row>
-            <mu-row v-show="teamLoading" justify-content="center" style="padding:.5rem; margin-top:.5rem;">
-              <span data-mu-loading-size="18" data-mu-loading-color="green" data-mu-loading-overlay-color="rgba(250, 250, 250, .7)" v-loading="true"></span>
-              <span style="margin-left:.5rem; color:green; font-size:12px;">加载中· · ·</span>
-            </mu-row>
-          </div>
-          <!-- </mu-load-more> -->
+            <div v-show="!teamIsTheLast">
+              <mu-row v-show="!teamLoading" justify-content="center" style="padding:.5rem; margin-top:.5rem;" @click="teamLoad">
+                <span style="color:green;">点击加载更多</span>
+              </mu-row>
+              <mu-row v-show="teamLoading" justify-content="center" style="padding:.5rem; margin-top:.5rem;">
+                <span data-mu-loading-size="18" data-mu-loading-color="green" data-mu-loading-overlay-color="rgba(250, 250, 250, .7)" v-loading="true"></span>
+                <span style="margin-left:.5rem; color:green; font-size:12px;">加载中· · ·</span>
+              </mu-row>
+            </div>
+          </mu-load-more>
           <!-- END 组队样式 -->
-
-
 
       </mu-container>
       <!-- END 组队 -->
@@ -422,8 +414,6 @@ export default {
 
 <style>
 
-.mine-appbar { width: 100%; height:2.5rem; }
-
 .swiper-container { background-color: #ffffff; }
 .swiper-slide { background-size: cover; background-position: center; }
 .swiper-img { max-width:100%; height:auto; }
@@ -449,7 +439,7 @@ export default {
 .team-box { padding:.5rem 1rem;  background:#fff;}
 .team-panel { margin-bottom:1rem; border-radius:.5rem; }
 .team-create-btn { width:100%; padding:.5rem; text-align:center; color:white; background:#4dd0e1; border-radius:.3rem; border:0; }
-.team-header { padding:.5rem 1rem; border-radius:.3rem; }
+.team-header { padding:.5rem 1rem; border-radius:.3rem; margin-bottom:1rem; }
 .team-avatar-flex { width:90%; margin-left:-.5rem; margin-bottom:.5rem; }
 .team-leader-nickname { margin-left:.5rem; font-size:12px; color:#795548; }
 .team-leaderinfo-item { font-size:12px; margin-bottom:.2rem; }

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import store from './store'
+// import store from './store'
 import utils from './common/utils.js'
 import router from './router'
 import Toast from 'muse-ui-toast'
