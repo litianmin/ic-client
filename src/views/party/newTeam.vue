@@ -274,7 +274,6 @@ export default {
       this.$refs.imgUpload.click()
     },
     getImgList () {  // 获取评论图片
-      let _this = this
       let event = event || window.event
 
       for( let i = 0; i < event.target.files.length; i++ ) {

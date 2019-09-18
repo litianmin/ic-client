@@ -1,7 +1,12 @@
 <template>
-  <div style="padding:1rem;">
-    <div>
-      <mu-row style="margin-top:1rem; margin-bottom:1rem; border:1px solid #eeeeee; padding:1rem;">
+  <div>
+    <div style="padding:1rem 0 0 1rem; ">
+      <svg-icon icon-class="team-gray" class="icon-class"></svg-icon>
+      <span style="margin-left:.5rem; font-size:14px; font-weight:700; color:#757575;">招募中</span>
+    </div>
+
+    <div style="padding:1rem;">
+      <mu-row style="margin-bottom:1rem; border:1px solid #eeeeee; padding:.8rem; border-radius:.5rem;">
         <mu-col span="2" align-items="center" style="">
           <mu-flex style="width:100%; height:auto; color:#fff; position:relative;" align-items="center" >
             <div style="width:3rem; height:3rem; background:#7e57c2; color:#fff; padding:.5rem; border-radius:.5rem;">
@@ -19,7 +24,7 @@
             <span class="notify-time">2019-01-02 05:06</span>
           </mu-row>
           <mu-row style="margin-top:.2rem;">
-            <span class="notify-desc span-omit">这里是我的描述！</span>
+            <span class="notify-desc span-omit">这里是我的描述！爱得痛了</span>
           </mu-row>
         </mu-col>
       </mu-row>
