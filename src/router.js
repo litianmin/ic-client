@@ -227,7 +227,6 @@ const router =  new Router({
   // 1，如果是微信浏览器，跳转到微信授权页面
   // 2，如果是普通浏览器，跳转到注册登陆页面
   router.beforeEach((to, from, next) => {
-    
     // '/auth' 是微信授权， '/auth/base' 是手机号码授权
     // 判断用户是否退返到授权页，并且已经是登陆的状态， 那么返回首页
     if((to.path == '/auth' || to.path == '/auth/base') && !!getToken()){

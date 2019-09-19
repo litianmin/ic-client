@@ -214,7 +214,7 @@ export default {
         if(resp.data.code === 20000) {
           this.$toast.message('创建队伍成功')
           // TODO 跳转到组队详细页面(此页面可进行分享，加入组队)
-          this.$router.push(`/game/teamDetail/${resp.data.msg}`)
+          this.$router.replace(`/game/teamDetail/${resp.data.msg}`)
         }
       })
     },

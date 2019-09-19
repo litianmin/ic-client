@@ -82,7 +82,7 @@ axios.interceptors.response.use(
       // 设置进来的url
       setBeforeLoginURL(router.history.current.path)
       if(isWxBrowser === true) { // 如果是微信浏览器
-        router.push('/auth')
+        return router.push('/auth')
       }
     
       router.push('/auth/base')

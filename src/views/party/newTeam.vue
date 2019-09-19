@@ -329,10 +329,15 @@ export default {
           uploadImgList,
         }
       ).then((resp)=>{
-        if(resp.data.code === 20000) {
-          this.$toast.success('创建成功') // 这里应该跳转到组队详情了
-          this.$router.push('/party/list')
+        if(resp.data.code != 20000) {
+          this.$toast.message(resp.data.msg)
+          return
         }
+        
+        let newTeamID = resp.data.msg
+        this.$toast.success('创建成功') // 这里应该跳转到组队详情了
+        this.$router.replace(`/party/teamDetail/${newTeamID}`)
+
       })
 
     },

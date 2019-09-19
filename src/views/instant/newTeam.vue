@@ -134,11 +134,13 @@ export default {
           venue: this.VenueObj
         }
       ).then((resp)=>{
-        if(resp.data.code === 20000) {
-          this.$toast.success('发表成功')
-          this.$router.go(-1)
+        if(resp.data.code != 20000) {
+          this.$toast.message(resp.data.msg)
+          return
         }
-        // console.log(resp)
+
+        this.$toast.success('发表成功')
+        this.$router.replace(`/instant/detail/${resp.data.msg}`)
       })
     },
 
