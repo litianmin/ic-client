@@ -31,7 +31,9 @@
     <!-- 我的组队、我的关注、我的评论 -->
 
     <mu-row style="padding:1rem 2rem; background:#fff;" justify-content="between">
-      <div style="border-radius:50%;">
+      <div 
+        @click="linkToJoinTeamList(0)"
+        style="border-radius:50%;">
         <div style="text-align:center;">
           <span style="font-size:25px; color:#4dd0e1;">{{ TeamRecruiting }}</span>
           <span>个</span>
@@ -42,7 +44,9 @@
       </div>
 
       <!-- 收藏：文章， 游戏 -->
-      <div style="border-radius:50%;">
+      <div 
+        @click="linkToJoinTeamList(3)"
+        style="border-radius:50%;">
         <div style="text-align:center;">
           <span style="font-size:25px; color:#4dd0e1;">{{ TeamSuccess }}</span>
           <span>个</span>
@@ -52,7 +56,9 @@
         </div>
       </div>
 
-      <div style="border-radius:50%;">
+      <div 
+        @click="linkToJoinTeamList(1)"
+        style="border-radius:50%;">
         <div style="text-align:center;">
           <span style="font-size:25px; color:#4dd0e1;">{{ TeamFinished }}</span>
           <span>个</span>
@@ -123,6 +129,9 @@ export default {
         this.TeamFinished = data.teamFinished
         this.TeamSuccess = data.teamSuccess
       })
+    },
+    linkToJoinTeamList (type) {
+      this.$router.push(`/usr/jointeamList/${type}`)
     }
   }
 }

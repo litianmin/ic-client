@@ -82,6 +82,12 @@ const router =  new Router({
       component: () => import('./views/usr/personInfo.vue')
     },
 
+    {
+      path: '/usr/jointeamList/:statustype',
+      name: 'user-jointeamList',
+      component: () => import('./views/usr/jointeamList.vue')
+    },
+
  
     // 下面是游戏界面了
     {
