@@ -32,7 +32,20 @@
 
 <script>
 export default {
-  
+  data () {
+    return {
+      Page: 1,
+      List: [],
+      StatusType: 0,
+    }
+  },
+  methods: {
+    load () {
+      this.$axios.get(`/joinTeamList/${this.StatusType}/${this.Page}`, {}).then((resp) => {
+        console.log(resp)
+      })
+    }
+  }
 }
 </script>
 
