@@ -2,7 +2,7 @@
   <div>
     <div style="padding:1rem 0 .3rem 1rem; ">
       <svg-icon icon-class="team-gray" class="icon-class"></svg-icon>
-      <span style="margin-left:.5rem; font-size:14px; font-weight:700; color:#757575;">招募中</span>
+      <span style="margin-left:.5rem; font-size:14px; font-weight:700; color:#757575;">{{ StatusName }}</span>
     </div>
 
     <mu-load-more :loading="Loading" @load="load" :loaded-all="IsTheLast">  
@@ -37,8 +37,8 @@
           </mu-flex>
         </mu-flex>
       </div>
-      <mu-row v-show="IsTheLast && List.length > 0" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.5rem; margin-bottom:.5rem; color:#9e9e9e;">
-        <span style="">没有更多的组队</span>
+      <mu-row v-show="IsTheLast" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.5rem; margin-bottom:.5rem; color:#9e9e9e;">
+        <span style="">没有更多的内容</span>
       </mu-row>
     </mu-load-more>
 
@@ -79,6 +79,10 @@ export default {
 
       this.Loading = true
       this.$axios.get(`/user/joinTeamList/${this.StatusType}/${this.Page}`, {}).then((resp)=>{
+        if(resp.data.code != 20000) {
+          this.$toast.message(resp.data.msg)
+          return
+        }
 
         let dataBack = resp.data.msg
         this.IsTheLast = dataBack.length < 10 ? true : false
@@ -104,11 +108,11 @@ export default {
               break
           }
 
-          v.joinStatusName = v.joinStatus == 3 ? '已加入' : '离队'
+          v.joinStatusName = v.joinStatus == 3 ? '队伍中' : '已离队'
           return v
         })
 
-        this.List = this.List.concat(dataBack)
+        this.List = this.List.concat(list)
         this.Page++
         this.Loading = false
       })
