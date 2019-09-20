@@ -19,6 +19,7 @@
       <div style="width:80%;" @click="newChat(false, 0, 0, '')">
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
+      
       <mu-icon value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
     </mu-flex>
 

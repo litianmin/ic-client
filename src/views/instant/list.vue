@@ -32,7 +32,7 @@
         </mu-row>
       </div>
 
-      <mu-row v-show="IsTheLast && TeamList.length > 0" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:1rem; margin-bottom:.5rem; color:#9e9e9e;">
+      <mu-row v-show="IsTheLast> 0" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:1rem; margin-bottom:.5rem; color:#9e9e9e;">
         <span style="">没有更多的组队</span>
       </mu-row>
     </mu-load-more>
@@ -56,18 +56,7 @@ export default {
       ShareDesc: '',  // 分享描述
       ShareImgUrl: '',  // 分享图片
 
-      TeamList: [
-        {
-          teamID: 1,
-          cont: "什么鬼内容",
-          createTime: 1563347370,
-          distance: 1803071.22271581,
-          nickname: "朝花夕拾",
-          sex: 1,
-          avatar: "",
-          siteName: ''
-        }
-      ],
+      TeamList: [],
       IsTheLast: true,
       Loading: true,
       Page: 1,
