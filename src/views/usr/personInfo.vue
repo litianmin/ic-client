@@ -8,7 +8,7 @@
 
       <mu-flex align-items="center" style="padding:0 1rem;">
         <mu-flex style="width:3.8rem; height:3.8rem; border:2px solid #fff; border-radius:50%;">
-          <img :src="$store.state.mdeLogin.usrInfo.avatar" alt="" style="max-width:100%; max-height:100%; border-radius:50%;">
+          <img :src="$store.state.mdeLogin.usrInfo.avatar | imgPrefixDeal()" alt="" style="max-width:100%; max-height:100%; border-radius:50%;">
         </mu-flex>
         <div wrap align-items="center" justify-content="center">
           <div>
@@ -22,7 +22,7 @@
         </div>
       </mu-flex>
 
-      <div style="position:absolute; right:1rem; top:1rem;">
+      <div @click="$router.push('/usr/personInfoEdit')" style="position:absolute; right:1rem; top:1rem;">
         <svg-icon icon-class="config" class="icon-class" style="font-size:28px;"></svg-icon>
       </div>
 

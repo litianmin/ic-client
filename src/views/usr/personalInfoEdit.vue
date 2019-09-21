@@ -21,7 +21,7 @@
         align-items="center" 
         @click="chooseAvatar">
         <span style="font-size:15px;">头像</span>
-        <img style="margin-left:auto; width:3rem; height:3rem; border-radius:.3rem;" :src="$store.state.mdeLogin.usrInfo.avatar">
+        <img style="margin-left:auto; width:3rem; height:3rem; border-radius:.3rem;" :src="$store.state.mdeLogin.usrInfo.avatar | imgPrefixDeal()">
         <svg-icon icon-class="arrow" class="icon-class" style="margin-left:.5rem;"></svg-icon>
       </mu-flex>
 

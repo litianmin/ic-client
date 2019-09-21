@@ -10,7 +10,7 @@
         @click.stop="delImg"
         v-if="ImgShowBase64"
         style="width:1rem; height:1rem; position:absolute; right:-.2rem; top:-.5rem;">
-        <svg-icon icon-class="delete-gray" style="font-size:20px;"></svg-icon>
+        <svg-icon v-if="CouldDel" icon-class="delete-gray" style="font-size:20px;"></svg-icon>
       </div>
       <img 
         style="width:100%; height:100%; border-radius:.5rem;"
@@ -109,6 +109,10 @@ export default {
   },
 
   props: {
+    CouldDel: { // 是否可删除图片
+      type: Boolean,
+      default: true
+    },
     ImgWidth: { // 显示框的宽度
       type: String,
       default: '177px'
@@ -249,6 +253,10 @@ export default {
 
     reset () {  // 重置
       this.Cropper.reset()
+    },
+
+    click () {
+      this.imgChoose()
     }
 
   },

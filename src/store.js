@@ -71,6 +71,14 @@ const MdeLogin = {
       state.userAddrInfo.lng = payload.lng
       state.userAddrInfo.lat = payload.lat
       state.userAddrInfo.district = payload.district
+    },
+
+    updateAvatar (state, payload) {
+      state.usrInfo.avatar = payload.avatar
+    },
+
+    updateNickname (state, payload) {
+      state.usrInfo.nickname = payload.nickname
     }
 
   }

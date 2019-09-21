@@ -81,7 +81,11 @@ const router =  new Router({
       name: 'user-personInfo',
       component: () => import('./views/usr/personInfo.vue')
     },
-
+    {
+      path: '/usr/personInfoEdit',
+      name: 'user-personInfoEdit',
+      component: () => import('./views/usr/personalInfoEdit.vue')
+    },
     {
       path: '/usr/jointeamList/:statustype',
       name: 'user-jointeamList',
