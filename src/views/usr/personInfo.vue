@@ -69,13 +69,17 @@
       </div>
     </mu-row>
 
-    <mu-row style="padding:1rem; margin-top:.3rem; background:#fff;" align-items="center">
+    <mu-row 
+      @click="$router.push('/usr/gameCollect')" 
+      style="padding:1rem; margin-top:.3rem; background:#fff;" align-items="center">
       <svg-icon icon-class="mine-game" class="icon-class"></svg-icon>
       <span style="margin-left:1rem; font-size:15px; letter-spacing:1px;">我的游戏</span>
       <svg-icon icon-class="arrow" class="icon-class" style="margin-left:auto;"></svg-icon>
     </mu-row>
 
-    <mu-row style="padding:1rem; margin-top:.3rem; background:#fff;">
+    <mu-row
+      @click="myThumpUp"
+      style="padding:1rem; margin-top:.3rem; background:#fff;">
       <svg-icon icon-class="mine-like" class="icon-class"></svg-icon>
       <span style="margin-left:1rem; font-size:15px; letter-spacing:1px;">我的点赞</span>
       <svg-icon icon-class="arrow" class="icon-class" style="margin-left:auto;"></svg-icon>
@@ -85,7 +89,9 @@
       <mu-divider></mu-divider>
     </div>
 
-    <mu-row style="padding:1rem; background:#fff;">
+    <mu-row 
+      @click="$router.push('/usr/articleCollect')"
+      style="padding:1rem; background:#fff;">
       <svg-icon icon-class="mine-collect" class="icon-class"></svg-icon>
       <span style="margin-left:1rem; font-size:15px; letter-spacing:1px;">文章收藏</span>
       <svg-icon icon-class="arrow" class="icon-class" style="margin-left:auto;"></svg-icon>
@@ -132,6 +138,9 @@ export default {
     },
     linkToJoinTeamList (type) {
       this.$router.push(`/usr/jointeamList/${type}`)
+    },
+    myThumpUp () {
+      this.$toast.message('暂无数据')
     }
   }
 }

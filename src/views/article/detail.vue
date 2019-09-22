@@ -19,8 +19,14 @@
       <div style="width:80%;" @click="newChat(false, 0, 0, '')">
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
-      
-      <mu-icon value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
+
+      <mu-flex style="margin-left:auto;" @click="focusChange">
+        <svg-icon :icon-class="Focus == 0 ? 'focus' : 'had_focus'" style=" font-size:18px;"></svg-icon>
+      </mu-flex>
+
+      <mu-flex style="margin-right:.5rem; margin-left:.7rem;">
+        <svg-icon icon-class="share" style="font-size:18px;"></svg-icon>
+      </mu-flex>
     </mu-flex>
 
   </div>  
@@ -51,6 +57,8 @@ export default {
       ReplyListPage: 1,
       ReplyList: [],
       Loading: false,
+
+      Focus: 0, // 是否已经收藏， 0=>没有， 1 =>是
     }
   },
   created () {
@@ -74,6 +82,9 @@ export default {
           return
         }
         this.BaseInfo = resp.data.msg.baseInfo
+
+        this.Focus = resp.data.msg.baseInfo.focus
+
         // 开始处理数据
         this.ShareTitle = this.BaseInfo.type == 1 ? '助助社交，精彩话题等你来聊！' : '助助社交，精彩美文分享予你！'    // 分享title
         this.ShareDesc = this.BaseInfo.title  // 分享描述
@@ -83,6 +94,21 @@ export default {
     newChat (isReply, replyTo, replyID, replyNickname) {
       this.$router.push({path:`/common/newChat`, query:{teamType:this.TeamType, teamID:this.TeamID, isReply, replyTo, replyID, replyNickname}})
     },
+
+    focusChange () {
+      let operate = this.Focus == 0 ? 1 : 0
+      this.$axios.post('/common/collect', {
+        type: 1,
+        id: Number(this.TeamID),
+        operate,
+      }).then((resp) => {
+        if (resp.data.code != 20000) {
+          this.$toast.message(resp.data.msg)
+          return
+        }
+        this.Focus = this.Focus == 0 ? 1 : 0
+      })
+    }
 
   },
   components: {

@@ -91,6 +91,16 @@ const router =  new Router({
       name: 'user-jointeamList',
       component: () => import('./views/usr/jointeamList.vue')
     },
+    {
+      path: '/usr/articleCollect',
+      name: 'user-articleCollect',
+      component: () => import('./views/usr/articleCollect.vue')
+    },
+    {
+      path: '/usr/gameCollect',
+      name: 'user-gameCollect',
+      component: () => import('./views/usr/gameCollect.vue')
+    },
 
  
     // 下面是游戏界面了
