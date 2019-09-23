@@ -101,6 +101,11 @@ const router =  new Router({
       name: 'user-gameCollect',
       component: () => import('./views/usr/gameCollect.vue')
     },
+    {
+      path: '/usr/advise',
+      name: 'user-advise',
+      component: () => import('./views/usr/advise.vue')
+    },
 
  
     // 下面是游戏界面了

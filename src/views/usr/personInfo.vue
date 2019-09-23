@@ -97,7 +97,9 @@
       <svg-icon icon-class="arrow" class="icon-class" style="margin-left:auto;"></svg-icon>
     </mu-row>
 
-    <mu-row style="padding:1rem; margin-top:.5rem; background:#fff;">
+    <mu-row 
+      @click="$router.push('/usr/advise')"
+      style="padding:1rem; margin-top:.5rem; background:#fff;">
       <svg-icon icon-class="mine-idea" class="icon-class"></svg-icon>
       <span style="margin-left:1rem; font-size:15px; letter-spacing:1px;">意见反馈</span>
       <svg-icon icon-class="arrow" class="icon-class" style="margin-left:auto;"></svg-icon>
