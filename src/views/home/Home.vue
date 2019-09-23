@@ -6,8 +6,10 @@
         <mu-avatar size="30"><img :src="selfAvatar | imgPrefixDeal()" alt=""></mu-avatar>
         <span style="margin-left:.5rem;">{{ selfNickname }}</span>
       </mu-flex>
-      <mu-flex style="margin-left:auto;" align-items="center">
-          <span>{{ LocateDistrict }}</span>
+      <mu-flex 
+        @click="chooseAddr"
+        style="margin-left:auto;" align-items="center">
+          <span>{{ $store.state.mdeUserInfo.userAddrInfo.addr }}</span>
           <mu-icon color="#fff" size="18" value="person_pin_circle"></mu-icon>
       </mu-flex>
     </mu-flex>
@@ -71,7 +73,11 @@
 
     <!-- 这里就显示官方活动或者商家活动 -->
     <mu-flex style="padding:.3rem .5rem;" wrap="wrap">
-      <div v-for="(item, index) in GameList" :key="index" @click="linkToGameDetail(item.gID)" style="padding:0 .5rem; min-width:30%; max-width:33%; margin-bottom:1rem;">    
+      <div 
+        v-for="(item, index) in GameList" 
+        :key="index" 
+        @click="linkToGameDetail(item.gID)" 
+        style="padding:0 .5rem; min-width:30%; max-width:33%; margin-bottom:1rem;">    
         <img style="max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd;" :src="item.logo | imgPrefixDeal()" alt="">
         <div style="width:100%; text-align:center;margin-top:.1rem; font-size:12px;">{{ item.gName }}</div>
       </div>
@@ -86,7 +92,6 @@
 
     <div style="margin-bottom:4rem; padding:.3rem 1rem;">
       <!-- 这里就显示官方活动或者商家活动 -->
-  
       <mu-flex v-for="(item, index) in ActivityList" :key="index" @click="linkToActivityDetail(item.activityID)" style="box-shadow:0 0 1px gray; border-radius:.3rem; margin-bottom:2rem;" wrap="wrap">
         <mu-flex style="position:relative;">
           <img style="max-width:100%; max-height:100%; border-top-left-radius:.3rem; border-top-right-radius:.3rem;" :src="item.displayImg | imgPrefixDeal()" alt="">
@@ -105,6 +110,37 @@
         </mu-flex>
       </mu-flex>
     </div>
+
+    <!-- 加载层 -->
+    <mu-flex 
+      v-if="InitLoading" 
+      align-items="center" 
+      justify-content="center" 
+      v-loading="true" 
+      data-mu-loading-overlay-color="background:rgba(250, 250, 250, .7);" 
+      style="position:fixed; top:0; width:100%; height:100%; background:rgba(250, 250, 250, .7); z-index:999; "></mu-flex>
+
+    <!-- BEGIN 地址选择弹出框 -->
+    <div v-if="AddrChooseWindowIsShow" id="iframe" style="position:fixed; top:0; width:100%; height:100%; z-index:999;">
+      <mu-flex 
+        @click="shutdownWindow" 
+        style="width:10%; height:2.8rem; position:fixed; top:0; left:0; background:#F8F8F8; text-align:center; padding: 0 0 0 .5rem;" 
+        align-items="center" 
+        justify-content="center">
+        <mu-icon value="navigate_before"></mu-icon>
+      </mu-flex>
+
+      <iframe 
+        class="map-item"  
+        id="getAddress" 
+        @load="loadiframe" 
+        :src="'https://m.amap.com/picker/?key=8906f77f66bcbd2b82a57d844e270fe7&center='+Lng+','+Lat" 
+        style="width:100%; height:100%; position: absolute; border:0;">
+      </iframe>
+
+    </div>
+    <!-- EBD 地址选择弹出框 -->
+
 
     <Footer navActive="mainPage" />
   </div>
@@ -129,6 +165,18 @@ export default {
       selfNickname: '',
       LocateDistrict: '',
       CarouselIsShow: false,
+
+      InitLoading: true, // 初始化加载框
+
+      AddrChooseWindowIsShow: false,
+      ChooseAddrInfo: {
+        name: '',
+        location: '',
+        address: '',
+      },
+      Lng: 113.186702,
+      Lat: 23.035872,
+
       ArticleList: [
         {
           articleID: 1,
@@ -218,6 +266,7 @@ export default {
         this.ShareDesc = this.selfNickname + '为您推荐一个交友组队平台！玩游戏没人？来这里。想出去走走？来这里。'  // 分享描述
         this.ShareImgUrl = 'https://www.icoming.top/image/logo/zhuzhu-logo.png'  // 分享图片
 
+        this.InitLoading = false
       })
     },
     linkToGameList () {
@@ -241,14 +290,42 @@ export default {
     },
     linkToInstant () {
       this.$router.push('/instant/newTeam')
-    }
+    },
+
+    loadiframe () {
+      let iframe = document.getElementById('getAddress').contentWindow
+      iframe.postMessage('hello', 'https://m.amap.com/picker/')
+      window.addEventListener("message", function (e) {
+        if (e.data.command != "COMMAND_GET_TITLE") {
+          this.ChooseAddrInfo = e.data
+          this.LocateAddr = e.data.name
+          let location = e.data.location.split(',')
+
+          this.$store.commit('mdeUserInfo/locationUpdate2', {
+            lng: location[0],
+            lat: location[1],
+            name: e.data.name,
+            addr: e.data.address
+          })
+          this.AddrChooseWindowIsShow = false  
+          this.$router.replace('/')
+        }
+
+      }.bind(this), false)
+    },
+    chooseAddr () { // 点击选择地址的时候，弹出地址选择窗口
+      this.AddrChooseWindowIsShow = true
+    },
+    shutdownWindow () { // 关闭地图窗口
+      this.AddrChooseWindowIsShow = false
+    },
   },
 
 }
 </script>
 
 <style scoped>
-.home { width:100%; position: relative; float:left; background:#fff;}
+.home { width:100%; position: relative; float:left; background:#fff; }
 .swiper-inner { width: 100%; height: auto; padding-top: 50px; padding-bottom: 50px; }
 .swiper-slide { background-position: center; background-size: cover; width: 85%; height: auto; }
 .swiper-img { max-width:100%; height:auto; border-radius:.3rem; }
@@ -258,4 +335,5 @@ export default {
 .icon-class {font-size:30px;}
 
 .card-panel-icon{ width:2rem; height:2rem;  }
+.map-item { position: fixed; width: 100%; height: 100%; top: 0; background: #fff; }
 </style>

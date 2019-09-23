@@ -107,6 +107,16 @@ const MdeUserInfo = {
       state.userAddrInfo.lat = Number(payload.lat)
       state.userAddrInfo.district = payload.district
       state.userAddrInfo.forceRefresh = forceRefresh
+    },
+
+    locationUpdate2 (state, payload) {
+      let forceRefresh = utils.now2Unix() + 30 * 60
+
+      state.userAddrInfo.lng = Number(payload.lng)
+      state.userAddrInfo.lat = Number(payload.lat)
+      state.userAddrInfo.name = payload.name
+      state.userAddrInfo.addr = payload.addr
+      state.userAddrInfo.forceRefresh = forceRefresh
     }
 
   }
