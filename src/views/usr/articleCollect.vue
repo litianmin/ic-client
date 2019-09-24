@@ -10,6 +10,7 @@
         <mu-flex 
           v-for="(item, index) in List"
           :key="index"
+          @click="linkToArticleDetail(index)"
           wrap="wrap"
           style="width:100%; padding:.6rem; border:1px solid #e0e0e0; border-radius:.3rem; margin-top:.5rem; margin-bottom:1.5rem;">
           <mu-flex style="width:100%;" wrap="wrap">
@@ -78,6 +79,10 @@ export default {
         }
         this.List.splice(index, 1)
       })
+    },
+    linkToArticleDetail (index) {
+      let articleID = this.List[index].articleID
+      this.$router.push(`/article/detail/${articleID}`)
     }
   }
 }

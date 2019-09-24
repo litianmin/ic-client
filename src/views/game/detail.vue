@@ -49,6 +49,10 @@
         :content="item" 
         color="#00bcd4" 
         style="margin-right:.5rem;"></mu-badge>
+
+      <mu-flex @click="focusChange" style="margin-left:auto; margin-right:1rem;">
+        <svg-icon :icon-class="Focus == 0 ? 'focus' : 'had_focus'" style=" font-size:22px;"></svg-icon>
+      </mu-flex>
     </mu-flex>
     <!-- END 游戏标签 -->
 
@@ -280,6 +284,8 @@ export default {
       displayImgList: [],  // 轮播图展示图片
       tabList: [],  // 标签列表
 
+      Focus: 0,
+
       commentPage: 1, 
       commentIsTheLast: true,
       commentLoading: true,
@@ -332,6 +338,7 @@ export default {
         this.displayImgList = baseInfo.display_imglist
         this.tabList = baseInfo.tab_list
         this.gameName = baseInfo.g_name
+        this.Focus = baseInfo.focus
         // 轮播图数据渲染问题
         this.isRender =true
         // 轮播图处理
@@ -407,6 +414,20 @@ export default {
     },
     joinTeam (teamID) {
       this.$router.push(`/game/teamDetail/${teamID}`)
+    },
+    focusChange () {  // 收藏游戏与否
+      let operate = this.Focus == 0 ? 1 : 0
+      this.$axios.post('/common/collect', {
+        type: 2,
+        id: Number(this.gameID),
+        operate,
+      }).then((resp) => {
+        if (resp.data.code != 20000) {
+          this.$toast.message(resp.data.msg)
+          return
+        }
+        this.Focus = this.Focus == 0 ? 1 : 0
+      })
     }
   },
 }

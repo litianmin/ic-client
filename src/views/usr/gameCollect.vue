@@ -4,39 +4,13 @@
       <svg-icon icon-class="game-gray" class="icon-class"></svg-icon>
       <span style="margin-left:.5rem; font-size:14px; font-weight:700; color:#757575;">我的游戏</span>
     </div>
-<!-- 
-    <div style="padding:.5rem 1rem;">
-      <mu-flex 
-        align-items="center"
-        style="width:100%; padding:.6rem; border:1px solid #e0e0e0; border-radius:.3rem; margin-top:.5rem; margin-bottom:1.5rem;">
-
-        <mu-flex style="width:4rem;">
-          <img 
-            src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4182158342,175104138&fm=26&gp=0.jpg"
-            style="width:3rem; height:3rem; border-radius:.5rem;">
-        </mu-flex>
-
-        <mu-flex 
-          wrap="wrap"
-          align-items="center"
-          style="margin-left:1rem; width:100%;">
-          <mu-flex style="width:100%; font-size:16px;">洛奇英雄传</mu-flex>
-          <mu-flex 
-            align-items="center"
-            style="width:100%;">
-            <span style="font-size:12px; color:#9e9e9e;">收藏于 2019/03/01 04:04</span>
-            <button style="margin-left:auto; font-size:12px; border:1px solid #e0e0e0; color:#757575; background:#fff; border-radius:.3rem;">取消收藏</button>
-          </mu-flex>
-        </mu-flex>
-      </mu-flex>
-
-    </div> -->
 
     <mu-load-more :loading="Loading" @load="load" :loaded-all="IsTheLast">  
       <div style="padding:.5rem 1rem; ">
         <mu-flex 
           v-for="(item, index) in List"
           :key="index"
+          @click="linkToGameDetail(index)"
           align-items="center"
           style="width:100%; padding:.6rem; border:1px solid #e0e0e0; border-radius:.3rem; margin-top:.5rem; margin-bottom:1.5rem;">
 
@@ -112,6 +86,10 @@ export default {
         }
         this.List.splice(index, 1)
       })
+    },
+    linkToGameDetail (index) {
+      let gameID = this.List[index].gameID
+      this.$router.push(`/game/detail/${gameID}`)
     }
   }
 }
@@ -119,13 +97,4 @@ export default {
 
 <style scoped>
 .icon-class {font-size:16px;}
-
-.span-omit{
-  width:100%;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
 </style>
