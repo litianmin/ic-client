@@ -79,15 +79,16 @@
       <span class="cat-title-text">- 游戏 . 热门组队 -</span>
     </mu-sub-header> 
 
-    <mu-flex style="padding:.3rem .5rem;" wrap="wrap">
-      <div 
+    <mu-flex style="padding:.3rem 1rem;" wrap="wrap" justify-content="between">
+      <mu-flex 
         v-for="(item, index) in GameList" 
         :key="index" 
+        wrap="wrap"
         @click="linkToGameDetail(item.gID)" 
         class="game-team-div">    
         <img class="game-team-img" :src="item.logo | imgPrefixDeal()" alt="">
         <div class="game-team-text">{{ item.gName }}</div>
-      </div>
+      </mu-flex>
     </mu-flex>
 
     <mu-row style=" border-top:2px solid #f5f5f5;"></mu-row>
@@ -353,9 +354,9 @@ export default {
 
 .cat-title-text { font-size:14px; font-weight:600; color:#00bcd4; }
 
-.game-team-div { padding:0 .5rem; min-width:30%; max-width:33%; margin-bottom:1rem; }
+.game-team-div { padding:0 .5rem; width:26%; margin-bottom:1rem; }
 .game-team-img { max-width:100%; border-radius:.3rem; box-shadow: 0px 0px 1px #bdbdbd; }
-.game-team-text { width:100%; text-align:center;margin-top:.1rem; font-size:12px; }
+.game-team-text { width:100%; text-align:center; margin-top:.3rem; font-size:13px; letter-spacing: 1px; }
 
 
 .official-team-div { margin-bottom:4rem; padding:.3rem 1rem; }

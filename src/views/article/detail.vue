@@ -11,7 +11,7 @@
     <span style="font-size:12px; color:#009688; margin-right:.5rem; font-weight:600; letter-spacing:1px;"> · {{ BaseInfo.type == 1 ? '话题' : '美文' }}</span>
 
     <!-- 文章详情 -->
-    <div style="padding:.5rem .8rem;" v-html="BaseInfo.cont"></div>
+    <div class="article-cont" v-html="BaseInfo.cont"></div>
 
     <ChatList :TeamType="TeamType" :TeamID="TeamID"></ChatList>
 
@@ -120,6 +120,9 @@ export default {
 <style scoped>
 .sort-bar { background:#f5f5f5; border-top:1px solid #fff; font-size:12px; padding:.4rem .5rem; margin-bottom:.5rem; }
 .sort-bar-svg { margin-left:auto; font-size:18px; margin-right:.3rem; }
+
+.article-cont { max-width:100%; padding:.5rem .8rem; }
+.article-cont img { max-width:100%; }
 
 .reply-container { padding:.5rem .8rem; border-bottom:.1rem solid #ffffff; }
 
