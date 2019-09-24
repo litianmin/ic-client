@@ -7,6 +7,8 @@ import Toast from 'muse-ui-toast'
 import Loading from 'muse-ui-loading'
 import './registerServiceWorker'
 
+import './assets/css/main.css'
+
 
 import * as filters from './filters'
 

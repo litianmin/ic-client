@@ -44,9 +44,10 @@ export function wxInit(pointer, needLocate) {
                   let payload = {
                     lng,
                     lat,
-                    district: locateAddr  
+                    name: locateAddr,
+                    addr: locateAddr,
                   }
-                  _that.$store.commit('mdeUserInfo/locationUpdate', payload)
+                  _that.$store.commit('mdeUserInfo/locationUpdate2', payload)
                   _that.pageInit()
                 }
               })
