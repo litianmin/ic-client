@@ -131,13 +131,15 @@
     </div>
 
     <!-- 加载层 -->
-    <mu-flex 
+    <!-- <mu-flex 
       v-if="InitLoading" 
       align-items="center" 
       justify-content="center" 
       v-loading="true" 
-      data-mu-loading-overlay-color="background:rgba(250, 250, 250, .7);" 
-      class="gb-init-loading"></mu-flex>
+      data-mu-loading-color="red"
+      class="gb-init-loading"></mu-flex> -->
+    <Loading v-if="InitLoading" />
+    
 
     <!-- BEGIN 地址选择弹出框 -->
     <div v-if="AddrChooseWindowIsShow" id="iframe" style="position:fixed; top:0; width:100%; height:100%; z-index:999;">
@@ -169,10 +171,12 @@
 import Footer from '@/components/Footer.vue'
 import utils from 'common/utils.js'
 import { wxInit } from '@/common/wxInit.js'
+import Loading from '@/components/Loading.vue'
 export default {
   name: 'home',
   components: {
     Footer,
+    Loading
   },
   data () {
     return {
@@ -193,16 +197,7 @@ export default {
       Lng: 113.186702,
       Lat: 23.035872,
 
-      ArticleList: [
-        {
-          articleID: 1,
-          title: "121212",
-          type: 1,
-          beginTime: 1561737600,
-          endTime: 1563897600,
-          displayImg: ""
-        },
-      ],
+      ArticleList: [],
       ActivityList: [
         {
           activityID: 1,
@@ -211,10 +206,10 @@ export default {
           beginTime: 1561864483,
           endTime: 1561865483,
           venue: {
-              name: "万利商务中心",
-              lng: 113.186702,
-              lat: 23.035872,
-              addr: "夏平西路石龙北路路口附近"
+            name: "万利商务中心",
+            lng: 113.186702,
+            lat: 23.035872,
+            addr: "夏平西路石龙北路路口附近"
           },
           displayImg: "",
           recruitNumb: 30,
