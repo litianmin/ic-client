@@ -246,15 +246,6 @@ const router =  new Router({
     }
 
   ],
-
-  scrollBehavior (to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      return { x: 0, y: 0 }
-    }
-  },
-
 })
 
   // 判断浏览器是微信内置浏览器 还是 普通浏览器
