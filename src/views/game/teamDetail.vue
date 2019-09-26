@@ -3,7 +3,7 @@
     <!-- BEGIN 头部 -->
     <mu-appbar class="mine-appbar" style="background: linear-gradient(to right, #4dd0e1 , #80cbc4);">
         <mu-button icon slot="left" @click="goBack">
-          <mu-icon value="navigate_before" color="#fff"></mu-icon>
+          <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
         </mu-button>
         
         <div ref="menuHide" style="font-size:14px; color:#fff;">

@@ -20,10 +20,10 @@
       </mu-container>
     </div>
 
-    <mu-flex style="padding:.5rem;" align-items="center">
+    <mu-flex @click="chooseMeetingVenue" style="padding:.5rem;" align-items="center">
       <span style="font-size:13px; color:#795548; margin-right:.5rem;">相约地点：</span>
+      <svg-icon icon-class="locate-green" style="size:22px;"></svg-icon>
       <span style="font-size:13px; color:#9e9e9e;">{{ VenueObj.name }}</span>
-      <mu-icon @click="chooseMeetingVenue" value="person_pin_circle" size="20" color="#009688"></mu-icon>
     </mu-flex>
 
     <!-- 招募图片 -->
@@ -194,6 +194,7 @@ export default {
 <style scoped>
 .mine-appbar { width: 100%; height:2.5rem; }
 .body-fix{ position:fixed; }
+.map-item { position: fixed; width: 100%; height: 100%; top: 0; background: #fff; }
 </style>
 
 

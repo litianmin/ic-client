@@ -1,7 +1,7 @@
 <template>
   <div>
      <!-- BEGIN 头部 -->
-    <mu-appbar class="mine-appbar" color="#4caf50">
+    <mu-appbar class="mine-appbar" color="#4caf50" z-depth="0">
       <mu-button icon slot="left" @click="goBack">
         <mu-icon value="navigate_before"></mu-icon>
       </mu-button>
@@ -24,7 +24,7 @@
     <!-- 队伍基本信息 -->
     <div style="padding:.5rem;">
       <mu-flex align-items="center">
-        <mu-avatar size="26">
+        <mu-avatar size="28">
           <img :src="TeamBaseInfo.captainAvatar | imgPrefixDeal()">
         </mu-avatar>
         <span class="comment-item-nickname">
@@ -298,9 +298,9 @@ export default {
 
 
 .comment-box { padding:.5rem 1rem; }
-.comment-item-nickname { margin-left:.5rem; font-size:12px; color:#4db6ac; }
+.comment-item-nickname { margin-left:.5rem; font-size:13px; color:#4db6ac; }
 .comment-item-time { margin-left: auto; margin-right:.3rem; font-size:12px; color:#9e9e9e; }
-.comment-item-text { padding:.5rem 0 .5rem 1.5rem; font-size:12px; }
+.comment-item-text { padding:.5rem 0 .5rem 1.5rem; font-size:13px; }
 .comment-item-img { padding:.5rem .5rem 0 1rem; font-size:12px; color:#616161; }
 .comment-item-img img { max-width:100%; max-height:100%; border-radius:.3rem; }
 .comment-item-thumbup-count { font-size:12px; margin-left:.2rem; color:#9e9e9e; }

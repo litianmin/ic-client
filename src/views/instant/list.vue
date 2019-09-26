@@ -83,8 +83,8 @@ export default {
     loadTeamList () {
       this.$axios.post( "/instant/list", {
           page: this.Page,
-          lng: 130.645,
-          lat: 25.888,
+          lng: this.Lng,
+          lat: this.Lat,
         }
       ).then((resp)=>{
         if(resp.data.code != 20000) {

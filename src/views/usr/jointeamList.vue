@@ -9,6 +9,7 @@
       <div 
         v-for="(item, index) in List"
         :key="index"
+        @click="linkToDeail(index)"
         style="padding:.5rem 1rem; background:#fff; margin-bottom:.2rem;">
         <mu-flex style="padding:.5rem; width:100%;">
           <span style=" font-size:13px; color:#9e9e9e;">{{ item.joinTime | formatTime('{y}/{m}/{d} {h}:{i}') }}</span>
@@ -116,10 +117,32 @@ export default {
         this.Page++
         this.Loading = false
       })
+    },
+    linkToDeail (index) {
+      let teamType = this.List[index].teamType
+      let teamID = this.List[index].teamID
+      let path = ''
 
-      // this.$axios.get(`/user/joinTeamList/${this.StatusType}/${this.Page}`, {}).then((resp) => {
-      //   console.log(resp)
-      // })
+      switch (teamType) {
+        case 1:
+          path = `/game/teamDetail/${teamID}`
+          break
+        case 2:
+          path = `/party/teamDetail/${teamID}`
+          break
+        case 3:
+          path = `/travel/teamDetail/${teamID}`
+          break
+        case 4:
+          path = `/instant/detail/${teamID}`
+          break
+        case 5:
+          path = `/activity/detail/${teamID}`
+          break
+        default:
+          break
+      }
+      this.$router.push(path)
     }
   }
 }
@@ -141,8 +164,6 @@ export default {
   width:100%;
   overflow:hidden;
   text-overflow:ellipsis;
-  /* white-space:nowrap;
-  word-break:keep-all; */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -154,4 +175,3 @@ export default {
 .bg-instant {width:3rem; height:3rem; background:#ff5722; color:#fff; padding:.5rem; border-radius:.5rem;}
 .bg-activity {width:3rem; height:3rem; background:#795548; color:#fff; padding:.5rem; border-radius:.5rem;}
 </style>
-
