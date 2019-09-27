@@ -22,7 +22,7 @@
       <span style="font-size:12px; color:#795548; margin-left:.3rem;">主题筛选：</span>
       <select 
       v-model="Theme"
-      :change="pageReload"
+      @change="pageReload"
       style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4;">
         <option :value="0">选择主题</option>
         <option :value="1">普通聚会</option>
@@ -44,7 +44,7 @@
 
     <mu-divider></mu-divider>
 
-    <mu-load-more :loading="Loading" @load="loadTeamList" :loaded-all="IsTheLast">
+    <mu-load-more :loading="Loading" @load="loadTeamList" :loaded-all="IsTheLast" style="margin-top:.5rem;">
       <!-- BEGIN 循环样式 -->
       <div v-for="(item, index) in TeamList" :key="index" style="padding:.5rem;  position:relative;  margin-bottom:2rem;" >
         <div style="box-shadow: 1px 1px 1px #9e9e9e; border-top-left-radius:.3rem; border-top-right-radius:.3rem; border-top:1px solid #e0e0e0; border-left:1px solid #e0e0e0;">
@@ -83,7 +83,7 @@
             </mu-row>
             <mu-row style="margin-bottom:.3rem;">
               <span style="color:#795548; font-size:12px;">活动时间:</span>
-              <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyBeginTime | formatTime('{y}/{m}/{d} {h}:{i}') }}  ~  {{ item.partyEndTime | formatTime('{y}/{m}/{d} {h}:{i}') }}</span>
+              <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyBeginTime | parseTime('{m}/{d} {h}:{i}') }}  ~  {{ item.partyEndTime | parseTime('{m}/{d} {h}:{i}') }}</span>
             </mu-row>
             <mu-row style="margin-bottom:.3rem;">
               <span style="color:#795548; font-size:12px;">集合地点:</span>
@@ -186,6 +186,7 @@ export default {
     },
     pageReload () {
       this.TeamList = []
+      this.Page = 1
       this.loadTeamList()
     },
     goBack () {
@@ -195,8 +196,8 @@ export default {
       this.Loading = true
       this.$axios.post('/party/teamList', {
         page: this.Page,
-        lng: this.lng,
-        lat: this.lat,
+        lng: this.Lng,
+        lat: this.Lat,
         theme: this.Theme
       }).then((resp)=>{
 
@@ -222,8 +223,8 @@ export default {
           this.LocateAddr = e.data.name
 
           let location = e.data.location.split(',')
-          this.Lng = location[0]
-          this.Lat = location[1]
+          this.Lng = Number(location[0])
+          this.Lat = Number(location[1])
           this.AddrChooseWindowIsShow = false  
 
           this.pageReload() // 选择地址刷新

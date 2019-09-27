@@ -67,7 +67,9 @@
         </mu-flex>
 
         <mu-flex style="width:80%;">
-          <span class="cont-item-detail">{{ TeamBaseInfo.meetingVenue.addr }}</span>
+          <span 
+            @click="openLocation"
+            style="margin-bottom: .3rem; letter-spacing: 1px; color:#009688; font-weight:700; font-size:12px; text-decoration:underline">{{ TeamBaseInfo.meetingVenue.addr }}</span>
         </mu-flex>
       </mu-row>
 
@@ -171,6 +173,7 @@
 import utils from 'common/utils'
 import ChatList from '@/components/ChatList.vue'
 import { wxInit } from '@/common/wxInit.js'
+import wx from 'weixin-js-sdk'
 export default {
   data () {
     return {
@@ -357,6 +360,19 @@ export default {
       }
       this.$router.push({path:`/common/newChat`, query:{teamType:this.TeamType, teamID:this.TeamID, isReply, replyTo, replyID, replyNickname}})
     },
+
+    openLocation () {
+      let _this = this
+      wx.openLocation({
+        latitude: _this.TeamBaseInfo.meetingVenue.lat, // 纬度，浮点数，范围为90 ~ -90
+        longitude: _this.TeamBaseInfo.meetingVenue.lng, // 经度，浮点数，范围为180 ~ -180。
+        name: _this.TeamBaseInfo.meetingVenue.name, // 位置名
+        address: _this.TeamBaseInfo.meetingVenue.addr, // 地址详情说明
+        scale: 18, // 地图缩放级别,整形值,范围从1~28。默认为最大
+        infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
+      })
+    }
+
   },
   components: {
     ChatList,

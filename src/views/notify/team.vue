@@ -99,7 +99,7 @@ export default {
       this.$axios.get(`/notify/readSingleNotify/${notifyID}`, {}).then()
       switch(this.List[index].module) {
       case 1: // 游戏模块
-        this.$router.push(`/game/detail/${teamID}`)
+        this.$router.push(`/game/teamDetail/${teamID}`)
         break 
       case 2: // party
         this.$router.push(`/party/teamDetail/${teamID}`)
