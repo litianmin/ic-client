@@ -43,7 +43,11 @@
 
       <mu-row style="padding:1rem .5rem;" >
         <mu-icon value="person_pin_circle" color="#4caf50" size="20"></mu-icon>
-        <span style="font-size:12px; color:#9e9e9e;">地点：{{ TeamBaseInfo.site.name }} · 距离你{{ TeamBaseInfo.distance | distanceFormat() }}</span>
+        <span style="font-size:12px; color:#9e9e9e;">地点：
+          <span
+          @click="openLocation" 
+          style="letter-spacing: 1px; color:#009688; font-weight:700; font-size:12px; text-decoration:underline">{{ TeamBaseInfo.site.name }}</span>
+           · 距离你{{ TeamBaseInfo.distance | distanceFormat() }}</span>
       </mu-row>
     </div>
 
@@ -92,6 +96,7 @@
 import ChatList from '@/components/ChatList.vue'
 import { wxInit } from '@/common/wxInit.js'
 import { getNickname } from '@/common/mStore.js'
+import wx from 'weixin-js-sdk'
 export default {
   data () {
     return {
@@ -266,6 +271,18 @@ export default {
         return
       }
       this.$router.push({path:`/common/newChat`, query:{teamType:this.TeamType, teamID:this.TeamID, isReply, replyTo, replyID, replyNickname}})
+    },
+
+    openLocation () {
+      let _this = this
+      wx.openLocation({
+        latitude: _this.TeamBaseInfo.site.lat, // 纬度，浮点数，范围为90 ~ -90
+        longitude: _this.TeamBaseInfo.site.lng, // 经度，浮点数，范围为180 ~ -180。
+        name: _this.TeamBaseInfo.site.name, // 位置名
+        address: _this.TeamBaseInfo.site.addr, // 地址详情说明
+        scale: 18, // 地图缩放级别,整形值,范围从1~28。默认为最大
+        infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
+      })
     },
 
   },

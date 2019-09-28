@@ -24,7 +24,7 @@
       <div style="margin-right:.8rem;">
         <select 
           v-model="TravelTheme" 
-          :change="pageReload"
+          @change="pageReload"
           style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4;">
           <option :value="0">选择主题</option>
           <option :value="1">心 灵</option>
@@ -42,7 +42,7 @@
       <div style="margin-right:.8rem;">
         <select 
           v-model="PathLength"
-          :change="pageReload"
+          @change="pageReload"
           style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4;">
           <option :value="0">选择路程</option>
           <option :value="1">周 边 游</option>
@@ -53,7 +53,7 @@
       <div>
         <select 
           v-model="TravelType"
-          :change="pageReload"
+          @change="pageReload"
           style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4;">
           <option :value="0">选择形式</option>
           <option :value="1">自 由 行</option>
@@ -202,6 +202,7 @@ export default {
     },
     pageReload () { // 重新加载数据
       this.TeamList = []
+      this.Page = 1
       this.loadTeamList()
     },
     goBack () {
@@ -218,8 +219,8 @@ export default {
           this.ChooseAddrInfo = e.data
           this.LocateAddr = e.data.name
           let location = e.data.location.split(',')
-          this.Lng = location[0]
-          this.Lat = location[1]
+          this.Lng = Number(location[0])
+          this.Lat = Number(location[1])
           this.AddrChooseWindowIsShow = false  
           this.pageReload()
         }
