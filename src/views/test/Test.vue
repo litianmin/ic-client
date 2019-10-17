@@ -1,34 +1,112 @@
 <template>
   <div>
-    <mu-flex 
-      class="position" 
-      align-items="center" 
-      justify-content="center"
-      wrap="wrap">
-        <mu-flex wrap="wrap"       
-          align-items="center" 
-          justify-content="center">
-          <img style="width:2rem; height:2rem;" :src="LoadingPng" alt="">
-          <mu-flex style="width:100%; margin-top:.5rem;" justify-content="center" >
-            <span style="letter-spacing:1px; font-size:13px; color:#9e9e9e;">加载中</span>
-          </mu-flex>
-        </mu-flex>
-    </mu-flex>
+    <div class="singer">
+      <list-view :data="singers" ref="list"></list-view>
+    </div>
   </div>
 </template>
 
 <script>
-import loadingPng from '@/assets/loading.gif'
+import ListView from '@/components/Listview.vue'
 export default {
+  
   data () {
     return {
-      LoadingPng: loadingPng
+      singers: [
+        {
+          title: 'A',
+          items: [
+            {
+              name: 'ceshi',
+              avatar: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1548509200,3423898172&fm=26&gp=0.jpg',
+            },
+
+            {
+              name: '这里是我的名称',
+              avatar: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1548509200,3423898172&fm=26&gp=0.jpg',
+            }
+
+          ]
+        },
+
+        {
+          title: 'B',
+          items: [
+            {
+              name: 'ceshi',
+              avatar: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1548509200,3423898172&fm=26&gp=0.jpg',
+            },
+
+            {
+              name: '这里是我的名称',
+              avatar: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1548509200,3423898172&fm=26&gp=0.jpg',
+            }
+
+          ]
+        },
+
+        {
+          title: 'C',
+          items: [
+            {
+              name: 'ceshi',
+              avatar: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1548509200,3423898172&fm=26&gp=0.jpg',
+            },
+
+            {
+              name: '这里是我的名称',
+              avatar: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1548509200,3423898172&fm=26&gp=0.jpg',
+            }
+
+          ]
+        },
+
+        {
+          title: 'D',
+          items: [
+            {
+              name: 'ceshi',
+              avatar: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1548509200,3423898172&fm=26&gp=0.jpg',
+            },
+
+            {
+              name: '这里是我的名称',
+              avatar: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1548509200,3423898172&fm=26&gp=0.jpg',
+            }
+
+          ]
+        },
+
+        {
+          title: 'E',
+          items: [
+            {
+              name: 'ceshi',
+              avatar: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1548509200,3423898172&fm=26&gp=0.jpg',
+            },
+
+            {
+              name: '这里是我的名称',
+              avatar: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1548509200,3423898172&fm=26&gp=0.jpg',
+            }
+
+          ]
+        },
+
+      ]
     }
-  }
+  },
+  components: {
+      ListView
+    }
 }
 </script>
 
 
-<style scoped>
-.position { background:#f5f5f5; position:fixed; top: 0; width: 100%; height: 100%;  }
+<style scoped lang="stylus">
+.singer
+  position: fixed
+  top: 0
+  bottom: 0
+  width: 100%
 </style>
