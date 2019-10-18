@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="singer">
-      <list-view :data="singers" ref="list"></list-view>
+      <list-view :ListInfo="singers" ref="list"></list-view>
     </div>
   </div>
 </template>

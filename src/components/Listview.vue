@@ -2,14 +2,14 @@
   <scroll @scroll="scroll"
           :listen-scroll="listenScroll"
           :probe-type="probeType"
-          :data="data"
+          :data="ListInfo"
           class="listview"
           ref="listview">
     <ul style="list-style-type:none; padding:0;">
-      <li v-for="group in data" class="list-group" ref="listGroup">
+      <li v-for="(group, index) in ListInfo" :key="index" class="list-group" ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <ul>
-          <li @click="selectItem(item)" v-for="item in group.items" class="list-group-item">
+          <li @click="selectItem(item)" v-for="(item, index2) in group.items" :key="index2" class="list-group-item">
             <img class="avatar" :src="item.avatar">
             <span class="name">{{item.name}}</span>
           </li>
@@ -18,7 +18,7 @@
     </ul>
     <div class="list-shortcut" @touchstart="onShortcutTouchStart" @touchmove.stop.prevent="onShortcutTouchMove">
       <ul style="list-style-type:none; padding:0;">
-        <li v-for="(item, index) in shortcutList" :data-index="index" class="item"
+        <li v-for="(item, index) in shortcutList" :key="index" :data-index="index" class="item"
             :class="{'current':currentIndex===index}">{{item}}
         </li>
       </ul>
@@ -26,7 +26,7 @@
     <div class="list-fixed" ref="fixed" v-show="fixedTitle">
       <div class="fixed-title">{{fixedTitle}} </div>
     </div>
-    <div v-show="!data.length" class="loading-container">
+    <div v-show="!ListInfo.length" class="loading-container">
 
     </div>
   </scroll>
@@ -40,14 +40,14 @@
 
   export default {
     props: {
-      data: {
+      ListInfo: {
         type: Array,
-        default: []
+        default: () => [] 
       }
     },
     computed: {
       shortcutList() {
-        return this.data.map((group) => {
+        return this.ListInfo.map((group) => {
           return group.title.substr(0, 1)
         })
       },
@@ -55,10 +55,10 @@
         if (this.scrollY > 0) {
           return ''
         }
-        return this.data[this.currentIndex] ? this.data[this.currentIndex].title : ''
+        return this.ListInfo[this.currentIndex] ? this.ListInfo[this.currentIndex].title : ''
       }
     },
-    data() {
+    data () {
       return {
         scrollY: -1,
         currentIndex: 0,
@@ -131,7 +131,7 @@
       }
     },
     watch: {
-      data() {
+      ListInfo () {
         setTimeout(() => {
           this._calculateHeight()
         }, 20)
@@ -180,7 +180,7 @@
     width: 100%
     height: 100%
     overflow: hidden
-    background: $color-background
+    background: #ffffff
     .list-group
       padding-bottom: 30px
       .list-group-title
@@ -188,8 +188,8 @@
         line-height: 30px
         padding-left: 20px
         font-size: $font-size-small
-        color: $color-text-l
-        background: $color-highlight-background
+        color: #80cbc4
+        background: #f5f5f5
       .list-group-item
         display: flex
         align-items: center
@@ -231,8 +231,8 @@
         line-height: 30px
         padding-left: 20px
         font-size: $font-size-small
-        color: $color-text-l
-        background: $color-highlight-background
+        color: #ffffff
+        background: linear-gradient(to right, #4dd0e1, #80cbc4)
     .loading-container
       position: absolute
       width: 100%
