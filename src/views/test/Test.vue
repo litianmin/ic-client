@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="singer">
+      为什么就没有东西呢,感觉好恶心啊
       <list-view :ListInfo="singers" ref="list"></list-view>
     </div>
   </div>
@@ -106,7 +107,7 @@ export default {
 <style scoped lang="stylus">
 .singer
   position: fixed
-  top: 88px
+  top: 0
   bottom: 0
   width: 100%
 </style>
