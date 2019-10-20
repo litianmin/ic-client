@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="singer">
-      为什么就没有东西呢,感觉好恶心啊
       <list-view :ListInfo="singers" ref="list"></list-view>
     </div>
   </div>

@@ -24,7 +24,7 @@ const router =  new Router({
     {
       path: '/mytest2',
       name: 'mytest2',
-      component: () => import('./views/test/imgcrop.vue')
+      component: () => import('./views/test/Test2.vue')
     },
 
     // {

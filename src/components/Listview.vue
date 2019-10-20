@@ -18,8 +18,12 @@
     </ul>
     <div class="list-shortcut" @touchstart="onShortcutTouchStart" @touchmove.stop.prevent="onShortcutTouchMove">
       <ul style="list-style-type:none; padding:0;">
-        <li v-for="(item, index) in shortcutList" :key="index" :data-index="index" class="item"
-            :class="{'current':currentIndex===index}">{{item}}
+        <li 
+          v-for="(item, index) in shortcutList" 
+          :key="index" 
+          :data-index="index" 
+          class="item"
+          :class="{'current':currentIndex===index}">{{item}}
         </li>
       </ul>
     </div>
@@ -121,12 +125,6 @@
         if (!index && index !== 0) {
           return
         }
-        if (index < 0) {
-          index = 0
-        } else if (index > this.listHeight.length - 2) {
-          index = this.listHeight.length - 2
-        }
-        this.scrollY = -this.listHeight[index]
         this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
       }
     },
@@ -154,7 +152,7 @@
           }
         }
         // 当滚动到底部，且-newY大于最后一个元素的上限
-        this.currentIndex = listHeight.length - 2
+        this.currentIndex = listHeight.length 
       },
       diff(newVal) {
         let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0
@@ -174,6 +172,12 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
+
+  ul
+    padding: 0
+    list-style: none
+
+  
 
   .listview
     position: relative
