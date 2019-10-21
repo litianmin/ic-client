@@ -34,16 +34,15 @@ export default {
 .main {
   position: fixed;
   top: 40%;
-  width: 100%;
+  left: 35%;
+  width: 30%;
   display: flex;
   justify-content: center;
-  z-index: -1;
+  z-index: 0;
 }
 
 .msg-window {
-  z-index: 999; 
   padding: .6rem 1.2rem; 
-  max-width: 50%; 
   background: rgba(33, 33, 33, .5); 
   border-radius:.5rem; 
   font-size:25px; 

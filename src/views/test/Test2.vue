@@ -16,14 +16,33 @@
     <!-- END 头部 -->
 
     <div class="mycont" ref="mycont">
-      <div ref="listCont">
-        <div 
+      <div>
+
+        <div
+          v-for="(item, index) in MyData"
+          ref="myindex"
+          :key="index">
+
+          <div style="width:100%; padding:.5rem 1rem; background:#eeeeee;">{{ item.title }}</div>
+
+          <div 
+            v-for="(item2, index2) in item.child"
+            :key="index2"
+            style="display:flex; align-items:center; width:100%; padding:.5rem 1rem; border-top:1px solid #eeeeee;">
+            
+            <img :src="item2.avatar" alt="" style="border:1px solid red; width:2.5rem; height:2.5rem; border-radius:. 3rem;">
+            <span style="margin-left:1rem;">{{ item2.name }}</span>
+          </div>
+
+        </div>
+
+        <!-- <div 
           v-for="(item, index) in MyData"
           :key="index"
           class="div-h" 
           ref="myindex">
           {{ item.cont }}
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -49,21 +68,55 @@ export default {
   },
   data () {
     return {
+      // MyData: [
+      //   {id: 'A', name: '内容一', cont: '展示1'},
+      //   {id: 'B', name: '内容二', cont: '展示2'},
+      //   {id: 'C', name: '内容三', cont: '展示3'},
+      //   {id: 'D', name: '内容四', cont: '展示4'},
+      //   {id: 'F', name: '内容五', cont: '展示5'},
+      //   {id: 'G', name: '内容六', cont: '展示6'},
+      //   {id: 'H', name: '内容七', cont: '展示7'},
+      //   {id: 'I', name: '内容八', cont: '展示8'},
+      //   {id: 'J', name: '内容九', cont: '展示9'},
+      //   {id: 'K', name: '内容十一', cont: '展示10'},
+      //   {id: 'L', name: '内容十二', cont: '展示11'},
+      //   {id: 'M', name: '内容十三', cont: '展示12'},
+      //   {id: 'N', name: '内容十四', cont: '展示13'},
+      // ],
+
+
       MyData: [
-        {id: 'A', name: '内容一', cont: '展示1'},
-        {id: 'B', name: '内容二', cont: '展示2'},
-        {id: 'C', name: '内容三', cont: '展示3'},
-        {id: 'D', name: '内容四', cont: '展示4'},
-        {id: 'F', name: '内容五', cont: '展示5'},
-        {id: 'G', name: '内容六', cont: '展示6'},
-        {id: 'H', name: '内容七', cont: '展示7'},
-        {id: 'I', name: '内容八', cont: '展示8'},
-        {id: 'J', name: '内容九', cont: '展示9'},
-        {id: 'K', name: '内容十一', cont: '展示10'},
-        {id: 'L', name: '内容十二', cont: '展示11'},
-        {id: 'M', name: '内容十三', cont: '展示12'},
-        {id: 'N', name: '内容十四', cont: '展示13'},
+        {title: 'A', child: [
+          {id: 1, name: 'apple', avatar: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2724886373,3500404552&fm=26&gp=0.jpg'},
+          {id: 2, name: 'alpha', avatar: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2724886373,3500404552&fm=26&gp=0.jpg'},
+        ]},
+
+        {title: 'B', child: [
+          {id: 3, name: 'banan', avatar: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2724886373,3500404552&fm=26&gp=0.jpg'},
+          {id: 4, name: '逼神', avatar: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2724886373,3500404552&fm=26&gp=0.jpg'},
+        ]},
+
+        {title: 'E', child: [
+          {id: 5, name: 'eson', avatar: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2724886373,3500404552&fm=26&gp=0.jpg'},
+          {id: 6, name: 'Element', avatar: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2724886373,3500404552&fm=26&gp=0.jpg'},
+        ]},
+
+        {title: 'F', child: [
+          {id: 7, name: 'Fat Boy', avatar: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2724886373,3500404552&fm=26&gp=0.jpg'},
+          {id: 8, name: '肥婆', avatar: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2724886373,3500404552&fm=26&gp=0.jpg'},
+        ]},
+
+        {title: 'H', child: [
+          {id: 9, name: '海', avatar: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2724886373,3500404552&fm=26&gp=0.jpg'},
+          {id: 10, name: '何小姐', avatar: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2724886373,3500404552&fm=26&gp=0.jpg'},
+        ]},
+
+        {title: 'Z', child: [
+          {id: 11, name: '朱元璋', avatar: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2724886373,3500404552&fm=26&gp=0.jpg'},
+          {id: 12, name: '猪猪贸易', avatar: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2724886373,3500404552&fm=26&gp=0.jpg'},
+        ]},
       ],
+
       ABCList: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
       MyScroll: {}
     }
@@ -89,7 +142,7 @@ export default {
       // 先判断有没有存在该列表
       let locateIndex = -1
       this.MyData.forEach((item, index) => {
-        if (item.id == letter) {
+        if (item.title == letter) {
           locateIndex = index
         }
       })
