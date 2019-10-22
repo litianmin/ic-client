@@ -42,7 +42,12 @@ export default {
 }
 
 .msg-window {
-  padding: .6rem 1.2rem; 
+  /* padding: .6rem 1.2rem;  */
+  width: 4rem;
+  height:4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: rgba(33, 33, 33, .5); 
   border-radius:.5rem; 
   font-size:25px; 

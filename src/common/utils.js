@@ -56,7 +56,7 @@ export default{
   isWxBrowser () {
     let ua = window.navigator.userAgent.toLowerCase()
     // 通过正则表达式匹配ua中是否含有MicroMessenger字符串
-    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+    if(ua.match(/MicroMessenger/i) == 'mmicromessenger'){
       return true
     }
     return false

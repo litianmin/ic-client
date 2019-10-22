@@ -23,26 +23,19 @@
           ref="myindex"
           :key="index">
 
-          <div style="width:100%; padding:.5rem 1rem; background:#eeeeee;">{{ item.title }}</div>
+          <div style="width:100%; padding:.5rem 1rem .3rem 1rem; background:#f5f5f5;">{{ item.title }}</div>
 
           <div 
             v-for="(item2, index2) in item.child"
             :key="index2"
-            style="display:flex; align-items:center; width:100%; padding:.5rem 1rem; border-top:1px solid #eeeeee;">
+            style="display:flex; align-items:center; width:100%; padding:.5rem 1rem; border-top:1px solid #eeeeee; background:#fff;">
             
-            <img :src="item2.avatar" alt="" style="border:1px solid red; width:2.5rem; height:2.5rem; border-radius:. 3rem;">
+            <img :src="item2.avatar" alt="" style="width:2.5rem; height:2.5rem; border-radius:. 3rem;">
             <span style="margin-left:1rem;">{{ item2.name }}</span>
           </div>
 
         </div>
 
-        <!-- <div 
-          v-for="(item, index) in MyData"
-          :key="index"
-          class="div-h" 
-          ref="myindex">
-          {{ item.cont }}
-        </div> -->
       </div>
     </div>
 
@@ -68,22 +61,6 @@ export default {
   },
   data () {
     return {
-      // MyData: [
-      //   {id: 'A', name: '内容一', cont: '展示1'},
-      //   {id: 'B', name: '内容二', cont: '展示2'},
-      //   {id: 'C', name: '内容三', cont: '展示3'},
-      //   {id: 'D', name: '内容四', cont: '展示4'},
-      //   {id: 'F', name: '内容五', cont: '展示5'},
-      //   {id: 'G', name: '内容六', cont: '展示6'},
-      //   {id: 'H', name: '内容七', cont: '展示7'},
-      //   {id: 'I', name: '内容八', cont: '展示8'},
-      //   {id: 'J', name: '内容九', cont: '展示9'},
-      //   {id: 'K', name: '内容十一', cont: '展示10'},
-      //   {id: 'L', name: '内容十二', cont: '展示11'},
-      //   {id: 'M', name: '内容十三', cont: '展示12'},
-      //   {id: 'N', name: '内容十四', cont: '展示13'},
-      // ],
-
 
       MyData: [
         {title: 'A', child: [
@@ -178,8 +155,8 @@ export default {
   position: fixed;
   padding: 0 .5rem;
   right: 0;
-  top: 2.3rem;
-  height: 100%;
+  top: 2.5rem;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -8,7 +8,6 @@ import { getToken, setBeforeLoginURL } from './common/cookie.js'
 
 import GameList from './views/game/list.vue'
 
-
 Vue.use(Router)
 
 const router =  new Router({
@@ -18,7 +17,7 @@ const router =  new Router({
     {
       path: '/mytest',
       name: 'mytest',
-      component: () => import('./views/test/Test3.vue')
+      component: () => import('./views/test/Test.vue')
     },
 
     {
@@ -105,6 +104,11 @@ const router =  new Router({
       path: '/usr/advise',
       name: 'user-advise',
       component: () => import('./views/usr/advise.vue')
+    },
+    {
+      path: '/usr/usercard/:userid',
+      name: 'user-card',
+      component: () => import('./views/usr/userCard.vue')
     },
 
  

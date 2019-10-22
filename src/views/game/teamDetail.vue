@@ -79,10 +79,17 @@
 
     <!-- BEGIN 弹出窗口 -->
     <mu-container>
-      <mu-drawer :open.sync="teamListWindowIsShow" :docked="false" :left="true" width="80%">
+      <mu-drawer 
+        :open.sync="teamListWindowIsShow" 
+        :docked="false" 
+        :left="true" 
+        width="80%">
         <!-- 游戏基本信息 -->
         <mu-row style="position:relative;">
-          <img style="max-width:100%; max-height:100%;" :src="GameDisplayImg | imgPrefixDeal()" alt="">
+          <img 
+            style="max-width:100%; max-height:100%;" 
+            :src="GameDisplayImg | imgPrefixDeal()" 
+            alt="">
 
           <div style="position:absolute; left:0; bottom:0; width:100%; padding:.5rem 1rem;  background:rgba(30, 30, 30, .3)">
             <div style="color:#fff;">{{ GameName }}</div>
@@ -93,12 +100,15 @@
         </mu-row>
 
         <!-- 队友列表 -->
-        <div style="margin-top:.5rem; padding: 0 .5rem;" v-for="(item, index) in TeammateList" :key="index">
+        <div 
+          v-for="(item, index) in TeammateList" 
+          :key="index"
+          style="margin-top:.5rem; padding: 0 .5rem;" >
           <mu-row class="teammate-box">
             <mu-col span="8">
               <mu-flex>
-                <div>
-                  <mu-avatar size="28">
+                <div style="position:relative;">
+                  <mu-avatar size="28" @click="addFriend(item.user_id)">
                     <img :src="item.user_avatar | imgPrefixDeal()" />
                   </mu-avatar>
                 </div>
@@ -290,6 +300,10 @@ export default {
     teamListWindowToggle () {
       this.teamListWindowIsShow = !this.teamListWindowIsShow
       this.$refs.menuHide.click()
+    },
+
+    addFriend (userID) {
+      this.$router.push(`/usr/usercard/${userID}`)
     },
   },
   components: {
