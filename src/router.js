@@ -110,6 +110,11 @@ const router =  new Router({
       name: 'user-card',
       component: () => import('./views/usr/userCard.vue')
     },
+    { // 好友列表
+      path: '/usr/friendList',
+      name: 'user-friend-list',
+      component: () => import('./views/usr/friendList.vue')
+    },
 
  
     // 下面是游戏界面了

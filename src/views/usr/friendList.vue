@@ -18,6 +18,32 @@
     <div class="mycont" ref="mycont">
       <div>
 
+        <div style="width:100%; padding:.5rem 1rem .3rem 1rem; background:#f5f5f5;">
+          <span style="font-size:12px;">好友申请</span>
+        </div>
+
+        <div 
+          style="display:flex; align-items:center; width:100%; padding:.5rem 1rem; border-top:1px solid #eeeeee; background:#fff;">
+          
+          <img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1391149153,291295030&fm=26&gp=0.jpg" style="width:2.5rem; height:2.5rem; border-radius:. 3rem;">
+          <span style="margin-left:1rem;">这是我的内容</span>
+        </div>
+
+        <div 
+          style="display:flex; align-items:center; width:100%; padding:.5rem 1rem; border-top:1px solid #eeeeee; background:#fff;">
+          
+          <img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1391149153,291295030&fm=26&gp=0.jpg" style="width:2.5rem; height:2.5rem; border-radius:. 3rem;">
+          <span style="margin-left:1rem;">这是我的内容</span>
+
+
+          <button style="margin-left:auto; font-size:12px; color:#9e9e9e;">忽略</button>
+
+          <button style="margin-right:1.5rem; margin-left:1rem; font-size:12px; color:#424242; ">
+            <span>接受</span>
+          </button>
+        </div>
+
+
         <div
           v-for="(item, index) in MyData"
           ref="myindex"
