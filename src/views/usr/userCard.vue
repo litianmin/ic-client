@@ -13,8 +13,13 @@
         </div>
       </div>
 
-      <mu-button class="button-position">
-        <span style="color:#4dd0e1;">加为好友</span>
+      <mu-button 
+        v-if="IsFriend >= 0" 
+        @click="addOrDelFriend"
+        class="button-position">
+        <span v-if="IsFriend == 0" style="color:#4dd0e1;">加为好友</span>
+        <span v-else-if="IsFriend == 1" style="color:#bdbdbd;">删除好友</span>
+        <span v-else style="color:#bdbdbd;">已申请</span>
       </mu-button>
 
     </div>
@@ -38,15 +43,53 @@ export default {
       UserID: 0,
       Avatar: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1548509200,3423898172&fm=26&gp=0.jpg',
       Nickname: '这里是我的昵称',
+      IsFriend: 0,  // -1: 自己， 0:非好友， 1：好友, 2: 申请中
     }
   },
 
   mounted () {
     this.UserID = this.$route.params.userid
+
+    this.$axios.get(`/user/userCard/${this.UserID}`, {}).then((resp) => {
+      if (resp.data.code == 20000) {
+        let data = resp.data.msg
+        this.Avatar = data.avatar
+        this.Nickname = data.nickname
+        this.IsFriend = data.isf
+      } else {
+        this.$toast.message('发生未知错误')
+      }
+    })
   },
 
   methods: {
-    
+    addOrDelFriend () {
+      switch (this.IsFriend) {
+        case 0: // 添加好友申请
+          this.$axios.get(`/user/addFriend/${this.UserID}`, {}).then((resp) => {
+            if (resp.data.code == 20000) {
+              this.IsFriend = 2
+              this.$toast.message('已提交申请')
+            } else {
+              this.$toast.message('发生未知错误')
+            }
+          })
+          break
+        case 1: // 删除好友
+          this.$axios.get(`/user/deleteFriend/${this.UserID}`, {}).then((resp) => {
+            if (resp.data.code == 20000) {
+              this.IsFriend = 0
+              this.$toast.message('已删除好友')
+            } else {
+              this.$toast.message('发生未知错误')
+            }
+          })
+          break
+        default:  
+          // Do Nothing
+          break
+      }
+    }
   },
 }
 </script>
