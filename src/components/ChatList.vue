@@ -14,7 +14,10 @@
 
       <mu-container class="chat-container" v-for="(item, index) in ChatList" :key="index">
         <mu-flex align-items="center">
-          <mu-avatar size="35" :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'">
+          <mu-avatar 
+            @click="$router.push(`/usr/usercard/${item.userID}`)"
+            size="35" 
+            :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'">
             <img :src="item.avatar | imgPrefixDeal()">
           </mu-avatar>
           <span class="nickname">
@@ -45,7 +48,6 @@
         <mu-row style="padding: 0 .1rem;">
           <div style="border-top:1px solid #eeeeee; height:1px; width:100%;"></div>
         </mu-row>
-        <!-- <mu-divider></mu-divider> -->
 
       </mu-container>
     </mu-load-more>
@@ -132,5 +134,4 @@ export default {
 .no-more-reply { padding:.5rem .5rem .3rem .5rem; margin-top:.3rem; margin-bottom:3rem; color:#9e9e9e; }
 
 </style>
-
 
