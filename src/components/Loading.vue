@@ -30,5 +30,5 @@ export default {
 
 
 <style scoped>
-.position { background:#f5f5f5; position:fixed; top: 0; width: 100%; height: 100%;  }
+.position { background:#f5f5f5; position:absolute; top: 0; bottom:0; width: 100%; }
 </style>
