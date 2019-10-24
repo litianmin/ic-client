@@ -6,12 +6,11 @@
       class="head-container" 
       align-items="center">
       <mu-flex align-items="center" @click="goBack">
-        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+        <svg-icon icon-class="goback" style="font-size:20px;"></svg-icon>
       </mu-flex>
       <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
         <span style="color:#fff;">玩友列表</span>
       </mu-flex>
-
     </mu-flex>
     <!-- END 头部 -->
 
@@ -56,8 +55,8 @@
 
         </div>
 
-        <div v-if="FriendList.length > 0" style="padding:1rem; text-align:center;">
-          <span style="color:#bdbdbd; letter-spacing:1px;">共 {{ FriendList.length }} 位玩友</span>
+        <div v-if="FriendList.length > 0" class="friend-stats-div">
+          <span class="friend-stats-span">共 {{ FriendList.length }} 位玩友</span>
         </div>
 
         <div 
@@ -274,4 +273,13 @@ export default {
   text-align:center;
 }
 
+.friend-stats-div {
+  padding:1rem; 
+  text-align:center;
+}
+
+.friend-stats-span {
+  color:#bdbdbd; 
+  letter-spacing:1px;
+}
 </style>
