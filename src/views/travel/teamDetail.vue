@@ -113,7 +113,10 @@
     <!-- BEGIN 队长和队友列表 -->
     <div style="padding:.5rem; border-bottom:1px dashed #eeeeee; ">
       <mu-flex align-items="center">
-        <mu-avatar size="38" :class="TeamBaseInfo.captainSex == 1 ? 'avatar-male' : 'avatar-female'">
+        <mu-avatar 
+          @click="$router.push(`/usr/usercard/${item.user_id}`)"
+          size="38" 
+          :class="TeamBaseInfo.captainSex == 1 ? 'avatar-male' : 'avatar-female'">
           <img :src="TeamBaseInfo.captainAvatar" alt="">
         </mu-avatar>
         <div style="margin-left:.5rem;">

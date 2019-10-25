@@ -27,7 +27,13 @@
 
     <!-- BEGIN 队长和队友列表 -->
     <mu-flex style="padding: .8rem 1rem .5rem 1rem; background:#fff; border-top:1px solid #eeeeee" justify-content="center" align-items="center" wrap="wrap">
-        <mu-avatar v-for="(item, index) in TeammateList" :key="index" size="35" :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'" style="margin-right:.5rem;">
+        <mu-avatar 
+          v-for="(item, index) in TeammateList" 
+          :key="index" 
+          @click="$router.push(`/usr/usercard/${item.user_id}`)"
+          size="35" 
+          :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'" 
+          style="margin-right:.5rem;">
           <img :src="item.avatar | imgPrefixDeal()" alt="">
         </mu-avatar>
         <span v-if="TeamBaseInfo.recruitStatus == 0" @click="joinTeam">

@@ -112,7 +112,10 @@
 
     <div style="padding:.5rem; border-bottom:1px dashed #eeeeee; ">
       <mu-flex align-items="center">
-        <mu-avatar size="38" :class="TeamBaseInfo.captainSex == 1 ? 'avatar-male' : 'avatar-female'">
+        <mu-avatar 
+          @click="$router.push(`/usr/usercard/${TeamBaseInfo.captainID}`)"
+          size="38" 
+          :class="TeamBaseInfo.captainSex == 1 ? 'avatar-male' : 'avatar-female'">
           <img :src="TeamBaseInfo.captainAvatar | imgPrefixDeal()" alt="">
         </mu-avatar>
         <div style="margin-left:.5rem;">
@@ -125,7 +128,13 @@
 
     <!-- BEGIN 队长和队友列表 -->
     <mu-flex style="padding:.5rem 1rem; background:#fff;" justify-content="center" align-items="center" wrap="wrap">
-        <mu-avatar v-for="(item, index) in TeammateList" :key="index" size="35" :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'" style="margin-right:.5rem;">
+        <mu-avatar 
+          v-for="(item, index) in TeammateList" 
+          :key="index" 
+          @click="item.user_id"
+          size="35" 
+          :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'" 
+          style="margin-right:.5rem;">
           <img :src="item.avatar | imgPrefixDeal()" alt="">
         </mu-avatar>
         <span v-if="TeamBaseInfo.recruitStatus == 0" @click="joinTeam">

@@ -28,7 +28,7 @@
       <!-- BEGIN 主评论 -->
       <mu-container class="main-team-container" style="position:relative;">
         <mu-flex align-items="center">
-          <mu-avatar size="30">
+          <mu-avatar size="30" @click="$router.push(`/usr/usercard/${ChatDetailMain.userID}`)">
             <img :src="ChatDetailMain.captain_avatar | imgPrefixDeal()">
           </mu-avatar>
           <span class="team-item-nickname">

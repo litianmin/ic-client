@@ -14,9 +14,8 @@
     <div style="margin-bottom:3rem;">  
       <!-- BEGIN 主评论 -->
       <mu-container class="main-comment-container">
-
         <mu-flex align-items="center">
-          <mu-avatar size="35">
+          <mu-avatar size="35" @click="$router.push(`/usr/usercard/${CmtDetailMain.userID}`)">
             <img :src="CmtDetailMain.avatar | imgPrefixDeal()">
           </mu-avatar>
           <span class="nickname">
@@ -102,7 +101,6 @@ export default {
           this.$toast.message(resp.data.msg)
           return
         }
-
         let dataBack = resp.data.msg 
         let cmtDetailMain = dataBack.cmtDetailMain
         this.CmtDetailMain.userID = cmtDetailMain.user_id
