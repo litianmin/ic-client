@@ -62,9 +62,11 @@
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
 
-      <span v-if="JointeamStmt == 3" @click="joinTeam(3)" style="font-size:19px; margin-left:auto;">
-        <svg-icon icon-class="jointeam_refuse"></svg-icon>
+
+      <span v-if="JointeamStmt == 3" @click="inviteFriend" style="font-size:19px; margin-left:auto;">
+        <svg-icon icon-class="team-invite"></svg-icon>
       </span>
+
       <span v-if="JointeamStmt == 2" @click="joinTeam(2)" style="font-size:19px; margin-left:auto;">
         <svg-icon icon-class="hadjointeam"></svg-icon>
       </span>
@@ -74,7 +76,8 @@
       <span v-if="JointeamStmt == 0" @click="joinTeam(0)" style="font-size:20px; margin-left:auto;">
         <svg-icon icon-class="jointeam"></svg-icon>
       </span>
-      <mu-icon value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
+
+      <mu-icon @click="$refs.shareGuide.show()" value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
     </mu-flex>
 
     <!-- BEGIN 弹出窗口 -->
@@ -108,7 +111,7 @@
             <mu-col span="8">
               <mu-flex>
                 <div style="position:relative;">
-                  <mu-avatar size="28" @click="addFriend(item.user_id)">
+                  <mu-avatar size="28" @click="$router.push(`/usr/usercard/${item.user_id}`)">
                     <img :src="item.user_avatar | imgPrefixDeal()" />
                   </mu-avatar>
                 </div>
@@ -134,6 +137,7 @@
     </mu-container>
     <!-- END 弹出窗口 -->
 
+    <WxShareGuide ref="shareGuide"/>
 
   </div>
 </template>
@@ -141,6 +145,7 @@
 <script>
 import { wxInit } from '@/common/wxInit.js'
 import ChatList from '@/components/ChatList.vue'
+import WxShareGuide from '@/components/WxShareGuide.vue'
 export default {
   data () {
     return {
@@ -236,47 +241,42 @@ export default {
 
       })
     },
+
     goBack () {
       this.$router.go(-1)
     },
-    convertThumbup () {
-      this.HadThumbUp = !this.HadThumbUp
-      let msg = this.HadThumbUp == true ? '已点赞' : '取消点赞'
-      this.$toast.success(msg)
+
+    inviteFriend () { // 邀请好友
+      // 先判断该队伍是否在招募中
+      if (this.TeamStmt != 0) {
+        this.$toast.info('队伍已停止招募，不能邀请好友')
+        return
+      }
+
+      this.$toast.info('准备招募')
     },
-    convertFocus () {
-      this.IsFocus = !this.IsFocus
-    },
+
     joinTeam (stmt) {
       switch(stmt) {
-        case 0: // 可申请
+        case 0: // 未加入
           this.$router.push(`/game/joinTeam/${this.TeamID}`)
           break
         case 1: // 申请中
-          this.$toast.message("正在申请中。。。")
+          // 暂不作处理，因为现在还没有这个业务
           break
         case 2: // 拒绝加入
-          this.$toast.message("拒绝加入")
+          // 暂不作处理
           break
-        case 3: // 不能加入
+        case 3: // 已加入，跳转到邀请？
           this.$toast.message("已加入")
           break
-        case 4: // 不能加入
-          this.$toast.message("已加入")
+        case 4: // 已离队
+          this.$router.push(`/game/joinTeam/${this.TeamID}`)
           break
       }
     },
-    leaveTeamReq () {
-      this.$axios.get(`/common/leaveTeam/${this.TeamType}/${this.TeamID}`, {}).then((resp)=>{
-        if(resp.data.code == 20000) {
-          this.$toast.message('已成功退出组队！')
-          this.$router.push(`/game/detail/${this.GameID}`)
-          return
-        }
-      }) 
-    },
 
-    leaveTeam () {
+    leaveTeam () {  // 离开组队
       // 先判断是否为队长，如果是队长，提示会解散队伍
       // 并且如果是队长，只有组队中才可以解散
       if(this.SelfIsCamptain == true) {
@@ -289,6 +289,17 @@ export default {
         this.leaveTeamReq()
       }
     },
+
+    leaveTeamReq () {
+      this.$axios.get(`/common/leaveTeam/${this.TeamType}/${this.TeamID}`, {}).then((resp)=>{
+        if(resp.data.code == 20000) {
+          this.$toast.message('已成功退出组队！')
+          this.$router.push(`/game/detail/${this.GameID}`)
+          return
+        }
+      }) 
+    },
+
     newChat (isReply, replyTo, replyID, replyNickname) {
       // 只有加入组队的人才能进行评论
       if(this.JointeamStmt != 3) {
@@ -297,17 +308,16 @@ export default {
       }
       this.$router.push({path:`/common/newChat`, query:{teamType:this.TeamType, teamID:this.TeamID, isReply, replyTo, replyID, replyNickname}})
     },
+
     teamListWindowToggle () {
       this.teamListWindowIsShow = !this.teamListWindowIsShow
       this.$refs.menuHide.click()
     },
 
-    addFriend (userID) {
-      this.$router.push(`/usr/usercard/${userID}`)
-    },
   },
   components: {
     ChatList,
+    WxShareGuide,
   },
 }
 </script>

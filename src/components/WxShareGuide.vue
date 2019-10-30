@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div class="main" v-show="IsShow">
+    <div class="main" v-show="IsShow" @click="IsShow = false">
       <div style="text-align:right;">
         <svg-icon icon-class="share-guide-arrow" style="font-size:150px;"></svg-icon>
       </div>
@@ -23,16 +23,8 @@ export default {
       TOut: {}
     }
   },
-  watch: {
-    IsShow (val) {
-      if (val) {  // 如果为真
-        clearTimeout(this.tOut) 
-        this.show = true
-      }
-    }
-  },
   methods: {
-    handleShow () {
+    show () { // 展示
       clearTimeout(this.tOut) 
       this.IsShow = true
       this.TOut = setTimeout(()=>{
