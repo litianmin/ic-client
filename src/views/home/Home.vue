@@ -338,7 +338,7 @@ export default {
 .home { width:100%; position: relative; float:left; background:#fff; }
 
 
-.nav-icon-div { padding:1.2rem 0 1rem 0; background:#fff; border-bottom:1px solid #eeeeee; }
+.nav-icon-div { margin-top:2.5rem; padding:1.2rem 0 1rem 0; background:#fff; border-bottom:1px solid #eeeeee; }
 .nav-icon-text { text-align:center; font-size:12px; margin-top:.3rem; }
 
 .swiper-div { margin-top:1rem; margin-bottom:1rem; }

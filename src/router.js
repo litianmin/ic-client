@@ -115,7 +115,11 @@ const router =  new Router({
       name: 'user-friend-list',
       component: () => import('./views/usr/friendList.vue')
     },
-
+    { // 邀请好友
+      path: '/usr/inviteFriend/:teamid/:module',
+      name: 'user-invite-friend',
+      component: () => import('./views/usr/inviteFriend.vue')
+    },
  
     // 下面是游戏界面了
     {

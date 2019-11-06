@@ -253,7 +253,7 @@ export default {
         return
       }
 
-      this.$toast.info('准备招募')
+      this.$router.push(`/usr/inviteFriend/${this.TeamID}/${this.TeamType}`)
     },
 
     joinTeam (stmt) {

@@ -1,29 +1,28 @@
 <template>
-  <div :class="AddrChooseWindowIsShow == true ? 'body-fix': ''" style="background:#fff;">
+  <div :class="AddrChooseWindowIsShow == true ? 'body-fix': ''" >
     <!-- BEGIN 头部 -->
     <mu-flex 
-      style="padding:.6rem .8rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); box-shadow: 0 0 1px #26c6da;" 
+      class="gb-top-bar" 
       align-items="center">
       <mu-flex align-items="center" @click="goBack">
-        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+        <svg-icon icon-class="goback" style="font-size:20px;"></svg-icon>
       </mu-flex>
       <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
         <span style="color:#fff;">聚会party</span>
       </mu-flex>
 
       <mu-flex style="margin-left:auto;">
-        <span @click="newTeam" style="color:#fff; font-size:12px; padding:0 .5rem;" slot="right">创建组队</span>
+        <span @click="newTeam" class="title-span">创建组队</span>
       </mu-flex>
     </mu-flex>
     <!-- END 头部 -->
 
     <!-- BEGIN 主题和地址选择 -->
-    <mu-flex style="padding:.5rem .2rem .5rem .2rem;" align-items="center">
-      <span style="font-size:12px; color:#795548; margin-left:.3rem;">主题筛选：</span>
+    <mu-flex class="search-container" align-items="center">
       <select 
       v-model="Theme"
       @change="pageReload"
-      style="padding:.1rem .5rem; color:#009688; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #80cbc4;">
+      class="search-select">
         <option :value="0">选择主题</option>
         <option :value="1">普通聚会</option>
         <option :value="2">节日聚会</option>
@@ -36,15 +35,14 @@
         <option :value="9">联谊聚会</option>
       </select>
 
-      <span style="font-size:12px; color:#795548; margin-left:1rem;">所在地：</span>
-      <span style="font-size:12px; color:#009688;">{{ LocateAddr }}</span>
+      <span class="search-title-span">所在地：</span>
+      <span class="search-addr-span">{{ LocateAddr }}</span>
       <mu-icon @click="chooseAddr" value="person_pin_circle" size="20" color="#009688"></mu-icon>
     </mu-flex>
     <!-- END 主题和地址选择 -->
 
-    <mu-divider></mu-divider>
 
-    <mu-load-more :loading="Loading" @load="loadTeamList" :loaded-all="IsTheLast" style="margin-top:.5rem;">
+    <mu-load-more :loading="Loading" @load="loadTeamList" :loaded-all="IsTheLast" style="margin-top:5.5rem;">
       <!-- BEGIN 循环样式 -->
       <div v-for="(item, index) in TeamList" :key="index" style="padding:.5rem;  position:relative;  margin-bottom:2rem;" >
         <div style="box-shadow: 1px 1px 1px #9e9e9e; border-top-left-radius:.3rem; border-top-right-radius:.3rem; border-top:1px solid #e0e0e0; border-left:1px solid #e0e0e0;">
@@ -122,9 +120,8 @@
       <span style="">没有更多的组队</span>
     </mu-row>
 
-
     <!-- BEGIN 地址选择弹出框 -->
-    <div v-if="AddrChooseWindowIsShow" id="iframe" style="position:fixed; top:0; width:100%; height:100%;">
+    <div v-show="AddrChooseWindowIsShow" id="iframe" style="position:fixed; top:0; width:100%; height:100%;">
       <mu-flex @click="shutdownWindow" style="width:10%; height:2.8rem; z-index:9999; position:fixed; top:0; left:0; background:#F8F8F8; text-align:center; padding: 0 0 0 .5rem;" align-items="center" justify-content="center">
         <mu-icon value="navigate_before"></mu-icon>
       </mu-flex>
@@ -170,6 +167,7 @@ export default {
     }
   },
   mounted () {
+
     wxInit(this, true)
   },
   methods: {
@@ -184,15 +182,19 @@ export default {
       this.ShareTitle = `有什么好玩的聚会party，来这里找找呗！`   // 分享title
       this.ShareDesc = '更多的聚会party在助助社交。。。'  // 分享描述
     },
+
     pageReload () {
       this.TeamList = []
       this.Page = 1
       this.loadTeamList()
     },
+
     goBack () {
       this.$router.go(-1)
     },
+
     loadTeamList () { // 加载组队
+      console.log('加载')
       this.Loading = true
       this.$axios.post('/party/teamList', {
         page: this.Page,
@@ -200,7 +202,6 @@ export default {
         lat: this.Lat,
         theme: this.Theme
       }).then((resp)=>{
-
         let dataBack = resp.data.msg
         this.IsTheLast = dataBack.isTheLast
 
@@ -214,33 +215,42 @@ export default {
         this.Loading = false
       })
     },
+    
     loadiframe () {
       let iframe = document.getElementById('getAddress').contentWindow
       iframe.postMessage('hello', 'https://m.amap.com/picker/')
-      window.addEventListener("message", function (e) {
-        if (e.data.command != "COMMAND_GET_TITLE") {
-          this.ChooseAddrInfo = e.data
-          this.LocateAddr = e.data.name
-
-          let location = e.data.location.split(',')
-          this.Lng = Number(location[0])
-          this.Lat = Number(location[1])
-          this.AddrChooseWindowIsShow = false  
-
-          this.pageReload() // 选择地址刷新
-        }
-
-      }.bind(this), false)
+      window.addEventListener("message", this.chooseAddrDeal, false)
     },
+
+    chooseAddrDeal (e) {
+      let that = this
+
+      if (e.data.location != undefined) {
+        that.ChooseAddrInfo = e.data
+        that.LocateAddr = e.data.name
+
+        let location = e.data.location.split(',')
+        that.Lng = Number(location[0])
+        that.Lat = Number(location[1])
+        that.AddrChooseWindowIsShow = false  
+
+        that.pageReload() // 选择地址刷新
+      }
+
+    },
+
     chooseAddr () { // 点击选择地址的时候，弹出地址选择窗口
       this.AddrChooseWindowIsShow = true
     },
+
     shutdownWindow () { // 关闭地图窗口
       this.AddrChooseWindowIsShow = false
     },
+
     newTeam () {  // 创建一个新的组队
       this.$router.push('/party/newTeam')
     },
+
     linkToTeamDetail (teamID) {
       this.$router.push(`/party/teamDetail/${teamID}`)
     }
@@ -249,7 +259,54 @@ export default {
 </script>
 
 <style scoped>
-.mine-appbar { width: 100%; height:2.5rem; }
+.title-span {
+  color:#fff; 
+  font-size:12px; 
+  padding:0 .5rem;
+}
+
+.search-container {
+  position: fixed; 
+  z-index: 9999;
+  background:#fff;
+  top: 2.5rem;
+  left: 0;
+  width: 100%;
+  padding:0 .5rem; 
+  height:2.5rem;
+  border-bottom: 1px solid #b2ebf2;
+}
+
+.search-select {
+  padding:.1rem .5rem; 
+  color:#009688; 
+  appearance:none; 
+  background:#fff; 
+  font-size:12px; 
+  border-radius:.2rem; 
+  border:1px solid #80cbc4;
+}
+
+.search-title-span {
+  font-size:12px; 
+  color:#795548; 
+  margin-left:1rem;
+}
+
+.search-addr-span {
+  font-size:12px; 
+  color:#009688;
+}
+
+
+.mycont {
+  position: absolute;
+  top: 2.5rem;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  overflow: hidden;
+}
 
 .mine-menu-box { margin-top:1rem; right:.5rem; }
 .mine-menu-list { background:#26c6da; color:white; padding:0; }
