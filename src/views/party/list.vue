@@ -4,7 +4,7 @@
     <mu-flex 
       class="gb-top-bar" 
       align-items="center">
-      <mu-flex align-items="center" @click="goBack">
+      <mu-flex align-items="center" @click="$router.go(-1)">
         <svg-icon icon-class="goback" style="font-size:20px;"></svg-icon>
       </mu-flex>
       <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
@@ -121,8 +121,8 @@
     </mu-row>
 
     <!-- BEGIN 地址选择弹出框 -->
-    <div v-show="AddrChooseWindowIsShow" id="iframe" style="position:fixed; top:0; width:100%; height:100%;">
-      <mu-flex @click="shutdownWindow" style="width:10%; height:2.8rem; z-index:9999; position:fixed; top:0; left:0; background:#F8F8F8; text-align:center; padding: 0 0 0 .5rem;" align-items="center" justify-content="center">
+    <div v-if="AddrChooseWindowIsShow" id="iframe" style="position:fixed; z-index:10000; top:0; width:100%; height:100%;">
+      <mu-flex @click="shutdownWindow" style="width:10%; height:2.8rem; z-index:10000; position:fixed; top:0; left:0; background:#F8F8F8; text-align:center; padding: 0 0 0 .5rem;" align-items="center" justify-content="center">
         <mu-icon value="navigate_before"></mu-icon>
       </mu-flex>
       <iframe 
@@ -187,10 +187,6 @@ export default {
       this.TeamList = []
       this.Page = 1
       this.loadTeamList()
-    },
-
-    goBack () {
-      this.$router.go(-1)
     },
 
     loadTeamList () { // 加载组队

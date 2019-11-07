@@ -1,7 +1,6 @@
 <template>
   <div>
     <!-- BEGIN 头部 -->
-
     <mu-flex 
       class="gb-top-bar" 
       align-items="center">
@@ -16,11 +15,8 @@
         <span  @click="ExpandBox = true">
           <svg-icon icon-class="more-white" style="font-size:20px;"></svg-icon>
         </span>
-        <!-- <span v-if="JointeamStmt == 3" @click="leaveTeam" class="title-span">退出队伍</span> -->
       </mu-flex>
     </mu-flex>
-
-
     <!-- END 头部 -->
 
     <!-- 展示图片 -->
@@ -168,7 +164,6 @@
       </span>
 
       <mu-icon @click="$refs.shareGuide.show()" value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
-      <!-- <mu-icon value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon> -->
     </mu-flex>
 
 
@@ -222,6 +217,11 @@ import { wxInit } from '@/common/wxInit.js'
 import WxShareGuide from '@/components/WxShareGuide.vue'
 import wx from 'weixin-js-sdk'
 export default {
+  components: {
+    ChatList,
+    WxShareGuide,
+  },
+
   data () {
     return {
       ExpandBox: false,
@@ -427,10 +427,6 @@ export default {
       })
     }
 
-  },
-  components: {
-    ChatList,
-    WxShareGuide,
   },
 }
 </script>

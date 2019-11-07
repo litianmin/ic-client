@@ -1,18 +1,25 @@
 <template>
   <div>
     <!-- BEGIN 头部 -->
+
     <mu-flex 
-      style="padding:.6rem .8rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); box-shadow: 0 0 1px #26c6da; margin-bottom:.5rem;" 
+      class="gb-top-bar" 
       align-items="center">
-      <mu-flex align-items="center" @click="goBack">
-        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+      <mu-flex align-items="center" @click="$router.go(-1)">
+        <svg-icon icon-class="goback" style="font-size:20px;"></svg-icon>
       </mu-flex>
       <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
         <span style="color:#fff;">即时组队</span>
       </mu-flex>
+
+      <mu-flex style="margin-left:auto;">
+        <span @click="$router.push('/instant/newTeam')" class="title-span">创建组队</span>
+      </mu-flex>
     </mu-flex>
+
+
     <!-- END 头部 -->
-    <mu-load-more :loading="Loading" @load="loadTeamList" :loaded-all="IsTheLast">
+    <mu-load-more :loading="Loading" @load="loadTeamList" :loaded-all="IsTheLast" style="margin-top:2.5rem;">
       <div style="width:100%; padding:.5rem;">
         <mu-row v-for="(item, index) in TeamList" :key="index" @click="linkToDetail(item.teamID)" style="width:100%; padding:.5rem; margin-bottom:.8rem; border-radius:.3rem; background:#fff; border:1px solid #e0e0e0;">
           <mu-flex style="width:100%;" align-items="center">

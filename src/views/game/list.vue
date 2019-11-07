@@ -1,7 +1,11 @@
 <template>
   <div>
-    <!-- BEGIN 头部搜索框 -->
-    <mu-flex style="padding:.6rem .8rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); box-shadow: 0 0 1px #26c6da;" align-items="center" justify-content="between">
+    <!-- BEGIN 头部 -->
+    <mu-flex 
+      class="gb-top-bar" 
+      style="height:3rem;"
+      align-items="center" 
+      justify-content="between">
       <mu-flex align-items="center" @click="goBack">
         <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
       </mu-flex>
@@ -169,7 +173,7 @@ export default {
     searchGame () {
       let searchCont = this.SearchCont
       if(searchCont.trim().length == 0) {
-        this.$toast.message('搜索内容不能为空')
+        this.$toast.info('搜索内容不能为空')
         return
       } 
 
@@ -204,7 +208,7 @@ export default {
 .list-item-div {width:3.5rem; height:3.5rem;}
 .list-item-div img {max-width:100%; max-height:100%; border-radius:.5rem;}
 
-.demo-list-wrap { width: 100%; overflow: hidden; }
+.demo-list-wrap { margin-top: 3rem; width: 100%; overflow: hidden; }
 
 .mu-item-action { 
     min-width: 70px;

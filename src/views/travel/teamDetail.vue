@@ -1,6 +1,23 @@
 <template>
   <div>
     <!-- BEGIN 头部 -->
+    <mu-flex 
+      class="gb-top-bar" 
+      align-items="center">
+      <mu-flex align-items="center" @click="$router.go(-1)">
+        <svg-icon icon-class="goback" style="font-size:20px;"></svg-icon>
+      </mu-flex>
+      <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
+        <span style="color:#fff;">旅游</span>
+      </mu-flex>
+
+      <mu-flex style="margin-left:auto; margin-right:.5rem;">
+        <span  @click="ExpandBox = true">
+          <svg-icon icon-class="more-white" style="font-size:20px;"></svg-icon>
+        </span>
+      </mu-flex>
+    </mu-flex>
+
     <mu-appbar class="mine-appbar" color="#03a9f4" z-depth="0.5">
       <mu-button icon slot="left" @click="goBack">
         <mu-icon value="navigate_before"></mu-icon>
@@ -152,20 +169,53 @@
       <span v-if="JointeamStmt == 1 || JointeamStmt == 2 || JointeamStmt == 5" @click="joinTeam" style="font-size:19px; margin-left:auto;">
         <svg-icon icon-class="jointeam_refuse"></svg-icon>
       </span>
-      <span v-if="JointeamStmt == 3" @click="joinTeam" style="font-size:19px; margin-left:auto;">
-        <svg-icon icon-class="hadjointeam"></svg-icon>
+      <span v-if="JointeamStmt == 3" @click="inviteFriend" style="font-size:19px; margin-left:auto;">
+        <svg-icon icon-class="team-invite"></svg-icon>
       </span>
-      <!-- <span v-if="JointeamStmt == 1" @click="joinTeam" style="font-size:20px; margin-left:auto;">
-        <svg-icon icon-class="jointeam_applying"></svg-icon>
-      </span> -->
+
       <span v-if="JointeamStmt == 0 || JointeamStmt == 4" @click="joinTeam" style="font-size:20px; margin-left:auto;">
         <svg-icon icon-class="jointeam"></svg-icon>
       </span>
-      <mu-icon value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
+      <mu-icon @click="$refs.shareGuide.show()" value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
     </mu-flex>
+
+    <!-- 底部弹出框 -->
+    <mu-bottom-sheet :open.sync="ExpandBox" :lock-scroll="true">
+      <mu-list @item-click="ExpandBox = false">
+        <mu-list-item button v-if="JointeamStmt == 3" @click="leaveTeam">
+          <mu-list-item-action>
+            <svg-icon icon-class="leave-team-green" style="font-size:20px;"></svg-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>
+            <span style="color:#424242; letter-spacing:1px;">离开组队</span>
+          </mu-list-item-title>
+        </mu-list-item>
+
+        <mu-list-item button v-else @click="joinTeam">
+          <mu-list-item-action>
+            <svg-icon icon-class="join-team-green" style="font-size:20px;"></svg-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>
+            <span style="color:#424242; letter-spacing:1px;">加入组队</span>
+          </mu-list-item-title>
+        </mu-list-item>
+
+        <mu-list-item button @click="inviteFriend">
+          <mu-list-item-action>
+            <svg-icon icon-class="team-invite" style="font-size:20px;"></svg-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>
+            <span style="color:#424242; letter-spacing:1px;">邀请好友</span>
+          </mu-list-item-title>
+        </mu-list-item>
+
+      </mu-list>
+    </mu-bottom-sheet>
 
     <!-- 加载层 -->
     <mu-flex v-if="InitLoading" align-items="center" justify-content="center" v-loading="true" data-mu-loading-overlay-color="background:rgba(250, 250, 250, .7);" style="position:fixed; top:0; width:100%; height:100%; background:rgba(250, 250, 250, .7); z-index:999; "></mu-flex>
+
+    <WxShareGuide ref="shareGuide"/>
   </div>
 
   
@@ -176,8 +226,13 @@
 import utils from 'common/utils'
 import ChatList from '@/components/ChatList.vue'
 import { wxInit } from '@/common/wxInit.js'
+import WxShareGuide from '@/components/WxShareGuide.vue'
 import wx from 'weixin-js-sdk'
 export default {
+  components: {
+    ChatList,
+    WxShareGuide,
+  },
   data () {
     return {
       ShareTitle: '', // 分享title
@@ -221,6 +276,8 @@ export default {
           prevEl: '.swiper-button-prev'
         }
       },   
+
+      ExpandBox: false,
 
     }
   },
@@ -296,6 +353,16 @@ export default {
 
         console.log(resp.data)
       })
+    },
+
+    inviteFriend () { // 邀请好友
+      // 先判断该队伍是否在招募中
+      if (this.TeamBaseInfo.recruitStatus != 0) {
+        this.$toast.info('队伍已停止招募，不能邀请好友')
+        return
+      }
+
+      this.$router.push(`/usr/inviteFriend/${this.TeamID}/${this.TeamType}`)
     },
 
     goBack () {
@@ -402,9 +469,7 @@ export default {
     },
 
   },
-  components: {
-    ChatList,
-  },
+
 }
 </script>
 

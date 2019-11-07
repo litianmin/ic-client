@@ -2,10 +2,10 @@
   <div>
     <!-- BEGIN 头部 -->
     <mu-flex 
-      style="padding:.6rem .8rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); box-shadow: 0 0 1px #26c6da;" 
+      class="gb-top-bar" 
       align-items="center">
-      <mu-flex align-items="center" @click="goBack">
-        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+      <mu-flex align-items="center" @click="$router.go(-1)">
+        <svg-icon icon-class="goback" style="font-size:20px;"></svg-icon>
       </mu-flex>
       <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
         <span style="color:#fff;">{{ gameName }}</span>
@@ -15,7 +15,7 @@
  
     <!-- BEGIN 轮播图 -->
     <!-- swiper1 -->
-    <div v-if="isRender">
+    <div v-if="isRender" style="margin-top:2.5rem;">
       <swiper :options="swiperOptionTop" class="gallery-top" ref="swiperTop">
         <swiper-slide v-for="(item, index) in displayImgList" :key="index">
           <img class="swiper-img" :src="item" alt="">

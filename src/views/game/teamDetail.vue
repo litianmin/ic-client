@@ -1,30 +1,26 @@
 <template>
   <div>
     <!-- BEGIN 头部 -->
-    <mu-appbar class="mine-appbar" style="background: linear-gradient(to right, #4dd0e1 , #80cbc4);">
-        <mu-button icon slot="left" @click="goBack">
-          <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
-        </mu-button>
-        
-        <div ref="menuHide" style="font-size:14px; color:#fff;">
-          {{ ChatDetailMain.captain_nickname }} 的队伍
-        </div>
 
-        <mu-menu slot="right" class="mine-menu-box">
-          <mu-icon value="menu" color="#fff"></mu-icon>
-          <mu-list slot="content" class="mine-menu-list">
-            <mu-list-item button @click="teamListWindowToggle">
-              <mu-list-item-title class="mine-menu-item">队友列表</mu-list-item-title>
-            </mu-list-item>
-            <mu-list-item @click="leaveTeam" v-if="JointeamStmt == 3" button style="border-top:1px solid #fafafa;">
-              <mu-list-item-title class="mine-menu-item">退出队伍</mu-list-item-title>
-            </mu-list-item>
-          </mu-list>
-        </mu-menu>
-    </mu-appbar>
+    <mu-flex 
+      class="gb-top-bar" 
+      align-items="center">
+      <mu-flex align-items="center" @click="$router.go(-1)">
+        <svg-icon icon-class="goback" style="font-size:20px;"></svg-icon>
+      </mu-flex>
+      <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
+        <span style="color:#fff;">{{ ChatDetailMain.captain_nickname }} 的队伍</span>
+      </mu-flex>
+
+      <mu-flex style="margin-left:auto; margin-right:.5rem;">
+        <span  @click="ExpandBox = true">
+          <svg-icon icon-class="more-white" style="font-size:20px;"></svg-icon>
+        </span>
+      </mu-flex>
+    </mu-flex>
     <!-- END 头部 -->
 
-    <div style="margin-bottom:3rem;">  
+    <div style="margin-bottom:3rem; margin-top:2.5rem;">  
       <!-- BEGIN 主评论 -->
       <mu-container class="main-team-container" style="position:relative;">
         <mu-flex align-items="center">
@@ -137,6 +133,49 @@
     </mu-container>
     <!-- END 弹出窗口 -->
 
+    <!-- 底部弹出框 -->
+    <mu-bottom-sheet :open.sync="ExpandBox" :lock-scroll="true">
+      <mu-list @item-click="ExpandBox = false">
+
+        <mu-list-item button @click="teamListWindowToggle">
+          <mu-list-item-action>
+            <svg-icon icon-class="leave-team-green" style="font-size:20px;"></svg-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>
+            <span style="color:#424242; letter-spacing:1px;">队友列表</span>
+          </mu-list-item-title>
+        </mu-list-item>
+
+        <mu-list-item button v-if="JointeamStmt == 3" @click="leaveTeam">
+          <mu-list-item-action>
+            <svg-icon icon-class="leave-team-green" style="font-size:20px;"></svg-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>
+            <span style="color:#424242; letter-spacing:1px;">离开组队</span>
+          </mu-list-item-title>
+        </mu-list-item>
+
+        <mu-list-item button v-else @click="joinTeam">
+          <mu-list-item-action>
+            <svg-icon icon-class="join-team-green" style="font-size:20px;"></svg-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>
+            <span style="color:#424242; letter-spacing:1px;">加入组队</span>
+          </mu-list-item-title>
+        </mu-list-item>
+
+        <mu-list-item button @click="inviteFriend">
+          <mu-list-item-action>
+            <svg-icon icon-class="team-invite" style="font-size:20px;"></svg-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>
+            <span style="color:#424242; letter-spacing:1px;">邀请好友</span>
+          </mu-list-item-title>
+        </mu-list-item>
+
+      </mu-list>
+    </mu-bottom-sheet>
+
     <WxShareGuide ref="shareGuide"/>
 
   </div>
@@ -178,6 +217,8 @@ export default {
       TeamStmt: 0,
       GameDisplayImg: '',
       GameName: '',
+
+      ExpandBox: false,
     }
   },
   created () {
