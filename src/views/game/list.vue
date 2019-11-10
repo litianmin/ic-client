@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- BEGIN 头部 -->
+    <!-- BEGIN 头部搜索框 -->
     <mu-flex 
       class="gb-top-bar" 
       style="height:3rem;"
@@ -18,13 +18,14 @@
     </mu-flex>
     <!-- END 头部搜索框 -->
 
+
     <!-- BEGIN 列表显示内容 -->
     <mu-paper :z-depth="0" class="demo-list-wrap">
       <!-- BEGIN 热门游戏列表 -->
-      <mu-list textline="three-line" v-if="hotGameListIsShow">
+      <mu-list textline="three-line" v-if="HotGameShow">
         <mu-sub-header style="color:#00bcd4;">--热门游戏--</mu-sub-header>
 
-          <div v-for="item in hotGameList" :key="item.g_id">
+          <div v-for="item in HotGameList" :key="item.g_id">
             <mu-list-item avatar :ripple="false" button @click="linkToDetail(item.g_id, item.g_name)">
               <mu-list-item-action>
                 <div class="list-item-div">
@@ -44,7 +45,6 @@
       </mu-list>
       <!-- END 热门游戏列表 -->
 
-      <!-- <mu-divider></mu-divider> -->
 
       <mu-load-more :loading="loading" @load="load" :loaded-all="isTheLast">
 
@@ -52,7 +52,7 @@
         <mu-list textline="three-line">
           <mu-sub-header style="color:#4caf50;">--全部游戏--</mu-sub-header>
           
-          <div v-for="item in gameList" :key="item.g_id">
+          <div v-for="item in GameList" :key="item.g_id">
             <mu-list-item avatar :ripple="false" button @click="linkToDetail(item.g_id, item.g_name)">
               <mu-list-item-action>
                 <div class="list-item-div">
@@ -94,9 +94,9 @@ export default {
       ShareImgUrl: '',  // 分享图片
 
       SearchCont: '',
-      hotGameListIsShow: true,
-      hotGameList: [],
-      gameList: [],
+      HotGameShow: true,
+      HotGameList: [],
+      GameList: [],
       page: 1,
       isTheLast: true,
       loading: true,
@@ -119,12 +119,12 @@ export default {
 
         if(dataBack.hotGame.length == 0) { 
           // 没有热门游戏，那么隐藏热门游戏列表
-          this.hotGameListIsShow = false
+          this.HotGameShow = false
         }else{
-          this.hotGameList = dataBack.hotGame
+          this.HotGameList = dataBack.hotGame
         }
 
-        this.gameList = dataBack.gameInfo.listInfo
+        this.GameList = dataBack.gameInfo.listInfo
 
         // 是否为最后一页了
         this.isTheLast = dataBack.gameInfo.isTheLast
@@ -137,11 +137,6 @@ export default {
     },
     load () {
       this.loading = true
-      if(this.isTheLast == true) {
-        this.$toast.message('没有更多的内容')
-        this.loading = false
-        return
-      }
       this.page++      
       this.$axios.post(
         `/game/list/${this.page}`,{
@@ -157,7 +152,7 @@ export default {
 
         let gameListInfo = dataBack.msg
 
-        this.gameList = this.gameList.concat(gameListInfo.listInfo)
+        this.GameList = this.GameList.concat(gameListInfo.listInfo)
         this.isTheLast = gameListInfo.isTheLast
         this.loading = false
         return
@@ -173,24 +168,30 @@ export default {
     searchGame () {
       let searchCont = this.SearchCont
       if(searchCont.trim().length == 0) {
-        this.$toast.info('搜索内容不能为空')
+        this.page = 1
+        this.GameList = []
+        this.load()
         return
       } 
 
-
       this.loading = true
-      this.page++      
       this.$axios.post(
-        `/game/list/${this.page}`,{
-          is_search: true,
-          search_cont: searchCont
+        `/game/gameSearch`,{
+          cont: this.SearchCont
         }
       ).then((resp)=>{
-        this.hotGameListIsShow = false
+        this.HotGameShow = false
         let dataBack = resp.data
         let gameListInfo = dataBack.msg
 
-        this.gameList = gameListInfo.listInfo
+        gameListInfo.map(item => {
+          item.g_id = item.game_id
+          item.g_name = item.game_name
+          item.brief_desc = item.game_desc
+          item.g_logo = item.game_logo
+        })
+
+        this.GameList = gameListInfo
         this.isTheLast = true
         this.loading = false
         return
