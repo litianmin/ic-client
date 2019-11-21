@@ -145,78 +145,38 @@
           <!-- BEGIN 组队样式 -->
           <!-- TODO 这个还是手动加载吧， 好像加了这个会很卡 -->
           <mu-load-more :loading="teamLoading" @load="teamLoad" :loaded-all="teamIsTheLast" style="padding:.1rem;">
-            <div 
-              v-for="(item, index) in teamList" 
-              :key="index" 
-              @click="joinTeam(item.t_id)"
-              style="width:100%; padding:1rem; box-shadow:0 0 1px gray; border-radius:.3rem; margin-bottom:2rem;">
-              <!-- 队长基本信息(包括图片) -->
-              <mu-row gutter>
-                <!-- 左边内容 -->
-                <mu-col col="6" style="padding:.5rem 0 0 .5rem;">
-                  <mu-flex align-items="center" class="team-avatar-flex">
-                    <mu-avatar size="30">
-                      <img :src="item.captain_avatar | imgPrefixDeal()" />
-                    </mu-avatar>
-                    <span class="team-leader-nickname">{{ item.captain_nickname }}</span>
-                  </mu-flex>
 
-                  <div class="team-leaderinfo-item">
-                    <span class="team-leaderinfo-title">职业：</span>
-                    <span class="team-leaderinfo-cont">{{ item.role }}</span>
-                  </div>
+            <mu-flex  
+              v-for="(item, index) in teamList"
+              :key="index"
+              @click="joinTeam(item.teamID)"
+              wrap="wrap" 
+              class="team-container">
 
-                  <div class="team-leaderinfo-item">
-                    <span class="team-leaderinfo-title">角色：</span>
-                    <span class="team-leaderinfo-cont">{{ item.role_name }}</span>
-                  </div>
+              <mu-flex style="position:relative;">
 
-                  <div class="team-leaderinfo-item">
-                    <span class="team-leaderinfo-title">区服：</span>
-                    <span class="team-leaderinfo-cont">{{ item.server_name }}</span>
-                  </div>
-
-                  <div class="team-leaderinfo-item">
-                    <span class="team-leaderinfo-title">等级/段位：</span>
-                    <span class="team-leaderinfo-cont">{{ item.role_rank }}</span>
-                  </div>
-
-                  <div class="team-leaderinfo-item">
-                    <span class="team-leaderinfo-title">招募人数：</span>
-                    <span class="team-leaderinfo-cont">{{ item.recruit_num }}</span>
-                  </div>
-
-                </mu-col>  
-
-                <!-- 右边图片展示 -->
-                <mu-col col="6" justify-content="center" align-items="center">
-                  <mu-flex justify-content="center" align-items="center" class="team-leaderinfo-img-flex">
-                    <img :src="item.recruit_img | imgPrefixDeal()" />
-                  </mu-flex>
-                </mu-col>
-              </mu-row>
-
-              <!-- 招募宣言 -->
-              <mu-flex style="margin-top:-.5rem;" wrap="wrap">
-                <mu-flex style="font-size:12px; width:100%;">
-                  <span style="color:#795548;">队友偏向：</span> 
-                  <span style="color:#9e9e9e;">{{ item.teanmate_prefer }}</span>
+                <mu-flex class="team-recruit-word">
+                  <span class="gb-text-3-omit">{{ item.recruitWord }}</span>
                 </mu-flex>
 
-                <mu-flex style="font-size:12px; width:100%; margin-top:.2rem;">
-                  <span style="color:#795548;">招募宣言：</span> 
-                  <span style="color:#9e9e9e;">{{ item.announcement }}</span>
-                </mu-flex>
+                <img class="team-recruit-img" :src="item.recruitImg">
               </mu-flex>
 
-              <!-- 额外内容 -->
-              <mu-flex style="margin-top:.5rem;">
-                <div style="margin-left:auto;">
-                  <span class="team-extracont-time">{{ item.create_time | formatTime() }}</span>
-                  <span class="team-extracont-operate">查看详情</span>
-                </div>
+
+              <mu-flex align-items="center" class="team-leader-container">
+                <mu-flex>
+                  <img 
+                    class="team-leader-avatar"
+                    :src="item.avatar">
+                </mu-flex>
+
+                <mu-flex>
+                  <span class="team-leader-nickname">{{ item.nickname }}</span>
+                </mu-flex>
+                <span class="team-extracont-operate">查看详情</span>
               </mu-flex>
-            </div>
+
+            </mu-flex>
 
             <mu-row v-show="teamIsTheLast" justify-content="center" style="padding:.5rem; margin-top:.5rem; color:#9e9e9e;">
               <span style="">没有更多的内容</span>
@@ -365,15 +325,19 @@ export default {
     toggle (panel) {
       this.panel = panel === this.panel ? '' : panel
     },
+
     newComment () {
       this.$router.push(`/game/newcomment/${this.gameID}`)
     },
+
     formTeam () {
       this.$router.push(`/game/formteam/${this.gameID}`)
     },
+
     goBack () {
       this.$router.go(-1)
     },
+
     commentLoad () { // 加载数据
       this.commentLoading = true
 
@@ -390,31 +354,35 @@ export default {
         this.commentLoading = false // 关闭转圈圈
       })
     },
+
     linkToCommentDetail (commentID) {
       this.$router.push(`/game/commentDetail/${commentID}`)
     },
+
     teamLoad () {
       this.teamLoading = true
       this.$axios.post(`/game/teamList/${this.teamPage}/${this.gameID}`,{}).then((resp)=>{
         
         if(resp.data.code != 20000) {
-          this.$toast.message(resp.data.msg)
+          this.$toast.info(resp.data.msg)
           return
         }
 
         let dataBack = resp.data.msg
+        if (dataBack.length < 8) {
+          this.teamIsTheLast = true
+        }
 
-        this.teamIsTheLast = dataBack.isTheLast
-        
-        let listInfo = dataBack.listInfo
-        this.teamList = this.teamList.concat(listInfo)
+        this.teamList = this.teamList.concat(dataBack)
         this.teamPage++  // 页数+1
         this.teamLoading = false // 关闭转圈圈
       })
     },
+
     joinTeam (teamID) {
       this.$router.push(`/game/teamDetail/${teamID}`)
     },
+
     focusChange () {  // 收藏游戏与否
       let operate = this.Focus == 0 ? 1 : 0
       this.$axios.post('/common/collect', {
@@ -428,7 +396,7 @@ export default {
         }
         this.Focus = this.Focus == 0 ? 1 : 0
       })
-    }
+    },
   },
 }
 </script>
@@ -469,7 +437,15 @@ export default {
 .team-leaderinfo-img-flex { width:100%; height:10rem; text-align:center; border-radius:.5rem; }
 .team-leaderinfo-img-flex img { max-width:100%; border-radius:.3rem; }
 .team-extracont-time { font-size:12px; margin-right:1rem; color:#9e9e9e; }
-.team-extracont-operate { font-size:12px; color:#009688; }
+
+
+.team-container { width:100%; padding:.5rem; box-shadow:0 0 1px gray; border-radius:.3rem; margin-bottom:2rem; }
+.team-recruit-word { position:absolute; bottom:0; left:0; padding:.5rem; width:100%; background:rgba(20, 20, 20, .5); color:#fff; font-size:12px; }
+.team-recruit-img { max-width:100%; border-radius:.2rem; }
+.team-leader-container { margin-top:.5rem; width:100%; padding: .2rem .3rem; }
+.team-leader-avatar { width:2rem; height:2rem; border-radius:50%; }
+.team-leader-nickname { margin-left:.5rem; font-size:14px; font-weight:700; color:#424242; }
+.team-extracont-operate { font-size:13px; color:#009688; margin-left:auto; margin-right:.5rem;}
 
 .teammate-box { margin-bottom:.5rem; background:rgba(240, 240, 240, .3); padding:.4rem 0 .4rem .5rem; border-radius:.5rem; box-shadow: 0px 0px 1px gray; }
 .teammate-info-title { margin-left:.5rem; font-size:12px; color:#795548; }

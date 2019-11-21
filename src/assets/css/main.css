@@ -36,6 +36,17 @@
   -webkit-box-orient: vertical;
 }
 
+/* text超出两行省略 */
+.gb-text-3-omit{
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+
 /* 初始化加载层 */
 .gb-init-loading{
   position:fixed; 

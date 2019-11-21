@@ -231,6 +231,9 @@ export default {
     pageInit () {
       // 页面初始化
       this.$axios.post(`/game/teamDetail/${this.TeamID}`, {}).then((resp)=>{
+
+        console.log(resp.data)
+
         if(resp.data.code != 20000) {
           this.$toast.message('该队伍已解散')
           return
@@ -364,12 +367,6 @@ export default {
 </script>
 
 <style scoped>
-.mytest { overflow:hidden;}
-.mine-appbar { width: 100%; height:2.5rem; position:flex; }
-
-.mine-menu-box { margin-top:1rem; right:.5rem; }
-.mine-menu-list { background: linear-gradient(to right, #4dd0e1 , #80cbc4); color:white; padding:0; }
-.mine-menu-item { color:#fff; font-size:12px;  }
 
 .character-title { margin-left:1rem; font-size:12px; color:#795548; }
 
