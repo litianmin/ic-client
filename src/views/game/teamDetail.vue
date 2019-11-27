@@ -38,10 +38,28 @@
         <mu-row v-if="MainInfo.recruitImg" class="team-item-img">
           <img :src="MainInfo.recruitImg | imgPrefixDeal()" alt="">
         </mu-row>
-
       </mu-container>
-      <!-- END 主评论 -->
 
+      <!-- 队友表 -->
+
+      <mu-flex class="teammate-container" wrap="wrap" align-items="center">
+        <mu-flex class="teammate-role-flex">
+          <img 
+            class="teammate-role-img"
+            src="http://img2.imgtn.bdimg.com/it/u=1866215507,88081443&fm=26&gp=0.jpg">
+        </mu-flex>
+        <mu-flex class="teammate-info-flex" wrap="wrap">
+          <mu-flex style="width:100%;" align-items="center">
+            <img 
+              class="teammate-avatar" 
+              src="http://img4.imgtn.bdimg.com/it/u=109697600,3507733880&fm=26&gp=0.jpg">
+            <span class="team-item-nickname">昵称</span>
+          </mu-flex>
+          <mu-flex class="teammate-word">这里是我的内容噢</mu-flex>
+        </mu-flex>
+      </mu-flex>
+
+      <!-- 聊天表 -->
       <ChatList :TeamType="TeamType" :TeamID="TeamID"></ChatList>
     </div>
 
@@ -332,6 +350,40 @@ export default {
   max-width:100%; 
   max-height:100%; 
   border-radius:.3rem; 
+}
+
+.teammate-container {
+  width:100%; 
+  margin-top:.5rem; 
+  padding: .3rem .5rem; 
+  background:#fff; 
+  margin-bottom:.2rem;
+}
+
+.teammate-role-flex {
+  width:20%; 
+  padding:.2rem;
+}
+
+.teammate-role-img {
+  max-width:100%; 
+  border-radius:.3rem;
+}
+
+.teammate-info-flex {
+  width:80%; 
+  padding:.5rem;
+}
+
+.teammate-avatar {
+  max-width:2rem; 
+  border-radius:50%;
+}
+
+.teammate-word {
+  width:100%; 
+  margin-top:.5rem; 
+  font-size:13px;
 }
 
 </style>
