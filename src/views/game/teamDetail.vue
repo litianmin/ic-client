@@ -40,22 +40,28 @@
         </mu-row>
       </mu-container>
 
-      <!-- 队友表 -->
 
-      <mu-flex class="teammate-container" wrap="wrap" align-items="center">
+      <!-- 队友表 -->
+      <mu-flex 
+        v-for="(item, index) in TeammateList"
+        :key="index"
+        class="teammate-container" 
+        wrap="wrap" 
+        align-items="center">
         <mu-flex class="teammate-role-flex">
           <img 
             class="teammate-role-img"
-            src="http://img2.imgtn.bdimg.com/it/u=1866215507,88081443&fm=26&gp=0.jpg">
+            :src="item.roleImg | imgPrefixDeal()">
         </mu-flex>
         <mu-flex class="teammate-info-flex" wrap="wrap">
           <mu-flex style="width:100%;" align-items="center">
             <img 
+              @click="$router.push(`/usr/usercard/${item.userID}`)"
               class="teammate-avatar" 
-              src="http://img4.imgtn.bdimg.com/it/u=109697600,3507733880&fm=26&gp=0.jpg">
-            <span class="team-item-nickname">昵称</span>
+              :src="item.avatar">
+            <span class="team-item-nickname">{{ item.nickname }}</span>
           </mu-flex>
-          <mu-flex class="teammate-word">这里是我的内容噢</mu-flex>
+          <mu-flex class="teammate-word">{{ item.word }}</mu-flex>
         </mu-flex>
       </mu-flex>
 
@@ -230,10 +236,6 @@ export default {
       })
     },
 
-    goBack () {
-      this.$router.go(-1)
-    },
-
     inviteFriend () { // 邀请好友
       this.$router.push(`/usr/inviteFriend/${this.TeamID}/${this.TeamType}`)
     },
@@ -279,11 +281,6 @@ export default {
         replyTo, 
         replyID, 
         replyNickname}})
-    },
-
-    teamListWindowToggle () {
-      this.teamListWindowIsShow = !this.teamListWindowIsShow
-      this.$refs.menuHide.click()
     },
 
   },
