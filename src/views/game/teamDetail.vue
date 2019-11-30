@@ -19,6 +19,7 @@
     </mu-flex>
     <!-- END 头部 -->
 
+    <!-- 主要内容 -->
     <div style="margin-bottom:3rem; margin-top:2.5rem;">  
       <mu-container class="main-team-container" style="position:relative;">
         <mu-flex align-items="center">
@@ -61,7 +62,7 @@
               :src="item.avatar">
             <span class="team-item-nickname">{{ item.nickname }}</span>
           </mu-flex>
-          <mu-flex class="teammate-word">{{ item.word }}</mu-flex>
+          <mu-flex class="teammate-word">{{ item.isCaptain == 0 ? item.word : '我是队长！' }}</mu-flex>
         </mu-flex>
       </mu-flex>
 
@@ -172,7 +173,6 @@ export default {
       TeamType: 1,  // 固定值，这个应该配置在全局的，后面做
       Title: '队伍招募中。。。',
       TeamID: 0,
-      GameID: 0,
 
       MainInfo: { // 主要的信息
         sponser: 0, // 发起人用户id
@@ -212,6 +212,7 @@ export default {
           return
         }
         let data = resp.data.msg 
+        console.log(data)
 
         this.MainInfo = { // 主要的信息
           sponser: data.teammate[0].userID, 
@@ -262,7 +263,7 @@ export default {
       this.$axios.get(`/common/leaveTeam/${this.TeamType}/${this.TeamID}`, {}).then((resp)=>{
         if(resp.data.code == 20000) {
           this.$toast.success('已成功退出组队！')
-          this.$router.push(`/game/detail/${this.GameID}`)
+          this.$router.go(-1)
           return
         }
       }) 
