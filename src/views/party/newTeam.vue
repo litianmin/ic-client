@@ -1,57 +1,59 @@
 <template>
   <div :class="AddrChooseWindowIsShow == true ? 'body-fix': ''" style="background:#fff;">
-    <!-- 导航条 -->
 
+    <!-- 导航条 -->
     <mu-flex 
-      style="padding:.6rem .8rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); box-shadow: 0 0 1px #26c6da;" 
+      class="gb-top-bar" 
       align-items="center">
-      <mu-flex align-items="center" @click="goBack">
-        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+      <mu-flex align-items="center" @click="$router.go(-1)">
+        <svg-icon icon-class="goback" style="font-size:20px;"></svg-icon>
       </mu-flex>
       <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
         <span style="color:#fff;">创建party组队</span>
       </mu-flex>
     </mu-flex>
-    <!-- 内容：招募图片，最多三张， -->
-    <!-- 招募图片（最多三张）、主题、 活动主要内容、
-    活动地点、集合地点、活动时间、招募人数、队友偏爱、招募宣言、 -->
 
-    <mu-container style="padding:1rem .5rem;">
-      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem;">活动主题：</span>
-        <select v-model="PartyTheme" name="partyTitle" id="" style="padding:.1rem .8rem; color:#424242; appearance:none; background:#fff; font-size:13px; border-radius:.2rem; border:1px solid #bdbdbd; ">
-          <option value="1">普通聚会</option>
-          <option value="2">节日聚会</option>
-          <option value="3">健身运动</option>
-          <option value="4">随便逛逛</option>
-          <option value="5">线下手游</option>
-          <option value="6">野外聚餐</option>
-          <option value="7">音乐派对</option>
-          <option value="8">单身派对</option>
-          <option value="9">联谊聚会</option>
+
+    <mu-container class="main-container">
+      <mu-flex class="theme-choose-flex" align-items="center">
+        <span class="theme-title">活动主题：</span>
+        <select 
+          v-model="PartyTheme" 
+          name="partyTitle" 
+          class="select-style">
+          <option :value="1">普通聚会</option>
+          <option :value="2">节日聚会</option>
+          <option :value="3">健身运动</option>
+          <option :value="4">随便逛逛</option>
+          <option :value="5">线下手游</option>
+          <option :value="6">野外聚餐</option>
+          <option :value="7">音乐派对</option>
+          <option :value="8">单身派对</option>
+          <option :value="9">联谊聚会</option>
         </select>
       </mu-flex>
 
+      <mu-flex 
+        class="title-flex" 
+        align-items="start">
 
+        <span class="title-span">聚会标题：</span>
 
-      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="start">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-top:.3rem;">活动标题：</span>
-
-        <textarea v-model="PartyTitle" style="width:75%; height:3.5rem; border:1px solid #bdbdbd; color:#212121; font-size:13px; padding:.4rem; border-radius:.2rem;" placeholder="一起来玩吧！（活动的详细内容）">
+        <textarea 
+          v-model="PartyTitle" 
+          class="title-input" 
+          placeholder="简单明了的标题更容易招募到伙伴噢，限50个字符">
         </textarea>
 
-        <!-- <input maxlength="50" v-model="PartyTitle" style="padding:.4rem; width:70%; font-size:13px; border-radius:.2rem; border:1px solid #80cbc4; color:#212121;" type="text" placeholder="一起来玩吧！（不超过50个字符）"> -->
       </mu-flex>
 
-      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="start">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-top:.3rem;">详细内容：</span>
-        <textarea v-model="PartyDetail" style="width:75%; height:5rem; border:1px solid #bdbdbd; color:#212121; font-size:13px; padding:.4rem; border-radius:.2rem;" placeholder="大家来这里一起玩吧，出来走走也好！（活动的详细内容）">
+      <mu-flex class="detail-container" align-items="start">
+        <span class="detail-title">详细内容：</span>
+        <textarea 
+          v-model="PartyDetail" 
+          class="detail-input" 
+          placeholder="请填写下聚会的详细内容吧，限200个字符">
         </textarea>
-      </mu-flex>
-
-      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem;">队友偏爱：</span>
-        <input v-model="TeammatePrefer" style="padding:.4rem; width:75%; font-size:13px; border-radius:.2rem; border:1px solid #bdbdbd; color:#212121;" type="text" placeholder="随便来！ （不超过15个字符）">
       </mu-flex>
 
       <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
@@ -346,7 +348,77 @@ export default {
 </script>
 
 <style scoped>
-.mine-appbar { width: 100%; height:2.5rem; }
+
+.main-container {
+  padding:1rem .5rem; 
+  margin-top:2.5rem;
+}
+
+.theme-choose-flex {
+  width:100%; 
+  margin-bottom:1rem;
+}
+
+.theme-title {
+  font-size:13px; 
+  color:#795548; 
+  margin-right:.5rem;
+}
+
+.select-style {
+  padding:.1rem .8rem; 
+  color:#424242; 
+  appearance:none; 
+  background:#fff; 
+  font-size:13px; 
+  border-radius:.2rem; 
+  border:1px solid #bdbdbd;
+}
+
+.title-flex {
+  width:100%; 
+  margin-bottom:1rem;
+}
+
+.title-span {
+  font-size:13px; 
+  color:#795548; 
+  margin-right:.5rem; 
+  margin-top:.3rem;
+}
+
+.title-input {
+  width:75%; 
+  height:3.5rem; 
+  border:1px solid #bdbdbd; 
+  color:#212121; 
+  font-size:13px; 
+  padding:.4rem; 
+  border-radius:.2rem;
+  letter-spacing: 1px;
+}
+
+.detail-container {
+  width:100%; 
+  margin-bottom:1rem;
+}
+
+.detail-title {
+  font-size:13px; 
+  color:#795548; 
+  margin-right:.5rem; 
+  margin-top:.3rem;
+}
+
+.detail-input {
+  width:75%; 
+  height:5rem; 
+  border:1px solid #bdbdbd; 
+  color:#212121; 
+  font-size:13px; 
+  padding:.4rem; 
+  border-radius:.2rem;
+}
 
 .map-item { position: fixed; width: 100%; height: 100%; top: 0; background: #fff; }
 

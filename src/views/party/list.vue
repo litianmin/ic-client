@@ -190,7 +190,6 @@ export default {
     },
 
     loadTeamList () { // 加载组队
-      console.log('加载')
       this.Loading = true
       this.$axios.post('/party/teamList', {
         page: this.Page,
@@ -218,7 +217,7 @@ export default {
       window.addEventListener("message", this.chooseAddrDeal, false)
     },
 
-    chooseAddrDeal (e) {
+    chooseAddrDeal (e) {  // 选择地址处理
       let that = this
 
       if (e.data.location != undefined) {
