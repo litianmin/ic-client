@@ -56,35 +56,60 @@
         </textarea>
       </mu-flex>
 
-      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem;">招募人数：</span>
-        <select v-model="RecruitNumb" name="" id="" style="padding:.1rem .5rem; color:#424242; appearance:none; background:#fff; font-size:13px; border-radius:.2rem; border:1px solid #bdbdbd; text-align:center;">
-          <option v-for="(item, index) in RecruitNumbList" :key="index" :value="item">{{ item }} 人</option>
+      <mu-flex 
+        class="recruitnumb-container" 
+        align-items="center">
+        <span class="title-common">招募人数：</span>
+        <select 
+          v-model="RecruitNumb" 
+          class="recruitnumb-select">
+          <option 
+            v-for="(item, index) in RecruitNumbList" 
+            :key="index" 
+            :value="item.val">{{ item.name }}</option>
         </select>
       </mu-flex>
 
-      <mu-flex style="width:100%; margin-bottom:.5rem;" align-items="center">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem;">活动地点：</span>
-        <span style="font-size:12px; color:#424242;">{{ PartyVenue }}</span>
-        <mu-icon @click="choosePartyAddr" value="person_pin_circle" size="20" color="#009688"></mu-icon>
+      <mu-flex class="flex-common" align-items="center">
+        <span class="title-common">活动地点：</span>
+        <span class="site-span">{{ PartyVenue }}</span>
+        <mu-icon 
+          @click="choosePartyAddr" 
+          value="person_pin_circle" 
+          size="20" 
+          color="#009688"></mu-icon>
       </mu-flex>
 
-      <mu-flex style="width:100%; margin-bottom:1rem; margin-top:1rem;" align-items="center">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem;">集合地点：</span>
-        <span style="font-size:12px; color:#424242;">{{ MeetingVenue }}</span>
-        <mu-icon @click="chooseMeetingVenue" value="person_pin_circle" size="20" color="#009688"></mu-icon>
+      <mu-flex class="meetingsite-container" align-items="center">
+        <span class="title-common">集合地点：</span>
+        <span class="site-span">{{ MeetingVenue }}</span>
+        <mu-icon 
+          @click="chooseMeetingVenue" 
+          value="person_pin_circle" 
+          size="20" 
+          color="#009688"></mu-icon>
       </mu-flex>
 
-      <mu-row>
-        <span style="font-size:13px; color:#795548; margin-right:.5rem;">活动时间：</span>
-      </mu-row>
-      <mu-row style="padding: 0 0 0 3.5rem;">
-        <mu-date-input v-model="BeginTime" type="dateTime"  prefix="开始时间：" style="font-size:12px;" landscape container="bottomSheet" clock-type="24hr" view-type="clock" actions icon="today"></mu-date-input>
-        <mu-date-input v-model="EndTime" type="dateTime" prefix="结束时间：" style="font-size:12px;" landscape container="bottomSheet" clock-type="24hr" view-type="clock" actions icon="today"></mu-date-input>
+      <mu-row style="padding: 0 1.5rem 0 0;">
+        <mu-date-input 
+          v-model="BeginTime" 
+          type="dateTime"  
+          prefix="活动开始时间：" 
+          style="font-size:13px;" 
+          landscape 
+          full-width 
+          container="bottomSheet" 
+          clock-type="24hr" 
+          view-type="clock">
+          <span slot="prepend" style="padding: 0 .5rem 0 0;">
+            <svg-icon icon-class="date" style="font-size:20px;"></svg-icon>  
+          </span>
+        </mu-date-input>
+
       </mu-row>
 
       <!-- 招募图片 -->
-      <mu-flex style="width:100%; margin-bottom:.5rem;" align-items="start">
+      <mu-flex class="flex-common" align-items="start">
         <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-top:.3rem;">招募图片：</span>
         <ImgCropper 
           @getImgURL="getRecruitImg" 
@@ -96,8 +121,8 @@
 
 
       <!-- 上传展示图片 -->
-      <mu-flex style="width:100%; margin-bottom:.5rem;" align-items="center">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem;">展示图片：（最多三张）</span>
+      <mu-flex class="flex-common" align-items="center">
+        <span class="title-common">展示图片：（最多三张）</span>
       </mu-flex>
 
       <mu-flex align-items="center" justify-content="around" style="margin-top:1rem; margin-bottom:3rem; border:1px solid #eeeeee; border-radius:.3rem; padding:1rem .5rem;">
@@ -161,15 +186,17 @@ export default {
       PartyTitle: '', // 聚会的标题
       PartyDetail: '',  // 聚会详细内容
       TeammatePrefer: '', // 队友偏爱
-      RecruitNumb: 1, // 招募人数
-      RecruitNumbList: [],  // 招募人数的列表
+      RecruitNumb: 0, // 招募人数
+      RecruitNumbList: [
+        {val: 0, name: '不限'}
+      ],  // 招募人数的列表
       AddrChooseWindowIsShow: false,  // 选择地址的窗口是否打开
       PartyVenue: '',  // 活动地点
       PartyVenueObj: {},
       MeetingVenue: '', // 聚会地点
       MeetingVenueObj: {},
       AddrChooseOperate: 0, // 0=>聚会地点， 1=>集合地点
-      BeginTime: new Date, // 活动开始时间
+      BeginTime: undefined, // 活动开始时间
       EndTime: undefined, // 活动结束时间
       UploadImgList: [],  // 展示图片
       UploadImgURLList: [], // 展示图片的URL
@@ -185,8 +212,9 @@ export default {
     this.Lat = userAddrInfo.lat
 
     for(let i = 1; i < 30; i++) {
-      this.RecruitNumbList.push(i)
+      this.RecruitNumbList.push({val: i, name: `${i} 人`})
     }
+
     // 渲染聚会地点和集合地点
     this.PartyVenue = userAddrInfo.name
     this.PartyVenueObj = {
@@ -219,6 +247,7 @@ export default {
     goBack () {
       this.$router.go(-1)
     },
+
     loadiframe() {
       let iframe = document.getElementById('getAddress').contentWindow
       iframe.postMessage('hello', 'https://m.amap.com/picker/')
@@ -412,12 +441,51 @@ export default {
 
 .detail-input {
   width:75%; 
-  height:5rem; 
+  height:4rem; 
   border:1px solid #bdbdbd; 
   color:#212121; 
   font-size:13px; 
   padding:.4rem; 
   border-radius:.2rem;
+  letter-spacing: 1px;
+}
+
+.recruitnumb-container {
+  width:100%; 
+  margin-bottom:1rem;
+}
+
+.title-common {
+  font-size:13px; 
+  color:#795548; 
+  margin-right:.5rem;
+}
+
+.recruitnumb-select {
+  padding:.1rem .5rem; 
+  color:#424242; 
+  appearance:none; 
+  background:#fff; 
+  font-size:13px; 
+  border-radius:.2rem; 
+  border:1px solid #bdbdbd; 
+  text-align:center;
+}
+
+.flex-common {
+  width:100%; 
+  margin-bottom:.5rem;
+}
+
+.site-span {
+  font-size:12px; 
+  color:#424242;
+}
+
+.meetingsite-container {
+  width:100%; 
+  margin-bottom:1rem; 
+  margin-top:1rem;
 }
 
 .map-item { position: fixed; width: 100%; height: 100%; top: 0; background: #fff; }
