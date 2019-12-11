@@ -221,9 +221,6 @@ export default {
     }
   },
   methods: {
-    goBack () {
-      this.$router.go(-1)
-    },
 
     chooseAddrDeal (e) {  // 选择地址处理
       let that = this

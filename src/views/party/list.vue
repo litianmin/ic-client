@@ -42,87 +42,100 @@
     <!-- END 主题和地址选择 -->
 
 
-    <mu-load-more :loading="Loading" @load="loadTeamList" :loaded-all="IsTheLast" style="margin-top:5.5rem;">
+    <mu-load-more 
+      :loading="Loading" 
+      @load="loadTeamList" 
+      :loaded-all="IsTheLast" 
+      style="margin-top:5.5rem;">
       <!-- BEGIN 循环样式 -->
-      <div v-for="(item, index) in TeamList" :key="index" style="padding:.5rem;  position:relative;  margin-bottom:2rem;" >
-        <div style="box-shadow: 1px 1px 1px #9e9e9e; border-top-left-radius:.3rem; border-top-right-radius:.3rem; border-top:1px solid #e0e0e0; border-left:1px solid #e0e0e0;">
+      <div 
+        v-for="(item, index) in TeamList" 
+        :key="index" 
+        class="team-list-container" >
+
+        <div class="team-list-div">
 
           <!-- 用户头部昵称 -->
-          <div style="padding:.5rem; border-bottom:1px solid #eeeeee; ">
+          <div class="sponsor-info-box">
             <mu-flex align-items="center">
-              <mu-avatar size="35" :class="item.captainSex == 1 ? 'avatar-male' : 'avatar-female'">
-                <img :src="item.captainAvatar | imgPrefixDeal()" alt="">
+              <mu-avatar size="35" :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'">
+                <img :src="item.avatar | imgPrefixDeal()">
               </mu-avatar>
               <div style="margin-left:1rem;">
-                <mu-row style="font-size:12px;">{{ item.captainNickname }}</mu-row>
-                <mu-row style="margin-top:.2rem;font-size:7px; color:#43a047;">社交菜鸟Lv1</mu-row>
+                <mu-row style="font-size:12px;">{{ item.nickname }}</mu-row>
+                <mu-row class="sponsor-level-span">社交菜鸟Lv1</mu-row>
               </div>
-              <div style="margin-left:auto; background:#4db6ac; padding:.2rem .3rem; color:#fff; border-radius:.2rem; font-size:12px; margin-right:.5rem;">Team{{ index + 1 }}</div>
+              <div class="team-index">Team{{ index + 1 }}</div>
             </mu-flex>
           </div>
 
           <!-- 展示图片 -->
           <mu-flex style="position:relative;" justify-content="center">
-            <img style="max-width:100%; max-height:30rem;" :src="item.recruitImg | imgPrefixDeal()" alt="">
+            <img style="max-width:100%;" :src="item.recruitImg | imgPrefixDeal()">
 
-            <mu-flex style="width:100%; position:absolute; bottom:0; padding:0 .2rem; background:rgba(0, 0, 0, .5); padding:1rem;" align-items="center">
-              <span style="color:#fff;">{{ item.partyTheme }} - {{ item.partySiteName }}</span>
+            <mu-flex class="shelter" align-items="center">
+              <span style="color:#fff;">{{ item.theme }} - {{ item.siteName }}</span>
             </mu-flex>
           </mu-flex>
 
           <div style="padding:1rem 1rem 0rem .5rem;">
-            <mu-row style="margin-bottom:.3rem;">
-              <span style="color:#795548; font-size:12px;">主要活动:</span>
-              <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyTitle }}</span>
+            <mu-row class="othercont-row">
+              <span class="othercont-title">主要活动:</span>
+              <span class="othercont-detail">{{ item.cont }}</span>
             </mu-row>
-            <mu-row style="margin-bottom:.3rem;">
-              <span style="color:#795548; font-size:12px;">活动地点:</span>
-              <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partySiteDetail }}</span>
+            <mu-row class="othercont-row">
+              <span class="othercont-title">活动地点:</span>
+              <span class="othercont-detail">{{ item.siteDetail }}</span>
             </mu-row>
-            <mu-row style="margin-bottom:.3rem;">
-              <span style="color:#795548; font-size:12px;">活动时间:</span>
-              <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyBeginTime | parseTime('{m}/{d} {h}:{i}') }}  ~  {{ item.partyEndTime | parseTime('{m}/{d} {h}:{i}') }}</span>
+            <mu-row class="othercont-row">
+              <span class="othercont-title">开始时间:</span>
+              <span class="othercont-detail">{{ item.beginTime | parseTime('{m}/{d} {h}:{i}') }}</span>
             </mu-row>
-            <mu-row style="margin-bottom:.3rem;">
-              <span style="color:#795548; font-size:12px;">集合地点:</span>
-              <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.meetingSiteDetail }}</span>
-            </mu-row>
-            <mu-row style="margin-bottom:.3rem;">
-              <span style="color:#795548; font-size:12px;">招募人数:</span>
-              <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.recruitNumb }}人</span>
-            </mu-row>
-            <mu-row style="margin-bottom:.3rem;">
-              <span style="color:#795548; font-size:12px;">队友偏爱:</span>
-              <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.teammatePrefer }}</span>
-            </mu-row>
-
-            <mu-row style="margin-top:.5rem;">
-              <span style="color:#795548; font-size:12px;">详细内容:            <span style="margin-left:.5rem; color:#9e9e9e; font-size:12px;">{{ item.partyDetail }}</span></span>
+            <mu-row class="othercont-row">
+              <span class="othercont-title">招募人数:</span>
+              <span class="othercont-detail">{{ item.recruitNumb }}人</span>
             </mu-row>
           </div>
 
-          <mu-flex style="font-size:12px; padding:.8rem 1rem 1rem .5rem; margin-top:.5rem;" align-items="center">
+          <mu-flex class="footer-container" align-items="center">
             <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
-            <span style="font-size:12px;">距离你 <span style="font-size:12px;">{{ item.distance | distanceFormat() }}</span></span>
-            <span style="margin-left:auto; color:#9e9e9e; font-size:12px;">{{ item.createTime | formatTime() }}· <span @click="linkToTeamDetail(item.teamID)" style="color:#00bcd4;"> 查看详情</span></span>
+            <span style="font-size:12px;">
+              距离你 <span style="font-size:12px;">{{ item.distance | distanceFormat() }}</span>
+            </span>
+            <span class="footer-time">
+              {{ item.createTime | formatTime() }}· <span @click="linkToTeamDetail(item.teamID)" style="color:#00bcd4;"> 查看详情</span>
+            </span>
           </mu-flex>
 
         </div>
       </div>
       <!-- END 循环样式 -->
       
-      <mu-row v-show="IsTheLast && TeamList.length > 0" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:-1.5rem; margin-bottom:.5rem; color:#9e9e9e;">
+      <mu-row 
+        v-show="IsTheLast && TeamList.length > 0" 
+        justify-content="center" 
+        class="nomore-team">
         <span style="">没有更多的组队</span>
       </mu-row>
     </mu-load-more>
 
-    <mu-row v-show="TeamList.length == 0" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:6rem; color:#9e9e9e;">
-      <span style="">没有更多的组队</span>
+    <mu-row 
+      v-show="TeamList.length == 0" 
+      justify-content="center" 
+      class="noteam">
+      <span style="">暂无队伍</span>
     </mu-row>
 
     <!-- BEGIN 地址选择弹出框 -->
-    <div v-if="AddrChooseWindowIsShow" id="iframe" style="position:fixed; z-index:10000; top:0; width:100%; height:100%;">
-      <mu-flex @click="shutdownWindow" style="width:10%; height:2.8rem; z-index:10000; position:fixed; top:0; left:0; background:#F8F8F8; text-align:center; padding: 0 0 0 .5rem;" align-items="center" justify-content="center">
+    <div 
+      v-if="AddrChooseWindowIsShow" 
+      id="iframe" 
+      class="map-container">
+      <mu-flex 
+        @click="shutdownWindow" 
+        class="map-cover" 
+        align-items="center" 
+        justify-content="center">
         <mu-icon value="navigate_before"></mu-icon>
       </mu-flex>
       <iframe 
@@ -197,15 +210,23 @@ export default {
         lat: this.Lat,
         theme: this.Theme
       }).then((resp)=>{
-        let dataBack = resp.data.msg
-        this.IsTheLast = dataBack.isTheLast
 
-        let listInfo = dataBack.listInfo
+        if (resp.data.code != 20000) {
+          this.$toast.info(resp.data.msg)
+          return
+        }
+
+        let listInfo = resp.data.msg
+
+        if (listInfo.length < 10) {
+          this.IsTheLast = true
+        }
+
         for(let i = 0; i < listInfo.length; i++) {
           // 处理主题
-          listInfo[i].partyTheme = utils.getPartyThemeName(listInfo[i].partyTheme)
+          listInfo[i].theme = utils.getPartyThemeName(listInfo[i].theme)
         }
-        this.TeamList = this.TeamList.concat(dataBack.listInfo)
+        this.TeamList = this.TeamList.concat(listInfo)
         this.Page++
         this.Loading = false
       })
@@ -301,6 +322,110 @@ export default {
   bottom: 0;
   width: 100%;
   overflow: hidden;
+}
+
+.team-list-container {
+  padding:.5rem;  
+  position:relative;  
+  margin-bottom:2rem;
+}
+
+.team-list-div {
+  box-shadow: 1px 1px 1px #9e9e9e; 
+  border-top-left-radius:.3rem; 
+  border-top-right-radius:.3rem; 
+  border-top:1px solid #e0e0e0; 
+  border-left:1px solid #e0e0e0;
+}
+
+.sponsor-info-box {
+  padding:.5rem; 
+  border-bottom:1px solid #eeeeee;
+}
+
+.sponsor-level-span {
+  margin-top:.2rem;
+  font-size:7px; 
+  color:#43a047;
+}
+
+.team-index {
+  margin-left:auto; 
+  background:#4db6ac; 
+  padding:.2rem .3rem; 
+  color:#fff; 
+  border-radius:.2rem; 
+  font-size:12px; 
+  margin-right:.5rem;
+}
+
+.shelter {
+  width:100%; 
+  position:absolute; 
+  bottom:0; 
+  padding:0 .2rem; 
+  background:rgba(0, 0, 0, .5); 
+  padding:1rem;
+}
+
+.othercont-row {
+  margin-bottom:.3rem;
+}
+
+.othercont-title {
+  color:#795548; 
+  font-size:12px;
+}
+
+.othercont-detail {
+  margin-left:.5rem; 
+  color:#9e9e9e; 
+  font-size:12px;
+}
+
+.footer-container {
+  font-size:12px; 
+  padding:.8rem 1rem 1rem .5rem; 
+  margin-top:.5rem;
+}
+
+.footer-time {
+  margin-left:auto; 
+  color:#9e9e9e; 
+  font-size:12px;
+}
+
+.nomore-team {
+  padding:.5rem .5rem .3rem .5rem; 
+  margin-top:-1.5rem; 
+  margin-bottom:.5rem; 
+  color:#9e9e9e;
+}
+
+.noteam {
+  padding:.5rem .5rem .3rem .5rem; 
+  margin-top:6rem; 
+  color:#9e9e9e;
+}
+
+.map-container {
+  position:fixed; 
+  z-index:10000; 
+  top:0; 
+  width:100%; 
+  height:100%;
+}
+
+.map-cover {
+  width:10%; 
+  height:2.8rem; 
+  z-index:10000; 
+  position:fixed; 
+  top:0; 
+  left:0; 
+  background:#F8F8F8; 
+  text-align:center; 
+  padding: 0 0 0 .5rem;
 }
 
 .mine-menu-box { margin-top:1rem; right:.5rem; }
