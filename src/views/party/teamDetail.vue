@@ -20,10 +20,13 @@
     <!-- END 头部 -->
 
     <!-- 展示图片 -->
-    <mu-flex v-if="SwiperIsRender" style="position:relative; margin-top:2.5rem;" justify-content="center">
-      <swiper :options="swiperOption" style="height: auto">
-        <swiper-slide v-for="(item, index) in RecruitImgs" :key="index" style="text-align:center;">
-          <img style="max-width:100%; max-height:100%;" :src="item | imgPrefixDeal()" alt="">
+    <mu-flex 
+      v-if="SwiperIsRender" 
+      class="swiper-container" 
+      justify-content="center">
+      <swiper :options="SwiperOption" style="height: auto">
+        <swiper-slide v-for="(item, index) in MainInfo.displayImgs" :key="index" style="text-align:center;">
+          <img style="max-width:100%; max-height:100%;" :src="item | imgPrefixDeal()">
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
@@ -32,10 +35,10 @@
     <div class="main-cont-div">
       <mu-row class="cont-item-row">
         <mu-flex style="width:20%;">
-          <span class="cont-item-title">主要活动</span>
+          <span class="cont-item-title">活动内容</span>
         </mu-flex>
         <mu-flex style="width:80%;">
-          <span class="cont-item-detail">{{ TeamBaseInfo.partyTitle }} </span>
+          <span class="cont-item-detail">{{ MainInfo.cont }} </span>
         </mu-flex>
       </mu-row>
 
@@ -44,30 +47,21 @@
           <span class="cont-item-title">活动地点</span>
         </mu-flex>
 
-        <mu-flex style="width:80%;">
-          <span class="cont-item-detail">{{ TeamBaseInfo.partyVenue.addr }}</span>
-        </mu-flex>
-      </mu-row>
-
-      <mu-row class="cont-item-row">
-        <mu-flex style="width:20%;">
-          <span class="cont-item-title">活动时间</span>
-        </mu-flex>
-
-        <mu-flex style="width:80%;">
-          <span class="cont-item-detail">{{ TeamBaseInfo.partyBeginTime | parseTime('{m}/{d} {h}:{i}') }}  ~  {{ TeamBaseInfo.partyEndTime | parseTime('{m}/{d} {h}:{i}') }}</span>
-        </mu-flex>
-      </mu-row>
-
-      <mu-row class="cont-item-row">
-        <mu-flex style="width:20%;">
-          <span class="cont-item-title">集合地点</span>
-        </mu-flex>
 
         <mu-flex style="width:80%;">
           <span 
             @click="openLocation"
-            style="margin-bottom: .3rem; letter-spacing: 1px; color:#009688; font-weight:700; font-size:12px; text-decoration:underline">{{ TeamBaseInfo.meetingVenue.addr }}</span>
+            class="addr-locate">{{ MainInfo.siteDetail }}</span>
+        </mu-flex>
+      </mu-row>
+
+      <mu-row class="cont-item-row">
+        <mu-flex style="width:20%;">
+          <span class="cont-item-title">开始时间</span>
+        </mu-flex>
+
+        <mu-flex style="width:80%;">
+          <span class="cont-item-detail">{{ MainInfo.beginTime | parseTime('{m}/{d} {h}:{i}') }}</span>
         </mu-flex>
       </mu-row>
 
@@ -77,70 +71,62 @@
         </mu-flex>
 
         <mu-flex style="width:80%;">
-          <span class="cont-item-detail">{{ TeamBaseInfo.recruitNumb }}/<span style="color:green; font-size:10px;">{{ TeamBaseInfo.hadRecruitNumb }}</span></span>
+          <span class="cont-item-detail">
+            {{ MainInfo.recruitNumb == 0 ? '不限' : MainInfo.recruitNumb }}/<span style="color:green; font-size:10px;">{{ MainInfo.hadRecruitNumb }}</span>
+          </span>
         </mu-flex>
       </mu-row>
 
-      <mu-row class="cont-item-row">
-        <mu-flex style="width:20%;">
-          <span class="cont-item-title">队友偏爱</span>
-        </mu-flex>
-
-        <mu-flex style="width:80%;">
-          <span class="cont-item-detail">{{ TeamBaseInfo.teammatePrefer }}</span>
-        </mu-flex>
-      </mu-row>
-
-      <mu-row style="margin-top:.5rem;">
-        <mu-flex style="width:20%;">
-          <span class="cont-item-title">详细内容</span>   
-        </mu-flex>        
-
-        <mu-flex style="width:80%;">
-          <span class="cont-item-detail">{{ TeamBaseInfo.partyDetail }}</span>
-        </mu-flex>
-      </mu-row>
     </div>
 
-    <mu-flex style="font-size:12px; padding:.8rem 1rem 1rem .5rem; margin-top:.5rem; border-bottom:2px solid #fff;" align-items="center">
-      <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
-      <span style="font-size:13px;">距离你 <span style="font-size:13px;">{{ TeamBaseInfo.distance | distanceFormat() }}</span></span>
-      <span style="margin-left:auto; color:#9e9e9e; font-size:13px;">{{ TeamBaseInfo.createTime | formatTime('{y}/{m}/{d} {h}:{i}') }}</span>
+    <mu-flex class="distance-container" align-items="center">
+      <mu-icon 
+        value="person_pin_circle" 
+        color="green" 
+        size="18"></mu-icon>
+      <span style="font-size:13px;">
+        距离你 <span style="font-size:13px;">{{ MainInfo.distance | distanceFormat() }}</span>
+      </span>
+      <span class="createtime-span">{{ MainInfo.createTime | formatTime('{y}/{m}/{d} {h}:{i}') }}</span>
     </mu-flex>
 
-    <div style="padding:.5rem; border-bottom:1px dashed #eeeeee; ">
+    <div class="captain-container">
       <mu-flex align-items="center">
         <mu-avatar 
-          @click="$router.push(`/usr/usercard/${TeamBaseInfo.captainID}`)"
+          @click="$router.push(`/usr/usercard/${MainInfo.captainID}`)"
           size="38" 
-          :class="TeamBaseInfo.captainSex == 1 ? 'avatar-male' : 'avatar-female'">
-          <img :src="TeamBaseInfo.captainAvatar | imgPrefixDeal()" alt="">
+          :class="MainInfo.captainSex == 1 ? 'avatar-male' : 'avatar-female'">
+          <img :src="MainInfo.captainAvatar | imgPrefixDeal()">
         </mu-avatar>
         <div style="margin-left:.5rem;">
-          <mu-row style="font-size:13px;">{{ TeamBaseInfo.captainNickname }}</mu-row>
-          <mu-row style="margin-top:.2rem;font-size:7px; color:#43a047;">社交菜鸟Lv1</mu-row>
+          <mu-row style="font-size:13px;">{{ MainInfo.captainNickname }}</mu-row>
+          <mu-row class="level-span">社交菜鸟Lv1</mu-row>
         </div>
-        <div style="margin-left:auto; background:#4db6ac; padding:.2rem .3rem; color:#fff; border-radius:.2rem; font-size:12px; margin-right:.5rem;">Leader</div>
+        <div class="captain-flag">Leader</div>
       </mu-flex>
     </div>
 
-    <!-- BEGIN 队长和队友列表 -->
-    <mu-flex style="padding:.5rem 1rem; background:#fff;" justify-content="center" align-items="center" wrap="wrap">
-        <mu-avatar 
-          v-for="(item, index) in TeammateList" 
-          :key="index" 
-          @click="item.user_id"
-          size="35" 
-          :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'" 
-          style="margin-right:.5rem;">
-          <img :src="item.avatar | imgPrefixDeal()" alt="">
-        </mu-avatar>
-        <span v-if="TeamBaseInfo.recruitStatus == 0" @click="joinTeam">
-          <svg-icon icon-class="add_circle_outline" style="font-size:40px; color:red;"></svg-icon>
-        </span>
+    <!-- BEGIN 队友列表 -->
+    <mu-flex 
+      class="teammates-container" 
+      justify-content="center" 
+      align-items="center" 
+      wrap="wrap">
+      <mu-avatar 
+        v-for="(item, index) in MainInfo.teammates" 
+        :key="index" 
+        @click="item.userID"
+        size="35" 
+        :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'" 
+        style="margin-right:.5rem;">
+        <img :src="item.avatar | imgPrefixDeal()" alt="">
+      </mu-avatar>
+      <span v-if="MainInfo.teamStatus == 0" @click="joinTeam">
+        <svg-icon icon-class="add_circle_outline" style="font-size:40px; color:red;"></svg-icon>
+      </span>
     </mu-flex>
-    <mu-flex justify-content="center" style="padding:.3rem 0 .5rem 0; border-bottom:1px dashed #e0e0e0; background:#fff;">
-      <span style="font-size:12px; color:#9e9e9e;">-- 招募{{ TeamBaseInfo.recruitNumb }}人，还差{{ TeamBaseInfo.recruitNumb - TeamBaseInfo.hadRecruitNumb }}人 --</span>
+    <mu-flex justify-content="center" class="recruit-condition">
+      <span style="font-size:12px; color:#9e9e9e;">-- 招募{{ MainInfo.recruitNumb }}人，还差{{ MainInfo.recruitNumb - MainInfo.hadRecruitNumb }}人 --</span>
     </mu-flex>
     <!-- END 队长和队友列表 -->
 
@@ -152,25 +138,39 @@
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
 
-      <span v-if="JointeamStmt == 1 || JointeamStmt == 2 || JointeamStmt == 5" @click="joinTeam" style="font-size:19px; margin-left:auto;">
+      <span 
+        v-if="SelfInfo.joinStatus == 1 || SelfInfo.joinStatus == 2 || SelfInfo.joinStatus == 5" 
+        @click="joinTeam" 
+        style="font-size:19px; margin-left:auto;">
         <svg-icon icon-class="jointeam_refuse"></svg-icon>
       </span>
-      <span v-if="JointeamStmt == 3" @click="inviteFriend" style="font-size:19px; margin-left:auto;">
+      <span 
+        v-if="SelfInfo.joinStatus == 3" 
+        @click="inviteFriend" 
+        style="font-size:19px; margin-left:auto;">
         <svg-icon icon-class="team-invite"></svg-icon>
       </span>
 
-      <span v-if="JointeamStmt == 0 || JointeamStmt == 4" @click="joinTeam" style="font-size:20px; margin-left:auto;">
+      <span 
+        v-if="SelfInfo.joinStatus == 0 || SelfInfo.joinStatus == 4" 
+        @click="joinTeam" 
+        style="font-size:20px; margin-left:auto;">
         <svg-icon icon-class="jointeam"></svg-icon>
       </span>
 
-      <mu-icon @click="$refs.shareGuide.show()" value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
+      <mu-icon 
+        @click="$refs.shareGuide.show()" 
+        value="share" 
+        class="reply-input-box-icon" 
+        size="18" 
+        color="#8A8A8A"></mu-icon>
     </mu-flex>
 
 
     <!-- 底部弹出框 -->
     <mu-bottom-sheet :open.sync="ExpandBox" :lock-scroll="true">
       <mu-list @item-click="ExpandBox = false">
-        <mu-list-item button v-if="JointeamStmt == 3" @click="leaveTeam">
+        <mu-list-item button v-if="SelfInfo.joinStatus == 3" @click="leaveTeam">
           <mu-list-item-action>
             <svg-icon icon-class="leave-team-green" style="font-size:20px;"></svg-icon>
           </mu-list-item-action>
@@ -233,29 +233,34 @@ export default {
       InitLoading: true,
       TeamID: 0,
 
-      RecruitImgs: [],
-      SwiperIsRender: false,
-      TeamBaseInfo: {
-        partyVenue: {
-          addr: '',
-          lat: 0,
-          lng: 0,
-          name: ''
-        },
-        meetingVenue: {
-          addr: '',
-          lat: 0,
-          lng: 0,
-          name: ''
-        },
-        recruitStatus: 0, // 0=>组队中， 1=>停止招募(招募成功或者已过期), 2=>已解散(只有组队中才能解散，停止招募后不能解散)
+      MainInfo: {
+        theme: 0,
+        teamStatus: 0,
+        displayImgs: [],
+        cont: '', // 活动内容
+        siteDetail: '', // 活动地点
+        siteName: '',
+        siteLng: 0,
+        siteLat: 0,
+        beginTime: 0,
+        recruitNumb: 0,
         hadRecruitNumb: 0,
+        distance: 0,
+        createTime: 0,
+        captainID: 0,
+        captainSex: 0,
+        captainAvatar: '',
+        captainNickname: '',
+        teammates: [],
       },
-      TeammateList: [],
-      JointeamStmt: 0,
-      IsCaptain: false,
 
-      swiperOption: {
+      SelfInfo: {
+        joinStatus: 0,
+        isCaptain: false,
+      },
+
+      SwiperIsRender: false,
+      SwiperOption: {
         autoHeight: true, //enable auto height
         spaceBetween: 20,
         pagination: {
@@ -279,37 +284,75 @@ export default {
   },
   methods: {
     pageInit () {
+
+      let userAddrInfo = utils.getLocationInfo()
+      let lng = userAddrInfo.lng
+      let lat = userAddrInfo.lat
+
       this.$axios.post(
-        `/party/teamDetail/${this.TeamID}`, 
-        {}
+        `/party/teamDetail`, {
+          teamID: Number(this.TeamID),
+          lng: Number(lng),
+          lat: Number(lat)
+        }
       ).then((resp)=>{
 
-        console.log(resp.data)
+        let data = resp.data
 
-        // 如果队伍已经解散了，直接跳转到组队列表去
-        if(resp.data.code == 40105) {
-          this.$toast.message(resp.data.msg)
-          this.$router.push('/party/list')
+        if(data.code != 20000) {
+          this.$toast.info(resp.data.msg)
+          if (data.code == 40101) { // 如果队伍已删除，或者已经解散，返回上一页
+            setTimeout(() => {
+              let that = this
+              that.$router.go(-1)
+            }, 500)
+          }
           return
         }
 
-        let dataBack = resp.data.msg
-        
+        data = data.msg
+
+        let captainInfo = {}
+        let teammates = []
+        data.teammates.forEach(v => {
+          if (v.isCaptain == 1) { // 如果是队长
+            captainInfo = v
+          } else {
+            teammates.push(v)
+          }
+        })
+
+        this.MainInfo = {
+          theme: data.theme,
+          teamStatus: data.teamStatus,
+          displayImgs: data.displayImgs,
+          cont: data.cont, // 活动内容
+          siteDetail: data.siteDetail, // 活动地点
+          siteName: data.siteName,
+          siteLng: data.siteLng,
+          siteLat: data.siteLat,
+          beginTime: data.beginTime,
+          recruitNumb: data.recruitNumb,
+          hadRecruitNumb: (data.recruitNumb - teammates.length),
+          distance: data.distance,
+          createTime: data.createTime,
+          captainID: captainInfo.userID,
+          captainSex: captainInfo.sex,
+          captainAvatar: captainInfo.avatar,
+          captainNickname: captainInfo.nickname,
+          teammates: teammates,
+        }
+
+        this.SelfInfo = {
+          joinStatus: data.joinStatus,
+          isCaptain: data.isCaptain,
+        }
+
         // 渲染详情页基本信息
-        // 渲染图片路径处理
-        this.RecruitImgs = dataBack.teamBaseInfo.recruitImg
         this.SwiperIsRender = true
-        let teamBaseInfo = dataBack.teamBaseInfo
-        teamBaseInfo.partyTheme = utils.getPartyThemeName(teamBaseInfo.partyTheme)
-        // 已招募人数
-        teamBaseInfo.hadRecruitNumb = dataBack.teammateList.length
-        this.TeamBaseInfo = teamBaseInfo  // 赋值
-        this.TeammateList = dataBack.teammateList
-        this.IsCaptain = dataBack.isCaptain
-        this.JointeamStmt = dataBack.joinStmt
 
         this.ShareTitle = '助助社交，更多好玩的party聚会等着你，一起来吧！', // 分享title
-        this.ShareDesc = teamBaseInfo.partyTitle,  // 分享描述
+        this.ShareDesc = data.cont,  // 分享描述
         this.ShareImgUrl = '',  // 分享图片
 
         this.InitLoading = false
@@ -317,19 +360,13 @@ export default {
     },
 
     inviteFriend () { // 邀请好友
-      // 先判断该队伍是否在招募中
-      if (this.TeamBaseInfo.recruitStatus != 0) {
-        this.$toast.info('队伍已停止招募，不能邀请好友')
-        return
-      }
-
       this.$router.push(`/usr/inviteFriend/${this.TeamID}/${this.TeamType}`)
     },
 
     joinTeam () {
       // 首先判断队伍的状态是否停止招募
-      if(this.TeamBaseInfo.recruitStatus > 0) {
-        switch(this.TeamBaseInfo.recruitStatus) {
+      if(this.TeamStatus > 0) {
+        switch(this.TeamStatus) {
           case 1:
             this.$toast.message('该队伍已停止招募，不能加入组队')
           break
@@ -343,7 +380,7 @@ export default {
       // 点击加入组队的时候，判断加入组队的状态
       // 0 => 未加入，1=>申请，2=>拒绝加入，3=>已加入，4=>离队, 5=>被踢
       // 因为party里面没有1、2、5状态， 只需要判断 0 、3、 4(暂时不做其他的)
-      switch(this.JointeamStmt) {
+      switch(this.JoinStatus) {
         case 0: // 未加入
           this.joinTeamReq()
         break
@@ -415,13 +452,13 @@ export default {
       this.$router.push({path:`/common/newChat`, query:{teamType:this.TeamType, teamID:this.TeamID, isReply, replyTo, replyID, replyNickname}})
     },
 
-    openLocation () {
+    openLocation () { // 打开微信导航
       let _this = this
       wx.openLocation({
-        latitude: _this.TeamBaseInfo.meetingVenue.lat, // 纬度，浮点数，范围为90 ~ -90
-        longitude: _this.TeamBaseInfo.meetingVenue.lng, // 经度，浮点数，范围为180 ~ -180。
-        name: _this.TeamBaseInfo.meetingVenue.name, // 位置名
-        address: _this.TeamBaseInfo.meetingVenue.addr, // 地址详情说明
+        latitude: _this.SiteLat, // 纬度，浮点数，范围为90 ~ -90
+        longitude: _this.SiteLng, // 经度，浮点数，范围为180 ~ -180。
+        name: _this.SiteName, // 位置名
+        address: _this.SiteDetail, // 地址详情说明
         scale: 18, // 地图缩放级别,整形值,范围从1~28。默认为最大
         infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
       })
@@ -432,11 +469,65 @@ export default {
 </script>
 
 <style scoped>
-.mine-appbar { width: 100%; height:2.5rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); }
 
-.mine-menu-box { margin-top:1rem; right:.5rem; }
-.mine-menu-list { background:#4dd0e1; color:white; padding:0; background: linear-gradient(to right, #4dd0e1 , #80cbc4); }
-.mine-menu-item { color:#fff; font-size:12px; }
+.swiper-container {
+  position:relative; 
+  margin-top:2.5rem;
+}
+
+.addr-locate {
+  margin-bottom: .3rem; 
+  letter-spacing: 1px; 
+  color:#009688; 
+  font-weight:700; 
+  font-size:12px; 
+  text-decoration:underline
+}
+
+.distance-container {
+  font-size:12px; 
+  padding:.8rem 1rem 1rem .5rem; 
+  margin-top:.5rem; 
+  border-bottom:2px solid #fff;
+}
+
+.createtime-span {
+  margin-left:auto; 
+  color:#9e9e9e; 
+  font-size:13px;
+}
+
+.captain-container {
+  padding:.5rem; 
+  border-bottom:1px dashed #eeeeee;
+}
+
+.level-span {
+  margin-top:.2rem;
+  font-size:7px; 
+  color:#43a047;
+}
+
+.captain-flag {
+  margin-left:auto; 
+  background:#4db6ac; 
+  padding:.2rem .3rem; 
+  color:#fff; 
+  border-radius:.2rem; 
+  font-size:12px; 
+  margin-right:.5rem;
+}
+
+.teammates-container {
+  padding:.5rem 1rem; 
+  background:#fff;
+}
+
+.recruit-condition {
+  padding:.3rem 0 .5rem 0; 
+  border-bottom:1px dashed #e0e0e0; 
+  background:#fff;
+}
 
 .main-cont-div { padding:.5rem 1rem 0rem .5rem; }
 .cont-item-row { margin-bottom:.3rem; }

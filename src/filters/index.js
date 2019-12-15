@@ -227,3 +227,39 @@ export function distanceFormat(distance) { // 距离格式化
   }
   return newDistance = parseInt(newDistance / 100) / 10 + 'km'
 }
+
+export function parsePartyTheme(numb) {
+  let themeName = ''
+  switch(numb) {
+    case 1:
+      themeName = '普通聚会'
+      break
+    case 2:
+      themeName = '节日聚会'
+      break
+    case 3:
+      themeName = '健身运动'
+      break
+    case 4:
+      themeName = '随便逛逛'
+      break
+    case 5:
+      themeName = '线下手游'
+      break
+    case 6:
+      themeName = '野外聚餐'
+      break
+    case 7:
+      themeName = '音乐派对'
+      break
+    case 8:
+      themeName = '单身派对'
+      break
+    case 9:
+      themeName = '联谊聚会'
+      break
+    default:
+      break
+  }
+  return themeName
+}

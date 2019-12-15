@@ -80,10 +80,6 @@
 
           <div style="padding:1rem 1rem 0rem .5rem;">
             <mu-row class="othercont-row">
-              <span class="othercont-title">主要活动:</span>
-              <span class="othercont-detail">{{ item.cont }}</span>
-            </mu-row>
-            <mu-row class="othercont-row">
               <span class="othercont-title">活动地点:</span>
               <span class="othercont-detail">{{ item.siteDetail }}</span>
             </mu-row>
@@ -93,7 +89,11 @@
             </mu-row>
             <mu-row class="othercont-row">
               <span class="othercont-title">招募人数:</span>
-              <span class="othercont-detail">{{ item.recruitNumb }}人</span>
+              <span class="othercont-detail">{{ item.recruitNumb == 0 ? '不限' : (item.recruitNumb + ' 人') }}</span>
+            </mu-row>
+            <mu-row class="othercont-row">
+              <span class="othercont-title">主要活动:</span>
+              <span class="othercont-detail">{{ item.cont }}</span>
             </mu-row>
           </div>
 
