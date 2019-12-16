@@ -138,24 +138,27 @@
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
 
+      <!-- 已加入，如果队伍招募中，显示招募按钮 -->
       <span 
-        v-if="SelfInfo.joinStatus == 1 || SelfInfo.joinStatus == 2 || SelfInfo.joinStatus == 5" 
-        @click="joinTeam" 
-        style="font-size:19px; margin-left:auto;">
-        <svg-icon icon-class="jointeam_refuse"></svg-icon>
-      </span>
-      <span 
-        v-if="SelfInfo.joinStatus == 3" 
+        v-if="MainInfo.teamStatus == 0 && SelfInfo.joinStatus == 3" 
         @click="inviteFriend" 
         style="font-size:19px; margin-left:auto;">
         <svg-icon icon-class="team-invite"></svg-icon>
       </span>
 
+      <!-- 已离队或者未加入组队， 并且队伍招募中 -->
       <span 
-        v-if="SelfInfo.joinStatus == 0 || SelfInfo.joinStatus == 4" 
+        v-if="MainInfo.teamStatus == 0 && SelfInfo.joinStatus == 4" 
         @click="joinTeam" 
-        style="font-size:20px; margin-left:auto;">
+        style="font-size:17px; margin-left:auto; margin-top:.1rem;">
         <svg-icon icon-class="jointeam"></svg-icon>
+      </span>
+
+      <!-- 队伍已完成，显示完成 -->
+      <span 
+        v-if="MainInfo.teamStatus == 1 " 
+        style="font-size:18px; margin-left:auto; margin-top:.1rem;">
+        <svg-icon icon-class="team-finish"></svg-icon>
       </span>
 
       <mu-icon 
@@ -170,7 +173,10 @@
     <!-- 底部弹出框 -->
     <mu-bottom-sheet :open.sync="ExpandBox" :lock-scroll="true">
       <mu-list @item-click="ExpandBox = false">
-        <mu-list-item button v-if="SelfInfo.joinStatus == 3" @click="leaveTeam">
+        <mu-list-item 
+          button 
+          v-if="SelfInfo.joinStatus == 3" 
+          @click="leaveTeam">
           <mu-list-item-action>
             <svg-icon icon-class="leave-team-green" style="font-size:20px;"></svg-icon>
           </mu-list-item-action>
@@ -179,7 +185,10 @@
           </mu-list-item-title>
         </mu-list-item>
 
-        <mu-list-item button v-else @click="joinTeam">
+        <mu-list-item  
+          v-if="MainInfo.teamStatus == 0 && SelfInfo.joinStatus == 4"  
+          @click="joinTeam"
+          button>
           <mu-list-item-action>
             <svg-icon icon-class="join-team-green" style="font-size:20px;"></svg-icon>
           </mu-list-item-action>
@@ -188,7 +197,10 @@
           </mu-list-item-title>
         </mu-list-item>
 
-        <mu-list-item button @click="inviteFriend">
+        <mu-list-item 
+          v-if="MainInfo.teamStatus == 0 && SelfInfo.joinStatus == 3" 
+          @click="inviteFriend"
+          button>
           <mu-list-item-action>
             <svg-icon icon-class="team-invite" style="font-size:20px;"></svg-icon>
           </mu-list-item-action>
@@ -201,7 +213,7 @@
     </mu-bottom-sheet>
 
     <!-- 加载层 -->
-    <mu-flex v-if="InitLoading" align-items="center" justify-content="center" v-loading="true" data-mu-loading-overlay-color="background:rgba(250, 250, 250, .7);" style="position:fixed; top:0; width:100%; height:100%; background:rgba(250, 250, 250, .7); z-index:999; "></mu-flex>
+    <Loading v-show="InitLoading"/>
 
     <WxShareGuide ref="shareGuide"/>
   </div>
@@ -213,6 +225,7 @@
 <script>
 import utils from 'common/utils'
 import ChatList from '@/components/ChatList.vue'
+import Loading from '@/components/Loading.vue'
 import { wxInit } from '@/common/wxInit.js'
 import WxShareGuide from '@/components/WxShareGuide.vue'
 import wx from 'weixin-js-sdk'
@@ -220,6 +233,7 @@ export default {
   components: {
     ChatList,
     WxShareGuide,
+    Loading,
   },
 
   data () {
@@ -363,73 +377,19 @@ export default {
       this.$router.push(`/usr/inviteFriend/${this.TeamID}/${this.TeamType}`)
     },
 
-    joinTeam () {
-      // 首先判断队伍的状态是否停止招募
-      if(this.TeamStatus > 0) {
-        switch(this.TeamStatus) {
-          case 1:
-            this.$toast.message('该队伍已停止招募，不能加入组队')
-          break
-          case 2:
-            this.$toast.message('该队伍已解散，不能加入组队')
-          break
-        }
-        return
-      }
-
-      // 点击加入组队的时候，判断加入组队的状态
-      // 0 => 未加入，1=>申请，2=>拒绝加入，3=>已加入，4=>离队, 5=>被踢
-      // 因为party里面没有1、2、5状态， 只需要判断 0 、3、 4(暂时不做其他的)
-      switch(this.JoinStatus) {
-        case 0: // 未加入
-          this.joinTeamReq()
-        break
-        case 1: // 申请
-          // 不做处理
-        break
-        case 2: // 拒绝加入
-          // 不做处理
-        break
-        case 3: // 已加入
-          // 不做处理
-          if(this.IsCaptain == true) {
-            this.$toast.message('你是队长，你要邀请别人进来吗？')
-          }else{
-            this.$toast.message('你已加入组队！')
-          }
-        break
-        case 4: // 已离队，重新加入
-          this.joinTeamReq()
-        break
-        case 5:
-          // 不做处理
-        break
-      }
-    },
-
-    joinTeamReq () {
+    joinTeam () { // 加入组队
       this.$axios.get(
         `/common/joinTeam/${this.TeamType}/${this.TeamID}`,{}
       ).then((resp)=>{
         let dataBack = resp.data
-        this.$toast.message(dataBack.msg)
+        this.$toast.info(dataBack.msg)
         if(dataBack.code == 20000) {
           window.location.reload()
         }
       })
     },
 
-    leaveTeamReq () {
-      this.$axios.get(`/common/leaveTeam/${this.TeamType}/${this.TeamID}`, {}).then((resp)=>{
-        if(resp.data.code == 20000) {
-          this.$toast.message('已成功退出组队！')
-          this.$router.push(`/party/list`)
-          return
-        }
-      }) 
-    },
-
-    leaveTeam () {
+    leaveTeam () {  // 点击离开组队按钮或者图标
       // 先判断是否为队长，如果是队长，提示会解散队伍
       // 并且如果是队长，只有组队中才可以解散
       if(this.IsCaptain == true) {
@@ -441,6 +401,16 @@ export default {
       } else {
         this.leaveTeamReq()
       }
+    },
+
+    leaveTeamReq () { // 离开组队请求
+      this.$axios.get(`/common/leaveTeam/${this.TeamType}/${this.TeamID}`, {}).then((resp)=>{
+        if(resp.data.code == 20000) {
+          this.$toast.message('已成功退出组队！')
+          this.$router.push(`/party/list`)
+          return
+        }
+      }) 
     },
 
     newChat (isReply, replyTo, replyID, replyNickname) {
