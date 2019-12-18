@@ -415,11 +415,17 @@ export default {
 
     newChat (isReply, replyTo, replyID, replyNickname) {
       // 只有加入组队的人才能进行评论
-      if(this.JointeamStmt != 3) {
-        this.$toast.message('加入组队后才能聊天哦')
+      if(this.SelfInfo.joinStatus != 3) {
+        this.$toast.info('加入组队后才能聊天哦')
         return
       }
-      this.$router.push({path:`/common/newChat`, query:{teamType:this.TeamType, teamID:this.TeamID, isReply, replyTo, replyID, replyNickname}})
+      this.$router.push({path:`/common/newChat`, query:{
+        teamType:this.TeamType, 
+        teamID:this.TeamID, 
+        isReply, 
+        replyTo, 
+        replyID, 
+        replyNickname}})
     },
 
     openLocation () { // 打开微信导航
