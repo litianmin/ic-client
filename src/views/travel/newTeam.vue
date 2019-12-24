@@ -1,24 +1,26 @@
 <template>
   <div :class="AddrChooseWindowIsShow == true ? 'body-fix': ''" style="background:#ffffff;">
-    <!-- BEGIN 头部 -->
     <mu-flex 
-      style="padding:.6rem .8rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); box-shadow: 0 0 1px #26c6da;" 
+      class="gb-top-bar" 
       align-items="center">
-      <mu-flex align-items="center" @click="goBack">
-        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+      <mu-flex align-items="center" @click="$router.go(-1)">
+        <svg-icon icon-class="goback" style="font-size:20px;"></svg-icon>
       </mu-flex>
       <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
         <span style="color:#fff;">创建旅游组队</span>
       </mu-flex>
     </mu-flex>
+
     <!-- END 头部 -->
 
-    <mu-container style="padding:1rem .8rem;">
+    <mu-container class="main-container">
       <!-- 心灵、朝圣、亲子、摄影、漂流、美食、滑雪、沙滩、踏青 -->
       <!-- 旅游主题 -->
-      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem;">旅游主题：</span>
-        <select v-model="TravelTheme" name="partyTitle" id="" style="padding:.1rem .5rem; color:#424242; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #bdbdbd; ">
+      <mu-flex class="common-flex" align-items="center">
+        <span class="common-title">旅游主题：</span>
+        <select 
+          v-model="TravelTheme" 
+          class="common-select">
           <option value="1">心 灵</option>
           <option value="2">漂 流</option>
           <option value="3">摄 影</option>
@@ -29,57 +31,77 @@
           <option value="8">滑 雪</option>
           <option value="9">朝 圣</option>
         </select>
-      </mu-flex>
 
-      <!-- 旅游路程、形式 -->
-      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem;">旅游路程：</span>
-        <select v-model="PathLength" name="partyTitle" id="" style="padding:.1rem .5rem; color:#424242; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #bdbdbd; ">
+        <span class="common-right-title">旅游路程：</span>
+        <select v-model="PathLength" class="common-select">
           <option value="1">周 边 游</option>
           <option value="2">长途旅行</option>
         </select>
 
-        <span style="font-size:13px; color:#795548; margin-left:2.5rem; margin-right:.5rem;">旅游形式：</span>
-        <select v-model="TravelType" name="partyTitle" id="" style="padding:.1rem .5rem; color:#424242; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #bdbdbd; ">
+      </mu-flex>
+
+      <!-- 旅游路程、形式 -->
+      <mu-flex class="common-flex" align-items="center">
+
+        <span class="common-title">旅游形式：</span>
+        <select v-model="TravelType" class="common-select">
           <option value="1">自 由 行</option>
           <option value="2">跟 团 游</option>
         </select>
-      </mu-flex>
 
-      <!-- 招募标题 -->
-      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem;">招募标题：</span>
-        <input maxlength="15" v-model="TravelTitle" style="padding:.4rem; width:70%; font-size:12px; border-radius:.2rem; border:1px solid #bdbdbd; color:#212121;" type="text" placeholder="一起来玩吧！（不超过15个字符）">
-      </mu-flex>
 
-      <!-- 招募人数 -->
-      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="center">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem;">招募人数：</span>
-        <select v-model="RecruitNumb" name="" id="" style="padding:.1rem .5rem; color:#424242; appearance:none; background:#fff; font-size:12px; border-radius:.2rem; border:1px solid #bdbdbd; text-align:center;">
-          <option v-for="(item, index) in RecruitNumbList" :key="index" :value="item">{{ item }} 人</option>
+        <span class="common-right-title">招募人数：</span>
+        <select v-model="RecruitNumb" class="common-select">
+          <option 
+            v-for="(item, index) in RecruitNumbList" 
+            :key="index" 
+            :value="item.val">{{ item.name }}</option>
         </select>
       </mu-flex>
 
       <!-- 集合地点 -->
-      <mu-flex style="width:100%; margin-bottom:1rem; margin-top:1rem;" align-items="center">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem;">集合地点：</span>
+      <mu-flex class="addr-container" align-items="center">
+        <span class="common-title">集合地点：</span>
         <span style="font-size:12px; color:#9e9e9e;">{{ MeetingVenue }}</span>
-        <mu-icon @click="chooseMeetingVenue" value="person_pin_circle" size="20" color="#009688"></mu-icon>
+        <mu-icon 
+          @click="chooseMeetingVenue" 
+          value="person_pin_circle" 
+          size="20" 
+          color="#009688"></mu-icon>
       </mu-flex>
 
-      <!-- 集合时间 -->
-      <mu-date-input v-model="MeetingTime" type="dateTime"  prefix="集合时间：" style="font-size:12px;" landscape container="bottomSheet" clock-type="24hr" view-type="clock" full-width actions></mu-date-input>
+
+      <mu-row style="padding: 0 1.5rem 0 0;">
+        <mu-date-input 
+          v-model="MeetingTime" 
+          type="dateTime"  
+          prefix="活动开始时间：" 
+          style="font-size:13px;" 
+          landscape 
+          full-width 
+          container="bottomSheet" 
+          clock-type="24hr" 
+          view-type="clock">
+          <span slot="prepend" style="padding: 0 .5rem 0 0;">
+            <svg-icon icon-class="date" style="font-size:20px;"></svg-icon>  
+          </span>
+        </mu-date-input>
+
+      </mu-row>
 
       <!-- 详细说明 -->
-      <mu-flex style="width:100%; margin-bottom:1rem;" align-items="start">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem;">详细说明：</span>
-        <textarea v-model="TravelDetail" style="width:75%; height:6rem; border:1px solid #bdbdbd; color:#212121; font-size:12px; padding:.4rem; border-radius:.2rem;" placeholder="大家来这里一起玩吧，出来走走也好！（活动的详细内容）">
+      <mu-flex class="common-flex" align-items="start">
+        <span class="common-title">简单描述：</span>
+        <textarea 
+          v-model="TravelDetail" 
+          class="cont-textarea" 
+          placeholder="请填写下旅游的内容，招募你的伙伴吧！(限200个字符)">
         </textarea>
       </mu-flex>
 
       <!-- 招募图片 -->
       <mu-flex style="width:100%; margin-bottom:.5rem;" align-items="start">
-        <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-top:.3rem;">招募图片：</span>
+        <span class="recruit-img">招募图片：</span>
         <ImgCropper 
           @getImgURL="getRecruitImg" 
           @delImg="delRecruitImg"
@@ -91,42 +113,78 @@
     </mu-container>
 
     <!-- 路线、活动内容 -->
-    <mu-container style="padding:0 .8rem 0 0; margin-bottom:4rem;">
-      <span style="font-size:13px; color:#795548; margin-right:.5rem; margin-left:.5rem; ">路线/活动内容：</span>
+    <mu-container class="line-container">
+      <span class="line-title">路线/活动时间线：</span>
       <div class="demo-vsteper-container">
-        <mu-stepper :active-step="VactiveStep" orientation="vertical" style="margin-bottom:1rem;">
+        <mu-stepper 
+          :active-step="VactiveStep" 
+          orientation="vertical" 
+          style="margin-bottom:1rem;">
 
           <mu-step v-for="(item, index) in StepList" :key="index">
             <mu-step-label>
-              地点/活动 <span style="font-size:12px; color:#4caf50;" v-if="item.addrOrProgram.length > 0">（{{ item.addrOrProgram }}）</span>
+              {{ item.addrOrProgram.length == 0 ? '地点/活动' : item.addrOrProgram }}
             </mu-step-label>
             <mu-step-content>
 
-              <mu-flex style="width:100%; margin-bottom:.5rem; margin-top:.5rem;" align-items="center">
-                <span style="font-size:12px; color:#795548; margin-right:.5rem;">地点/活动：</span>
-                <input maxlength="15" v-model="item.addrOrProgram" style="padding:.4rem; width:70%; font-size:12px; border-radius:.2rem; border:1px solid #e0e0e0; color:#212121;" type="text" placeholder="（不超过20个字符）">
+              <mu-flex class="line-addr-flex" align-items="center">
+                <span class="line-common-span ">地点/活动：</span>
+                <input 
+                  maxlength="20" 
+                  v-model="item.addrOrProgram" 
+                  class="line-addr-input" 
+                  type="text" 
+                  placeholder="（不超过20个字符）">
               </mu-flex>
 
-              <mu-row style="width:100%; margin-top:.5rem;" align-items="end">
-                <mu-date-input v-model="item.beginTime" type="dateTime"  prefix="开始时间：" style="font-size:12px;" landscape container="bottomSheet" clock-type="24hr" view-type="clock" actions ></mu-date-input>
-                <mu-date-input v-model="item.endTime" type="dateTime" prefix="结束时间：" style="font-size:12px; margin-top:-1rem;" landscape container="bottomSheet" clock-type="24hr" view-type="clock" actions></mu-date-input>
-              </mu-row>
-
-              <mu-flex style="width:100%; margin-bottom:1rem; margin-top:-.5rem;" align-items="start">
-                <textarea v-model="item.travelDesc" style="width:90%; height:5rem; border:1px solid #e0e0e0; color:#212121; font-size:12px; padding:.4rem; border-radius:.2rem;" placeholder="活动说明， 例如：大家来这里一起玩吧，出来走走也好！（活动的详细内容）">
+              <mu-flex class="line-common-container" align-items="start">
+                <span class="line-common-span ">内容描述： </span>
+                <textarea 
+                  v-model="item.travelDesc" 
+                  class="line-cont-textarea" 
+                  placeholder="填写下此处的活动的内容吧！">
                 </textarea>
               </mu-flex>
 
               <!-- 添加图片 -->
-              <mu-flex style="width:50%; height:4rem; padding:.5rem; position:relative; border:1px solid #e0e0e0; border-radius:.3rem;" justify-content="center" align-items="center">
-                <mu-icon v-show="item.descImg.length > 0" @click="delImg(index)" value="cancel" color="#f06292" style="position:absolute; top:-.8rem; right:-.8rem;"></mu-icon>
-                <mu-icon @click="addImg(index)" v-show="item.descImg.length == 0" value="add" size="40" color="#e0e0e0" style=""></mu-icon>
-                <img style="max-width:100%; max-height:4rem; border-radius:.3rem;" :src="item.descImg" alt="">
+              <mu-flex class="line-common-container" align-items="start">
+                <span class="line-common-span">展示图片： </span>
+                <mu-flex 
+                  class="line-img-container" 
+                  justify-content="center" 
+                  align-items="center">
+                  <mu-icon 
+                    v-show="item.descImg.length > 0" 
+                    @click="delImg(index)" 
+                    value="cancel" 
+                    color="#f06292" 
+                    style="position:absolute; top:-.8rem; right:-.8rem;"></mu-icon>
+                  <mu-icon 
+                    @click="addImg(index)" 
+                    v-show="item.descImg.length == 0" 
+                    value="add" 
+                    size="40" 
+                    color="#e0e0e0"></mu-icon>
+                  <img class="line-img" :src="item.descImg">
+                </mu-flex>
               </mu-flex>
 
-              <mu-button v-if="index > 0" class="demo-step-button" @click="vhandlePrev" color="#00bcd4" small>上一个</mu-button>
-              <mu-button class="demo-step-button" @click="vhandleNext(index)" color="#00bcd4" small>下一个</mu-button>
-              <mu-button class="demo-step-button" @click="vhandleFinished" color="#00bcd4" small>完成</mu-button>
+              <mu-button 
+                v-if="index > 0" 
+                class="demo-step-button" 
+                @click="vhandlePrev" 
+                color="#00bcd4" 
+                small>上一个</mu-button>
+              <mu-button 
+                class="demo-step-button" 
+                @click="vhandleNext(index)" 
+                color="#00bcd4" 
+                small>下一个</mu-button>
+              <mu-button 
+                class="demo-step-button" 
+                @click="vhandleFinished" 
+                color="#00bcd4" 
+                small>完成</mu-button>
             </mu-step-content>
           </mu-step>
 
@@ -142,7 +200,7 @@
       </div>
     </mu-container>
 
-    <mu-flex style="position:fixed; width:100%; bottom:0; left:0; background:#f5f5f5; padding:.5rem .1rem; z-index:999; border-top:1px solid #eeeeee;" justify-content="center">
+    <mu-flex class="submit-container" justify-content="center">
       <mu-button @click="submit" style="width:95%;" color="#00bcd4">
         <mu-icon value="touch_app" size="14"></mu-icon>
         <span style="margin-left:.5rem;">发起组队</span>
@@ -150,8 +208,12 @@
     </mu-flex>
 
     <!-- BEGIN 地图弹出框 -->
-    <div v-show="AddrChooseWindowIsShow" id="iframe" style="position:fixed; top:0; width:100%; height:100%;">
-      <mu-flex @click="shutdownWindow" style="width:10%; height:2.8rem; z-index:9999; position:fixed; top:0; left:0; background:#F8F8F8; text-align:center; padding: 0 0 0 .5rem;" align-items="center" justify-content="center">
+    <div v-show="AddrChooseWindowIsShow" id="iframe" style="position:fixed; z-index:10000; top:0; width:100%; height:100%;">
+      <mu-flex 
+        @click="shutdownWindow" 
+        class="map-container" 
+        align-items="center" 
+        justify-content="center">
         <mu-icon value="navigate_before"></mu-icon>
       </mu-flex>
       <iframe 
@@ -182,10 +244,9 @@ export default {
       TravelTheme: 1,
       PathLength: 1,
       TravelType: 1,
-      TravelTitle: '',
       TravelDetail: '',
-      RecruitNumb: 1, // 招募人数
-      RecruitNumbList: [],  // 招募人数的列表
+      RecruitNumb: 0, // 招募人数
+      RecruitNumbList: [{val: 0, name: '不限'}],  // 招募人数的列表
       MeetingVenue: '', // 聚会地点
       RecruitImg: '',
       MeetingVenueObj: {
@@ -196,7 +257,7 @@ export default {
       },
       MeetingTime: new Date, // 活动开始时间
       StepList: [
-        {addrOrProgram: '', beginTime: undefined, endTime: undefined, travelDesc: '', descImg: '', descImgURL: ''},
+        {addrOrProgram: '', travelDesc: '', descImg: '', descImgURL: ''},
       ],
       HadAddImg: 0,
       ClickAddImgIndex: 0,
@@ -215,8 +276,9 @@ export default {
       lat: userAddrInfo.lat,
       addr: userAddrInfo.addr,
     }
+
     for(let i = 1; i < 30; i++) {
-      this.RecruitNumbList.push(i)
+      this.RecruitNumbList.push({val: i, name: `${i} 人`})
     }
   },
   computed: {
@@ -228,23 +290,31 @@ export default {
     vhandleNext (index) {  // 步骤下一步
       // 判断活动或者地点是否为空
       if(this.StepList[index].addrOrProgram == '') {
-        this.$toast.message('地点/活动 不能为空，如果没有内容请点击完成')
+        this.$toast.info('地点/活动 不能为空，如果没有内容请点击完成')
         return
       }
 
       // 往StepList添加数据
       if(index == this.StepList.length - 1) {
-        let item = {addrOrProgram: '', beginTime: undefined, endTime: undefined, travelDesc: '', descImg: '', descImgURL: ''}
+        let item = {
+          addrOrProgram: '', 
+          travelDesc: '', 
+          descImg: '', 
+          descImgURL: ''
+        }
         this.StepList.push(item)
       }
       this.VactiveStep++
     },
+
     vhandlePrev () {  // 步骤上一步
       this.VactiveStep--
     },
+
     vreset () { // 步数重置
       this.VactiveStep = 0
     },
+
     vhandleFinished () {
       this.VactiveStep = this.StepList.length + 1
     },
@@ -258,14 +328,11 @@ export default {
     },
 
     addImg (index) {
-      if(this.HadAddImg > 2) {
-        this.$toast.message('路线/地点列表最多只能添加三张图片')
-        return
-      } 
       this.ClickAddImgIndex = index
       this.$refs.imgUpload.click()
     },
-    getImgList () {  // 获取评论图片
+
+    getImgList () {  // 获取图片
       let event = event || window.event
       let file = event.target.files[0]
       imgCompress(file, this.imgHadChoose, 'travel', this.ClickAddImgIndex) // 图片处理
@@ -281,25 +348,23 @@ export default {
       this.StepList[index].descImg = ''
       this.HadAddImg--
     },
-    goBack () {
-      this.$router.go(-1)
-    },
+
+
     chooseMeetingVenue () { // 集合地点
       this.AddrChooseOperate = 1
       this.AddrChooseWindowIsShow = true
     },
+
     shutdownWindow () { // 关闭地图窗口
       this.AddrChooseWindowIsShow = false
     },
-    loadiframe() {
-      let iframe = document.getElementById('getAddress').contentWindow
-      iframe.postMessage('hello', 'https://m.amap.com/picker/')
-      window.addEventListener("message", function (e) {
-        if (e.data.command != "COMMAND_GET_TITLE") {
-          if(!!e.data.location === false) {
-            return
-          }
-          let locationStrArr = e.data.location.split(',')
+
+
+    chooseAddrDeal (e) {  // 选择地址处理
+      let that = this
+
+      if (e.data.location != undefined) {
+        let locationStrArr = e.data.location.split(',')
           let venueObj = {
             name: e.data.name,
             lng: Number(locationStrArr[0]),
@@ -307,32 +372,32 @@ export default {
             addr: e.data.address,
           }
           // 集合地点
-          this.MeetingVenue = e.data.name
-          this.MeetingVenueObj = venueObj
-
-          // this.LocateAddr = e.data.name
-          this.AddrChooseWindowIsShow = false
-          //业务代码
-          // this.$toast.message(e.data.name)
-        }
-
-      }.bind(this), false)
+          that.MeetingVenue = e.data.name
+          that.MeetingVenueObj = venueObj
+          that.AddrChooseWindowIsShow = false
+      }
     },
+
+    loadiframe() {  // 加载地图选择框
+      let iframe = document.getElementById('getAddress').contentWindow
+      iframe.postMessage('hello', 'https://m.amap.com/picker/')
+      window.addEventListener("message", this.chooseAddrDeal, false)
+    },
+
     submit () {
-      let travelTheme = Number(this.TravelTheme)  // 主题
+      let theme = Number(this.TravelTheme)  // 主题
       let pathLength = Number(this.PathLength) // 旅游路程
       let travelType = Number(this.TravelType) // 旅游的形式
-      let travelTitle = this.TravelTitle // 旅游标题
       let recruitNumb = Number(this.RecruitNumb) //招募人数
-      let meetingVenue = this.MeetingVenueObj // 集合地点
+      let meetingSite = this.MeetingVenueObj // 集合地点
       let meetingTime = Date.parse(this.MeetingTime.toString()) / 1000  // 见面的时间
-      let travelDetail = this.TravelDetail // 详细说明
+      let cont = this.TravelDetail // 详细说明
       let recruitImg = this.RecruitImg
       let stepList = this.StepList // 路线活动地点
 
       // 现在来进行数据的验证
-      if(meetingVenue.addr == '') {
-        this.$toast.message('集合地点不能为空')
+      if(meetingSite.addr == '') {
+        this.$toast.info('集合地点不能为空')
         return
       }
 
@@ -341,19 +406,6 @@ export default {
       }
 
       for(let i = 0; i < stepList.length; i++) {
-        // 处理时间， 对象转换成时间戳
-        if(!!stepList[i].beginTime === true) {
-          stepList[i].beginTime = Date.parse(stepList[i].beginTime.toString()) / 1000
-        }else{
-          stepList[i].beginTime = 0
-        }
-        
-        if(!!stepList[i].endTime === true) {
-          stepList[i].endTime = Date.parse(stepList[i].endTime.toString()) / 1000
-        }else{
-          stepList[i].endTime = 0
-        }
-
         // 检验最后一个是否为空对象, 直接抛出去
         if(i == (stepList.length - 1) && stepList[i].addrOrProgram == '') {
           stepList.pop()
@@ -366,14 +418,13 @@ export default {
       this.$axios.post(
         '/travel/newTeam',
         {
-          travelTheme,
+          theme,
           pathLength,
           travelType,
-          travelTitle,
           recruitNumb,
-          meetingVenue,
+          meetingSite,
           meetingTime,
-          travelDetail,
+          cont,
           recruitImg,
           stepList,
         }
@@ -383,7 +434,7 @@ export default {
           this.$toast.success('成功创建组队！')
           this.$router.replace(`/travel/teamDetail/${newTeamID}`)
         }else{
-          this.$toast.message('创建组队失败')
+          this.$toast.info('创建组队失败')
         }
         // console.log(resp)
       })
@@ -395,6 +446,150 @@ export default {
 
 <style scoped>
 .mine-appbar { width: 100%; height:2.5rem; }
+
+
+.main-container {
+  padding:1rem .8rem; 
+  margin-top:2.5rem;
+}
+
+.common-flex {
+  width:100%; 
+  margin-bottom:1rem;
+}
+
+.common-title {
+  font-size:13px; 
+  color:#795548; 
+  margin-right:.5rem;
+}
+
+.common-right-title {
+  font-size:13px; 
+  color:#795548; 
+  margin-left:2.5rem;
+}
+
+.common-select {
+  padding:.1rem .5rem; 
+  color:#424242; 
+  appearance:none; 
+  background:#fff; 
+  font-size:12px; 
+  border-radius:.2rem; 
+  border:1px solid #bdbdbd;
+}
+
+.addr-container {
+  width:100%; 
+  margin-bottom:1rem; 
+  margin-top:1rem;
+}
+
+.cont-textarea {
+  width:75%; 
+  height:4.5rem; 
+  border:1px solid #bdbdbd; 
+  color:#212121; 
+  font-size:12px; 
+  padding:.4rem; 
+  border-radius:.2rem;
+}
+
+.recruit-img {
+  font-size:13px; 
+  color:#795548; 
+  margin-right:.5rem; 
+  margin-top:.3rem;
+}
+
+.submit-container {
+  position:fixed; 
+  width:100%; 
+  bottom:0; 
+  left:0; 
+  background:#f5f5f5; 
+  padding:.5rem .1rem; 
+  z-index:999; 
+  border-top:1px solid #eeeeee;
+}
+
+.map-container {
+  width:10%; 
+  height:2.8rem; 
+  z-index:9999; 
+  position:fixed; 
+  top:0; 
+  left:0; 
+  background:#F8F8F8; 
+  text-align:center; 
+  padding: 0 0 0 .5rem;
+}
+
+.line-container {
+  padding: 0 .8rem 0 0; 
+  margin-bottom:4rem;
+}
+
+.line-title {
+  letter-spacing:1px; 
+  font-size:13px; 
+  color:#795548; 
+  margin-right:.5rem; 
+  margin-left:.5rem;
+}
+
+.line-addr-flex {
+  width:100%; 
+  margin-bottom:.5rem; 
+  margin-top:.5rem;
+}
+
+.line-common-span {
+  font-size:12px; 
+  color:#795548; 
+  margin-right:.5rem;
+}
+
+.line-common-container {
+  width:100%; 
+  margin-bottom:1rem; 
+  margin-top:1rem;
+}
+
+.line-addr-input {
+  padding:.3rem; 
+  width:70%; 
+  font-size:12px; 
+  border-radius:.2rem; 
+  border:1px solid #e0e0e0; 
+  color:#212121;
+}
+
+.line-cont-textarea {
+  width:72%; 
+  height:3.5rem; 
+  border:1px solid #e0e0e0; 
+  color:#212121; 
+  font-size:12px; 
+  padding:.4rem; 
+  border-radius:.2rem;
+}
+
+.line-img-container {
+  width:50%; 
+  height:4rem; 
+  padding:.5rem; 
+  position:relative; 
+  border:1px solid #e0e0e0; 
+  border-radius:.3rem;
+}
+
+.line-img {
+  max-width:100%; 
+  max-height:4rem; 
+  border-radius:.3rem;
+}
 
 .demo-vsteper-container{
   max-width: 100%;

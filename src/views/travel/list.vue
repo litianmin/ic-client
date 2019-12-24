@@ -76,9 +76,16 @@
 
     <mu-divider></mu-divider>
 
-    <mu-load-more :loading="Loading" @load="loadTeamList" :loaded-all="IsTheLast" style="margin-top:7.5rem;">
+    <mu-load-more 
+      :loading="Loading" 
+      @load="loadTeamList" 
+      :loaded-all="IsTheLast" 
+      style="margin-top:7.5rem;">
       <!-- BEGIN 队伍样式 -->
-      <div class="teamlist-container" v-for="(item, index) in TeamList" :key="index">
+      <div 
+        v-for="(item, index) in TeamList" 
+        :key="index"
+        class="teamlist-container">
         <div class="teamlist-cont-div">
           <mu-flex style="position:relative;" justify-content="center">
             <img style="max-width:100%; max-height:30rem; border-top-left-radius:.5rem; border-top-right-radius:.5rem;" :src="item.recruitImg | imgPrefixDeal()" alt="">
@@ -254,26 +261,32 @@ export default {
         type: this.TravelType
       }).then((resp)=>{
         let dataBack = resp.data.msg
-        console.log(dataBack)
         this.IsTheLast = dataBack.isTheLast
 
         let listInfo = dataBack.listInfo
-        for(let i = 0; i < listInfo.length; i++) {
-          // 处理主题,路程，类型
-          listInfo[i].travelTheme = utils.getTravelThemeName(listInfo[i].travelTheme)
-          listInfo[i].pathLength = utils.getTravelPathLengthName(listInfo[i].pathLength)
-          listInfo[i].travelType = utils.getTravelTypeName(listInfo[i].travelType)
+        listInfo.map(item => {
+          item.travelTheme = utils.getTravelThemeName(listInfo[i].travelTheme)
+          item.pathLength = utils.getTravelPathLengthName(listInfo[i].pathLength)
+          item.travelType = utils.getTravelTypeName(listInfo[i].travelType)
+          item.stepList = item.stepList.replace('|', ' -> ')
+          return item
+        })
+        // for(let i = 0; i < listInfo.length; i++) {
+        //   // 处理主题,路程，类型
+        //   listInfo[i].travelTheme = utils.getTravelThemeName(listInfo[i].travelTheme)
+        //   listInfo[i].pathLength = utils.getTravelPathLengthName(listInfo[i].pathLength)
+        //   listInfo[i].travelType = utils.getTravelTypeName(listInfo[i].travelType)
 
-          listInfo[i].travelTitle = listInfo[i].travelTitle == '' ? '一起来玩吧' : listInfo[i].travelTitle
-          listInfo[i].travelDetail = listInfo[i].travelDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : listInfo[i].travelDetail
-          // 处理招募图片
-          listInfo[i].recruitImg = listInfo[i].recruitImg == '' ? utils.TravelDefaultDisplayImg : utils.imgPrefixDeal(listInfo[i].recruitImg)
+        //   listInfo[i].travelTitle = listInfo[i].travelTitle == '' ? '一起来玩吧' : listInfo[i].travelTitle
+        //   listInfo[i].travelDetail = listInfo[i].travelDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : listInfo[i].travelDetail
+        //   // 处理招募图片
+        //   listInfo[i].recruitImg = listInfo[i].recruitImg == '' ? utils.TravelDefaultDisplayImg : utils.imgPrefixDeal(listInfo[i].recruitImg)
 
-          // 处理步骤
-          let stepList = listInfo[i].stepListStr
-          stepList = stepList.replace('|', ' -> ')
-          listInfo[i].stepListStr = stepList
-        }
+        //   // 处理步骤
+        //   let stepList = listInfo[i].stepListStr
+        //   stepList = stepList.replace('|', ' -> ')
+        //   listInfo[i].stepListStr = stepList
+        // }
 
 
         this.TeamList = this.TeamList.concat(dataBack.listInfo)
