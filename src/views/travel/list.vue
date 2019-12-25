@@ -88,70 +88,89 @@
         class="teamlist-container">
         <div class="teamlist-cont-div">
           <mu-flex style="position:relative;" justify-content="center">
-            <img style="max-width:100%; max-height:30rem; border-top-left-radius:.5rem; border-top-right-radius:.5rem;" :src="item.recruitImg | imgPrefixDeal()" alt="">
+            <img class="recruit-img" :src="item.recruitImg | imgPrefixDeal()">
 
-              <span style="font-size:14px; font-weight:700; margin-left:auto; color:gray; position:absolute; top:1rem; right:1.5rem; color:#fff;"> {{ item.recruitNumb }}/<span style="font-size:9px;">{{ item.hadRecruitNumb }}</span></span>
+              <span class="recruit-span"> 
+                {{ item.recruitNumb }}/<span style="font-size:9px;">{{ item.hadRecruitNumb }}</span>
+              </span>
 
-            <mu-flex style="width:100%; position:absolute; bottom:0; background:rgba(0, 0, 0, .5); padding:.5rem .8rem;" align-items="center">
+            <mu-flex class="steplist-flex" align-items="center">
               <mu-flex align-items="center">
+
                 <div>
                   <mu-avatar size="25">
                     <img :src="item.captainAvatar | imgPrefixDeal()" alt="">
                   </mu-avatar>
                 </div>
                 <div style="margin-left:.8rem;">
-                  <mu-row style="font-size:12px; color:white;">{{ item.captainNickname }}：{{ item.travelTitle }}</mu-row>
+                  <mu-row style="font-size:12px; color:#fff;">
+                    {{ item.captainNickname }}：{{ item.stepList }}
+                  </mu-row>
                 </div>
               </mu-flex>
             </mu-flex>
 
-
           </mu-flex>
+
           <mu-flex style="padding:.5rem .5rem .5rem 0;" align-items="center" wrap="wrap">
 
-            <mu-flex style="width:100%; padding:.5rem .8rem .3rem .5rem;" align-items="center">
-              <div style="">
-                <span style=" font-size:15px; font-weight:700;">{{ item.travelDetail }}</span>
-              </div>
+            <mu-flex class="cont-flex" >
+              <span class="cont-span">{{ item.cont }}</span>
             </mu-flex>
 
-            <mu-flex v-if="item.stepListStr != ''" style="width:100%; padding: .5rem .5rem 0rem .5rem; ">
-              <span style=" font-size:13px; font-weight:600;"> {{ item.stepListStr }}</span>
-            </mu-flex>
-
-            <mu-flex style="width:100%; font-size:12px; padding:.8rem .3rem; border-bottom:1px solid #eeeeee;" align-items="center" wrap="wrap" >
-              <div style="width:100%; margin-bottom:.2rem; text-align:right;">
-                <span style="font-size:12px;  color:gray; margin-left:auto;"> {{ item.meetingTime | parseTime('{m}/{d} {h}:{i}') }} </span>
+            <mu-flex 
+              class="time-addr-container" 
+              align-items="center" 
+              wrap="wrap" >
+              <div class="time-container">
+                <span class="time-span"> 
+                  {{ item.meetingTime | parseTime('{m}/{d} {h}:{i}') }} 
+                </span>
               </div>
 
               <mu-icon value="person_pin_circle" color="green" size="18"></mu-icon>
-              <span style="font-size:12px; color:gray;">距离你 <span style="font-size:12px;">{{ item.distance | distanceFormat() }}</span></span>
-              <span style="font-size:12px;  color:gray; margin-left:auto;"> 于 {{ item.meetingVenue.name }} 集合</span>
+              <span class="distance-span">
+                距离你 <span style="font-size:12px;">{{ item.distance | distanceFormat() }}</span>
+              </span>
+              <span class="addr-span"> 于 {{ item.meetingVenue.name }} 集合</span>
             </mu-flex>
 
-            <mu-flex style="width:100%; padding:1rem .8rem .5rem .5rem" align-items="center">
-              <mu-badge :content="item.travelTheme" color="#00bcd4" style="margin-right:.5rem;"></mu-badge>
+            <mu-flex class="badge-container" align-items="center">
+              <mu-badge :content="item.theme" color="#00bcd4" style="margin-right:.5rem;"></mu-badge>
               <mu-badge :content="item.pathLength" color="#00bcd4" style="margin-right:.5rem;"></mu-badge>
               <mu-badge :content="item.travelType" color="#00bcd4" style=""></mu-badge>
-              <span @click="linkToTeamDetail(item.teamID)" style="margin-left:auto; font-size:12px; color:#03a9f4;">查看详情</span>
+              <span @click="linkToTeamDetail(item.teamID)" class="detail">查看详情</span>
             </mu-flex>  
           </mu-flex>
         </div>
       </div>
       <!-- END 队伍样式 -->
 
-      <mu-row v-show="IsTheLast && TeamList.length > 0" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.5rem; margin-bottom:.5rem; color:#9e9e9e; margin-top:-1.5rem;">
+      <mu-row 
+        v-show="IsTheLast && TeamList.length > 0" 
+        justify-content="center" 
+        class="nomore-team">
         <span style="">-- 没有更多的组队 --</span>
       </mu-row>
     </mu-load-more>
 
-    <mu-row v-show="TeamList.length == 0" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:6rem; color:#9e9e9e;">
+    <mu-row 
+      v-show="TeamList.length == 0" 
+      justify-content="center" 
+      class="no-team">
       <span style="">没有更多的组队</span>
     </mu-row>
 
     <!-- BEGIN 地址选择弹出框 -->
-    <div v-if="AddrChooseWindowIsShow" id="iframe" style="position:fixed; z-index:10000; top:0; width:100%; height:100%;">
-      <mu-flex @click="shutdownWindow" style="width:10%; height:2.8rem;  position:fixed; top:0; left:0; background:#F8F8F8; text-align:center; padding: 0 0 0 .5rem;" align-items="center" justify-content="center">
+    <div 
+      v-if="AddrChooseWindowIsShow" 
+      id="iframe" 
+      class="map-container">
+      <mu-flex 
+        @click="shutdownWindow" 
+        class="map-shutdown" 
+        align-items="center" 
+        justify-content="center">
         <mu-icon value="navigate_before"></mu-icon>
       </mu-flex>
       <iframe 
@@ -261,35 +280,27 @@ export default {
         type: this.TravelType
       }).then((resp)=>{
         let dataBack = resp.data.msg
-        this.IsTheLast = dataBack.isTheLast
 
-        let listInfo = dataBack.listInfo
-        listInfo.map(item => {
-          item.travelTheme = utils.getTravelThemeName(listInfo[i].travelTheme)
-          item.pathLength = utils.getTravelPathLengthName(listInfo[i].pathLength)
-          item.travelType = utils.getTravelTypeName(listInfo[i].travelType)
+        if (resp.data.code != 20000) {
+          this.$message.info(resp.data.msg)
+          return
+        }
+
+        let data = resp.data.msg
+
+        if (data.length < 10) {
+          this.IsTheLast = true
+        }
+
+        data.map(item => {
+          item.theme = utils.getTravelThemeName(item.theme)
+          item.pathLength = utils.getTravelPathLengthName(item.pathLength)
+          item.travelType = utils.getTravelTypeName(item.travelType)
           item.stepList = item.stepList.replace('|', ' -> ')
           return item
         })
-        // for(let i = 0; i < listInfo.length; i++) {
-        //   // 处理主题,路程，类型
-        //   listInfo[i].travelTheme = utils.getTravelThemeName(listInfo[i].travelTheme)
-        //   listInfo[i].pathLength = utils.getTravelPathLengthName(listInfo[i].pathLength)
-        //   listInfo[i].travelType = utils.getTravelTypeName(listInfo[i].travelType)
 
-        //   listInfo[i].travelTitle = listInfo[i].travelTitle == '' ? '一起来玩吧' : listInfo[i].travelTitle
-        //   listInfo[i].travelDetail = listInfo[i].travelDetail == '' ? '大家来这里一起玩吧，出来走走也好!' : listInfo[i].travelDetail
-        //   // 处理招募图片
-        //   listInfo[i].recruitImg = listInfo[i].recruitImg == '' ? utils.TravelDefaultDisplayImg : utils.imgPrefixDeal(listInfo[i].recruitImg)
-
-        //   // 处理步骤
-        //   let stepList = listInfo[i].stepListStr
-        //   stepList = stepList.replace('|', ' -> ')
-        //   listInfo[i].stepListStr = stepList
-        // }
-
-
-        this.TeamList = this.TeamList.concat(dataBack.listInfo)
+        this.TeamList = this.TeamList.concat(data)
         this.Page++
         this.Loading = false
       })
@@ -345,7 +356,123 @@ export default {
   border-left:1px solid #e0e0e0;
 }
 
+.recruit-img {
+  max-width:100%; 
+  max-height:30rem; 
+  border-top-left-radius:.5rem; 
+  border-top-right-radius:.5rem;
+}
+
+.recruit-span {
+  font-size:14px; 
+  font-weight:700; 
+  margin-left:auto; 
+  color:gray; 
+  position:absolute; 
+  top:1rem; 
+  right:1.5rem; 
+  color:#fff;
+}
+
+.steplist-flex {
+  width:100%; 
+  position:absolute; 
+  bottom:0; 
+  background:rgba(0, 0, 0, .5); 
+  padding:.5rem .8rem;
+}
+
+.steplist-span {
+  font-size:12px; 
+  color:white;
+}
+
+.cont-flex {
+  width:100%; 
+  padding:.5rem .8rem .3rem .5rem;
+}
+
+.cont-span {
+  font-size:13px; 
+  font-weight:700; 
+  letter-spacing:1px;
+}
+
+.time-addr-container {
+  width:100%; 
+  font-size:12px; 
+  padding:.8rem .3rem; 
+  border-bottom:1px solid #eeeeee;
+}
+
+.time-container {
+  width:100%; 
+  margin-bottom:.2rem; 
+  text-align:right;
+}
+
+.time-span {
+  font-size:12px; 
+  color:gray; 
+  margin-left:auto;
+}
+
+.distance-span {
+  font-size:12px; 
+  color:gray;
+}
+
+.addr-span {
+  font-size:12px;  
+  color:gray; 
+  margin-left:auto;
+}
+
+.badge-container {
+  width:100%; 
+  padding:1rem .8rem .5rem .5rem;
+}
+
+.detail {
+  margin-left:auto; 
+  font-size:12px; 
+  color:#03a9f4;
+}
+
+.nomore-team {
+  padding:.5rem .5rem .3rem .5rem; 
+  margin-top:.5rem; 
+  margin-bottom:.5rem; 
+  color:#9e9e9e; 
+  margin-top:-1.5rem;
+}
+
+.no-team {
+  padding:.5rem .5rem .3rem .5rem; 
+  margin-top:6rem; 
+  color:#9e9e9e;
+}
+
 .map-item { position: fixed; width: 100%; height: 100%; top: 0; background: #fff; }
+
+.map-container {
+  position:fixed; 
+  z-index:10000; 
+  top:0; 
+  width:100%; 
+  height:100%;
+}
+
+.map-shutdown {
+  width:10%; 
+  height:2.8rem;  
+  position:fixed; 
+  top:0; 
+  left:0; 
+  background:#F8F8F8; 
+  text-align:center; 
+  padding: 0 0 0 .5rem;
+}
 
 .body-fix{ position:fixed; }
 </style>

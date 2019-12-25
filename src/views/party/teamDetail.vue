@@ -406,7 +406,7 @@ export default {
     leaveTeamReq () { // 离开组队请求
       this.$axios.get(`/common/leaveTeam/${this.TeamType}/${this.TeamID}`, {}).then((resp)=>{
         if(resp.data.code == 20000) {
-          this.$toast.message('已成功退出组队！')
+          this.$toast.info('已成功退出组队！')
           this.$router.push(`/party/list`)
           return
         }
