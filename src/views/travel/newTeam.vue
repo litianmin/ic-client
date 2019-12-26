@@ -1,5 +1,7 @@
 <template>
   <div :class="AddrChooseWindowIsShow == true ? 'body-fix': ''" style="background:#ffffff;">
+
+    <!-- END 头部 -->
     <mu-flex 
       class="gb-top-bar" 
       align-items="center">
@@ -10,8 +12,6 @@
         <span style="color:#fff;">创建旅游组队</span>
       </mu-flex>
     </mu-flex>
-
-    <!-- END 头部 -->
 
     <mu-container class="main-container">
       <!-- 心灵、朝圣、亲子、摄影、漂流、美食、滑雪、沙滩、踏青 -->

@@ -19,9 +19,17 @@
 
 
     <!-- END 头部 -->
-    <mu-load-more :loading="Loading" @load="loadTeamList" :loaded-all="IsTheLast" style="margin-top:2.5rem;">
+    <mu-load-more 
+      :loading="Loading" 
+      @load="loadTeamList" 
+      :loaded-all="IsTheLast" 
+      style="margin-top:2.5rem;">
       <div style="width:100%; padding:.5rem;">
-        <mu-row v-for="(item, index) in TeamList" :key="index" @click="linkToDetail(item.teamID)" style="width:100%; padding:.5rem; margin-bottom:.8rem; border-radius:.3rem; background:#fff; border:1px solid #e0e0e0;">
+        <mu-row 
+          v-for="(item, index) in TeamList" 
+          :key="index" 
+          @click="linkToDetail(item.teamID)" 
+          class="cont-container">
           <mu-flex style="width:100%;" align-items="center">
             <mu-avatar size="30">
               <img :src="item.avatar | imgPrefixDeal()" alt="">
@@ -98,14 +106,13 @@ export default {
           this.$toast.message(resp.data.msg)
           return
         }
-        let dataBack = resp.data.msg
-        this.IsTheLast = dataBack.isTheLast
-        let listInfo = dataBack.listInfo
+        let data = resp.data.msg
+        this.IsTheLast = data.length < 10 ? true : false
 
         if(this.Page == 1) {
-          this.TeamList = listInfo
+          this.TeamList = data
         }else{
-          this.TeamList = this.TeamList.concat(listInfo)
+          this.TeamList = this.TeamList.concat(data)
         }
         this.Page++
         this.Loading = false
@@ -121,6 +128,15 @@ export default {
 
 <style scoped>
 .mine-appbar { width: 100%; height:2.5rem; }
+
+.cont-container {
+  width:100%; 
+  padding:.5rem; 
+  margin-bottom:.8rem; 
+  border-radius:.3rem; 
+  background:#fff; 
+  border:1px solid #e0e0e0;
+}
 </style>
 
 

@@ -1,11 +1,12 @@
 <template>
   <div :class="AddrChooseWindowIsShow == true ? 'body-fix': ''" style="">
     <!-- 导航条 -->
+
     <mu-flex 
-      style="padding:.6rem .8rem; background: linear-gradient(to right, #4dd0e1 , #80cbc4); box-shadow: 0 0 1px #26c6da;" 
+      class="gb-top-bar" 
       align-items="center">
-      <mu-flex align-items="center" @click="goBack">
-        <svg-icon icon-class="goback" style="font-size:20px; color:red;"></svg-icon>
+      <mu-flex align-items="center" @click="$router.go(-1)">
+        <svg-icon icon-class="goback" style="font-size:20px;"></svg-icon>
       </mu-flex>
       <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
         <span style="color:#fff;">创建即时组队</span>
@@ -13,9 +14,17 @@
     </mu-flex>
 
     <!-- 评论内容最多200个字符，最多一张图片 -->
-    <div style="background:#fff;">
-      <mu-container style="width:100%; height:100%; border-radius:.5rem; padding:.5rem .5rem 0 .5rem;">
-        <mu-text-field v-model="TeamDetail" multi-line :rows="7" :rows-max="10" full-width max-length="150" underline-color="rgba(139, 69, 19, .2)" placeholder="走起？" style="font-size:14px;">
+    <div style="background:#fff; margin-top:2.5rem;">
+      <mu-container class="cont-container">
+        <mu-text-field 
+          v-model="TeamDetail" 
+          multi-line 
+          :rows="7" 
+          :rows-max="10" 
+          full-width max-length="150" 
+          underline-color="rgba(139, 69, 19, .2)" 
+          placeholder="走起？" 
+          style="font-size:14px;">
         </mu-text-field>
       </mu-container>
     </div>
@@ -153,16 +162,12 @@ export default {
       this.AddrChooseWindowIsShow = false
     },
 
-    loadiframe() {
-      let iframe = document.getElementById('getAddress').contentWindow
-      iframe.postMessage('hello', 'https://m.amap.com/picker/')
-      window.addEventListener("message", function (e) {
-        if (e.data.command != "COMMAND_GET_TITLE") {
-          if(!!e.data.location === false) {
-            return
-          }
-          console.log(e.data.location)
-          let locationStrArr = e.data.location.split(',')
+
+    chooseAddrDeal (e) {  // 选择地址处理
+      let that = this
+
+      if (e.data.location != undefined) {
+        let locationStrArr = e.data.location.split(',')
           let venueObj = {
             name: e.data.name,
             lng: Number(locationStrArr[0]),
@@ -170,21 +175,16 @@ export default {
             addr: e.data.address,
           }
           // 集合地点
-          this.MeetingVenue = e.data.name
-          this.VenueObj = venueObj
-
-          // this.LocateAddr = e.data.name
-          this.AddrChooseWindowIsShow = false
-          //业务代码
-          // this.$toast.message(e.data.name)
-        }
-
-      }.bind(this), false)
+          that.MeetingVenue = e.data.name
+          that.VenueObj = venueObj
+          that.AddrChooseWindowIsShow = false
+      }
     },
 
-
-    goBack () {
-      this.$router.go(-1)
+    loadiframe() {  // 加载地图选择框
+      let iframe = document.getElementById('getAddress').contentWindow
+      iframe.postMessage('hello', 'https://m.amap.com/picker/')
+      window.addEventListener("message", this.chooseAddrDeal, false)
     },
 
   }
@@ -192,6 +192,14 @@ export default {
 </script>
 
 <style scoped>
+
+.cont-container {
+  width:100%; 
+  height:100%; 
+  border-radius:.5rem; 
+  padding:.5rem .5rem 0 .5rem;
+}
+
 .mine-appbar { width: 100%; height:2.5rem; }
 .body-fix{ position:fixed; }
 .map-item { position: fixed; width: 100%; height: 100%; top: 0; background: #fff; }

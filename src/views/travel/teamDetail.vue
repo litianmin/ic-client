@@ -199,7 +199,6 @@
     </mu-flex>
 
     <!-- 底部弹出框 -->
-    <!-- 底部弹出框 -->
     <mu-bottom-sheet :open.sync="ExpandBox" :lock-scroll="true">
       <mu-list @item-click="ExpandBox = false">
         <mu-list-item 
@@ -270,7 +269,7 @@ export default {
       ShareDesc: '',  // 分享描述
       ShareImgUrl: '',  // 分享图片
 
-      TeamType: 3,
+      TeamType: 3, 
       InitLoading: true,
       TeamID: 0,
 
@@ -295,7 +294,7 @@ export default {
         captainID: 0,
         captainSex: 0,
         captainAvatar: '',
-        captainNickname: '',
+        captainNickname: ''
       },
 
       SelfInfo: {
@@ -333,7 +332,6 @@ export default {
         `/travel/teamDetail/${this.TeamID}`, 
         {}
       ).then((resp)=>{
-        console.log(resp)
 
         if (resp.data.code != 20000) {
           this.$toast.info(resp.data.msg)
@@ -387,7 +385,6 @@ export default {
         this.ShareDesc = this.MainInfo.cont  // 分享描述
         this.ShareImgUrl = ''  // 分享图片
 
-        console.log(resp.data)
       })
     },
 
@@ -400,6 +397,7 @@ export default {
         `/common/joinTeam/${this.TeamType}/${this.TeamID}`,{}
       ).then((resp)=>{
         let dataBack = resp.data
+        console.log(dataBack)
         this.$toast.info(dataBack.msg)
         if(dataBack.code == 20000) {
           window.location.reload()
@@ -410,7 +408,7 @@ export default {
     leaveTeam () {  // 点击离开组队按钮或者图标
       // 先判断是否为队长，如果是队长，提示会解散队伍
       // 并且如果是队长，只有组队中才可以解散
-      if(this.IsCaptain == true) {
+      if(this.SelfInfo.isCaptain == true) {
         this.$confirm('是否解散队伍？').then((resp)=>{
           if(resp.result == true) { // 确定解散队伍
             this.leaveTeamReq()
@@ -425,7 +423,7 @@ export default {
       this.$axios.get(`/common/leaveTeam/${this.TeamType}/${this.TeamID}`, {}).then((resp)=>{
         if(resp.data.code == 20000) {
           this.$toast.info('已成功退出组队！')
-          this.$router.push(`/party/list`)
+          this.$router.replace(`/travel/list`)
           return
         }
       }) 
