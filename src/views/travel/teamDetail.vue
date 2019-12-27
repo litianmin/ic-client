@@ -22,10 +22,6 @@
     <!-- 基本信息 -->
     <div class="baseinfo-containter">
 
-      <!-- <mu-row style="margin-bottom:1rem;">
-        <span style="font-size:22px; letter-spacing:1px; font-weight:600;">{{ TeamBaseInfo.travelTitle }}</span>
-      </mu-row> -->
-
       <mu-row style="margin-bottom:.3rem;">
         <mu-col span="2">
           <span class="common-title">旅游类别:</span>

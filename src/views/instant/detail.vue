@@ -1,7 +1,6 @@
 <template>
   <div>
      <!-- BEGIN 头部 -->
-
     <mu-flex 
       class="gb-top-bar" 
       align-items="center">
@@ -13,7 +12,7 @@
       </mu-flex>
 
       <mu-flex style="margin-left:auto; margin-right:.5rem;">
-        <span  @click="ExpandBox = true">
+        <span @click="ExpandBox = true">
           <svg-icon icon-class="more-white" style="font-size:20px;"></svg-icon>
         </span>
       </mu-flex>
@@ -23,21 +22,21 @@
     <!-- 队伍基本信息 -->
     <div style="padding:.5rem; margin-top:2.5rem;">
       <mu-flex align-items="center">
-        <mu-avatar size="28" @click="$router.push(`/usr/usercard/${TeamBaseInfo.captainID}`)">
-          <img :src="TeamBaseInfo.captainAvatar | imgPrefixDeal()">
+        <mu-avatar size="28" @click="$router.push(`/usr/usercard/${MainInfo.captainID}`)">
+          <img :src="MainInfo.captainAvatar | imgPrefixDeal()">
         </mu-avatar>
         <span class="comment-item-nickname">
-          {{ TeamBaseInfo.captainNickname }}
+          {{ MainInfo.captainNickname }}
         </span>
-        <span class="comment-item-time" style="margin-right:.6rem;">{{ TeamBaseInfo.createTime | formatTime('{y}/{m}/{d} {h}:{i}') }}</span>
+        <span class="comment-item-time" style="margin-right:.6rem;">{{ MainInfo.createTime | formatTime('{y}/{m}/{d} {h}:{i}') }}</span>
       </mu-flex>
 
       <mu-row class="comment-item-text">
-        {{ TeamBaseInfo.cont }}
+        {{ MainInfo.cont }}
       </mu-row>
 
       <mu-row class="comment-item-img">
-        <img :src="TeamBaseInfo.displayImg | imgPrefixDeal()" alt="">
+        <img :src="MainInfo.recruitImg | imgPrefixDeal()" alt="">
       </mu-row>
 
       <mu-row style="padding:1rem .5rem;" >
@@ -45,15 +44,15 @@
         <span style="font-size:12px; color:#9e9e9e;">地点：
           <span
           @click="openLocation" 
-          style="letter-spacing: 1px; color:#009688; font-weight:700; font-size:12px; text-decoration:underline">{{ TeamBaseInfo.site.name }}</span>
-           · 距离你{{ TeamBaseInfo.distance | distanceFormat() }}</span>
+          style="letter-spacing: 1px; color:#009688; font-weight:700; font-size:12px; text-decoration:underline">{{ MainInfo.siteName }}</span>
+           · 距离你{{ MainInfo.distance | distanceFormat() }}</span>
       </mu-row>
     </div>
 
     <!-- BEGIN 队长和队友列表 -->
     <mu-flex style="padding:.5rem 1rem; background:#fff;" justify-content="center" align-items="center" wrap="wrap">
         <mu-avatar 
-          v-for="(item, index) in TeammateList" 
+          v-for="(item, index) in MainInfo.teammates" 
           :key="index" 
           @click="$router.push(`/usr/usercard/${item.user_id}`)"
           size="35" 
@@ -61,12 +60,12 @@
           style="margin-right:.5rem;">
           <img :src="item.avatar | imgPrefixDeal()" alt="">
         </mu-avatar>
-        <span v-if="TeamBaseInfo.recruitStatus == 0" @click="joinTeam">
+        <span v-if="MainInfo.teamStatus == 0" @click="joinTeam">
           <svg-icon icon-class="add_circle_outline" style="font-size:40px; color:red;"></svg-icon>
         </span>
     </mu-flex>
     <mu-flex justify-content="center" style="padding:.3rem 0 .5rem 0; border-bottom:1px dashed #e0e0e0; background:#fff;">
-      <span style="font-size:12px; color:#9e9e9e;">-- 已招募{{ TeammateList.length }}人 --</span>
+      <span style="font-size:12px; color:#9e9e9e;">-- 已招募{{ MainInfo.hadRecruitNumb }}人 --</span>
     </mu-flex>
     <!-- END 队长和队友列表 -->
 
@@ -79,23 +78,39 @@
         <input type="text" placeholder="我也来说一句吧" disabled>
       </div>
 
-      <span v-if="JointeamStmt == 1 || JointeamStmt == 2 || JointeamStmt == 5" @click="joinTeam" style="font-size:19px; margin-left:auto;">
-        <svg-icon icon-class="jointeam_refuse"></svg-icon>
-      </span>
-      <span v-if="JointeamStmt == 3" @click="inviteFriend" style="font-size:19px; margin-left:auto;">
+      <!-- 已加入，如果队伍招募中，显示招募按钮 -->
+      <span 
+        v-if="MainInfo.teamStatus == 0 && SelfInfo.joinStatus == 3" 
+        @click="inviteFriend" 
+        style="font-size:19px; margin-left:auto;">
         <svg-icon icon-class="team-invite"></svg-icon>
       </span>
 
-      <span v-if="JointeamStmt == 0 || JointeamStmt == 4" @click="joinTeam" style="font-size:20px; margin-left:auto;">
+      <!-- 已离队或者未加入组队， 并且队伍招募中 -->
+      <span 
+        v-if="MainInfo.teamStatus == 0 && SelfInfo.joinStatus == 4" 
+        @click="joinTeam" 
+        style="font-size:17px; margin-left:auto; margin-top:.1rem;">
         <svg-icon icon-class="jointeam"></svg-icon>
       </span>
+
+      <!-- 队伍已完成，显示完成 -->
+      <span 
+        v-if="MainInfo.teamStatus == 1 " 
+        style="font-size:18px; margin-left:auto; margin-top:.1rem;">
+        <svg-icon icon-class="team-finish"></svg-icon>
+      </span>
+
       <mu-icon @click="$refs.shareGuide.show()" value="share" class="reply-input-box-icon" size="18" color="#8A8A8A"></mu-icon>
     </mu-flex>
 
     <!-- 底部弹出框 -->
     <mu-bottom-sheet :open.sync="ExpandBox" :lock-scroll="true">
       <mu-list @item-click="ExpandBox = false">
-        <mu-list-item button v-if="JointeamStmt == 3" @click="leaveTeam">
+        <mu-list-item 
+          button 
+          v-if="SelfInfo.joinStatus == 3" 
+          @click="leaveTeam">
           <mu-list-item-action>
             <svg-icon icon-class="leave-team-green" style="font-size:20px;"></svg-icon>
           </mu-list-item-action>
@@ -104,7 +119,10 @@
           </mu-list-item-title>
         </mu-list-item>
 
-        <mu-list-item button v-else @click="joinTeam">
+        <mu-list-item  
+          v-if="MainInfo.teamStatus == 0 && SelfInfo.joinStatus == 4"  
+          @click="joinTeam"
+          button>
           <mu-list-item-action>
             <svg-icon icon-class="join-team-green" style="font-size:20px;"></svg-icon>
           </mu-list-item-action>
@@ -113,7 +131,10 @@
           </mu-list-item-title>
         </mu-list-item>
 
-        <mu-list-item button @click="inviteFriend">
+        <mu-list-item 
+          v-if="MainInfo.teamStatus == 0 && SelfInfo.joinStatus == 3" 
+          @click="inviteFriend"
+          button>
           <mu-list-item-action>
             <svg-icon icon-class="team-invite" style="font-size:20px;"></svg-icon>
           </mu-list-item-action>
@@ -126,7 +147,7 @@
     </mu-bottom-sheet>
 
     <!-- 加载层 -->
-    <mu-flex v-if="InitLoading" align-items="center" justify-content="center" v-loading="true" data-mu-loading-overlay-color="background:rgba(250, 250, 250, .7);" style="position:fixed; top:0; width:100%; height:100%; background:rgba(250, 250, 250, .7); z-index:999; "></mu-flex>
+    <Loading v-show="InitLoading"/>
 
     <WxShareGuide ref="shareGuide"/>
   </div>
@@ -138,10 +159,12 @@ import { wxInit } from '@/common/wxInit.js'
 import { getNickname } from '@/common/mStore.js'
 import wx from 'weixin-js-sdk'
 import WxShareGuide from '@/components/WxShareGuide.vue'
+import Loading from '@/components/Loading.vue'
 export default {
   components: {
     ChatList,
     WxShareGuide,
+    Loading
   },
   data () {
     return {
@@ -153,44 +176,30 @@ export default {
       InitLoading: true,
       TeamID: 0,
       IsSortup: false,
-      IsTheLast: true,
-      ReplyListPage: 1,
-      ReplyList: [],
-      Loading: false,
-      RecruitImgs: [],
-      SwiperIsRender: false,
 
-      TeamBaseInfo: {
-        captainAvatar: "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2836389094,1674914749&fm=26&gp=0.jpg",
-        captainID: 0,
-        captainNickname: "朝花夕拾",
-        captainSex: 1,
-        cont: "来打球不，二中，快来人！",
-        displayImg: "image/instant/team/20190718/1563410597926781300872.jpg",
-        distance: 4872847.586036,
-        recruitStatus: 0, // 0=>组队中， 1=>停止招募(招募成功或者已过期), 2=>已解散(只有组队中才能解散，停止招募后不能解散)
-        site: {
-          name: "市东下路20号B座", 
-          lng: 113.122629, 
-          lat: 23.029735, 
-          addr: "市东下路20号b座"
-        },
+      MainInfo: {
+	      teamStatus: 0,
+	      cont: '',
+        recruitNumb: 0,
         hadRecruitNumb: 0,
-        createTime: ''
+	      siteName: '',
+	      siteDetail: '',
+	      siteLng: 0,
+	      siteLat: 0,
+	      recruitImg: '',
+	      createTime: 0,
+	      distance: 0,
+        teammates: [],
+        captainID: 0,
+        captainSex: 0,
+        captainAvatar: '',
+        captainNickname: ''
       },
 
-      TeammateList: [
-        {
-          avatar: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=549730297,3829719329&fm=26&gp=0.jpg",
-          joinStatus: 3,
-          jointime: 0,
-          nickname: "未闻花名",
-          sex: 2,
-          user_id: 2,
-        }
-      ],
-      JointeamStmt: 0,
-      IsCaptain: false,
+      SelfInfo: {
+        joinStatus: 0,
+        isCaptain: false,
+      },
 
       ExpandBox: false,
     }
@@ -212,104 +221,75 @@ export default {
       let lat = 23.029735
       this.$axios.get(`/instant/detail/${this.TeamID}/${lng}/${lat}`, {}).then((resp)=>{
         if(resp.data.code != 20000) {
-          this.$toast.message(resp.data.msg)
+          this.$toast.info(resp.data.msg)
           return
         }
 
-        // 处理队伍基本信息
-        let dataBack = resp.data.msg
-        this.TeamBaseInfo = dataBack.teamBaseInfo
-        // 处理对哟基本信息
-        this.TeammateList = dataBack.teammateList
-        this.JointeamStmt = dataBack.joinStmt
-        this.IsCaptain = dataBack.isCaptain
+        let data = resp.data.msg
+
+       let captainInfo = {}
+        let teammates = []
+        data.teammates.forEach(v => {
+          if (v.isCaptain == 1) { // 如果是队长
+            captainInfo = v
+          } else {
+            teammates.push(v)
+          }
+        })
+
+        this.MainInfo = {
+          teamStatus: data.teamStatus,
+          cont: data.cont,
+          recruitNumb: 0,
+          hadRecruitNumb: data.teammates.length - 1,
+          siteName: data.siteName,
+          siteDetail: data.siteDetail,
+          siteLng: data.siteLng,
+          siteLat: data.siteLat,
+          recruitImg: data.recruitImg,
+          createTime: data.createTime,
+          distance: data.distance,
+          teammates: teammates,
+          captainID: captainInfo.userID,
+          captainSex: captainInfo.sex,
+          captainAvatar: captainInfo.avatar,
+          captainNickname: captainInfo.nickname
+        }
+
+        console.log(this.MainInfo)
+
+        this.SelfInfo = {
+          joinStatus: data.joinStatus,
+          isCaptain: data.isCaptain,
+        }
 
         this.ShareTitle = `${getNickname()}：我在这里等你！`   // 分享title
-        this.ShareDesc = this.TeamBaseInfo.cont  // 分享描述
+        this.ShareDesc = this.MainInfo.cont  // 分享描述
         this.InitLoading = false
       })
     },
 
     inviteFriend () { // 邀请好友
-      // 先判断该队伍是否在招募中
-      if (this.TeamBaseInfo.recruitStatus != 0) {
-        this.$toast.info('队伍已停止招募，不能邀请好友')
-        return
-      }
-
       this.$router.push(`/usr/inviteFriend/${this.TeamID}/${this.TeamType}`)
     },
 
-    joinTeam () {
-      // 首先判断队伍的状态是否停止招募
-      if(this.TeamBaseInfo.recruitStatus > 0) {
-        switch(this.TeamBaseInfo.recruitStatus) {
-          case 1:
-            this.$toast.message('该队伍已停止招募，不能加入组队')
-          break
-          case 2:
-            this.$toast.message('该队伍已解散，不能加入组队')
-          break
-        }
-        return
-      }
-
-      // 点击加入组队的时候，判断加入组队的状态
-      // 0 => 未加入，1=>申请，2=>拒绝加入，3=>已加入，4=>离队, 5=>被踢
-      // 因为party里面没有1、2、5状态， 只需要判断 0 、3、 4(暂时不做其他的)
-      switch(this.JointeamStmt) {
-        case 0: // 未加入
-          this.joinTeamReq()
-        break
-        case 1: // 申请
-          // 不做处理
-        break
-        case 2: // 拒绝加入
-          // 不做处理
-        break
-        case 3: // 已加入
-          // 不做处理
-          if(this.IsCaptain == true) {
-            this.$toast.message('你是队长，你要邀请别人进来吗？')
-          }else{
-            this.$toast.message('你已加入组队！')
-          }
-        break
-        case 4: // 已离队，重新加入
-          this.joinTeamReq()
-        break
-        case 5:
-          // 不做处理
-        break
-      }
-    },
-
-    joinTeamReq () {
+    joinTeam () { // 加入组队
       this.$axios.get(
         `/common/joinTeam/${this.TeamType}/${this.TeamID}`,{}
       ).then((resp)=>{
         let dataBack = resp.data
-        this.$toast.message(dataBack.msg)
+        console.log(dataBack)
+        this.$toast.info(dataBack.msg)
         if(dataBack.code == 20000) {
           window.location.reload()
         }
       })
     },
 
-    leaveTeamReq () {
-      this.$axios.get(`/common/leaveTeam/${this.TeamType}/${this.TeamID}`, {}).then((resp)=>{
-        if(resp.data.code == 20000) {
-          this.$toast.message('已成功退出组队！')
-          this.$router.push(`/party/list`)
-          return
-        }
-      }) 
-    },
-
-    leaveTeam () {
+    leaveTeam () {  // 点击离开组队按钮或者图标
       // 先判断是否为队长，如果是队长，提示会解散队伍
       // 并且如果是队长，只有组队中才可以解散
-      if(this.IsCaptain == true) {
+      if(this.SelfInfo.isCaptain == true) {
         this.$confirm('是否解散队伍？').then((resp)=>{
           if(resp.result == true) { // 确定解散队伍
             this.leaveTeamReq()
@@ -319,13 +299,29 @@ export default {
         this.leaveTeamReq()
       }
     },
+
+    leaveTeamReq () { // 离开组队请求
+      this.$axios.get(`/common/leaveTeam/${this.TeamType}/${this.TeamID}`, {}).then((resp)=>{
+        if(resp.data.code == 20000) {
+          this.$toast.info('已成功退出组队！')
+          this.$router.replace(`/travel/list`)
+          return
+        }
+      }) 
+    },
+
     newChat (isReply, replyTo, replyID, replyNickname) {
-      // 只有加入组队的人才能进行评论
-      if(this.JointeamStmt != 3) {
-        this.$toast.message('加入组队后才能聊天哦')
+      if(this.SelfInfo.joinStatus != 3) {
+        this.$toast.info('加入组队后才能聊天哦')
         return
       }
-      this.$router.push({path:`/common/newChat`, query:{teamType:this.TeamType, teamID:this.TeamID, isReply, replyTo, replyID, replyNickname}})
+      this.$router.push({path:`/common/newChat`, query:{
+        teamType:this.TeamType, 
+        teamID:this.TeamID, 
+        isReply, 
+        replyTo, 
+        replyID, 
+        replyNickname}})
     },
 
     openLocation () {
