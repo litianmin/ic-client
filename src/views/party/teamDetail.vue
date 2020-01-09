@@ -392,7 +392,7 @@ export default {
     leaveTeam () {  // 点击离开组队按钮或者图标
       // 先判断是否为队长，如果是队长，提示会解散队伍
       // 并且如果是队长，只有组队中才可以解散
-      if(this.IsCaptain == true) {
+      if(this.SelfInfo.IsCaptain == true) {
         this.$confirm('是否解散队伍？').then((resp)=>{
           if(resp.result == true) { // 确定解散队伍
             this.leaveTeamReq()

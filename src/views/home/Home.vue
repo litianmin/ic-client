@@ -64,8 +64,8 @@
               style="position:relative;" 
               wrap="wrap" 
               @click="linkToArticleDetail(item.articleID)">
-              <img class="swiper-img" :src="item.displayImg | imgPrefixDeal()" alt="">
-              <mu-flex class="swiper-text" justify-content="start">{{ item.title }} </mu-flex>
+              <img class="swiper-img" :src="item.displayImg | imgPrefixDeal()">
+              <mu-flex class="swiper-text" justify-content="start">{{ item.title }} 撒地方十分士大夫撒地方多少方十大夫士大夫</mu-flex>
             </mu-flex>
           </swiper-slide>
         </swiper>
@@ -130,14 +130,6 @@
       </mu-flex>
     </div>
 
-    <!-- 加载层 -->
-    <!-- <mu-flex 
-      v-if="InitLoading" 
-      align-items="center" 
-      justify-content="center" 
-      v-loading="true" 
-      data-mu-loading-color="red"
-      class="gb-init-loading"></mu-flex> -->
     <Loading v-if="InitLoading" />
     
 
@@ -259,6 +251,7 @@ export default {
       this.$axios.get(
         `/user/homePage/${locationInfo.lng}/${locationInfo.lat}`, {}
       ).then((resp)=>{
+        console.log(resp)
         // 开始处理返回的数据
         let data = resp.data.msg
 
