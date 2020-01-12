@@ -130,18 +130,7 @@ export default {
 
       SelfInfo: {
         joinStatus: 0
-      },
-
-      JoinStatus: 0, // 0 => 未加入， 1 => 加入
-
-      IsSortup: false,
-      IsTheLast: true,
-      ReplyListPage: 1,
-      ReplyList: [],
-      Loading: false,
-
-      JoinStatusSvg: 'jointeam',
-
+      }
     }
   },
   created () {
@@ -245,7 +234,7 @@ export default {
 
     newChat (isReply, replyTo, replyID, replyNickname) {
       // 只有加入组队的人才能进行评论
-      if(this.JoinStatus != 3) {
+      if(this.SelfInfo.joinStatus != 3) {
         this.$toast.message('加入组队后才能聊天哦')
         return
       }

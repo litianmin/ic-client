@@ -25,17 +25,17 @@
       <mu-list textline="three-line" v-if="HotGameShow">
         <mu-sub-header style="color:#00bcd4;">--热门游戏--</mu-sub-header>
 
-          <div v-for="item in HotGameList" :key="item.g_id">
-            <mu-list-item avatar :ripple="false" button @click="linkToDetail(item.g_id, item.g_name)">
+          <div v-for="item in HotGameList" :key="item.gameID">
+            <mu-list-item avatar :ripple="false" button @click="linkToDetail(item.gameID, item.gameName)">
               <mu-list-item-action>
                 <div class="list-item-div">
-                  <img :src="item.g_logo">
+                  <img :src="item.gameLogo">
                 </div>
               </mu-list-item-action>
               <mu-list-item-content>
-                <mu-list-item-title>{{ item.g_name }}</mu-list-item-title>
+                <mu-list-item-title>{{ item.gameName }}</mu-list-item-title>
                 <mu-list-item-sub-title>
-                  {{ item.brief_desc }}
+                  {{ item.briefDesc }}
                 </mu-list-item-sub-title>
               </mu-list-item-content>
             </mu-list-item>
@@ -46,30 +46,30 @@
       <!-- END 热门游戏列表 -->
 
 
-      <mu-load-more :loading="loading" @load="load" :loaded-all="isTheLast">
+      <mu-load-more :loading="Loading" @load="load" :loaded-all="IsTheLast">
 
         <!-- BEGIN 游戏列表 -->
         <mu-list textline="three-line">
           <mu-sub-header style="color:#4caf50;">--全部游戏--</mu-sub-header>
           
-          <div v-for="item in GameList" :key="item.g_id">
-            <mu-list-item avatar :ripple="false" button @click="linkToDetail(item.g_id, item.g_name)">
+          <div v-for="item in GameList" :key="item.gameID">
+            <mu-list-item avatar :ripple="false" button @click="linkToDetail(item.gameID, item.gameName)">
               <mu-list-item-action>
                 <div class="list-item-div">
-                  <img :src="item.g_logo">
+                  <img :src="item.gameLogo">
                 </div>
               </mu-list-item-action>
               <mu-list-item-content>
-                <mu-list-item-title>{{ item.g_name }}</mu-list-item-title>
+                <mu-list-item-title>{{ item.gameName }}</mu-list-item-title>
                 <mu-list-item-sub-title>
-                  {{ item.brief_desc }}
+                  {{ item.briefDesc }}
                 </mu-list-item-sub-title>
               </mu-list-item-content>
             </mu-list-item>
             <mu-divider></mu-divider>
           </div>
           
-          <mu-row v-show="isTheLast" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.3rem; color:#9e9e9e;">
+          <mu-row v-show="IsTheLast" justify-content="center" style="padding:.5rem .5rem .3rem .5rem; margin-top:.3rem; color:#9e9e9e;">
             <span style="">没有更多的内容</span>
           </mu-row>
           
@@ -97,9 +97,9 @@ export default {
       HotGameShow: true,
       HotGameList: [],
       GameList: [],
-      page: 1,
-      isTheLast: true,
-      loading: true,
+      Page: 1,
+      IsTheLast: true,
+      Loading: false,
     }
   },
   mounted () {
@@ -108,54 +108,51 @@ export default {
   methods: {
     pageInit () {
       // 初始化，获取热门游戏列表和普通游戏列表
-      this.$axios.post(`/game/mainpage`).then((resp)=>{
-        
-        if(resp.data.code != 20000) {
-          this.$toast.message(dataBack.msg)
+      this.$axios.post(`/game/gameListFirstLoad`).then((resp)=>{
+        let data = resp.data 
+        if (data.code != 20000) {
+          this.$toast.info(data.msg)
           return
         }
-        
-        let dataBack = resp.data.msg
 
-        if(dataBack.hotGame.length == 0) { 
-          // 没有热门游戏，那么隐藏热门游戏列表
+        data = data.msg
+        if (data.hotGames.length == 0) {
           this.HotGameShow = false
-        }else{
-          this.HotGameList = dataBack.hotGame
+        } else {
+          // 没有热门游戏，那么隐藏热门游戏列表
+          this.HotGameList = data.hotGames
         }
 
-        this.GameList = dataBack.gameInfo.listInfo
-
-        // 是否为最后一页了
-        this.isTheLast = dataBack.gameInfo.isTheLast
+        if (data.games.length < 10) {
+          this.IsTheLast = true
+        } else {
+          this.IsTheLast = false
+        }
+        this.GameList = data.games
 
         // 微信分享
         this.ShareTitle = `玩游戏总是单机？快来助助社交招募伙伴陪你一起玩吧！`   // 分享title
         this.ShareDesc = '助助社交游戏组队功能可以让你找寻心仪的队友，从此告别单人游戏！'  // 分享描述
-
       })
     },
     load () {
-      this.loading = true
-      this.page++      
-      this.$axios.post(
-        `/game/list/${this.page}`,{
-          is_search: false,
-          search_cont: ''
-        }
+      this.Loading = true
+      this.Page++      
+      this.$axios.get(
+        `/game/list/${this.Page}`,{}
       ).then((resp)=>{
-        let dataBack = resp.data
-
-        if(dataBack.code != 20000) {
-          this.$toast.message(dataBack.msg)
+        let data = resp.data
+        if (data.code != 20000) {
+          this.$toast.info(data.msg)
+          return
         }
 
-        let gameListInfo = dataBack.msg
-
-        this.GameList = this.GameList.concat(gameListInfo.listInfo)
-        this.isTheLast = gameListInfo.isTheLast
-        this.loading = false
-        return
+        let list = data.msg
+        this.GameList = this.GameList.concat(list)
+        if (list.length < 10) {
+          this.IsTheLast = true
+        }
+        this.Loading = false
       })
     },
 
@@ -168,13 +165,13 @@ export default {
     searchGame () {
       let searchCont = this.SearchCont
       if(searchCont.trim().length == 0) {
-        this.page = 1
+        this.Page = 1
         this.GameList = []
         this.load()
         return
       } 
 
-      this.loading = true
+      this.Loading = true
       this.$axios.post(
         `/game/gameSearch`,{
           cont: this.SearchCont
@@ -185,15 +182,15 @@ export default {
         let gameListInfo = dataBack.msg
 
         gameListInfo.map(item => {
-          item.g_id = item.game_id
-          item.g_name = item.game_name
-          item.brief_desc = item.game_desc
-          item.g_logo = item.game_logo
+          item.gameID = item.game_id
+          item.gameName = item.game_name
+          item.briefDesc = item.game_desc
+          item.gameLogo = item.game_logo
         })
 
         this.GameList = gameListInfo
-        this.isTheLast = true
-        this.loading = false
+        this.IsTheLast = true
+        this.Loading = false
         return
       })
     },

@@ -262,9 +262,7 @@ export default {
   },
 
   mounted () {
-    // 赋值 gameID, gameName (这里要注意，$router 和 $route 是不同的两个对象， 一个是全局，一个是局部)
     this.gameID = this.$route.params.gameid
-
     wxInit(this, false)
   },
 

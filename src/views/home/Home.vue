@@ -248,9 +248,10 @@ export default {
       this.Lat = locationInfo.lat
 
       // 获取首页内容
-      this.$axios.get(
-        `/user/homePage/${locationInfo.lng}/${locationInfo.lat}`, {}
-      ).then((resp)=>{
+      this.$axios.post(`/user/homePage`, {
+        lng: this.Lng,
+        lat: this.lat
+      }).then((resp)=>{
         console.log(resp)
         // 开始处理返回的数据
         let data = resp.data.msg
