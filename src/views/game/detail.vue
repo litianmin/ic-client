@@ -283,20 +283,18 @@ export default {
         `/game/detail/${this.gameID}`,{}
       ).then((resp)=>{
         if(resp.data.code != 20000) {
-          this.$toast.message('系统繁忙')
+          this.$toast.info(resp.msg)
           return
         }
-        let dataBack = resp.data.msg
 
-        let baseInfo = dataBack.baseInfo
-
+        let data = resp.data.msg
         // 游戏基本信息初始化问题
-        this.gameTp = baseInfo.g_type
-        this.gameBriefDesc = baseInfo.brief_desc
-        this.displayImgList = baseInfo.display_imglist
-        this.tabList = baseInfo.tab_list
-        this.gameName = baseInfo.g_name
-        this.Focus = baseInfo.focus
+        this.gameTp = data.type
+        this.gameBriefDesc = data.briefDesc
+        this.displayImgList = data.displayImgs
+        this.tabList = data.tabs
+        this.gameName = data.name
+        this.Focus = data.isFocus
         // 轮播图数据渲染问题
         this.isRender =true
         // 轮播图处理
@@ -308,9 +306,11 @@ export default {
         })
 
         // 游戏评论处理
-        let cmtList = dataBack.commentInfo.listInfo
+        let cmtList = data.comments
         this.commentList = this.commentList.concat(cmtList)
-        this.commentIsTheLast = dataBack.commentInfo.isTheLast
+        if (cmtList.length < 10) {
+          this.commentIsTheLast = true
+        }
         this.commentPage++
 
         // 微信分享
@@ -341,12 +341,12 @@ export default {
 
       this.$axios.post(`/game/commentList/${this.commentPage}/${this.gameID}`,{}).then((resp)=>{
         if(resp.data.code != 20000) {
-          this.$toast.message(resp.data.msg)
+          this.$toast.info(resp.data.msg)
           return
         }
-        let dataBack = resp.data.msg
-        this.commentIsTheLast = dataBack.isTheLast
-        let cmtList = dataBack.listInfo
+        let data = resp.data.msg
+        this.commentIsTheLast = data.length < 10 ? true : false
+        let cmtList = data
         this.commentList = this.commentList.concat(cmtList)
         this.commentPage++  // 页数+1
         this.commentLoading = false // 关闭转圈圈
