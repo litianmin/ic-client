@@ -279,7 +279,7 @@ export default {
   methods: {
     pageInit () {
       // 获取游戏的基本信息，评论基本信息，组队基本信息
-      this.$axios.post(
+      this.$axios.get(
         `/game/detail/${this.gameID}`,{}
       ).then((resp)=>{
         if(resp.data.code != 20000) {

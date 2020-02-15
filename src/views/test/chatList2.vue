@@ -1,25 +1,30 @@
 <template>
   <div style="background:#fff;">
     <!-- BEGIN 排序条 -->
-    <mu-flex class="sort-bar" justify-content="center" align-items="center" >
+    <van-row type="flex" class="sort-bar" justify="center" align="center" >
       <span style="margin-left:.3rem">回复列表</span>
       <span @click="convertSort" class="sort-bar-svg">
         <svg-icon :icon-class="IsSortup == true ? 'sortup' : 'sortdown'"></svg-icon>
       </span>
-    </mu-flex>
+    </van-row>
     <!-- END 排序条 -->
 
     <div style="padding:.5rem; margin-bottom:1rem;">
-      <mu-flex>
-        <mu-flex>
-          <mu-avatar 
-            size="35" 
-            class="avatar-male">
-            <img src="https://dss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2575047779,2966283883&fm=26&gp=0.jpg">
-          </mu-avatar>
-        </mu-flex>
+      <van-row type="flex">
+        <!-- 左边内容，头像 -->
+        <van-row type="flex">
+          <van-image
+            round
+            width="35"
+            height="35"
+            fit="cover"
+            src="https://img.yzcdn.cn/vant/cat.jpeg"
+          />
+        </van-row>
 
-        <mu-flex style="padding:.2rem .5rem .5rem;" wrap="wrap">
+        <!-- 右边内容 -->
+        <van-row type="flex" style="padding:.2rem .5rem .5rem; flex-wrap:wrap;">
+          <!-- 主评论的昵称和举报、评论展开按钮 -->
           <div style="display:flex; align-items:center; width:100%;">
             <span style="font-size:13px; font-weight:700; color:#009688; letter-spacing:1px;">这里是我的昵称</span>
 
@@ -37,6 +42,7 @@
             </div>
           </div>
 
+          <!-- 主评论的内容和图片 -->
           <div style="width:100%; margin-top:.2rem; font-size:14px; color:#424242;">
             <div>
               <span>
@@ -47,6 +53,7 @@
             <!-- <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1581233978569&di=7708dae4b77014ff0e890d6f5a010a70&imgtype=0&src=http%3A%2F%2Fi3.bbs.fd.zol-img.com.cn%2Fg5%2FM00%2F06%2F0C%2FChMkJ1m1meyIEB8pAAh0T-1HNigAAgWKwM0NiQACHRn909.jpg" style="max-height:10rem; border-radius:.3rem; margin-top:.5rem;"> -->
           </div>
 
+          <!-- 回复列表 -->
           <div style="background:#f5f5f5; color:#616161; font-size:13px; padding:.5rem .8rem; letter-spacing: 1px; width:100%; margin-top:.5rem; margin-bottom:.5rem;">
             <div style="border-bottom:1px solid #e0e0e0; padding:0 0 .3rem 0; margin-bottom:.5rem;">
               <div style="display:flex; width:100%;">
@@ -69,7 +76,7 @@
 
             <div style="border-bottom:1px solid #e0e0e0; padding:0 0 .3rem 0; margin-bottom:.5rem;">
               <div>
-                <span style="color:#009688;">啊真</span> 回复 <span style="color:#009688;">田鸡</span>：
+                <span style="color:#009688;">啊真</span> @ <span style="color:#009688;">田鸡</span>：
               </div>
               <div>
                 <span>你这个渣渣，哇哈哈，你这个渣渣</span>
@@ -83,68 +90,91 @@
             </div>
           </div>
 
+          <!-- 发表时间 -->
           <div style="font-size:12px; margin-bottom:1rem;">
             <span style="color:#9e9e9e; letter-spacing:1px; margin-left:auto;">发表于 · 2020/02/09 13:29</span>
           </div>
 
-        </mu-flex>
-      </mu-flex>
+        </van-row>
+      </van-row>
     </div>
 
-    <!-- BEGIN 回复评论 -->
-    <mu-load-more :loading="Loading" @load="load" :loaded-all="IsTheLast">
-      <mu-container class="chat-container" v-for="(item, index) in ChatList" :key="index">
-        <mu-flex align-items="center">
-          <mu-avatar 
-            @click="$router.push(`/usr/usercard/${item.userID}`)"
-            size="35" 
-            :class="item.sex == 1 ? 'avatar-male' : 'avatar-female'">
-            <img :src="item.avatar | imgPrefixDeal()">
-          </mu-avatar>
-          <span class="nickname">
-            {{ item.nickname }}
-          </span>
-        </mu-flex>
+    <van-popup
+      v-model="CmtWindow"
+      position="bottom"
+      :style="{ height: '11rem' }">
+      <van-field 
+        type="textarea" 
+        clearable
+        maxlength="150"
+        :autosize="{maxHeight:50}"
+        v-model="CmtCont" 
+        placeholder="请输入用户名"/>
 
-        <mu-row class="reply-row">
-          <span class="reply-span">
-            <span v-if="item.replyID > 0" style="color:#795548; font-size:13px;">@{{ item.replyNickname }}: </span>
-            <span>{{ item.cont }}</span>
-          </span>
-        </mu-row>
+      <van-row></van-row>
 
-        <mu-row v-if="item.img" class="img-row">
-          <img class="img-self" :src="item.img | imgPrefixDeal()">
-        </mu-row>
+      <van-row type="flex" style="position:relative; padding:.5rem;">
 
-        <mu-row class="create-time">
-          <span style="color:#757575;">{{ item.createTime | formatTime('{y}/{m}/{d} {h}:{i}') }} ·</span>  
-          <span @click="newChat(item.userID, item.chatID, item.nickname)" class="reply-button"> 回复</span>
-        </mu-row>
+        <van-uploader :after-read="afterRead" style=""/>
 
-        <mu-row v-if="item.replyID" class="reply-origin-row">
-          <span><span style="color:#795548;">{{ item.replyNickname }}：</span>{{ item.replyCont }}</span>
-        </mu-row>
+        <van-row style=" padding: .2rem 1.5rem 0 .5rem;">
+          <span style="margin-right:.5rem; color:#9e9e9e; font-weight:700;">@Ae</span>
+          <span style="margin-right:.5rem; color:#9e9e9e; font-weight:700;">@我是你的傻逼</span>
+          <span style="margin-right:.5rem; color:#9e9e9e; font-weight:700;">@我挺生气的</span>
+        </van-row>
 
-        <mu-row style="padding: 0 .1rem;">
-          <div style="border-top:1px solid #eeeeee; height:1px; width:100%;"></div>
-        </mu-row>
+        <van-row type="flex" align="bottom" style="position:absolute; right:1rem; bottom:1rem;">
+          <span style="font-size:22px; font-weight:800; color:#66CCCC; margin-right:1rem;">@</span>
+          <van-button type="primary" size="small" >发送</van-button>
+        </van-row>
+        
+      </van-row>
+    </van-popup>
 
-      </mu-container>
-    </mu-load-more>
 
-    <mu-row v-show="IsTheLast" justify-content="center" class="no-more-reply">
-      <span> 没有更多的回复 </span>
-    </mu-row>
-    <!-- END 回复评论 -->
+    <div ref="mydiv" contentEditable @blur="getblur" style="background:#F8F8FF;">
+    </div>
+
+    <button @click="addHtml" style="margin-top:2rem;">ceshi</button>
+    <button @click="showHtml" style="margin-top:2rem;">展示图片</button>
+
+    <!-- <div style="position:fixed; top:0; left:0; width:100%; height:100%; margin-bottom:0; z-index:9999;">
+      <FriendList/>
+    </div> -->
+
+    <div>
+      {{ Mytext }}
+    </div>
+
   </div>
 </template>
 
 <script>
+import { Col, Row, Image, Popup, Field, Uploader, Button, IndexBar, IndexAnchor, Cell } from 'vant'
+import FriendList from '@/views/usr/friendList.vue'
+
 export default {
+  components: {
+    [Col.name]: Col,
+    [Row.name]: Row,
+    [Image.name]: Image,
+    [Popup.name]: Popup,
+    [Field.name]: Field,
+    [Uploader.name]: Uploader,
+    [Button.name]: Button,
+    [IndexBar.name]: IndexBar,
+    [IndexAnchor.name]: IndexAnchor,
+    [Cell.name]: Cell,
+    FriendList: FriendList
+  },
   name: 'chat-list',
+  
   data () {
     return {
+      CmtWindow: false,
+      CmtCont: '士大夫顺德法撒旦法撒旦法撒旦法撒旦法撒旦法撒旦法撒旦法撒旦法撒旦法撒旦啊发射点发十大法撒旦法撒旦发送的',
+      Mytext: '',
+
       Loading: false,
       IsSortup: false,
       IsTheLast: true,
@@ -152,8 +182,13 @@ export default {
       Page: 1,
       TeamType: 1,
       TeamID: 5,
+
+      sel: {},
+      range: {},
+      textContent: ''
     }
   },
+
   // props: [
   //   'TeamType',
   //   'TeamID'
@@ -162,6 +197,10 @@ export default {
     this.load()
   },
   methods: {
+    afterRead () {
+
+    },
+
     load () {
       this.Loading = true      
       let sortWay = this.IsSortup == false ? 0 : 1
@@ -179,6 +218,7 @@ export default {
         this.Loading = false
       })
     },
+
     convertSort () {
       // 当转换排序顺序的时候，把页数重置，然后，重新加载回复评论
       this.Page = 1
@@ -186,9 +226,59 @@ export default {
       this.IsSortup = !this.IsSortup
       this.load()
     },
+
     newChat (replyTo, chatID, replyNickname) {
       this.$parent.newChat(true, replyTo, chatID, replyNickname)
-    }
+    },
+
+    getblur () {
+      this.sel = window.getSelection()
+      this.range = this.sel.getRangeAt(0)
+      this.range.deleteContents()
+    },
+
+    addHtml () {
+      let myHtml = `<span disable style="color:orange; user-modify: read-only;" onclick="alert('eeee')" >@myLove</span>`
+      // let myHtml = ` <input style="width:5rem; border:0; color:orange; " value="@MyLove" disable/>`
+      this.insertHtmlAtCaret(myHtml)
+    },
+
+    showHtml () {
+      // this.Mytext = this.$refs.mydiv.innerText
+      this.Mytext = this.$refs.mydiv.innerHTML
+      
+      console.log(this.Mytext)
+    },
+
+    insertHtmlAtCaret (html) {
+      if (window.getSelection) {
+        if (this.sel.getRangeAt && this.sel.rangeCount) {
+          let el = document.createElement("span")
+          el.setAttribute("contentEditable", false)
+          console.log(el)
+          // el.contentEditable = false
+          el.innerHTML = html
+          let frag = document.createDocumentFragment(), node, lastNode
+          while ((node = el.firstChild)) {
+            lastNode = frag.appendChild(node)
+          }
+          this.range.insertNode(frag)
+          // Preserve the selection
+          if (lastNode) {
+            this.range = this.range.cloneRange()
+            this.range.setStartAfter(lastNode)
+            this.range.collapse(true)
+            this.sel.removeAllRanges()
+            this.sel.addRange(this.range)
+          }
+        } else if (document.selection && document.selection.type != "Control") {
+          document.selection.createRange().pasteHTML(html)
+        }
+
+        // textContent=$(".fxAnswer").html()
+      }
+    },
+
   }
 }
 </script>

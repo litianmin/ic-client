@@ -1,5 +1,5 @@
 <template>
-  <div style="position:relative; width:100%; height:100%; margin-bottom:0; background:#fff;">
+  <div>
 
     <!-- BEGIN 头部 -->
     <mu-flex 
@@ -9,31 +9,19 @@
         <svg-icon icon-class="goback" style="font-size:20px;"></svg-icon>
       </mu-flex>
       <mu-flex align-items="center" style="padding: 0 0 0 2rem;">
-        <span style="color:#fff;">玩友列表</span>
+        <span style="color:#fff;">邀请玩友</span>
+      </mu-flex>
+
+      <mu-flex class="confirm-choose" v-if="HadChooseFriend.length > 0">
+        <span @click="confirmInvite">
+          <svg-icon icon-class="finish" style="font-size:20px;"></svg-icon>
+        </span>
       </mu-flex>
     </mu-flex>
     <!-- END 头部 -->
 
     <div class="mycont" ref="mycont">
       <div>
-
-        <!-- 申请列表 -->
-        <div v-if="ApplyList.length > 0">
-          <div class="apply-title-div">
-            <span class="apply-title-span">好友申请</span>
-          </div>
-
-          <div 
-            v-for="(item, index) in ApplyList"
-            :key="index"
-            class="detail-item-div">
-            <img class="detail-item-avatar" :src="item.avatar">
-            <span class="detail-item-nickname">{{ item.nickname }}</span>
-
-            <button @click="rejectApply(index)" class="apply-reject-btn">忽略</button>
-            <button @click="acceptApply(index)" class="apply-accept-btn">接受</button>
-          </div>
-        </div>
 
         <!-- 好友列表 -->
         <div
@@ -46,11 +34,15 @@
           <div 
             v-for="(item2, index2) in item.child"
             :key="index2"
-            @click="$router.push(`/usr/usercard/${item2.id}`)"
             class="detail-item-div">
             
             <img :src="item2.avatar" class="detail-item-avatar">
             <span style="margin-left:1rem;">{{ item2.nickname }}</span>
+
+            <mu-checkbox 
+            v-model="HadChooseFriend" 
+            :value="item2.id"
+            style="margin-left:auto; margin-right:2rem; z-index:999;"></mu-checkbox>
           </div>
 
         </div>
@@ -60,7 +52,7 @@
         </div>
 
         <div 
-          v-show="ApplyList.length == 0 && FriendList.length == 0" 
+          v-show="FriendList.length == 0" 
           class="no-data">
           <span style="color:#bdbdbd;">暂无联系人</span>
         </div>
@@ -93,11 +85,6 @@ export default {
   },
   data () {
     return {
-      ApplyList: [{
-          id: 1, 
-          nickname: '你的名字', 
-          avatar: ''
-      }],
 
       FriendList: [{
         title: 'A', 
@@ -112,6 +99,10 @@ export default {
       MyScroll: {},
 
       Loading: true,
+
+      TeamID: 0,
+      Module: 1,
+      HadChooseFriend: [],
     }
   },
   mounted () {
@@ -119,16 +110,17 @@ export default {
       probeType: 3,
       click: true
     })
-
     this.pageInit()
+
+    this.TeamID = this.$route.params.teamid 
+    this.Module = this.$route.params.module
   },
   methods: {
     pageInit () {
       this.Loading = true
-      this.$axios.get(`/user/friendList/1`, {}).then((resp) => {
+      this.$axios.get(`/user/friendList/0`, {}).then((resp) => {
         if (resp.data.code == 20000) {
           let data = resp.data.msg 
-          this.ApplyList = data.applyList
           this.FriendList = data.friendList
           this.Loading = false
         } else {
@@ -139,30 +131,6 @@ export default {
 
     goBack () {
       this.$router.go(-1)
-    },
-
-    rejectApply (index) {  // 拒绝好友申请
-      let id = this.ApplyList[index].id
-      this.$axios.get(`/user/rejectFriendApply/${id}`, {}).then((resp) => {
-        if (resp.data.code == 20000) {
-          this.ApplyList.splice(index, 1)
-        } else {
-          this.$toast.message('发生未知错误')
-        }
-      })
-    },
-
-    acceptApply (index) {  // 通过好友申请
-      let id = this.ApplyList[index].id
-      this.$axios.get(`/user/acceptFriendApply/${id}`, {}).then((resp) => {
-        if (resp.data.code == 20000) {
-          this.$toast.message('已添加')
-          // 如果成功，那么进行页面的重载
-          this.pageInit()
-        } else {
-          this.$toast.message('发生未知错误')
-        }
-      })
     },
 
     letterClick (letter) {  // 点击字母事件
@@ -181,6 +149,23 @@ export default {
       }
     },
     
+    confirmInvite () {  // 确认邀请
+      this.$axios.post('/common/inviteJoinTeam', {
+        teamID: Number(this.TeamID),
+        Module:  Number(this.Module),
+        FriendList: this.HadChooseFriend
+      }).then((resp) => {
+        if (resp.data.code == 20000) {
+          this.$toast.info('邀请成功')
+          setTimeout(() => {
+            this.goBack()
+          }, 1000)
+        } else {
+          this.$toast.error('发生位置错误')
+        }
+      })
+    },
+
   }
 }
 </script>
@@ -188,15 +173,20 @@ export default {
 <style scoped>
 
 .head-container {
-  height:2.3rem; 
+  height:2.5rem; 
   padding:0 .8rem; 
   background: linear-gradient(to right, #4dd0e1 , #80cbc4); 
   box-shadow: 0 0 1px #26c6da;
 }
 
+.confirm-choose {
+  margin-left:auto; 
+  margin-right:.5rem;
+}
+
 .mycont {
   position: absolute;
-  top: 2.3rem;
+  top: 2.5rem;
   left: 0;
   bottom: 0;
   width: 100%;

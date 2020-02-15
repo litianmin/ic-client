@@ -40,6 +40,12 @@ Vue.use(Message)
 // 加载支持svg
 import './icons/index'
 
+// 引入vant
+// import Vant from 'vant'
+// import 'vant/lib/index.css'
+// Vue.use(Vant)
+
+
 Vue.use(Toast, {
   position: 'top'
 })

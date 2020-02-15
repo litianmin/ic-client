@@ -57,3 +57,28 @@
   z-index: 999;
   font-size: 14px;
 }
+
+/* z-index 系列 */
+.gb-zindex-1 {
+  z-index: 9999;
+}
+
+.gb-zindex-2 {
+  z-index: 8888;
+}
+
+.gb-zindex-2 {
+  z-index: 7777;
+}
+
+.gb-zindex-3 {
+  z-index: 6666;
+}
+
+.gb-zindex-4 {
+  z-index: 5555;
+}
+
+.gb-zindex-5 {
+  z-index: 4444;
+}
