@@ -1,42 +1,159 @@
 <template>
   <div style="width:100%;">
 
-    <div style="width:100%; text-align:center;">
+    <div style="width:100%;">
 
-      <div style="font-size:30px; text-align:left; color:#009688; font-weight:700; margin-top:25%; margin-left:3rem; margin-bottom:1.5rem; font-style:italic; text-shadow: 10px 5px 5px #b2dfdb;">
-        I COMING！
+      <div style="font-size:30px; text-align:left; color:#00bcd4; font-weight:700; margin-top:1rem; margin-left:1rem; margin-bottom:0rem; font-style:italic; text-shadow: 10px 5px 5px #b2dfdb;">
+        可友乎？
       </div>
 
-      <mu-container style="margin-top:20%;">
-        <mu-text-field v-model="username" label="UserName" label-float help-text="用户名为6-12长度的字符" ></mu-text-field><br/>
-        <mu-text-field v-model="pwd" label="Password" label-float help-text="请输入密码" ></mu-text-field><br/>
-      </mu-container>
+      <van-row v-show="Status == 1" style="padding:1.5rem;">
+        <van-row>
+          <span style="font-weight:700;">该账户未绑定该平台账号</span>
+        </van-row>
+        <van-row style="margin-top:1rem;">
+          <van-field 
+            v-model="Phone" 
+            placeholder="请输入手机号码" 
+            readonly
+            clickable
+            @touchstart.native.stop="PhoneKeyboard = true"/>
+        </van-row>
+        <van-row style="margin-top:.5rem;">
+          <span style="color:#bdbdbd; font-size:13px;">未注册的手机号码验证通过后将自动注册并绑定</span>
+        </van-row>
+        <van-button 
+          @click="sendSms" 
+          color="#00bcd4"
+          type="primary" 
+          :disabled="!SendSmsBtn"
+          style="width:100%; margin-top:1rem;">获取短信验证码</van-button>
+        <!-- <van-row style="text-align:right; margin-top:.5rem;">
+          <span style="color:#2196f3; font-size:13px;">密码绑定</span>
+        </van-row> -->
+      </van-row>
 
-      <div style="width:100%; text-align:right; padding: 2rem 3rem; margin-top:10%;">
-        <div style="float:left; text-align:left; margin-left:0.3rem; margin-top:0.5rem; color:green">忘记密码？</div>
-        <mu-button @click="Login" color="primary" style="width:40%; background:#00bcd4;">
-          登陆
-          <mu-icon right value="send"></mu-icon>
-        </mu-button>
-      </div>
 
+      <van-row v-show="Status == 2" style="">
+        <van-row style="padding:1rem 1rem .5rem 1rem;">
+          <span style="font-size:20px; font-weight:1000;">请输入验证码</span>
+        </van-row>
+        <van-row style="padding:0 1rem 1rem 1rem;">
+          <span style=" color: #bdbdbd;font-size:14px; font-weight:1000;">短信验证码已发送到 {{ Phone }}</span>
+        </van-row>
+        <van-password-input
+          :value="Code"
+          :mask="false"
+          :focused="CodeFocus"
+          @focus="CodeFocus = true"/>
+        <van-row style="text-align:right; margin-top:.5rem; padding:0 1.5rem;">
+          <span style="color:#2196f3; font-size:13px;" @click="changePhone">更换手机号</span>
+        </van-row>
+      </van-row>
+
+      <van-number-keyboard
+        v-model="Phone"
+        :show="PhoneKeyboard"
+        :maxlength="11"
+        @blur="PhoneKeyboard = false"/>
+
+      <van-number-keyboard
+        v-model="Code"
+        :show="CodeFocus"
+        :maxlength="6"
+        @blur="CodeFocus = false"/>
 
     </div>
   </div>
 </template>
 
 <script>
+import { Field, Col, Row, Button, NumberKeyboard, PasswordInput, Dialog, Toast } from 'vant'
 import utils from 'common/utils.js'
 import { setToken } from 'common/cookie.js'
 export default {
+  components: {
+    [Field.name]: Field,
+    [Col.name]: Col,
+    [Row.name]: Row,
+    [Button.name]: Button,
+    [NumberKeyboard.name]: NumberKeyboard,
+    [PasswordInput.name]: PasswordInput,
+    [Dialog.name]: Dialog,
+    [Toast.name]: Toast
+  },
   data () {
     return {
-      username: '',
-      pwd: ''
+      Phone: '',
+      PhoneKeyboard: false,
+      SendSmsBtn: false,
+
+      Code: '',
+      CodeKeyboard: false,
+      CodeFocus: false,
+
+      Status: 1,
+    }
+  },
+  watch: {
+    Phone (val) {
+      if (val.length == 11) {
+        this.PhoneKeyboard = false
+        this.SendSmsBtn = true
+      } else {
+        this.SendSmsBtn = false
+      }
+    },
+    Code (val) {
+      if (val.length == 6) {
+        this.login()
+      }
     }
   },
   methods: {
-    Login () {
+
+    sendSms () {
+      Toast.loading({
+        message: '发送中...',
+        duration: 0,
+        forbidClick: true,
+        loadingType: 'spinner'
+      })
+
+      this.$axios.post('/user/getAuthCode', {
+        codeType: 1,
+        phone: this.Phone
+      }).then(resp => {
+        if (resp.data.code == 20000) {
+          Toast.clear()
+          this.Status = 2
+          this.CodeFocus = true
+        } else {
+          Toast.clear()
+          Toast(resp.data.msg )
+        }
+      })
+    },
+
+    changePhone () {
+      this.Status = 1
+      this.PhoneKeyboard = true
+    },
+
+    login () {
+      Dialog.confirm({
+        title: '验证码错误',
+        message: '请输入正确的验证码',
+        confirmButtonText: '重新填写',
+        cancelButtonText: '更换手机号'
+      }).then(() => {
+        // on confirm
+      }).catch(() => {
+        // on cancel
+      })
+    },
+
+    Login2 () {
       let userName = this.username.trim()
       let pwd = this.pwd.trim()
       if(!!userName === false) {

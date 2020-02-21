@@ -17,6 +17,22 @@
 import utils from 'common/utils.js'
 import { setToken } from 'common/cookie.js'
 export default {
+  created () {
+    // 创建元素的时候，去后台请求授权地址
+    // 一开始是snsapi_base方式去请求，获取openid
+    // 如果用户已经存在，那么就直接返回用户的信息数据给他
+    // 如果用户没有在本站注册过，那么再返回新的验证地址snsapi_userinfo
+
+    // 判断当前路径是否带有code
+    let wxAuthCode = this.$router.currentRoute.query.code
+    if(!!wxAuthCode == false) {
+      // 不存在code
+      this.getAuthURL()
+    }else{
+      // 存在code
+      this.getUsrInfo(wxAuthCode)
+    }
+  },
   methods: {
     getAuthURL () {
       // 先获取跳转过来的地址
@@ -62,22 +78,6 @@ export default {
       } )
     }
   },
-  created () {
-    // 创建元素的时候，去后台请求授权地址
-    // 一开始是snsapi_base方式去请求，获取openid
-    // 如果用户已经存在，那么就直接返回用户的信息数据给他
-    // 如果用户没有在本站注册过，那么再返回新的验证地址snsapi_userinfo
-
-    // 判断当前路径是否带有code
-    let wxAuthCode = this.$router.currentRoute.query.code
-    if(!!wxAuthCode == false) {
-      // 不存在code
-      this.getAuthURL()
-    }else{
-      // 存在code
-      this.getUsrInfo(wxAuthCode)
-    }
-  }
 }
 </script>
 
